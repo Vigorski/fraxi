@@ -1,0 +1,7 @@
+label {
+    line-height: calc-rem(24px);
+    font-weight: 600;
+    color: $color-primary;
+    touch-action: manipulation;
+    @include transition(all, .3s);
+}

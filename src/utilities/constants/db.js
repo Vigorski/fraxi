@@ -1,0 +1,1 @@
+export const FIREBASE_DB = 'https://fraxi-ive-iva-default-rtdb.europe-west1.firebasedatabase.app';

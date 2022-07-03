@@ -1,0 +1,117 @@
+// GLOBAL TEXT-LIKE INPUTS
+%global-field-style {
+    width: 100%;
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    padding: calc-rem(20px) calc-rem(16px);
+    font-family: inherit;
+    font-size: calc-rem(14px);
+    outline: none;
+    cursor: text;
+    touch-action: manipulation;
+    @include transition(all, 0.3s);
+  
+    &.error {
+      border-color: $color-error;
+    }
+  
+    &.success {
+      border-color: $color-success;
+    }
+  
+    &[readonly] {
+      background-color: $color-light-gray;
+      color: darken($color-dark-gray, 10%);
+    }
+  
+    &.floating-label {
+      & + label {
+        max-width: 66.66%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transform-origin: left bottom;
+        transform: translate(calc-rem(16.5px), calc-rem(40px));
+        cursor: text;
+      }
+      /* By default, the placeholder should be transparent. Also, it should 
+          * inherit the transition. */
+      @include input-placeholder {
+        color: $color-dark-gray;
+        font-weight: 700;
+        opacity: 0;
+        transition: inherit;
+      }
+      /* Show the placeholder when the input is focused. */
+      &:focus {
+        @include input-placeholder {
+          opacity: 1;
+        }
+      }
+      /* When the element is focused, remove the label transform.
+          * Also, do this when the placeholder is _not_ shown, i.e. when 
+          * there's something in the input at all. */
+      &:focus + label,
+      &:not(:placeholder-shown) + label,
+      &:-webkit-autofill + label {
+        transform: translate(0, 0);
+        cursor: pointer;
+      }
+    }
+  }
+  
+  // RADIO AND CHECKBOX BASE
+  @mixin radio-checkbox($box-width, $radius) {
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      min-height: calc-rem(46px);
+    }
+  
+    z-index: 0;
+  
+    label {
+      position: relative;
+      padding-left: calc-rem(44px);
+      margin: 0;
+      color: $color-gray;
+      font-weight: 400;
+      font-size: calc-rem(14px);
+      cursor: pointer;
+  
+      &::before {
+        content: "";
+        position: absolute;
+        @include transition(transform, 0.25s);
+        z-index: 1;
+      }
+  
+      &::after {
+        content: "";
+        @include absolute-left-center;
+        border-radius: $radius;
+        width: $box-width;
+        height: $box-width;
+        background-color: transparent;
+        border: 1px solid $color-white;
+        @include transition(all, 0.25s);
+      }
+    }
+  
+    input[type="radio"],
+    input[type="checkbox"] {
+      display: none;
+      opacity: 0;
+  
+      &[disabled] + label {
+        cursor: not-allowed;
+        color: lighten($color-gray, 26%);
+  
+        &::after {
+          border-color: lighten($color-gray, 26%);
+        }
+      }
+    }
+  }

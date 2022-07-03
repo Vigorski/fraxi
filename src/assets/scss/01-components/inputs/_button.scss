@@ -1,0 +1,125 @@
+//Button mixins
+@mixin base-button(
+  $color: $color-black,
+  $background-color: $color-white,
+  $border-color: none
+) {
+  @if ($border-color == none) {
+    $border-color: $background-color;
+  }
+
+  color: $color;
+  background-color: $background-color;
+  border: 2px solid $border-color;
+  @include transition((color, background-color, border-color), 0.3s);
+
+  &:hover {
+    background-color: darken($background-color, 10%);
+    border-color: darken($border-color, 10%);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+// button component
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 $btn-font-md $font-secondary;
+  line-height: calc-rem(16px);
+  text-align: center;
+  padding: $btn-padding-md;
+  min-height: $btn-height-md;
+  border-radius: $border-radius-pill;
+  text-transform: uppercase;
+
+  &-primary,
+  &-secondary,
+  &-tertiary,
+  &-tertiary-ghost {
+    @extend .btn;
+  }
+
+  &-primary {
+    @include base-button($color-white, $color-secondary);
+  }
+
+  &-secondary {
+    @include base-button($color-secondary, $color-primary);
+  }
+
+  &-tertiary {
+    @include base-button($color-white, $color-blue-light-1);
+
+    &-ghost {
+      @include base-button(
+        $color-blue-light-1,
+        $color-white,
+        $color-blue-light-1
+      );
+    }
+  }
+
+  &-block {
+    width: 100%;
+  }
+
+  &-stripped {
+    @include base-button($color-secondary);
+    color: $color-secondary;
+    display: inline-block;
+    font-size: calc-rem(14px);
+    font-weight: 700;
+  }
+}
+
+// based on size
+.btn {
+  &-sm {
+    font-size: $btn-font-sm;
+    min-height: $btn-height-sm;
+    padding: $btn-padding-sm;
+  }
+
+  &-lg {
+    min-height: $btn-height-lg;
+    padding: $btn-padding-lg;
+  }
+}
+
+// button with icon
+.btn-icon {
+  &-left {
+    margin-left: $btn-icon-margin;
+
+    i {
+      margin-right: $btn-icon-spacing;
+    }
+  }
+
+  &-right {
+    margin-right: $btn-icon-margin;
+
+    i {
+      margin-left: $btn-icon-spacing;
+    }
+  }
+
+  &-center {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+  }
+}

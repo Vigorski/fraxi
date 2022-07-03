@@ -1,0 +1,65 @@
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $size, $length in $spacings {
+    .#{$abbrev}-all-#{$size} {
+      #{$prop}: #{$length}px !important;
+    }
+
+    .#{$abbrev}t-#{$size},
+    .#{$abbrev}v-#{$size} {
+      #{$prop}-top: #{$length}px !important;
+    }
+
+    .#{$abbrev}r-#{$size},
+    .#{$abbrev}h-#{$size} {
+      #{$prop}-right: #{$length}px !important;
+    }
+
+    .#{$abbrev}b-#{$size},
+    .#{$abbrev}v-#{$size} {
+      #{$prop}-bottom: #{$length}px !important;
+    }
+
+    .#{$abbrev}l-#{$size},
+    .#{$abbrev}h-#{$size} {
+      #{$prop}-left: #{$length}px !important;
+    }
+  }
+}
+
+@each $size, $length in $spacings {
+  @if $size != 0 {
+    .m-n-#{$size} {
+      margin: -#{$length}px !important;
+    }
+
+    .mt-n-#{$size},
+    .mv-n-#{$size} {
+      margin-top: -#{$length}px !important;
+    }
+
+    .mr-n-#{$size},
+    .mh-n-#{$size} {
+      margin-right: -#{$length}px !important;
+    }
+
+    .mb-n-#{$size},
+    .mv-n-#{$size} {
+      margin-bottom: -#{$length}px !important;
+    }
+    .ml-n-#{$size},
+    .mh-n-#{$size} {
+      margin-left: -#{$length}px !important;
+    }
+  }
+}
+
+// Auto
+.ml-auto,
+.mh-auto {
+  margin-left: auto !important;
+}
+
+.mr-auto,
+.mh-auto {
+  margin-right: auto !important;
+}
