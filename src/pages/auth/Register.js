@@ -1,29 +1,24 @@
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import useHttp from '../../hooks/useHttp';
-import { makeRequest } from '../../utilities/api';
-import { FIREBASE_DB } from '../../utilities/constants/db';
+import { LOGIN } from '../../utilities/constants/routes';
 import Layout from '../../components/shared/Layout';
-
-const registerUserDetails = value => {
-	return {
-		url: `${FIREBASE_DB}/users.json`,
-		method: 'POST',
-		body: value,
-		headers: { 'Content-Type': 'application/json' },
-	};
-};
-
-const transformUserValues = values => {
-	const newId = Math.random().toString(16).slice(2) + '_' + Date.now();
-	const {confirmPassword, ...transformedValues} = values;
-
-	return {...transformedValues, userId: newId, routeHistory: []};
-}
+import { userRegister } from '../../store/auth/authActions';
+import { httpActions } from '../../store/http/httpSlice';
 
 const Register = () => {
-	const { status, error, handleRequest: registerUser } = useHttp();
-	console.log(status, error);
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const { error: requestError, status: requestStatus } = useSelector(state => state.http);
+
+	useEffect(() => {
+		if (requestError === null && requestStatus === 'completed') {
+			history.push(LOGIN);
+		}
+		dispatch(httpActions.requestReset());
+	}, [requestError, requestStatus, history, dispatch]);
 
 	const handleValidation = values => {
 		const errors = {};
@@ -62,7 +57,7 @@ const Register = () => {
 		} else if (values.password !== values.confirmPassword) {
 			errors.confirmPassword = 'Passwords must match';
 		}
-		
+
 		if (!values.userType) {
 			errors.userType = 'Required';
 		}
@@ -86,8 +81,7 @@ const Register = () => {
 				}}
 				validate={handleValidation}
 				onSubmit={async (values, { setSubmitting }) => {
-					const transformedValues = transformUserValues(values);
-					await registerUser(registerUserDetails(transformedValues), makeRequest);
+					await dispatch(userRegister(values));
 					setSubmitting(false);
 				}}
 			>
@@ -125,15 +119,15 @@ const Register = () => {
 							<Field type='tel' name='phone' placeholder='Phone' />
 							<ErrorMessage name='phone' component='span' className='input-message-error' />
 						</div>
-						<div className="form-field">
-							<h4>What do you want to register as?</h4>							
-							<div className="input-radio">
-								<Field id="userPassenger" type="radio" name="userType" value="passenger" />
-								<label htmlFor="userPassenger">Passenger</label>
+						<div className='form-field'>
+							<h4>What do you want to register as?</h4>
+							<div className='input-radio'>
+								<Field id='userPassenger' type='radio' name='userType' value='passenger' />
+								<label htmlFor='userPassenger'>Passenger</label>
 							</div>
-							<div className="input-radio">
-								<Field id="userDriver" type="radio" name="userType" value="driver" />
-								<label htmlFor="userDriver">Driver</label>
+							<div className='input-radio'>
+								<Field id='userDriver' type='radio' name='userType' value='driver' />
+								<label htmlFor='userDriver'>Driver</label>
 							</div>
 							<ErrorMessage name='userType' component='span' className='input-message-error' />
 						</div>

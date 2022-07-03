@@ -1,36 +1,19 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { authActions } from '../../store/auth/AuthSlice';
 
-import useHttp from '../../hooks/useHttp';
-import { makeRequest } from '../../utilities/api';
-import { FIREBASE_DB } from '../../utilities/constants/db';
+import { USER_PROFILE } from '../../utilities/constants/routes';
+import { userLogin } from '../../store/auth/authActions'
 import Layout from '../../components/shared/Layout';
 
-import { ROUTE_RESULTS } from '../../utilities/constants/routes';
-
-const getUsersDetails = () => {
-	return { url: `${FIREBASE_DB}/users.json` };
-};
 
 const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const [globalError, setGlobalError] = useState(null);
-	const { handleRequest: getUsers } = useHttp(false, true);
-
-	const validateUser = (allUsers, values) => {
-		setGlobalError(null);
-
-		const found = Object.values(allUsers).find(item => item.email === values.email && item.password === values.password);
-		if (found === undefined) {
-			setGlobalError('Email or password does not match!');
-		}
-		return found;
-	};
+	// const { httpState } = useSelector(state => state.http);
+	const { userDetails, isLoggedIn } = useSelector(state => state.auth);
+	const { globalFormError } = useSelector(state => state.errors);
 
 	const handleValidation = values => {
 		const errors = {};
@@ -46,6 +29,14 @@ const Login = () => {
 		return errors;
 	};
 
+	const authError = userDetails === null && globalFormError.trim().length !== 0;
+	
+	useEffect(() => {
+		if(isLoggedIn) {
+			history.push(USER_PROFILE);
+		}
+	}, [isLoggedIn, history]);
+
 	return (
 		<Layout>
 			<h1>Login</h1>
@@ -57,22 +48,15 @@ const Login = () => {
 				}}
 				validate={handleValidation}
 				onSubmit={async (values, { setSubmitting }) => {
-					const allUsers = await getUsers(getUsersDetails(), makeRequest);
-					const loggedUser = validateUser(allUsers, values);
-
-					if (loggedUser !== undefined) {
-						dispatch(authActions.addLoggedInUser({user: loggedUser}))
-						history.push(ROUTE_RESULTS);
-					}
-
+					await dispatch(userLogin(values));
 					setSubmitting(false);
 				}}
 			>
 				{({ isSubmitting }) => (
 					<Form>
-						{globalError && (
+						{authError && (
 							<div className='form-field'>
-								<span className='input-message-error'>{globalError}</span>
+								<span className='input-message-error'>{globalFormError}</span>
 							</div>
 						)}
 						<div className='form-field'>

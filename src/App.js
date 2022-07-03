@@ -3,8 +3,9 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import RouteResults from './pages/RouteResults';
+import UserProfile from './pages/user/UserProfile';
 
-import { LOGIN, REGISTER, ROUTE_RESULTS } from './utilities/constants/routes';
+import { LOGIN, REGISTER, ROUTE_RESULTS, USER_PROFILE } from './utilities/constants/routes';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
       </Route>
       <Route path={ROUTE_RESULTS} exact>
         <RouteResults />
+      </Route>
+      <Route path={USER_PROFILE} exact>
+        <UserProfile />
       </Route>
     </Switch>
   );
