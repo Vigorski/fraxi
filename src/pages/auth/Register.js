@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import { LOGIN } from '../../utilities/constants/routes';
 import Layout from '../../components/shared/Layout';
-import { userRegister } from '../../store/auth/authActions';
+import { userRegister } from '../../store/user/userActions';
 import { httpActions } from '../../store/http/httpSlice';
 
 const Register = () => {

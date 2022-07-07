@@ -1,4 +1,4 @@
-import { authActions } from './authSlice';
+import { userActions } from './userSlice';
 import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
 import { makeRequest } from '../../utilities/api';
@@ -19,39 +19,7 @@ const transformUserRegisterValues = values => {
 	const newId = Math.random().toString(16).slice(2) + '_' + Date.now();
 	const { confirmPassword, ...transformedValues } = values;
 
-	return { ...transformedValues, userId: newId, routeHistory: [] };
-};
-
-export const userLogin = credentials => {
-	const requestDetails = { url: `${FIREBASE_DB}/users.json` };
-
-	return async dispatch => {
-		let responseData = null;
-		dispatch(httpActions.requestSend);
-		dispatch(errorActions.setGlobalFormError({ errorMessage: '' }));
-
-		try {
-			responseData = await makeRequest(requestDetails);
-			const areCredsValid = validateUser(responseData, credentials);
-      
-			if (areCredsValid !== undefined) {
-        const transformedValues = transformUserLoginValues(areCredsValid);
-        
-				dispatch(
-					authActions.addLoggedInUser({
-						isLoggedIn: true,
-						user: transformedValues,
-					})
-        );
-
-        dispatch(httpActions.requestSuccess(transformedValues));
-			} else {
-				dispatch(errorActions.setGlobalFormError({ errorMessage: 'Wrong email or password!' }));
-			}
-		} catch (err) {
-			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
-		}
-	};
+	return { ...transformedValues, userId: newId, routeHistory: [], routePreferences: {} };
 };
 
 export const userRegister = values => {
@@ -73,3 +41,57 @@ export const userRegister = values => {
 		}
 	};
 };
+
+export const userLogin = credentials => {
+	const requestDetails = { url: `${FIREBASE_DB}/users.json` };
+
+	return async dispatch => {
+		let responseData = null;
+		dispatch(httpActions.requestSend);
+		dispatch(errorActions.setGlobalFormError({ errorMessage: '' }));
+
+		try {
+			responseData = await makeRequest(requestDetails);
+			const areCredsValid = validateUser(responseData, credentials);
+      
+			if (areCredsValid !== undefined) {
+        const transformedValues = transformUserLoginValues(areCredsValid);
+        
+				dispatch(
+					userActions.addLoggedInUser({
+						isLoggedIn: true,
+						user: transformedValues,
+					})
+        );
+
+        dispatch(httpActions.requestSuccess(transformedValues));
+			} else {
+				dispatch(errorActions.setGlobalFormError({ errorMessage: 'Wrong email or password!' }));
+			}
+		} catch (err) {
+			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+		}
+	};
+};
+
+export const updateUserPreferences = values => {
+	console.log(values);
+	const requestDetails = {
+		url: `${FIREBASE_DB}/users.json`,
+		method: 'PATCH',
+		body: values,
+		headers: { 'Content-Type': 'application/json' },
+	};
+
+	return async dispatch => {
+		dispatch(httpActions.requestSend);
+
+		try {
+			await makeRequest(requestDetails);
+			//dispatch(userActions.updateUserDetails(values));
+			dispatch(httpActions.requestSuccess());
+		} catch (err) {
+			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+		}
+	}
+}

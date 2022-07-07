@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { USER_PROFILE } from '../../utilities/constants/routes';
-import { userLogin } from '../../store/auth/authActions'
+import { MY_PROFILE } from '../../utilities/constants/routes';
+import { userLogin } from '../../store/user/userActions'
 import Layout from '../../components/shared/Layout';
 
 
@@ -12,7 +12,7 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	// const { httpState } = useSelector(state => state.http);
-	const { userDetails, isLoggedIn } = useSelector(state => state.auth);
+	const { userDetails, isLoggedIn } = useSelector(state => state.user);
 	const { globalFormError } = useSelector(state => state.errors);
 
 	const handleValidation = values => {
@@ -33,7 +33,7 @@ const Login = () => {
 	
 	useEffect(() => {
 		if(isLoggedIn) {
-			history.push(USER_PROFILE);
+			history.push(MY_PROFILE);
 		}
 	}, [isLoggedIn, history]);
 
