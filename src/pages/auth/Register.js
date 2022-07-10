@@ -6,7 +6,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { LOGIN } from '../../utilities/constants/routes';
 import Layout from '../../components/shared/Layout';
 import { userRegister } from '../../store/user/userActions';
-import { httpActions } from '../../store/http/httpSlice';
 
 const Register = () => {
 	const history = useHistory();
@@ -14,10 +13,9 @@ const Register = () => {
 	const { error: requestError, status: requestStatus } = useSelector(state => state.http);
 
 	useEffect(() => {
-		if (requestError === null && requestStatus === 'completed') {
+		if (requestStatus === 'completed' && requestError === null) {
 			history.push(LOGIN);
 		}
-		dispatch(httpActions.requestReset());
 	}, [requestError, requestStatus, history, dispatch]);
 
 	const handleValidation = values => {

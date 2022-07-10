@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 
 import Login from './pages/auth/Login';
@@ -9,18 +10,26 @@ import EditMyProfile from './pages/user/EditMyProfile';
 import EditMyPreferences from './pages/user/EditMyPreferences';
 import NotFound from './components/shared/NotFount';
 
+import { httpActions } from './store/http/httpSlice';
+
 import { LOGIN, REGISTER, ROUTE_RESULTS, MY_PROFILE } from './utilities/constants/routes';
 
 function App() {
 	const location = useLocation();
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const { isLoggedIn } = useSelector(state => state.user);
 
 	const isAuthPage = location.pathname === LOGIN || location.pathname === REGISTER;
-
+	
 	if (!isLoggedIn && !isAuthPage) {
 		history.replace(LOGIN);
 	}
+
+	useEffect(() => { // not sure if this is the correct way to nullify http statuses
+		dispatch(httpActions.requestReset());
+  }, [location, dispatch]);
+
 
 	return (
 		<Switch>

@@ -13,7 +13,7 @@ const userSlice = createSlice({
       state.userDetails = action.payload.user;
       state.isLoggedIn = action.payload.isLoggedIn;
     },
-    updateUserDetails (state, action) {
+    updateRoutePreferences (state, action) {
       state.userDetails.routePreferences = action.payload;
     }
   },

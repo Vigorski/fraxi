@@ -33,7 +33,7 @@ const Login = () => {
 	
 	useEffect(() => {
 		if(isLoggedIn) {
-			history.push(MY_PROFILE);
+			history.push(MY_PROFILE); // perhaps a better idea would be to redirect inside the userActions dispatch
 		}
 	}, [isLoggedIn, history]);
 

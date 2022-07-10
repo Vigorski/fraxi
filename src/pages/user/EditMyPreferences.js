@@ -1,25 +1,36 @@
-// import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import { MY_PROFILE } from '../../utilities/constants/routes';
 import { MKD_CITIES } from '../../utilities/constants/cities';
 import Layout from '../../components/shared/Layout';
-import { updateUserPreferences } from '../../store/user/userActions'
+import { updateRoutePreferences } from '../../store/user/userActions';
 
 const EditMyPreferences = () => {
+	const history = useHistory();
+	const { status: requestStatus, error: requestError } = useSelector(state => state.http)
 	const { userDetails } = useSelector(state => state.user);
-	console.log(userDetails)
+	const routePreferences = userDetails.routePreferences;
   const dispatch = useDispatch();
-
 	const handleValidation = values => {
 		const errors = {};
 
 		if (!values.numOfStops) {
 			errors.numOfStops = 'Required';
+		} else if (values.numOfStops <= 0) {
+			errors.numOfStops = 'Must be positive integer';
 		}
 
 		return errors;
 	};
+
+	useEffect(() => {
+		if (requestStatus === 'completed' && requestError === null) {
+			history.push(MY_PROFILE);
+		}
+	}, [requestError, requestStatus, history, dispatch]);
 
 	return (
 
@@ -27,15 +38,15 @@ const EditMyPreferences = () => {
 			<section className='profile profile--edit'>
 				<Formik
 					initialValues={{
-						origin: 'Skopje',
-						destination: 'Skopje',
-            numOfStops: 1,
-            routeType: 'regular',
-            smoking: false
+						origin: routePreferences !== undefined ? routePreferences.origin : 'Skopje',
+						destination: routePreferences !== undefined ? routePreferences.destination : 'Skopje',
+            numOfStops: routePreferences !== undefined ? routePreferences.numOfStops : 1,
+            routeType: routePreferences !== undefined ? routePreferences.routeType : 'regular',
+            smoking: routePreferences !== undefined ? routePreferences.smoking : false
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-            await dispatch(updateUserPreferences(values));
+						await dispatch(updateRoutePreferences(userDetails.userId, values));
 						setSubmitting(false);
 					}}
 				>

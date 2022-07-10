@@ -6,6 +6,7 @@ import { MY_PROFILE } from '../../utilities/constants/routes';
 
 const MyProfile = () => {
 	const { userDetails } = useSelector(state => state.user);
+  const routePreferences = userDetails.routePreferences;
 
 	return (
 		<Layout>
@@ -17,12 +18,16 @@ const MyProfile = () => {
 
         <Link to={`${MY_PROFILE}/edit-preferences`}>Edit Preferences</Link>
         <dl>
+          <dt>Origin</dt>
+          <dd>{routePreferences !== undefined ? routePreferences.origin : 'N/A'}</dd>
+          <dt>Destination</dt>
+          <dd>{routePreferences !== undefined ? routePreferences.destination : 'N/A'}</dd>
           <dt># of Stops</dt>
-          <dd>1</dd>
+          <dd>{routePreferences !== undefined ? routePreferences.numOfStops : 'N/A'}</dd>
           <dt>Route</dt>
-          <dd>Regular</dd>
+          <dd>{routePreferences !== undefined ? routePreferences.routeType : 'N/A'}</dd>
           <dt>Smoking</dt>
-          <dd>No Smoking</dd>
+          <dd>{routePreferences !== undefined ? routePreferences.smoking : 'N/A'}</dd>
         </dl>
       </section>
 		</Layout>
