@@ -1,10 +1,14 @@
 body {
-  font: 400 $font-size-base $font-primary;
-  background-color: $color-white;
+  font: 400 $font-size-base $font-lato;
+  background-color: $color-blue-dark;
   box-sizing: border-box;
   overflow-x: hidden;
 
   * {
     box-sizing: border-box;
   }
+}
+
+html, body {
+  height: 100%;
 }

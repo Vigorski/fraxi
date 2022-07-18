@@ -1,0 +1,41 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top-left-radius: $border-radius-footer;
+  border-top-right-radius: $border-radius-footer;
+  background-color: $color-gray-2;
+  box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
+  
+  &__nav {
+    padding: calc-rem(18px) calc-rem(35px);
+
+    ul {
+      justify-content: space-between;
+    }
+
+    a {
+      @extend .btn-icon-center;
+      height: calc-rem(48px);
+      width: calc-rem(48px);
+      background: $color-blue-dark;
+      border-radius: $border-radius-circle;
+      cursor: pointer;
+      
+      .svg-inline {
+        fill: $color-gray-2;
+        font-size: calc-rem(20px);
+        @include transition(fill, .25s);
+      }
+      
+      &.active {
+        box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.36);
+
+        .svg-inline {
+          fill: $color-primary;
+        }
+      }
+    }
+  }
+}

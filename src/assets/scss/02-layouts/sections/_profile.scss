@@ -1,0 +1,38 @@
+.profile {
+  &::before {
+    content: attr(data-username);
+    position: absolute;
+    top: calc-rem(90px);
+    font-size: 18vW;
+    color: rgba($color-white, .03);
+    font-family: $font-lato;
+    font-weight: 700;
+    z-index: -1;
+  }
+
+	&__img {
+		margin: 0 auto;
+		width: calc-rem(130px);
+		height: calc-rem(130px);
+		background-color: $color-gray-2;
+		border-radius: $border-radius-md;
+		box-shadow: calc-rem(-9px) calc-rem(9px) calc-rem(14px) rgb(36, 40, 55);
+	}
+
+	&__svg-wrapper {
+		padding: calc-rem(20px);
+		height: 100%;
+
+		.svg-inline {
+			height: 100%;
+			width: 100%;
+			fill: rgba($color-black, .4);
+		}
+	}
+
+  &__name {
+    color: $color-white;
+    margin: calc-rem(16px) 0;
+    text-align: center;
+  }
+}

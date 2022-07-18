@@ -67,7 +67,7 @@ const Login = () => {
 							<Field type='password' name='password' placeholder='Password' />
 							<ErrorMessage name='password' component='span' className='input-message-error' />
 						</div>
-						<button className='btn-primary' type='submit' disabled={isSubmitting}>
+						<button className='btn-primary btn-primary-gradient' type='submit' disabled={isSubmitting}>
 							Sign in
 						</button>
 					</Form>

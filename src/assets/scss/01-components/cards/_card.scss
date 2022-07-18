@@ -23,17 +23,6 @@
         margin: calc-rem(16px) 0;
         padding: calc-rem(24px);
 
-        &-title {
-            margin-bottom: calc-rem(16px);
-            font-weight: 700;
-            font-size: calc-rem(28px);
-            color: $color-primary;
-        }
-
-        &-subtitle {
-            margin-bottom: calc-rem(16px);
-        }
-
         &-text p {
             font-size: calc-rem(16px);
             line-height: calc-rem(26px);
@@ -51,7 +40,7 @@
         }
     }
 
-    &-footer {
-        margin-top: auto;
-    }
+    // &-footer {
+    //     margin-top: auto;
+    // }
 }

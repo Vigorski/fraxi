@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba($color-white, 0.1);
+  
+  &__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc-rem(48px);
+    width: calc-rem(48px);
+    border-right: 1px solid rgba($color-white, 0.1);
+    margin-right: calc-rem(18px);
+
+    .svg-inline {
+      fill: rgba($color-white, .5);
+    }
+  }
+
+  &__current-page {
+    font-family: $font-montserrat;
+    font-style: normal;
+    font-weight: 700;
+    font-size: calc-rem(16px);
+    color: $color-white;
+  }
+}

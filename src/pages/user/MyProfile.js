@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Layout from '../../components/shared/Layout';
 import { MY_PROFILE } from '../../utilities/constants/routes';
+import { IconUserPlaceholder } from '../../components/icons';
 
 const MyProfile = () => {
 	const { userDetails } = useSelector(state => state.user);
@@ -10,9 +11,11 @@ const MyProfile = () => {
 
 	return (
 		<Layout>
-			<section className="profile" data-username='John Jenner'>
+			<section className="profile" data-username={`${userDetails.name} ${userDetails.surname}`}>
         <div className="profile__img">
-          placeholder
+          <div className="profile__svg-wrapper">
+            <IconUserPlaceholder />
+          </div>
         </div>
         <h4 className="profile__name">{userDetails.name} {userDetails.surname}</h4>
 

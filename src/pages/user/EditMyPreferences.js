@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import FormIKSelect from '../../components/forms/FormIKSelect';
 import { MY_PROFILE } from '../../utilities/constants/routes';
 import { MKD_CITIES } from '../../utilities/constants/cities';
 import Layout from '../../components/shared/Layout';
@@ -12,7 +13,7 @@ const EditMyPreferences = () => {
 	const history = useHistory();
 	const { status: requestStatus, error: requestError } = useSelector(state => state.http)
 	const { userDetails } = useSelector(state => state.user);
-	const routePreferences = userDetails.routePreferences;
+	const routePreferences = userDetails?.routePreferences;
   const dispatch = useDispatch();
 	const handleValidation = values => {
 		const errors = {};
@@ -32,8 +33,13 @@ const EditMyPreferences = () => {
 		}
 	}, [requestError, requestStatus, history, dispatch]);
 
-	return (
+	const citiesOptions = MKD_CITIES.map(city => {
+		return { value: city, label: city };
+	});
 
+	
+	return (
+		
 		<Layout>
 			<section className='profile profile--edit'>
 				<Formik
@@ -59,24 +65,12 @@ const EditMyPreferences = () => {
 							)} */}
 							<div className='form-field'>
 								<label htmlFor='origin'>Your usual pick up location</label>
-								<Field name='origin' id='origin' component='select'>
-									{MKD_CITIES.map(city => (
-										<option key={city} value={city}>
-											{city}
-										</option>
-									))}
-								</Field>
+								<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />
 								<ErrorMessage name='origin' component='span' className='input-message-error' />
 							</div>
 							<div className='form-field'>
                 <label htmlFor='destination'>Your usual destination</label>
-								<Field name='destination' id='destination' component='select'>
-									{MKD_CITIES.map(city => (
-										<option key={city} value={city}>
-											{city}
-										</option>
-									))}
-								</Field>
+								<Field name='destination' id='destination' component={FormIKSelect} options={citiesOptions} />
 								<ErrorMessage name='destination' component='span' className='input-message-error' />
 							</div>
               <div className='form-field'>
@@ -86,22 +80,16 @@ const EditMyPreferences = () => {
 							</div>
 							<div className='form-field'>
                 <label htmlFor='routeType'>Route</label>
-								<Field name='routeType' id='routeType' component='select'>
-                  <option value='regular'>Regular</option>
-                  <option value='irregular'>Irregular</option>
-								</Field>
+								<Field name='routeType' id='routeType' component={FormIKSelect} options={[{ value: 'regular', label: 'Regular' }, { value: 'irregular', label: 'Irregular' }]} />
 								<ErrorMessage name='routeType' component='span' className='input-message-error' />
 							</div>
               <div className='form-field'>
                 <label htmlFor='smoking'>Smoking</label>
-								<Field name='smoking' id='smoking' component='select'>
-                  <option value={false}>No smoking</option>
-                  <option value={true}>Smoking</option>
-								</Field>
+								<Field name='smoking' id='smoking' component={FormIKSelect} options={[{ value: false, label: 'No smoking' }, { value: true, label: 'Smoking' }]} />
 								<ErrorMessage name='smoking' component='span' className='input-message-error' />
 							</div>
 
-							<button className='btn-primary' type='submit' disabled={isSubmitting}>
+							<button className='btn-primary btn-primary-gradient' type='submit' disabled={isSubmitting}>
 								Save
 							</button>
 						</Form>

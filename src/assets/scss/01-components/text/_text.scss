@@ -7,7 +7,7 @@
 
 // MANUAL TEXT COLORS
 p {
-  font: 400 1rem $font-primary;
+  font: 400 1rem $font-montserrat;
   line-height: calc-rem(32px);
   color: $color-black;
 
@@ -20,7 +20,7 @@ p {
 // TEXT SIZES
 .text {
   &-sm {
-    font: 400 calc-rem(14px) $font-primary;
+    font: 400 calc-rem(14px) $font-montserrat;
     line-height: calc-rem(22px);
   }
   

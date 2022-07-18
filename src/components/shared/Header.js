@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 
+import { IconBack } from '../icons';
+
 const Header = () => {
 	return (
 		<header className='header'>
 			<Link to='/' className='header__back'>
-				b
+				<IconBack />
 			</Link>
-			<div className='header__current-page'>
-				<p>My profile</p>
-			</div>
+			<h4 className='header__current-page'>My profile</h4>
 		</header>
 	);
 };

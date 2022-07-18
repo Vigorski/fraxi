@@ -1,5 +1,5 @@
 h1 {
-    font: 700 calc-rem(60px) $font-primary;
+    font: 700 calc-rem(60px) $font-montserrat;
     letter-spacing: -0.88px;
     line-height: calc-rem(64px);
 
@@ -11,7 +11,7 @@ h1 {
 }
 
 h2 {
-    font: 500 calc-rem(32px) $font-primary;
+    font: 500 calc-rem(32px) $font-montserrat;
     letter-spacing: -0.47px;
     line-height: calc-rem(40px);
 
@@ -23,7 +23,7 @@ h2 {
 }
 
 h3 {
-    font: 500 calc-rem(26px) $font-primary;
+    font: 500 calc-rem(26px) $font-montserrat;
     letter-spacing: -0.38px;
     line-height: calc-rem(32px);
 
@@ -35,19 +35,19 @@ h3 {
 }
 
 h4 {
-    font: 700 calc-rem(22px) $font-primary;
+    font: 700 calc-rem(22px) $font-montserrat;
     letter-spacing: -0.32px;
     line-height: calc-rem(48px);
 }
 
 h5 {
-    font: 500 calc-rem(18px) $font-primary;
+    font: 500 calc-rem(18px) $font-montserrat;
     letter-spacing: -0.13px;
     line-height: calc-rem(32px);
 }
 
 h6 {
-    font: 600 1rem $font-primary;
+    font: 600 1rem $font-montserrat;
     letter-spacing: -0.11px;
     line-height: calc-rem(32px);
 

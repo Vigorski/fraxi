@@ -37,7 +37,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font: 700 $btn-font-md $font-secondary;
+  font: 700 $btn-font-md $font-lato;
   line-height: calc-rem(16px);
   text-align: center;
   padding: $btn-padding-md;
@@ -53,7 +53,12 @@
   }
 
   &-primary {
-    @include base-button($color-white, $color-secondary);
+    @include base-button($color-white, $color-secondary, transparent);
+
+    &-gradient {
+      background: linear-gradient(180deg, #7692FD 0%, #725DC4 100%);
+      background-origin: border-box;
+    }
   }
 
   &-secondary {
@@ -120,6 +125,7 @@
   &-center {
     display: flex;
     align-items: center;
-    padding: 1.5rem;
+    justify-content: center;
+    padding: calc-rem(10px);
   }
 }

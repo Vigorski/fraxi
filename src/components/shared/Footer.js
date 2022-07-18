@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
+import { IconUser, IconBell, IconBookmark, IconSearch } from '../icons';
+
 const Footer = () => {
 	return (
 		<footer className='footer'>
@@ -7,22 +9,22 @@ const Footer = () => {
 				<ul className='inline-list'>
 					<li>
 						<NavLink to='/my-profile' activeClassName='active'>
-							user
+							<IconUser />
 						</NavLink>
 					</li>
 					<li>
 						<NavLink to='/search' activeClassName='active'>
-							search
+							<IconSearch />
 						</NavLink>
 					</li>
 					<li>
 						<NavLink to='/favorites' activeClassName='active'>
-							favs
+							<IconBookmark />
 						</NavLink>
 					</li>
 					<li>
 						<NavLink to='/notifications' activeClassName='active'>
-							notes
+							<IconBell />
 						</NavLink>
 					</li>
 				</ul>
