@@ -89,7 +89,7 @@ const EditMyPreferences = () => {
 								<ErrorMessage name='smoking' component='span' className='input-message-error' />
 							</div>
 
-							<button className='btn-primary btn-primary-gradient' type='submit' disabled={isSubmitting}>
+							<button className='btn-primary btn-primary-gradient btn-block mt-xl' type='submit' disabled={isSubmitting}>
 								Save
 							</button>
 						</Form>

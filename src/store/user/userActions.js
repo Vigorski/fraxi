@@ -3,9 +3,12 @@ import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
 import { postRequest, patchRequest, getRequest } from '../../utilities/api/firebase-api';
 
-const validateUser = (allUsers, values) => {
-	const found = Object.values(allUsers).find(item => item.email === values.email && item.password === values.password);
-	return found;
+const validateUser = (allUsers, values, userId = null) => {
+	if (userId) {
+		return Object.values(allUsers).find(item => item.userId === userId);
+	}
+	
+	return Object.values(allUsers).find(item => item.email === values.email && item.password === values.password);
 };
 
 const transformUserLoginValues = values => {
@@ -58,6 +61,7 @@ export const userLogin = credentials => {
 				);
 
 				dispatch(httpActions.requestSuccess(transformedValues));
+				localStorage.setItem('loggedUser', JSON.stringify(transformedValues.userId));
 			} else {
 				dispatch(errorActions.setGlobalFormError({ errorMessage: 'Wrong email or password!' }));
 			}
@@ -67,6 +71,43 @@ export const userLogin = credentials => {
 		}
 	};
 };
+
+export const userRelogin = userId => {
+	return async dispatch => {
+		let responseData = null;
+		dispatch(httpActions.requestSend);
+
+		try {
+			responseData = await getRequest(`/users`);
+			const areCredsValid = validateUser(responseData, null, userId);
+
+			if (areCredsValid !== undefined) {
+				const transformedValues = transformUserLoginValues(areCredsValid);
+
+				dispatch(
+					userActions.addLoggedInUser({
+						isLoggedIn: true,
+						user: transformedValues,
+					})
+				);
+
+				dispatch(httpActions.requestSuccess(transformedValues));
+			} else {
+				dispatch(httpActions.requestError({ errorMessage: 'We were unable to fetch a logged user!' }));
+			}
+		} catch (err) {
+			console.log(err)
+			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+		}
+	};
+};
+
+export const userLogout = () => {
+	return dispatch => {
+		dispatch(userActions.removeLoggedUser());
+		localStorage.removeItem('loggedUser');
+	}
+}
 
 export const updateRoutePreferences = (userId, values) => {
 	return async dispatch => {

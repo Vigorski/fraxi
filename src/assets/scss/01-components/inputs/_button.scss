@@ -71,7 +71,7 @@
     &-ghost {
       @include base-button(
         $color-blue-light-1,
-        $color-white,
+        transparent,
         $color-blue-light-1
       );
     }

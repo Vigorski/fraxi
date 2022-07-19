@@ -33,7 +33,7 @@ $arrow-base: 16px;
 }
 
 a {
-  @include create-link-color($color-primary, $color-brown);
+  @include create-link-color($color-white, $color-primary);
   display: inline-block;
   font-size: calc-rem(14px);
   font-weight: 600;

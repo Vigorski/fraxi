@@ -3,7 +3,7 @@
     content: attr(data-username);
     position: absolute;
     top: calc-rem(90px);
-    font-size: 18vW;
+    font-size: 16vW;
     color: rgba($color-white, .03);
     font-family: $font-lato;
     font-weight: 700;
@@ -35,4 +35,18 @@
     margin: calc-rem(16px) 0;
     text-align: center;
   }
+
+	&__routes {
+		dt {
+			font-size: calc-rem(12px);
+			font-weight: 400;
+			margin-bottom: 0;
+		}
+
+		dd {
+			font-size: calc-rem(26px);
+			font-weight: 700;
+			margin-top: calc-rem(4px);
+		}
+	}
 }

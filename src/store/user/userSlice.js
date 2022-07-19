@@ -13,6 +13,10 @@ const userSlice = createSlice({
       state.userDetails = action.payload.user;
       state.isLoggedIn = action.payload.isLoggedIn;
     },
+    removeLoggedUser (state) {
+      state.userDetails = null;
+      state.isLoggedIn = false;
+    },
     updateRoutePreferences (state, action) {
       state.userDetails.routePreferences = action.payload;
     }

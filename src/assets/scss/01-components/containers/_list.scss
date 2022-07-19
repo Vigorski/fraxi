@@ -41,3 +41,43 @@ ul {
 ol.list {
   margin-left: calc-rem(25px);
 }
+
+.list-desc {
+  &__columns,
+  &__rows {
+    margin: 0 calc-rem(-20px);
+
+    dt, dd {
+      color: $color-white;
+      font-size: calc-rem(14px);
+      margin: calc-rem(14px) calc-rem(20px);
+    }
+  
+    dt {
+      font-weight: 700;
+    }
+  
+    dd {
+      font-weight: 400;
+    }
+  }
+
+  &__columns {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+
+    dt, dd {
+      flex: 1;
+    }
+  }
+
+  &__col {
+    flex: 1;
+  }
+}

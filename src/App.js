@@ -10,6 +10,7 @@ import EditMyProfile from './pages/user/EditMyProfile';
 import EditMyPreferences from './pages/user/EditMyPreferences';
 import NotFound from './components/shared/NotFount';
 
+import { userRelogin } from './store/user/userActions';
 import { httpActions } from './store/http/httpSlice';
 
 import { LOGIN, REGISTER, ROUTE_RESULTS, MY_PROFILE } from './utilities/constants/routes';
@@ -21,6 +22,14 @@ function App() {
 	const { isLoggedIn } = useSelector(state => state.user);
 
 	const isAuthPage = location.pathname === LOGIN || location.pathname === REGISTER;
+	
+	if (!isLoggedIn) { // TODO: rework this contition
+		const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+		
+		if(loggedUser !== null) {
+			dispatch(userRelogin(loggedUser))
+		}
+	}
 	
 	if (!isLoggedIn && !isAuthPage) {
 		history.replace(LOGIN);

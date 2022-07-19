@@ -2,22 +2,9 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: $color-white;
-    border: 1px solid $color-blue-light-2;
-
-    &-header {
-        padding: calc-rem(24px);
-
-        &-date {
-            background-color: $color-primary;
-            color: $color-white;
-            display: inline-block;
-            padding: calc-rem(10px) calc-rem(15px);
-            border-radius: $border-color;
-            font-size: calc-rem(12px);
-            font-weight: 700;
-        }
-    }
+    background-color: $color-gray-3;
+    border-radius: $border-radius-xl;
+    box-shadow: calc-rem(3px) calc-rem(4px) calc-rem(45px) rgba($color-black, .25);
 
     &-body {
         margin: calc-rem(16px) 0;
@@ -40,7 +27,16 @@
         }
     }
 
-    // &-footer {
-    //     margin-top: auto;
-    // }
+    &--stats {
+        border-top-left-radius: $border-radius-md;
+        border-top-right-radius: $border-radius-md;
+    }
+
+    &__section {
+        padding: calc-rem(14px) calc-rem(40px);
+
+        &--border-dashed {
+            border-bottom: 1px dashed rgba($color-white, .18);
+        }
+    }
 }
