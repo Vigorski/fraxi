@@ -1,17 +1,14 @@
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import FormIKSelect from '../../components/forms/FormIKSelect';
-import { MY_PROFILE } from '../../utilities/constants/routes';
 import { MKD_CITIES } from '../../utilities/constants/cities';
 import Layout from '../../components/shared/Layout';
 import { updateRoutePreferences } from '../../store/user/userActions';
 
 const EditMyPreferences = () => {
 	const history = useHistory();
-	const { status: requestStatus, error: requestError } = useSelector(state => state.http)
 	const { userDetails } = useSelector(state => state.user);
 	const routePreferences = userDetails?.routePreferences;
   const dispatch = useDispatch();
@@ -27,16 +24,9 @@ const EditMyPreferences = () => {
 		return errors;
 	};
 
-	useEffect(() => {
-		if (requestStatus === 'completed' && requestError === null) {
-			history.push(MY_PROFILE);
-		}
-	}, [requestError, requestStatus, history, dispatch]);
-
 	const citiesOptions = MKD_CITIES.map(city => {
 		return { value: city, label: city };
 	});
-
 	
 	return (
 		
@@ -52,17 +42,12 @@ const EditMyPreferences = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(updateRoutePreferences(userDetails.userId, values));
+						await dispatch(updateRoutePreferences(userDetails.userId, values, history));
 						setSubmitting(false);
 					}}
 				>
 					{({ isSubmitting }) => (
 						<Form>
-							{/* {authError && (
-								<div className='form-field'>
-									<span className='input-message-error'>{globalFormError}</span>
-								</div>
-							)} */}
 							<div className='form-field'>
 								<label htmlFor='origin'>Your usual pick up location</label>
 								<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />

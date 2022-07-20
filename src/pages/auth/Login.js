@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { MY_PROFILE } from '../../utilities/constants/routes';
 import { userLogin } from '../../store/user/userActions'
 import Layout from '../../components/shared/Layout';
 
@@ -11,8 +9,7 @@ import Layout from '../../components/shared/Layout';
 const Login = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	// const { httpState } = useSelector(state => state.http);
-	const { userDetails, isLoggedIn } = useSelector(state => state.user);
+	const { userDetails } = useSelector(state => state.user);
 	const { globalFormError } = useSelector(state => state.errors);
 
 	const handleValidation = values => {
@@ -30,12 +27,6 @@ const Login = () => {
 	};
 
 	const authError = userDetails === null && globalFormError.trim().length !== 0;
-	
-	useEffect(() => {
-		if(isLoggedIn) {
-			history.push(MY_PROFILE); // perhaps a better idea would be to redirect inside the userActions dispatch
-		}
-	}, [isLoggedIn, history]);
 
 	return (
 		<Layout>
@@ -48,7 +39,7 @@ const Login = () => {
 				}}
 				validate={handleValidation}
 				onSubmit={async (values, { setSubmitting }) => {
-					await dispatch(userLogin(values));
+					await dispatch(userLogin(values, history));
 					setSubmitting(false);
 				}}
 			>

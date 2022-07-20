@@ -23,17 +23,18 @@ function App() {
 
 	const isAuthPage = location.pathname === LOGIN || location.pathname === REGISTER;
 	
-	if (!isLoggedIn) { // TODO: rework this contition
-		const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-		
-		if(loggedUser !== null) {
-			dispatch(userRelogin(loggedUser))
+	useEffect(() => {
+		if (!isLoggedIn) {
+			const isLoggedInLocalState = JSON.parse(localStorage.getItem('loggedUser'));
+			
+			if(isLoggedInLocalState !== null) {
+				dispatch(userRelogin(isLoggedInLocalState))
+			} else if (!isAuthPage) {
+				history.replace(LOGIN);
+			}
 		}
-	}
+	}, [dispatch, history, isAuthPage, isLoggedIn])
 	
-	if (!isLoggedIn && !isAuthPage) {
-		history.replace(LOGIN);
-	}
 
 	useEffect(() => { // not sure if this is the correct way to nullify http statuses
 		dispatch(httpActions.requestReset());

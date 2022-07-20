@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Layout from '../../components/shared/Layout';
-import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
+import { MY_PROFILE } from '../../utilities/constants/routes';
 import { IconUserPlaceholder } from '../../components/icons';
 import { userLogout } from '../../store/user/userActions';
 
@@ -14,8 +14,7 @@ const MyProfile = () => {
   const routePreferences = userDetails?.routePreferences;
 
   const handleLogout = () => {
-    dispatch(userLogout());
-    history.push(LOGIN); // perhaps put this inside userActions?
+    dispatch(userLogout(history));
   }
 
 	return (

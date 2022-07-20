@@ -2,6 +2,7 @@ import { userActions } from './userSlice';
 import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
 import { postRequest, patchRequest, getRequest } from '../../utilities/api/firebase-api';
+import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
 
 const validateUser = (allUsers, values, userId = null) => {
 	if (userId) {
@@ -24,7 +25,7 @@ const transformUserRegisterValues = values => {
 	return { ...transformedValues, userId: newId, routeHistory: [], routePreferences: {} };
 };
 
-export const userRegister = values => {
+export const userRegister = (values, history) => {
 	const transformedValues = transformUserRegisterValues(values);
 
 	return async dispatch => {
@@ -33,6 +34,7 @@ export const userRegister = values => {
 		try {
 			await postRequest(`users/${transformedValues.userId}`, transformedValues);
 			dispatch(httpActions.requestSuccess());
+			history.push(LOGIN);
 		} catch (err) {
 			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
@@ -40,7 +42,7 @@ export const userRegister = values => {
 	};
 };
 
-export const userLogin = credentials => {
+export const userLogin = (credentials, history) => {
 	return async dispatch => {
 		let responseData = null;
 		dispatch(httpActions.requestSend);
@@ -62,6 +64,7 @@ export const userLogin = credentials => {
 
 				dispatch(httpActions.requestSuccess(transformedValues));
 				localStorage.setItem('loggedUser', JSON.stringify(transformedValues.userId));
+				history.push(MY_PROFILE);
 			} else {
 				dispatch(errorActions.setGlobalFormError({ errorMessage: 'Wrong email or password!' }));
 			}
@@ -102,14 +105,15 @@ export const userRelogin = userId => {
 	};
 };
 
-export const userLogout = () => {
+export const userLogout = history => {
 	return dispatch => {
 		dispatch(userActions.removeLoggedUser());
 		localStorage.removeItem('loggedUser');
+		history.push(LOGIN);
 	}
 }
 
-export const updateRoutePreferences = (userId, values) => {
+export const updateRoutePreferences = (userId, values, history) => {
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 
@@ -117,6 +121,7 @@ export const updateRoutePreferences = (userId, values) => {
 			await patchRequest(`users/${userId}`, 'routePreferences', values);
 			dispatch(userActions.updateRoutePreferences(values));
 			dispatch(httpActions.requestSuccess());
+			history.push(MY_PROFILE);
 		} catch (err) {
 			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));

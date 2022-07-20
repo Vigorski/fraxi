@@ -1,22 +1,13 @@
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { LOGIN } from '../../utilities/constants/routes';
 import Layout from '../../components/shared/Layout';
 import { userRegister } from '../../store/user/userActions';
 
 const Register = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { error: requestError, status: requestStatus } = useSelector(state => state.http);
-
-	useEffect(() => {
-		if (requestStatus === 'completed' && requestError === null) {
-			history.push(LOGIN);
-		}
-	}, [requestError, requestStatus, history, dispatch]);
 
 	const handleValidation = values => {
 		const errors = {};
@@ -79,7 +70,7 @@ const Register = () => {
 				}}
 				validate={handleValidation}
 				onSubmit={async (values, { setSubmitting }) => {
-					await dispatch(userRegister(values));
+					await dispatch(userRegister(values, history));
 					setSubmitting(false);
 				}}
 			>
