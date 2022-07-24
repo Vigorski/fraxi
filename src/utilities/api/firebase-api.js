@@ -1,44 +1,58 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, child, get, set, update } from 'firebase/database';
 import { FIREBASE_CONFIG } from '../../utilities/constants/db';
-
-import { 
-  collection, 
-  getFirestore, 
-  getDocs, 
-  addDoc, 
-  // onSnapshot, 
-  deleteDoc, 
-  doc,
-  updateDoc,
-  query, where,
-  orderBy,
-  // serverTimestamp, //simply invoke this fn and will return a timestamp
+import {
+	collection,
+	getFirestore,
+	getDocs,
+	addDoc,
+  setDoc,
+	// onSnapshot,
+	// deleteDoc,
+	doc,
+	updateDoc,
+	query,
+	where,
+	// orderBy,
+	// serverTimestamp, //simply invoke this fn and will return a timestamp
 } from 'firebase/firestore';
 
 const app = initializeApp(FIREBASE_CONFIG);
-const db = getDatabase(app);
-const dbRef = ref(getDatabase(app));
+const dbFB = getFirestore(app);
 
-export const getRequest = async (url) => {
-  const snapshot = await get(child(dbRef, url));
+//get once
+export const getFB = async (url, val, queryParamValues) => {
+	// this is probably not a good way to make queries
+	const queryParams = queryParamValues.map((param) => {
+		return where(param, '==', val[param]);
+	});
+	const data = [];
+	const colRef = collection(dbFB, url);
+	const complexQuery = query(colRef, ...queryParams);
 
-  if (snapshot.exists()) {
-    return snapshot.val();
-  } else {
-    throw new Error('No data available')
-  }
+	const snapshot = await getDocs(complexQuery);
+
+	snapshot.docs.forEach((doc) => {
+		data.push({ ...doc.data(), id: doc.id });
+	});
+
+	return data;
 };
 
-export const postRequest = async (url, values) => {
-	await set(ref(db, url), values);
+// push
+export const addFB = async (url, values) => {
+	const colRef = collection(dbFB, url);
+	await addDoc(colRef, values);
 };
 
-export const patchRequest = async (url, key, values) => {
-	const updates = {};
-	updates[`${url}/${key}`] = values;
-	const patchData = await update(ref(db), updates);
-	return patchData;
+export const addFBWithId = async (url, values, id) => {
+	const docRef = doc(dbFB, url, id);
+	await setDoc(docRef, values);
+};
+
+// update
+export const updateFB = async (url, id, fields) => {
+	const docRef = doc(dbFB, url, id);
+	await updateDoc(docRef, fields);
 };
 
 ///////////////////////////////////////////////////////////////
@@ -49,34 +63,6 @@ export const patchRequest = async (url, key, values) => {
 // });
 
 ///////////////////////////////////////////////////////////////
-
-const dbFB = getFirestore(app);
-
-//get once
-export const getFB = async (url, val, queryParams) => {
-  const data = [];
-  const colRef = collection(dbFB, url);
-  const complexQuery = query(
-    colRef, 
-    where('email', '==', val.email),
-    // where(queryParams[0], '==', val[queryParams[0]]),
-    where('password', '==', val.password),
-  );
-
-	const snapshot = await getDocs(complexQuery);
-
-  snapshot.docs.forEach(doc => {
-    data.push({ ...doc.data(), id: doc.id });
-  });
-  
-  return data;
-};
-
-// push
-export const addFB = async (url, values) => {
-  const colRef = collection(dbFB, url);
-	await addDoc(colRef, values);
-};
 
 // //complex query
 // // const complexQuery = query(colRef, where('email', '==', 'vigorski@mail.com'), orderBy('email', 'desc'))
@@ -96,12 +82,4 @@ export const addFB = async (url, values) => {
 //   await deleteDoc(docRef).then(() => {});
 // }
 
-// // update individual document
-// export const updateUser = async () => {
-//   const docRef = doc(dbFB, 'users', 'Z0zelEXQ0bVfVEhDGFHX');
-//   await updateDoc(docRef, {
-//     email: 'updated@mail.com'
-//     // will only update entered properties
-//   }).then(() => {});
-// }
 ////////////////////////////////////////////////////////////////

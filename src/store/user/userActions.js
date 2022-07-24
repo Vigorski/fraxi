@@ -1,17 +1,9 @@
 import { userActions } from './userSlice';
 import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
-import { patchRequest, getRequest, getFB, addFB } from '../../utilities/api/firebase-api';
+import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
 import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
 import { PASSENGER } from '../../utilities/constants/users';
-
-const validateUser = (allUsers, values, userId = null) => {
-	if (userId) {
-		return Object.values(allUsers).find(item => item.userId === userId);
-	}
-
-	return Object.values(allUsers).find(item => item.email === values.email && item.password === values.password);
-};
 
 const transformUserLoginValues = values => {
 	const { password, ...transformedValues } = values;
@@ -42,7 +34,7 @@ export const userRegister = (values, history) => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			await addFB('/users', transformedValues);
+			await addFBWithId('/users', transformedValues, transformedValues.userId);
 			dispatch(httpActions.requestSuccess());
 			history.push(LOGIN);
 		} catch (err) {
@@ -61,7 +53,7 @@ export const userLogin = (credentials, history) => {
 			const responseData = await getFB(`/users`, credentials, ['email', 'password']);
 
 			if (responseData.length > 0) {
-				const transformedValues = transformUserLoginValues(responseData);
+				const transformedValues = transformUserLoginValues(responseData[0]);
 
 				dispatch(
 					userActions.addLoggedInUser({
@@ -85,15 +77,13 @@ export const userLogin = (credentials, history) => {
 
 export const userRelogin = userId => {
 	return async dispatch => {
-		let responseData = null;
 		dispatch(httpActions.requestSend);
 
 		try {
-			responseData = await getRequest(`/users`);
-			const areCredsValid = validateUser(responseData, null, userId);
+			const responseData = await getFB(`/users`, {userId}, ['userId']);
 
-			if (areCredsValid !== undefined) {
-				const transformedValues = transformUserLoginValues(areCredsValid);
+			if (responseData.length > 0) {
+				const transformedValues = transformUserLoginValues(responseData[0]);
 
 				dispatch(
 					userActions.addLoggedInUser({
@@ -126,7 +116,7 @@ export const updateRoutePreferences = (userId, values, history) => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			await patchRequest(`users/${userId}`, 'routePreferences', values);
+			await updateFB('/users', userId, {routePreferences: values})
 			dispatch(userActions.updateRoutePreferences(values));
 			dispatch(httpActions.requestSuccess());
 			history.push(MY_PROFILE);
