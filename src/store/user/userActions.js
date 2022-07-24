@@ -1,14 +1,15 @@
 import { userActions } from './userSlice';
 import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
-import { postRequest, patchRequest, getRequest } from '../../utilities/api/firebase-api';
+import { patchRequest, getRequest, getFB, addFB } from '../../utilities/api/firebase-api';
 import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
+import { PASSENGER } from '../../utilities/constants/users';
 
 const validateUser = (allUsers, values, userId = null) => {
 	if (userId) {
 		return Object.values(allUsers).find(item => item.userId === userId);
 	}
-	
+
 	return Object.values(allUsers).find(item => item.email === values.email && item.password === values.password);
 };
 
@@ -20,9 +21,18 @@ const transformUserLoginValues = values => {
 
 const transformUserRegisterValues = values => {
 	const newId = Math.random().toString(16).slice(2) + '_' + Date.now();
-	const { confirmPassword, ...transformedValues } = values;
+	const { confirmPassword, ...filteredValues } = values;
+	const additionalValues = {
+		userId: newId,
+		ridesHistory: [],
+		activeRides: [],
+	};
 
-	return { ...transformedValues, userId: newId, routeHistory: [], routePreferences: {} };
+	if(values.userType === PASSENGER) {
+		additionalValues.routePreferences = {}
+	}
+
+	return { ...filteredValues, ...additionalValues };
 };
 
 export const userRegister = (values, history) => {
@@ -32,7 +42,7 @@ export const userRegister = (values, history) => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			await postRequest(`users/${transformedValues.userId}`, transformedValues);
+			await addFB('/users', transformedValues);
 			dispatch(httpActions.requestSuccess());
 			history.push(LOGIN);
 		} catch (err) {
@@ -44,16 +54,14 @@ export const userRegister = (values, history) => {
 
 export const userLogin = (credentials, history) => {
 	return async dispatch => {
-		let responseData = null;
 		dispatch(httpActions.requestSend);
 		dispatch(errorActions.setGlobalFormError({ errorMessage: '' }));
 
 		try {
-			responseData = await getRequest(`/users`);
-			const areCredsValid = validateUser(responseData, credentials);
+			const responseData = await getFB(`/users`, credentials, ['email', 'password']);
 
-			if (areCredsValid !== undefined) {
-				const transformedValues = transformUserLoginValues(areCredsValid);
+			if (responseData.length > 0) {
+				const transformedValues = transformUserLoginValues(responseData);
 
 				dispatch(
 					userActions.addLoggedInUser({
@@ -69,7 +77,7 @@ export const userLogin = (credentials, history) => {
 				dispatch(errorActions.setGlobalFormError({ errorMessage: 'Wrong email or password!' }));
 			}
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
 		}
 	};
@@ -99,7 +107,7 @@ export const userRelogin = userId => {
 				dispatch(httpActions.requestError({ errorMessage: 'We were unable to fetch a logged user!' }));
 			}
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
 		}
 	};
@@ -110,8 +118,8 @@ export const userLogout = history => {
 		dispatch(userActions.removeLoggedUser());
 		localStorage.removeItem('loggedUser');
 		history.push(LOGIN);
-	}
-}
+	};
+};
 
 export const updateRoutePreferences = (userId, values, history) => {
 	return async dispatch => {

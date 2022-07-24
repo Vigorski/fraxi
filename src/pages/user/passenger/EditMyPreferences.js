@@ -2,16 +2,17 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import FormIKSelect from '../../components/forms/FormIKSelect';
-import { MKD_CITIES } from '../../utilities/constants/cities';
-import Layout from '../../components/shared/Layout';
-import { updateRoutePreferences } from '../../store/user/userActions';
+import FormIKSelect from '../../../components/forms/FormIKSelect';
+import { MKD_CITIES } from '../../../utilities/constants/cities';
+import Layout from '../../../components/shared/Layout';
+import { updateRoutePreferences } from '../../../store/user/userActions';
 
 const EditMyPreferences = () => {
 	const history = useHistory();
 	const { userDetails } = useSelector(state => state.user);
 	const routePreferences = userDetails?.routePreferences;
   const dispatch = useDispatch();
+	
 	const handleValidation = values => {
 		const errors = {};
 

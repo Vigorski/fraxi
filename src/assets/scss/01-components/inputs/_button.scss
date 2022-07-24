@@ -82,8 +82,7 @@
   }
 
   &-stripped {
-    @include base-button($color-secondary);
-    color: $color-secondary;
+    @include base-button($color-secondary, transparent, transparent);
     display: inline-block;
     font-size: calc-rem(14px);
     font-weight: 700;

@@ -10,6 +10,16 @@
     z-index: -1;
   }
 
+	&__edit {
+		position: absolute;
+		right: calc-rem(10px);
+		top: calc-rem(56px);
+
+		.svg-inline {
+			fill: $color-primary;
+		}
+	}
+
 	&__img {
 		margin: 0 auto;
 		width: calc-rem(130px);

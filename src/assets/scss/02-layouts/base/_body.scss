@@ -1,6 +1,7 @@
 body {
   font: 400 $font-size-base $font-lato;
   background-color: $color-blue-dark;
+  margin-bottom: calc-rem(84px);
   box-sizing: border-box;
   overflow-x: hidden;
 
@@ -9,6 +10,6 @@ body {
   }
 }
 
-html, body {
-  height: 100%;
-}
+// html, body {
+//   height: 100%;
+// }

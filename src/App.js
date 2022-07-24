@@ -7,7 +7,8 @@ import Register from './pages/auth/Register';
 import RouteResults from './pages/RouteResults';
 import MyProfile from './pages/user/MyProfile';
 import EditMyProfile from './pages/user/EditMyProfile';
-import EditMyPreferences from './pages/user/EditMyPreferences';
+import EditMyPreferences from './pages/user/passenger/EditMyPreferences';
+import CreateRide from './pages/user/driver/CreateRide';
 import NotFound from './components/shared/NotFount';
 
 import { userRelogin } from './store/user/userActions';
@@ -60,6 +61,9 @@ function App() {
 			</Route>
 			<Route path={`${MY_PROFILE}/edit-preferences`} exact>
 				<EditMyPreferences />
+			</Route>
+			<Route path={`${MY_PROFILE}/create-ride`} exact>
+				<CreateRide />
 			</Route>
 			<Route path={'*'}>
 				<NotFound />

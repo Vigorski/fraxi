@@ -3,5 +3,6 @@
   font-size: calc-rem(16px);
   height: 1em;
   vertical-align: middle;
+  @include transition(fill, .25s);
   // vertical-align: calc-rem(-2px);
 }

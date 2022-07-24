@@ -26,7 +26,6 @@
       .svg-inline {
         fill: $color-gray-2;
         font-size: calc-rem(20px);
-        @include transition(fill, .25s);
       }
       
       &.active {
