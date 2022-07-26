@@ -7,66 +7,192 @@ export const MKD_CITIES = [
   'Ohrid',
   'Strumica',
   'Veles',
-  'Štip',
+  'shtip',
   'Kavadarci',
   'Gostivar',
-  'Kočani',
-  'Kičevo',
+  'Kochani',
+  'Kichevo',
   'Struga',
-  'Radoviš',
+  'Radovish',
   'Gevgelija',
   'Debar',
   'Kriva Palanka',
   'Sveti Nikole',
   'Negotino',
-  'Delčevo',
+  'Delchevo',
   'Vinica',
-  'Probištip',
-  'Aračinovo',
+  'Probishtip',
+  'Arachinovo',
   'Berovo',
   'Kratovo',
-  'Bogovinje',
   'Bogdanci',
-  'Studeničani',
-  'Sopište',
-  'Kruševo',
-  'Vrapčište',
+  'Studenichani',
+  'Sopishte',
+  'Krushevo',
   'Valandovo',
-  'Želino',
   'Tearce',
   'Makedonski Brod',
   'Demir Kapija',
-  'Pehčevo',
-  'Brvenica',
+  'Pehchevo',
   'Novo Selo',
-  'Vevčani',
+  'Vevchani',
   'Petrovec',
   'Lipkovo',
   'Demir Hisar',
   'Rosoman',
   'Plasnica',
   'Mogila',
-  'Krivogaštani',
-  'Zrnovci',
+  'Krivogashtani',
   'Gradsko',
-  'Vasilevo',
-  'Bosilovo',
-  'Staro Nagoričane',
   'Rankovce',
-  'Novaci',
-  'Konče',
-  'Obleševo',
-  'Belčišta',
   'Jegunovce',
-  'Lozovo',
-  'Dolneni',
-  'Rostuša',
-  'Centar Župa',
+  'Rostusha',
+  'Centar Zhupa',
   'Zelenikovo',
-  'Čučer-Sandevo',
-  'Karbinci',
-  'Star Dojran',
   'Ilinden',
   'Makedonska Kamenica',
   'Resen',
-]
+];
+
+export const MKD_CITIES_ABBREVIATED = {
+  'SK': 'Skopje',
+  'TE': 'Tetovo',
+  'BT': 'Bitola',
+  'KU': 'Kumanovo',
+  'PP': 'Prilep',
+  'OH': 'Ohrid',
+  'SR': 'Strumica',
+  'VE': 'Veles',
+  'ST': 'Shtip',
+  'KA': 'Kavadarci',
+  'GV': 'Gostivar',
+  'KO': 'Kochani',
+  'KI': 'Kichevo',
+  'SU': 'Struga',
+  'RA': 'Radovish',
+  'GE': 'Gevgelija',
+  'DB': 'Debar',
+  'KP': 'Kriva Palanka',
+  'SN': 'Sveti Nikole',
+  'NE': 'Negotino',
+  'DE': 'Delchevo',
+  'VI': 'Vinica',
+  'PS': 'Probishtip',
+  'ARA': 'Arachinovo',
+  'BE': 'Berovo',
+  'KR': 'Kratovo',
+  'BOG': 'Bogdanci',
+  'STU': 'Studenichani',
+  'SOP': 'Sopishte',
+  'KS': 'Krushevo',
+  'VA': 'Valandovo',
+  'TEA': 'Tearce',
+  'MB': 'Makedonski Brod',
+  'DK': 'Demir Kapija',
+  'PE': 'Pehchevo',
+  'NSE': 'Novo Selo',
+  'VV': 'Vevchani',
+  'PET': 'Petrovec',
+  'LIP': 'Lipkovo',
+  'DH': 'Demir Hisar',
+  'ROS': 'Rosoman',
+  'PLS': 'Plasnica',
+  'MOG': 'Mogila',
+  'KRG': 'Krivogashtani',
+  'GRA': 'Gradsko',
+  'RAN': 'Rankovce',
+  'JEG': 'Jegunovce',
+  'ROT': 'Rostusha',
+  'CZH': 'Centar Zhupa',
+  'ZEL': 'Zelenikovo',
+  'ILI': 'Ilinden',
+  'MK': 'Makedonska Kamenica',
+  'RE': 'Resen',
+}
+
+
+// Арачиново
+// Берово
+// Битола
+// Богданци
+// Боговиње
+// Босилово
+// Брвеница
+// Валандово
+// Василево
+// Вевчани
+// Велес
+// Виница
+// Вранештица
+// Врапчиште
+// Гевгелија
+// Гостивар
+// Градско
+// Дебар
+// Дебарца
+// Делчево
+// Демир Капија
+// Демир Хисар
+// Дојран
+// Долнени
+// Другово
+// Желино
+// Зајас
+// Залениково
+// Зрновци
+// Илинден
+// Јегуновце
+// Кавадарци
+// Карбинци
+// Кичево
+// Конче
+// Кочани
+// Кратово
+// Крива Паланка
+// Кривогаштани
+// Крушево
+// Куманово
+// Липково
+// Лозово
+// Маврово и Ростуше
+// Македонски Брод
+// Македонска Каменица
+// Могила
+// Неготино
+// Новаци
+// Ново Село
+// Осломеј
+// Охрид
+// Петровец
+// Пехчево
+// Пласница
+// Прилеп
+// Пробиштип
+// Радовиш
+// Ранковце
+// Ресен
+// Росоман
+// Старо Нагоричане
+// Свети Николе
+// Сопиште
+// Струга
+// Струмица
+// Студеничани
+// Теарце
+// Тетово
+// Центар Жупа
+// Чашка
+// Чешино и Облешево
+// Чучер Сандево
+// Штип
+// Аеродром
+// Бутел
+// Гази Баба
+// Ѓорче Петров
+// Карпош
+// Кисела Вода
+// Сарај
+// Центар
+// Чаир
+// Шуто Оризари
+// Скопје

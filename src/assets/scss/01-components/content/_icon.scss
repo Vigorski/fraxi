@@ -46,33 +46,7 @@
   }
 }
 
-// OTHER ICONS
-// Arrow
-.icon-arrow {
-  &-white {
-    &::after {
-      background-image: get-icon("arrow", $color-white);
-    }
-  }
-}
-
-// Plus
-.icon-plus {
-  &-white::after {
-    background-image: get-icon("plus", $color-white);
-  }
-}
-
-// Chevron
-.icon-chevron {
-  &-white::after {
-    background-image: get-icon("chevron", $color-white);
-  }
-}
-
-// Search
-.icon-search {
-  &-primary::after {
-    background-image: get-icon("search", $color-primary);
-  }
+// Car Ride
+.icon-car-ride::after {
+  background-image: $icon-car-ride;
 }

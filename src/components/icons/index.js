@@ -13,5 +13,5 @@ export {
   IconBookmark,
   IconBack,
   IconUserPlaceholder,
-  IconEdit
+  IconEdit,
 }

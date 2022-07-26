@@ -1,42 +1,81 @@
 .card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: $color-gray-3;
-    border-radius: $border-radius-xl;
-    box-shadow: calc-rem(3px) calc-rem(4px) calc-rem(45px) rgba($color-black, .25);
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	background-color: $color-gray-3;
+	border-radius: $border-radius-xl;
+	box-shadow: calc-rem(3px) calc-rem(4px) calc-rem(45px) rgba($color-black, 0.25);
 
-    &-body {
-        margin: calc-rem(16px) 0;
-        padding: calc-rem(24px);
+	&__wrapper {
+		.card {
+			margin: calc-rem(20px) 0;
+		}
+	}
 
-        &-text p {
-            font-size: calc-rem(16px);
-            line-height: calc-rem(26px);
-            font-weight: 700;
-        }
+	&__section {
+		padding: calc-rem(14px) calc-rem(40px);
 
-        &-list {
-            list-style: none;
-            margin-bottom: calc-rem(16px);
+		&--border-dashed {
+			border-bottom: 1px dashed rgba($color-white, 0.18);
+		}
+	}
 
-            &-item {
-                padding: calc-rem(8px) calc-rem(16px);
-                border: 1px solid darken($color-white, 10%);
-            }
-        }
-    }
+	&__decorated {
+		position: relative;
+		display: flex;
+		align-items: center;
+		min-height: calc-rem(64px);
+		padding-left: 20%;
+		padding-right: 20%;
+		cursor: pointer;
 
-    &--stats {
-        border-top-left-radius: $border-radius-md;
-        border-top-right-radius: $border-radius-md;
-    }
+		&::before {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background-color: rgba($color-white, .04);
+			border-top-left-radius: 90%;
+			border-bottom-right-radius: 90%;
+		}
 
-    &__section {
-        padding: calc-rem(14px) calc-rem(40px);
+		&-dash {
+			flex: 1;
+			border-bottom: 1px dashed $color-white;
+			margin: 0 calc-rem(10px);
+		}
 
-        &--border-dashed {
-            border-bottom: 1px dashed rgba($color-white, .18);
-        }
-    }
+		p {
+			color: $color-white;
+			font-size: calc-rem(18px);
+			line-height: calc-rem(22px);
+			font-weight: 400;
+			font-family: $font-lato;
+			text-transform: uppercase;
+		}
+	}
+
+	&--dark {
+		background: linear-gradient(180deg, $color-gray-2 4.56%, $color-blue-dark-3 116.16%)
+	}
+
+	&--stats {
+		border-top-left-radius: $border-radius-md;
+		border-top-right-radius: $border-radius-md;
+	}
+
+	&--expandable {
+		.card__body {
+			display: none;
+		}
+
+		&.active {
+			.card__body {
+				display: block;
+			}
+		}
+	}
+
 }
