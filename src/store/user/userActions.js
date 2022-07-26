@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { userActions } from './userSlice';
 import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
@@ -12,10 +14,9 @@ const transformUserLoginValues = values => {
 };
 
 const transformUserRegisterValues = values => {
-	const newId = Math.random().toString(16).slice(2) + '_' + Date.now();
 	const { confirmPassword, ...filteredValues } = values;
 	const additionalValues = {
-		userId: newId,
+		userId: uuidv4(),
 		ridesHistory: [],
 		activeRides: [],
 	};

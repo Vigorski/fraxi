@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { ridesActions } from './ridesSlice';
 import { httpActions } from '../http/httpSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
@@ -9,7 +11,7 @@ const cityAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
 const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
 
 const transformRideValues = (driverId, values) => {
-	const newRideId = 'ride_' + Math.random().toString(16).slice(2) + '_' + Date.now();
+	const newRideId = 'ride_' + uuidv4();
 	const creationDate = new Date().toUTCString();
 	const departureDateParsed = values.departureDate.toUTCString();
 	const indexOfOrigin = citiesFull.indexOf(values.origin);
