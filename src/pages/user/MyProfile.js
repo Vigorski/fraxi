@@ -4,10 +4,12 @@ import { useHistory, Link } from 'react-router-dom';
 
 import Layout from '../../components/shared/Layout';
 import { IconUserPlaceholder, IconEdit } from '../../components/icons';
+import PassengerPreferences from './passenger/Preferences';
 import { userLogout } from '../../store/user/userActions';
 import { getUserActiveRides } from '../../store/rides/ridesActions';
-import PassengerPreferences from './passenger/Preferences';
 import { DRIVER, PASSENGER } from '../../utilities/constants/users';
+import { MY_PROFILE } from '../../utilities/constants/routes';
+import { getTime, getShortDate } from '../../utilities/date-time';
 
 const MyProfile = () => {
   const history = useHistory();
@@ -34,7 +36,7 @@ const MyProfile = () => {
 		<Layout>
 			<section className="profile" data-username={`${userDetails?.name} ${userDetails?.surname}`}>
         <div className="profile__edit">
-          <button className="btn-icon-center btn-stripped" onClick={handleEdit}><IconEdit /></button>
+          <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE}/edit-user`} onClick={handleEdit}><IconEdit /></Link>
         </div>
         <div className="profile__img">
           <div className="profile__svg-wrapper">
@@ -47,14 +49,14 @@ const MyProfile = () => {
           <PassengerPreferences routePreferences={routePreferences} />
         }
         {userDetails?.userType === DRIVER &&
-          <Link to="/my-profile/create-ride" className="btn-tertiary btn-block">Create a new ride</Link>
+          <Link to={`${MY_PROFILE}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>
         }
 
         <div className="card__wrapper">
           {activeRides.length > 0 &&
             activeRides.map((ride) => {
               return (
-                <div className='card card--dark card--stats card--expandable' key={ride.rideId}>  
+                <div className='card card--dark card--stats' key={ride.rideId}>  
                   <div className="card__header">
                     <div className='card__section card__section--border-dashed card__decorated'>
                       <p>{ride.originAbbr ?? 'N/A'}</p>
@@ -66,18 +68,14 @@ const MyProfile = () => {
                   </div>
                   <div className="card__body">
                     <div className='card__section'>
-                      <dl className='list-desc__rows'>
-                        <div className='list-desc__row'>
+                      <dl className='list-desc__columns row'>
+                        <div className='list-desc__col text-center'>
                           <dt>Departure</dt>
-                          <dd>{ride.departureDate ?? 'N/A'}</dd>
+                          <dd>{`${getShortDate(ride.departureDate) ?? 'N/A'} • ${getTime(ride.departureDate) ?? 'N/A'}`}</dd>
                         </div>
-                        <div className='list-desc__row'>
-                          <dt>Price</dt>
-                          <dd>{ride.price ?? 'N/A'}</dd>
-                        </div>
-                        <div className='list-desc__row'>
-                          <dt>Smoking</dt>
-                          <dd>{ride.smoking ? 'smoking' : 'non-smoking'}</dd>
+                        <div className='list-desc__col text-center'>
+                          <dt>Passengers</dt>
+                          <dd>{`${ride.passengers.length}/${ride.maxPassengers}`}</dd>
                         </div>
                       </dl>
                     </div>
@@ -88,7 +86,8 @@ const MyProfile = () => {
           }
         </div>
 
-        <button className="btn-tertiary-ghost btn-block btn-sm mt-xxl" onClick={handleLogout}>Logout</button>
+        <button className="btn-primary btn-block btn-sm mt-xxl">Load Rides History</button>
+        <button className="btn-primary-ghost btn-block btn-sm mt-xxl" onClick={handleLogout}>Logout</button>
       </section>
 		</Layout>
 	);

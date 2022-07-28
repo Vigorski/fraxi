@@ -46,35 +46,29 @@
   text-transform: uppercase;
 
   &-primary,
-  &-secondary,
-  &-tertiary,
-  &-tertiary-ghost {
+  &-primary-ghost,
+  &-secondary {
     @extend .btn;
   }
 
   &-primary {
-    @include base-button($color-white, $color-secondary, transparent);
+    @include base-button($color-dark-gray, $color-primary);
 
-    &-gradient {
-      background: linear-gradient(180deg, #7692FD 0%, #725DC4 100%);
-      background-origin: border-box;
+    &:hover {
+      color: $color-dark-gray;
+    }
+
+    &-ghost {
+      @include base-button(
+        $color-white,
+        transparent,
+        $color-primary
+      );
     }
   }
 
   &-secondary {
     @include base-button($color-secondary, $color-primary);
-  }
-
-  &-tertiary {
-    @include base-button($color-white, $color-blue-light-1);
-
-    &-ghost {
-      @include base-button(
-        $color-blue-light-1,
-        transparent,
-        $color-blue-light-1
-      );
-    }
   }
 
   &-block {

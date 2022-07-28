@@ -64,7 +64,6 @@ ol.list {
 
   &__columns {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
   }
 
@@ -79,5 +78,9 @@ ol.list {
 
   &__col {
     flex: 1;
+  }
+
+  &--double {
+    flex: 2
   }
 }

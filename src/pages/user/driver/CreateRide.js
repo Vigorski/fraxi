@@ -26,6 +26,11 @@ const CreateRide = () => {
 		} else if (values.price <= 0) {
 			errors.price = 'Must be positive integer';
 		}
+		if (!values.maxPassengers) {
+			errors.maxPassengers = 'Required';
+		} else if (values.maxPassengers <= 0) {
+			errors.maxPassengers = 'Must be positive integer';
+		}
 
 		return errors;
 	};
@@ -42,6 +47,7 @@ const CreateRide = () => {
 						origin: 'Skopje',
 						destination: 'Skopje',
 						price: 0,
+						maxPassengers: 4,
 						departureDate: minDepartureDate,
 						routeType: 'regular',
 						smoking: false,
@@ -84,6 +90,11 @@ const CreateRide = () => {
 								<ErrorMessage name='price' component='span' className='input-message-error' />
 							</div>
 							<div className='form-field'>
+								<label htmlFor='maxPassengers'>Maximum number of passengers</label>
+								<Field name='maxPassengers' id='maxPassengers' type='number' />
+								<ErrorMessage name='maxPassengers' component='span' className='input-message-error' />
+							</div>
+							<div className='form-field'>
 								<label htmlFor='routeType'>Route</label>
 								<Field
 									name='routeType'
@@ -110,7 +121,7 @@ const CreateRide = () => {
 								<ErrorMessage name='smoking' component='span' className='input-message-error' />
 							</div>
 
-							<button className='btn-primary btn-primary-gradient btn-block mt-xl' type='submit' disabled={isSubmitting}>
+							<button className='btn-primary btn-block mt-xl' type='submit' disabled={isSubmitting}>
 								Create ride
 							</button>
 						</Form>
