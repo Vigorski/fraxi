@@ -1,4 +1,4 @@
 export const LOGIN = '/login';
 export const REGISTER = '/register';
-export const ROUTE_RESULTS = '/route-results';
+export const SEARCH_RIDES = '/search-rides';
 export const MY_PROFILE = '/my-profile';

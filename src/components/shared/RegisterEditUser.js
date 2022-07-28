@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { userRegister } from '../../store/user/userActions';
+import { userRegister, userUpdate } from '../../store/user/userActions';
 
 const RegisterEditUser = ({ editUserProfile }) => {
 	const history = useHistory();
@@ -24,13 +24,16 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			errors.surname = 'Surname must be at least 6 characters long';
 		}
 
-		if (!values.email) {
-			errors.email = 'Required';
-		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-			errors.email = 'Invalid email address';
+		if(!editUserProfile) {
+			if (!values.email) {
+				errors.email = 'Required';
+			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+				errors.email = 'Invalid email address';
+			}
 		}
 
-		if (!values.password) {
+		
+		if (!values.password && !editUserProfile) {
 			errors.password = ['Required'];
 		} else if (values.password.length > 0) {
 			// errors.password = [];
@@ -40,17 +43,16 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			// if (!/^(?=.*(\W|_))/i.test(values.password)) errors.password.push('one symbol');
 			// if (!/.{5,}$/i.test(values.password)) errors.password.push('at least 4 characters long');
 		}
-
-		if (!values.confirmPassword) {
+		if (!values.confirmPassword && !editUserProfile) {
 			errors.confirmPassword = 'Required';
 		} else if (values.password !== values.confirmPassword) {
 			errors.confirmPassword = 'Passwords must match';
 		}
-
-		if (!values.userType) {
+		
+		if (!values.userType && !editUserProfile) {
 			errors.userType = 'Required';
 		}
-
+		
 		return errors;
 	};
 
@@ -69,6 +71,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			validate={handleValidation}
 			onSubmit={async (values, { setSubmitting }) => {
 				if (editUserProfile) {
+					await dispatch(userUpdate(userDetails.userId, values, history));
 				} else {
 					await dispatch(userRegister(values, history));
 				}
@@ -127,7 +130,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
 						</div>
 					)}
 					<button className='btn-primary' type='submit' disabled={isSubmitting}>
-						Register
+						{editUserProfile ? 'Update' : 'Register'}
 					</button>
 				</Form>
 			)}

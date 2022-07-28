@@ -55,6 +55,14 @@
 			font-family: $font-lato;
 			text-transform: uppercase;
 		}
+
+		&--active {
+			background-color: purple;
+
+			&::before {
+				background-color: rgba($color-white, .1);
+			}
+		}
 	}
 
 	&--dark {

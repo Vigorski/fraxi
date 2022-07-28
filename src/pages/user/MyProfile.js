@@ -58,7 +58,7 @@ const MyProfile = () => {
               return (
                 <div className='card card--dark card--stats' key={ride.rideId}>  
                   <div className="card__header">
-                    <div className='card__section card__section--border-dashed card__decorated'>
+                    <div className={`card__section card__section--border-dashed card__decorated card__decorated--${ride.status}`}>
                       <p>{ride.originAbbr ?? 'N/A'}</p>
                       <div className="card__decorated-dash" />
                       <i className="icon-car-ride icon-md" />

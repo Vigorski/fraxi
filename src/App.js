@@ -4,7 +4,7 @@ import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import RouteResults from './pages/RouteResults';
+import SearchRides from './pages/search/SearchRides';
 import MyProfile from './pages/user/MyProfile';
 import EditMyProfile from './pages/user/EditMyProfile';
 import EditMyPreferences from './pages/user/passenger/EditMyPreferences';
@@ -14,7 +14,7 @@ import NotFound from './components/shared/NotFount';
 import { userRelogin } from './store/user/userActions';
 import { httpActions } from './store/http/httpSlice';
 
-import { LOGIN, REGISTER, ROUTE_RESULTS, MY_PROFILE } from './utilities/constants/routes';
+import { LOGIN, REGISTER, SEARCH_RIDES, MY_PROFILE } from './utilities/constants/routes';
 
 function App() {
 	const location = useLocation();
@@ -33,6 +33,8 @@ function App() {
 			} else if (!isAuthPage) {
 				history.replace(LOGIN);
 			}
+		} else if (isAuthPage) {
+			history.replace(MY_PROFILE);
 		}
 	}, [dispatch, history, isAuthPage, isLoggedIn])
 	
@@ -44,15 +46,16 @@ function App() {
 
 	return (
 		<Switch>
+			{/* <Route path={'/'} exact>
+				<MyProfile />
+			</Route> */}
 			<Route path={LOGIN} exact>
 				<Login />
 			</Route>
 			<Route path={REGISTER} exact>
 				<Register />
 			</Route>
-			<Route path={ROUTE_RESULTS} exact>
-				<RouteResults />
-			</Route>
+
 			<Route path={MY_PROFILE} exact>
 				<MyProfile />
 			</Route>
@@ -65,6 +68,11 @@ function App() {
 			<Route path={`${MY_PROFILE}/create-ride`} exact>
 				<CreateRide />
 			</Route>
+
+			<Route path={SEARCH_RIDES} exact>
+				<SearchRides />
+			</Route>
+			
 			<Route path={'*'}>
 				<NotFound />
 			</Route>

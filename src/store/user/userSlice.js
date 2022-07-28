@@ -19,6 +19,11 @@ const userSlice = createSlice({
     },
     updateRoutePreferences (state, action) {
       state.userDetails.routePreferences = action.payload;
+    },
+    updateUserDetails (state, action) {
+      console.log(action.payload);
+      console.log({...state.userDetails, ...action.payload});
+      state.userDetails = {...state.userDetails, ...action.payload};
     }
   },
 });
