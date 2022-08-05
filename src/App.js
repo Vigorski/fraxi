@@ -38,6 +38,8 @@ function App() {
 		}
 	}, [dispatch, history, isAuthPage, isLoggedIn])
 	
+	// https://stackoverflow.com/questions/58144678/organizing-react-routes-into-separate-components
+	// https://betterprogramming.pub/8-basic-and-advanced-react-router-tips-6993ece8f57a
 
 	useEffect(() => { // not sure if this is the correct way to nullify http statuses
 		dispatch(httpActions.requestReset());
@@ -46,9 +48,9 @@ function App() {
 
 	return (
 		<Switch>
-			{/* <Route path={'/'} exact>
+			<Route path={'/'} exact>
 				<MyProfile />
-			</Route> */}
+			</Route>
 			<Route path={LOGIN} exact>
 				<Login />
 			</Route>
