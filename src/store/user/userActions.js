@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { userActions } from './userSlice';
+import { ridesActions } from '../rides/ridesSlice';
 import { httpActions } from '../http/httpSlice';
 import { errorActions } from '../errors/errorSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
@@ -166,6 +167,7 @@ export const userRelogin = (userId) => {
 export const userLogout = (history) => {
 	return (dispatch) => {
 		dispatch(userActions.removeLoggedUser());
+		dispatch(ridesActions.resetRides())
 		localStorage.removeItem('loggedUser');
 		history.push(LOGIN);
 	};

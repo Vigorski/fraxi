@@ -1,6 +1,10 @@
+import Layout from "../../components/shared/Layout";
+
 const SearchRides = () => {
   return (
-    <div>search rides</div>
+    <Layout>
+      <div>search rides</div>
+    </Layout>
   );
 }
 

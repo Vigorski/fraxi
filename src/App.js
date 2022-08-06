@@ -62,17 +62,18 @@ function App() {
 			<Route path={`${MY_PROFILE}/edit-user`} exact>
 				<EditMyProfile />
 			</Route>
+
 			<Route path={`${MY_PROFILE}/edit-preferences`} exact>
 				<EditMyPreferences />
 			</Route>
+			<Route path={SEARCH_RIDES} exact>
+				<SearchRides />
+			</Route>
+
 			<Route path={`${MY_PROFILE}/create-ride`} exact>
 				<CreateRide />
 			</Route>
 
-			<Route path={SEARCH_RIDES} exact>
-				<SearchRides />
-			</Route>
-			
 			<Route path={'*'}>
 				<NotFound />
 			</Route>

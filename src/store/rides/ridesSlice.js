@@ -24,6 +24,10 @@ const ridesSlice = createSlice({
 		addRideToHistory(state, action) {
 			state.ridesHistory.push(action.payload);
 		},
+		resetRides(state) {
+			state.activeRides = [];
+			state.ridesHistory = [];
+		}
 	},
 });
 
