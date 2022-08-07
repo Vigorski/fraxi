@@ -40,7 +40,7 @@ export const addNewRide = (driverId, values, history) => {
 			await updateFB('/users', driverId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
 			dispatch(httpActions.requestSuccess());
 			dispatch(ridesActions.addActiveRide(transformedValues));
-			history.push(MY_PROFILE);
+			history.push(MY_PROFILE.path);
 		} catch (err) {
 			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));

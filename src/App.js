@@ -1,28 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory, useLocation } from 'react-router-dom';
 
 import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import SearchRides from './pages/search/SearchRides';
 import MyProfile from './pages/user/MyProfile';
-import EditMyProfile from './pages/user/EditMyProfile';
-import EditMyPreferences from './pages/user/passenger/EditMyPreferences';
-import CreateRide from './pages/user/driver/CreateRide';
+import { PrivateRoute } from './components/shared/Routes';
 import NotFound from './components/shared/NotFount';
 
 import { userRelogin } from './store/user/userActions';
 import { httpActions } from './store/http/httpSlice';
 
-import { LOGIN, REGISTER, SEARCH_RIDES, MY_PROFILE } from './utilities/constants/routes';
+import { authRouteGroup, profileRouteGroup, passengerRouteGroup, driverRouteGroup } from './utilities/constants/routeGroups';
+import { LOGIN, REGISTER, MY_PROFILE } from './utilities/constants/routes';
 
 function App() {
 	const location = useLocation();
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { isLoggedIn } = useSelector(state => state.user);
+	const { isLoggedIn, userDetails } = useSelector(state => state.user);
 
-	const isAuthPage = location.pathname === LOGIN || location.pathname === REGISTER;
+	const isAuthPage = location.pathname === LOGIN.path || location.pathname === REGISTER.path;
+
+	const routesCombined = useMemo(() => [
+		...profileRouteGroup,
+		...passengerRouteGroup,
+		...driverRouteGroup
+	], []);
 	
 	useEffect(() => {
 		if (!isLoggedIn) {
@@ -30,51 +33,36 @@ function App() {
 			
 			if(isLoggedInLocalState !== null) {
 				dispatch(userRelogin(isLoggedInLocalState))
-			} else if (!isAuthPage) {
-				history.replace(LOGIN);
-			}
-		} else if (isAuthPage) {
-			history.replace(MY_PROFILE);
-		}
+			} 
+			// else if (!isAuthPage) {
+			// 	history.replace(LOGIN.path);
+			// }
+		} 
+		// else if (isAuthPage) {
+		// 	history.replace(MY_PROFILE.path);
+		// }
 	}, [dispatch, history, isAuthPage, isLoggedIn])
-	
-	// https://stackoverflow.com/questions/58144678/organizing-react-routes-into-separate-components
-	// https://betterprogramming.pub/8-basic-and-advanced-react-router-tips-6993ece8f57a
 
 	useEffect(() => { // not sure if this is the correct way to nullify http statuses
 		dispatch(httpActions.requestReset());
   }, [location, dispatch]);
 
+	console.log(routesCombined)
 
 	return (
 		<Switch>
-			<Route path={'/'} exact>
-				<MyProfile />
-			</Route>
-			<Route path={LOGIN} exact>
-				<Login />
-			</Route>
-			<Route path={REGISTER} exact>
-				<Register />
-			</Route>
+			{/* <Route exact path="/">
+				{isLoggedIn ? <Redirect to={MY_PROFILE.path} /> : <Login />}
+			</Route> */}
+			{/* <PrivateRoute path='/' component={MyProfile} user={{isLoggedIn, userDetails}} /> */}
 
-			<Route path={MY_PROFILE} exact>
-				<MyProfile />
-			</Route>
-			<Route path={`${MY_PROFILE}/edit-user`} exact>
-				<EditMyProfile />
-			</Route>
+			{authRouteGroup.map((route) => {
+				return <Route key={route.path} {...route} exact />
+			})}
 
-			<Route path={`${MY_PROFILE}/edit-preferences`} exact>
-				<EditMyPreferences />
-			</Route>
-			<Route path={SEARCH_RIDES} exact>
-				<SearchRides />
-			</Route>
-
-			<Route path={`${MY_PROFILE}/create-ride`} exact>
-				<CreateRide />
-			</Route>
+			{routesCombined.map((route) => {
+				return <PrivateRoute key={route.path} user={{isLoggedIn, userDetails}} {...route} />
+			})}
 
 			<Route path={'*'}>
 				<NotFound />

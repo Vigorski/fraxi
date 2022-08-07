@@ -36,7 +36,7 @@ const MyProfile = () => {
 		<Layout>
 			<section className="profile" data-username={`${userDetails?.name} ${userDetails?.surname}`}>
         <div className="profile__edit">
-          <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE}/edit-user`} onClick={handleEdit}><IconEdit /></Link>
+          <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`} onClick={handleEdit}><IconEdit /></Link>
         </div>
         <div className="profile__img">
           <div className="profile__svg-wrapper">
@@ -49,7 +49,7 @@ const MyProfile = () => {
           <PassengerPreferences routePreferences={routePreferences} />
         }
         {userDetails?.userType === DRIVER &&
-          <Link to={`${MY_PROFILE}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>
+          <Link to={`${MY_PROFILE.path}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>
         }
 
         <div className="card__wrapper">

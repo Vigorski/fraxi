@@ -9,12 +9,12 @@ const Footer = () => {
 			<nav className='footer__nav'>
 				<ul className='inline-list'>
 					<li>
-						<NavLink to={MY_PROFILE} activeClassName='active'>
+						<NavLink to={MY_PROFILE.path} activeClassName='active'>
 							<IconUser />
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to={SEARCH_RIDES} activeClassName='active'>
+						<NavLink to={SEARCH_RIDES.path} activeClassName='active'>
 							<IconSearch />
 						</NavLink>
 					</li>
