@@ -49,7 +49,7 @@ export const userRegister = (values, history) => {
 		try {
 			await addFBWithId('/users', transformedValues, transformedValues.userId);
 			dispatch(httpActions.requestSuccess());
-			history.push(LOGIN);
+			history.push(LOGIN.path);
 		} catch (err) {
 			console.log(err);
 			dispatch(
@@ -71,7 +71,7 @@ export const userUpdate = (userId, values, history) => {
 			await updateFB('/users', userId, transformedValues);
 			dispatch(userActions.updateUserDetails(transformedValues));
 			dispatch(httpActions.requestSuccess());
-			history.push(MY_PROFILE);
+			history.push(MY_PROFILE.path);
 		} catch (err) {
 			console.log(err);
 			dispatch(
@@ -109,7 +109,7 @@ export const userLogin = (credentials, history) => {
 					'loggedUser',
 					JSON.stringify(transformedValues.userId)
 				);
-				history.push(MY_PROFILE);
+				history.push(MY_PROFILE.path);
 			} else {
 				dispatch(
 					errorActions.setGlobalFormError({
@@ -169,7 +169,7 @@ export const userLogout = (history) => {
 		dispatch(userActions.removeLoggedUser());
 		dispatch(ridesActions.resetRides())
 		localStorage.removeItem('loggedUser');
-		history.push(LOGIN);
+		history.push(LOGIN.path);
 	};
 };
 
@@ -181,7 +181,7 @@ export const updateRoutePreferences = (userId, values, history) => {
 			await updateFB('/users', userId, { routePreferences: values });
 			dispatch(userActions.updateRoutePreferences(values));
 			dispatch(httpActions.requestSuccess());
-			history.push(MY_PROFILE);
+			history.push(MY_PROFILE.path);
 		} catch (err) {
 			console.log(err);
 			dispatch(
