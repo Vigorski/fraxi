@@ -16,12 +16,12 @@ export const authRouteGroup = [
 ];
 
 export const profileRouteGroup = [
+  {path: `${MY_PROFILE.path}/edit-user`, component: EditMyProfile, roles: [DRIVER, PASSENGER]},
   {path: MY_PROFILE.path, component: MyProfile, roles: [DRIVER, PASSENGER]},
-  {path: `${MY_PROFILE.path}/edit-user`, component: EditMyProfile, role: [DRIVER, PASSENGER]}
 ];
 
 export const passengerRouteGroup = [
-  {path: `${MY_PROFILE.path}/edit-preferences`, component: EditMyPreferences, role: [PASSENGER]},
+  {path: `${MY_PROFILE.path}/edit-preferences`, component: EditMyPreferences, roles: [PASSENGER]},
   {path: SEARCH_RIDES.path, component: SearchRides, roles: [PASSENGER]}
 ];
 

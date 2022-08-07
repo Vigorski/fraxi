@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Layout from '../../components/shared/Layout';
 import { IconUserPlaceholder, IconEdit } from '../../components/icons';
@@ -11,8 +11,7 @@ import { DRIVER, PASSENGER } from '../../utilities/constants/users';
 import { MY_PROFILE } from '../../utilities/constants/routes';
 import { getTime, getShortDate } from '../../utilities/date-time';
 
-const MyProfile = () => {
-  const history = useHistory();
+const MyProfile = ({history}) => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { activeRides } = useSelector(state => state.rides);
@@ -20,10 +19,6 @@ const MyProfile = () => {
 
   const handleLogout = () => {
     dispatch(userLogout(history));
-  }
-
-  const handleEdit = () => {
-    history.push();
   }
 
   useEffect(() => {
@@ -36,7 +31,7 @@ const MyProfile = () => {
 		<Layout>
 			<section className="profile" data-username={`${userDetails?.name} ${userDetails?.surname}`}>
         <div className="profile__edit">
-          <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`} onClick={handleEdit}><IconEdit /></Link>
+          <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`}><IconEdit /></Link>
         </div>
         <div className="profile__img">
           <div className="profile__svg-wrapper">
