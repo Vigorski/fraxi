@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { IconBack } from '../icons';
 
 const Header = () => {
+	const currentRoute = useSelector(state => state.route.currentRoute);
+
 	return (
 		<header className='header'>
 			<Link to='.' className='header__back'>
 				<IconBack />
 			</Link>
-			{/* <button onClick={history.goBack} className='btn-stripped header__back'>
-				<IconBack />
-			</button> */}
-			<h4 className='header__current-page'>My profile</h4>
+			<h4 className='header__current-page'>{currentRoute.title}</h4>
 		</header>
 	);
 };

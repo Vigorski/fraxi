@@ -15,6 +15,7 @@ function App() {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const { isLoggedIn, userDetails } = useSelector(state => state.user);
+	const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
 
 	const routesCombined = [
 		...passengerRouteGroup,
@@ -23,12 +24,10 @@ function App() {
 	];
 	
 	useEffect(() => {
-		const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
-		
 		if(isLoggedInLocalStorage !== null) {
 			dispatch(userRelogin(isLoggedInLocalStorage))
 		}
-	}, [dispatch])
+	}, [dispatch, isLoggedInLocalStorage])
 
 	useEffect(() => { // not sure if this is the correct way to nullify http statuses
 		dispatch(httpActions.requestReset());
@@ -45,7 +44,7 @@ function App() {
 			})}
 
 			{routesCombined.map((route) => {
-				return <PrivateRoute key={route.path} user={{isLoggedIn, userDetails, isLoggedInLocalStorage: JSON.parse(localStorage.getItem('loggedUser'))}} {...route} />
+				return <PrivateRoute key={route.path} user={{isLoggedIn, userDetails, isLoggedInLocalStorage: isLoggedInLocalStorage}} {...route} />
 			})}
 
 			<Route path={'*'}>
