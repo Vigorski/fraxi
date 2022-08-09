@@ -65,3 +65,21 @@ export const getUserActiveRides = driverId => {
 		}
 	};
 };
+
+export const getFilteredActiveRides = (driverId, ridePreferences) => {
+	return async dispatch => {
+		dispatch(httpActions.requestSend);
+
+		try {
+			const responseData = await getFB('/rides', { driverId }, ['driverId']);
+
+			if (responseData.length > 0) {
+				dispatch(ridesActions.populateActiveRides(responseData));
+				dispatch(httpActions.requestSuccess());
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+		}
+	};
+};

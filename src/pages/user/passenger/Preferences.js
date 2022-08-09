@@ -3,8 +3,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { MY_PROFILE } from '../../../utilities/constants/routes';
 
-const PassengerPreferences = ({routePreferences}) => {
-  const { origin, destination, numOfStops, routeType, smoking } = routePreferences !== undefined ? routePreferences : {};
+const PassengerPreferences = ({ridePreferences}) => {
+  const { origin, destination, numOfStops, rideType, smoking } = ridePreferences !== undefined ? ridePreferences : {};
 
 	return (
 		<div className='card card--stats'>
@@ -38,8 +38,8 @@ const PassengerPreferences = ({routePreferences}) => {
 								<dd>{numOfStops ?? 'N/A'}</dd>
 							</div>
 							<div className='list-desc__row'>
-								<dt>Route</dt>
-								<dd>{routeType ?? 'N/A'}</dd>
+								<dt>Type of ride</dt>
+								<dd>{rideType ?? 'N/A'}</dd>
 							</div>
 							<div className='list-desc__row'>
 								<dt>Smoking</dt>

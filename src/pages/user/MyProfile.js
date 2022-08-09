@@ -15,7 +15,7 @@ const MyProfile = ({history}) => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { activeRides } = useSelector(state => state.rides);
-  const routePreferences = userDetails?.routePreferences;
+  const ridePreferences = userDetails?.ridePreferences;
 
   const handleLogout = () => {
     dispatch(userLogout(history));
@@ -41,7 +41,7 @@ const MyProfile = ({history}) => {
         <h4 className="profile__name">{userDetails?.name} {userDetails?.surname}</h4>
 
         {userDetails?.userType === PASSENGER &&
-          <PassengerPreferences routePreferences={routePreferences} />
+          <PassengerPreferences ridePreferences={ridePreferences} />
         }
         {userDetails?.userType === DRIVER &&
           <Link to={`${MY_PROFILE.path}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>

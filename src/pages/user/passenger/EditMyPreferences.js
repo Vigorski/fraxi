@@ -5,12 +5,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FormIKSelect from '../../../components/forms/FormIKSelect';
 import { MKD_CITIES } from '../../../utilities/constants/cities';
 import Layout from '../../../components/shared/Layout';
-import { updateRoutePreferences } from '../../../store/user/userActions';
+import { updateRidePreferences } from '../../../store/user/userActions';
 
 const EditMyPreferences = () => {
 	const history = useHistory();
 	const { userDetails } = useSelector(state => state.user);
-	const routePreferences = userDetails?.routePreferences;
+	const ridePreferences = userDetails?.ridePreferences;
   const dispatch = useDispatch();
 	
 	const handleValidation = values => {
@@ -28,22 +28,23 @@ const EditMyPreferences = () => {
 	const citiesOptions = MKD_CITIES.map(city => {
 		return { value: city, label: city };
 	});
+
+	const isRidePreferencesValid = ridePreferences && Object.keys(ridePreferences).length !== 0;
 	
 	return (
-		
 		<Layout>
 			<section className='profile profile--edit'>
 				<Formik
 					initialValues={{
-						origin: routePreferences !== undefined ? routePreferences.origin : 'Skopje',
-						destination: routePreferences !== undefined ? routePreferences.destination : 'Skopje',
-            numOfStops: routePreferences !== undefined ? routePreferences.numOfStops : 1,
-            routeType: routePreferences !== undefined ? routePreferences.routeType : 'regular',
-            smoking: routePreferences !== undefined ? routePreferences.smoking : false
+						origin: isRidePreferencesValid ? ridePreferences.origin : 'Skopje',
+						destination: isRidePreferencesValid ? ridePreferences.destination : 'Skopje',
+            numOfStops: isRidePreferencesValid ? ridePreferences.numOfStops : 1,
+            rideType: isRidePreferencesValid ? ridePreferences.rideType : 'regular',
+            smoking: isRidePreferencesValid ? ridePreferences.smoking : false
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(updateRoutePreferences(userDetails.userId, values, history));
+						await dispatch(updateRidePreferences(userDetails.userId, values, history));
 						setSubmitting(false);
 					}}
 				>
@@ -65,9 +66,9 @@ const EditMyPreferences = () => {
 								<ErrorMessage name='numOfStops' component='span' className='input-message-error' />
 							</div>
 							<div className='form-field'>
-                <label htmlFor='routeType'>Route</label>
-								<Field name='routeType' id='routeType' component={FormIKSelect} options={[{ value: 'regular', label: 'Regular' }, { value: 'irregular', label: 'Irregular' }]} />
-								<ErrorMessage name='routeType' component='span' className='input-message-error' />
+                <label htmlFor='rideType'>Type of ride</label>
+								<Field name='rideType' id='rideType' component={FormIKSelect} options={[{ value: 'regular', label: 'Regular' }, { value: 'irregular', label: 'Irregular' }]} />
+								<ErrorMessage name='rideType' component='span' className='input-message-error' />
 							</div>
               <div className='form-field'>
                 <label htmlFor='smoking'>Smoking</label>

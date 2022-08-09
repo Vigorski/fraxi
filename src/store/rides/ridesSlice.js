@@ -16,7 +16,6 @@ const ridesSlice = createSlice({
 			state.activeRides.push(action.payload);
 		},
 		// removeRide (state, action) {
-		//   state.activeRides.push(action.payload);
 		// },
 		populateRidesHistory(state, action) {
 			state.ridesHistory = action.payload;

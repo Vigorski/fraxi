@@ -49,7 +49,7 @@ const CreateRide = () => {
 						price: 0,
 						maxPassengers: 4,
 						departureDate: minDepartureDate,
-						routeType: 'regular',
+						rideType: 'regular',
 						smoking: false,
 					}}
 					validate={handleValidation}
@@ -95,17 +95,17 @@ const CreateRide = () => {
 								<ErrorMessage name='maxPassengers' component='span' className='input-message-error' />
 							</div>
 							<div className='form-field'>
-								<label htmlFor='routeType'>Route</label>
+								<label htmlFor='rideType'>Ride</label>
 								<Field
-									name='routeType'
-									id='routeType'
+									name='rideType'
+									id='rideType'
 									component={FormIKSelect}
 									options={[
 										{ value: 'regular', label: 'Regular' },
 										{ value: 'irregular', label: 'Irregular' },
 									]}
 								/>
-								<ErrorMessage name='routeType' component='span' className='input-message-error' />
+								<ErrorMessage name='rideType' component='span' className='input-message-error' />
 							</div>
 							<div className='form-field'>
 								<label htmlFor='smoking'>Smoking</label>

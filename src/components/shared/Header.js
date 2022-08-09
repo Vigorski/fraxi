@@ -11,7 +11,7 @@ const Header = () => {
 			<Link to='.' className='header__back'>
 				<IconBack />
 			</Link>
-			<h4 className='header__current-page'>{currentRoute.title}</h4>
+			<h4 className='header__current-page'>{currentRoute?.title}</h4>
 		</header>
 	);
 };

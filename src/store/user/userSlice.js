@@ -17,8 +17,8 @@ const userSlice = createSlice({
       state.userDetails = null;
       state.isLoggedIn = false;
     },
-    updateRoutePreferences (state, action) {
-      state.userDetails.routePreferences = action.payload;
+    updateRidePreferences (state, action) {
+      state.userDetails.ridePreferences = action.payload;
     },
     updateUserDetails (state, action) {
       console.log(action.payload);

@@ -23,7 +23,7 @@ const transformUserRegisterValues = (values) => {
 	};
 
 	if (values.userType === PASSENGER) {
-		additionalValues.routePreferences = {};
+		additionalValues.ridePreferences = {};
 	}
 
 	return { ...filteredValues, ...additionalValues };
@@ -173,13 +173,13 @@ export const userLogout = (history) => {
 	};
 };
 
-export const updateRoutePreferences = (userId, values, history) => {
+export const updateRidePreferences = (userId, values, history) => {
 	return async (dispatch) => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			await updateFB('/users', userId, { routePreferences: values });
-			dispatch(userActions.updateRoutePreferences(values));
+			await updateFB('/users', userId, { ridePreferences: values });
+			dispatch(userActions.updateRidePreferences(values));
 			dispatch(httpActions.requestSuccess());
 			history.push(MY_PROFILE.path);
 		} catch (err) {
