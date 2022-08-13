@@ -59,6 +59,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
 	return (
 		<Formik
 			initialValues={{
+				profilePicture: !!userDetails ? userDetails.profilePicture : '',
 				name: !!userDetails ? userDetails.name : '',
 				surname: !!userDetails ? userDetails.surname : '',
 				email: '',
@@ -81,6 +82,10 @@ const RegisterEditUser = ({ editUserProfile }) => {
 		>
 			{({ isSubmitting }) => (
 				<Form>
+					<div className='form-field'>
+						<Field type='file' name='profilePicture' />
+						<ErrorMessage name='profilePicture' component='span' className='input-message-error' />
+					</div>
 					<div className='form-field'>
 						<Field type='text' name='name' placeholder='Name' />
 						<ErrorMessage name='name' component='span' className='input-message-error' />

@@ -25,23 +25,26 @@ p {
   &-right {
     text-align: right;
   }
+
+  &-uppercase {
+    text-transform: uppercase;
+  }
 }
 
 // TEXT SIZES
 .text {
-  &-sm {
-    font: 400 calc-rem(14px) $font-montserrat;
-    line-height: calc-rem(22px);
+  &-xxs {
+    font-size: calc-rem(10px);
+    line-height: calc-rem(12px);
   }
-  
-  &-lg {
-    font-size: calc-rem(18px);
-    line-height: calc-rem(32px);
-    font-weight: 400;
-  
-    @include media-breakpoint-down(md) {
-      font-size: calc-rem(16px);
-      line-height: calc-rem(32px);
-    }
+
+  &-xxs {
+    font-size: calc-rem(12px);
+    line-height: calc-rem(16px);
+  }
+
+  &-sm {
+    font-size: calc-rem(14px);
+    line-height: calc-rem(18px);
   }
 }

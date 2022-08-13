@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	activeRides: [],
 	ridesHistory: [],
+	filteredRides: []
 };
 
 const ridesSlice = createSlice({
@@ -11,6 +12,9 @@ const ridesSlice = createSlice({
 	reducers: {
 		populateActiveRides(state, action) {
 			state.activeRides = action.payload;
+		},
+		populateFilteredRides(state, action) {
+			state.filteredRides = action.payload;
 		},
 		addActiveRide(state, action) {
 			state.activeRides.push(action.payload);

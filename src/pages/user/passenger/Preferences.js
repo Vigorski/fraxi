@@ -16,7 +16,7 @@ const PassengerPreferences = ({ridePreferences}) => {
 					</TabList>
 				</div>
 				<TabPanel>
-					<div className='card__section card__section card__section--clip card__section--border-dashed text-center'>
+					<div className='card__section card__section--clip card__section--border-dashed text-center'>
 						<Link to={`${MY_PROFILE.path}/edit-preferences`}>Edit Preferences</Link>
 					</div>
 					<div className='card__section card__section--border-dashed'>

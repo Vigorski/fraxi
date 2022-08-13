@@ -23,6 +23,7 @@ const transformRideValues = (driverId, values) => {
 		rideId: newRideId,
 		driverId,
 		passengers: [],
+		numOfStops: null,
 		creationDate,
 		status: 'active',
 		originAbbr: cityAbbr[indexOfOrigin],
@@ -66,15 +67,36 @@ export const getUserActiveRides = driverId => {
 	};
 };
 
-export const getFilteredActiveRides = (driverId, ridePreferences) => {
+export const getFilteredRides = ridePreferences => {
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			const responseData = await getFB('/rides', { driverId }, ['driverId']);
+			const accumulatedDriverPromises = [];
+			const uniqueDriverIds = [];
+			// TODO: make additional conditional filters for less important aspects
+			const ridesResponse = await getFB('/rides', ridePreferences, ['destination', 'origin', 'rideType', 'smoking']);
 
-			if (responseData.length > 0) {
-				dispatch(ridesActions.populateActiveRides(responseData));
+			for (const ride of ridesResponse) {
+				if( uniqueDriverIds.indexOf(ride.driverId) === -1 ) {
+					uniqueDriverIds.push(ride.driverId);
+				}
+			}
+			
+			for (const driver of uniqueDriverIds) {
+				const driverPromise = getFB('/users', {userId: driver}, ['userId']);
+				accumulatedDriverPromises.push(driverPromise);
+			}
+			
+			const driversResponse = await Promise.all(accumulatedDriverPromises);
+			const updatedRides = ridesResponse.map( ride => {
+				// using the first index of the response since it always returns an array which will only have a single item
+				const driverDetails = driversResponse.find(driver => driver[0].userId === ride.driverId);
+				return {...ride, driverDetails: driverDetails[0]}
+			} );
+
+			if (updatedRides.length > 0) {
+				dispatch(ridesActions.populateFilteredRides(updatedRides));
 				dispatch(httpActions.requestSuccess());
 			}
 		} catch (err) {

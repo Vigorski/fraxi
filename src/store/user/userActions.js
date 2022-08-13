@@ -19,7 +19,7 @@ const transformUserRegisterValues = (values) => {
 	const additionalValues = {
 		userId: uuidv4(),
 		ridesHistory: [],
-		activeRides: [],
+		activeRides: []
 	};
 
 	if (values.userType === PASSENGER) {

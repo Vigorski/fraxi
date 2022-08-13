@@ -47,14 +47,8 @@ h5 {
 }
 
 h6 {
-    font: 600 1rem $font-montserrat;
-    letter-spacing: -0.11px;
-    line-height: calc-rem(32px);
-
-    &.h6-sm {
-        font-size: calc-rem(12px);
-        line-height: calc-rem(16px);
-    }
+    font: 600 calc-rem(14px) $font-montserrat;
+    line-height: calc-rem(18px);
 }
 
 h1, h2, h3, h4, h5, h6 {
