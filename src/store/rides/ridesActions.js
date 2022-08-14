@@ -72,23 +72,27 @@ export const getFilteredRides = ridePreferences => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			const accumulatedDriverPromises = [];
 			const uniqueDriverIds = [];
 			// TODO: make additional conditional filters for less important aspects
 			const ridesResponse = await getFB('/rides', ridePreferences, ['destination', 'origin', 'rideType', 'smoking']);
-
+			
 			for (const ride of ridesResponse) {
 				if( uniqueDriverIds.indexOf(ride.driverId) === -1 ) {
 					uniqueDriverIds.push(ride.driverId);
 				}
 			}
 			
-			for (const driver of uniqueDriverIds) {
-				const driverPromise = getFB('/users', {userId: driver}, ['userId']);
-				accumulatedDriverPromises.push(driverPromise);
-			}
-			
-			const driversResponse = await Promise.all(accumulatedDriverPromises);
+			// const accumulatedDriverPromises = [];
+			// for (const driver of uniqueDriverIds) {
+			// 	const driverPromise = getFB('/users', {userId: driver}, ['userId']);
+			// 	accumulatedDriverPromises.push(driverPromise);
+			// }
+			// const driversResponse = await Promise.all(accumulatedDriverPromises);
+
+			const driversResponse = await Promise.all(
+				uniqueDriverIds.map(driver => getFB('/users', {userId: driver}, ['userId']))
+			);
+
 			const updatedRides = ridesResponse.map( ride => {
 				// using the first index of the response since it always returns an array which will only have a single item
 				const driverDetails = driversResponse.find(driver => driver[0].userId === ride.driverId);

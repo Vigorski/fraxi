@@ -1,10 +1,18 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import FormObserver from '../../components/forms/FormObserver';
+import FormIKSelect from '../../components/forms/FormIKSelect';
+import { MKD_CITIES } from '../../utilities/constants/cities'; //MKD_CITIES_ABBREVIATED
 import Layout from '../../components/shared/Layout';
+import RideResults from './RideResults';
+
 import { getFilteredRides } from '../../store/rides/ridesActions';
-import { getTime, getShortDate } from '../../utilities/date-time';
-import { IconUserPlaceholder } from '../../components/icons';
+
+const citiesOptions = MKD_CITIES.map(city => {
+	return { value: city, label: city };
+});
 
 const SearchRides = () => {
 	const dispatch = useDispatch();
@@ -18,49 +26,47 @@ const SearchRides = () => {
 		}
 	}, [dispatch, userDetails, ridePreferences]);
 
+	const isRidePreferencesValid = ridePreferences && Object.keys(ridePreferences).length !== 0;
+
 	return (
 		<Layout>
 			<section className='search-rides'>
-				<div className='card__wrapper'>
-					{filteredRides.length > 0 &&
-						filteredRides.map(ride => {
-							const hasDriverPicture = ride.driverDetails.profilePicture.length > 0;
-							// console.log(ride)
-							return (
-								<div className='card card__ride card--gray' key={ride.rideId}>
-									<div className='card__body'>
-										<div className='card__section card__ride-info card__section--clip card__section--border-dashed'>
-											<div className='row'>
-												<div className='col-7'>
-													<h6>{ride.driverDetails.name + ' ' + ride.driverDetails.surname}</h6>
-													<p>{getShortDate(ride.departureDate) ?? 'N/A'}</p>
-													<p>{getTime(ride.departureDate) ?? 'N/A'}</p>
-												</div>
-												<div className='col-5'>
-													<div className='card__ride-thumbnail'>
-														{hasDriverPicture ? 
-                              <img src={ride.driverDetails.profilePicture} alt='driver thumbnail' /> : 
-                              <IconUserPlaceholder />
-                            }
-													</div>
-												</div>
-											</div>
-										</div>
-										<div className='card__section card__ride-price'>
-											<div className='row'>
-												<div className='col-7'>
-													<h6>Price</h6>
-												</div>
-												<div className='col-5'>
-													<h6>${ride.price}</h6>
-												</div>
-											</div>
-										</div>
+				<div className="filters">
+					<Formik
+						initialValues={{
+							origin: isRidePreferencesValid ? ridePreferences.origin : '',
+							destination: isRidePreferencesValid ? ridePreferences.destination : ''
+						}}
+						onChange={(values) => {
+							console.log(values)
+						}}
+					>
+						{() => (
+							<Form>
+								<FormObserver />
+								<div className="filters__route">
+									<div className='form-field'>
+										<label htmlFor='origin'>origin</label>
+										<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />
+										<ErrorMessage name='origin' component='span' className='input-message-error' />
+									</div>
+									<div className="filters__dash" />
+									<div className='form-field'>
+										<label htmlFor='destination'>destination</label>
+										<Field name='destination' id='destination' component={FormIKSelect} options={citiesOptions} />
+										<ErrorMessage name='destination' component='span' className='input-message-error' />
 									</div>
 								</div>
-							);
-						})}
+								{/* <div className='form-field'>
+									<Field type='email' name='email' placeholder='Email' />
+									<ErrorMessage name='email' component='span' className='input-message-error' />
+								</div> */}
+							</Form>
+						)}
+					</Formik>
 				</div>
+
+				<RideResults filteredRides={filteredRides} />
 			</section>
 		</Layout>
 	);
