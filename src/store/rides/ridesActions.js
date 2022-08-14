@@ -81,13 +81,6 @@ export const getFilteredRides = ridePreferences => {
 					uniqueDriverIds.push(ride.driverId);
 				}
 			}
-			
-			// const accumulatedDriverPromises = [];
-			// for (const driver of uniqueDriverIds) {
-			// 	const driverPromise = getFB('/users', {userId: driver}, ['userId']);
-			// 	accumulatedDriverPromises.push(driverPromise);
-			// }
-			// const driversResponse = await Promise.all(accumulatedDriverPromises);
 
 			const driversResponse = await Promise.all(
 				uniqueDriverIds.map(driver => getFB('/users', {userId: driver}, ['userId']))
@@ -99,10 +92,8 @@ export const getFilteredRides = ridePreferences => {
 				return {...ride, driverDetails: driverDetails[0]}
 			} );
 
-			if (updatedRides.length > 0) {
-				dispatch(ridesActions.populateFilteredRides(updatedRides));
-				dispatch(httpActions.requestSuccess());
-			}
+			dispatch(ridesActions.populateFilteredRides(updatedRides));
+			dispatch(httpActions.requestSuccess());
 		} catch (err) {
 			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));

@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 
-const FormObserver = () => {
+const FormObserver = ({handleObserverValues}) => {
   const { values } = useFormikContext();
   
   useEffect(() => {
-    console.log("FormObserver::values", values);
-  }, [values]);
+    handleObserverValues(values);
+  }, [values, handleObserverValues]);
 
   return null;
 };
