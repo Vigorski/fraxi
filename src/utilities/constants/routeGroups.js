@@ -1,12 +1,13 @@
 import Login from '../../pages/auth/Login';
 import Register from '../../pages/auth/Register';
-import SearchRides from '../../pages/search/SearchRides';
+import SearchRides from '../../pages/rides/searchRides/SearchRides';
+import RideDetails from '../../pages/rides/rideDetails/RideDetails';
 import MyProfile from '../../pages/user/MyProfile';
 import EditMyProfile from '../../pages/user/EditMyProfile';
 import EditMyPreferences from '../../pages/user/passenger/EditMyPreferences';
 import CreateRide from '../../pages/user/driver/CreateRide';
 
-import { LOGIN, REGISTER, SEARCH_RIDES, MY_PROFILE, EDIT_USER, EDIT_PREFERENCES, CREATE_RIDE } from './routes';
+import { LOGIN, REGISTER, SEARCH_RIDES, RIDE_DETAILS, MY_PROFILE, EDIT_USER, EDIT_PREFERENCES, CREATE_RIDE } from './routes';
 import { DRIVER, PASSENGER } from './users';
 
 export const authRouteGroup = [
@@ -22,6 +23,7 @@ export const profileRouteGroup = [
 export const passengerRouteGroup = [
 	{ path: `${MY_PROFILE.path}${EDIT_PREFERENCES.path}`, component: EditMyPreferences, roles: [PASSENGER], pathDetails: EDIT_PREFERENCES },
 	{ path: SEARCH_RIDES.path, component: SearchRides, roles: [PASSENGER], pathDetails: SEARCH_RIDES },
+	{ path: RIDE_DETAILS.path, component: RideDetails, roles: [PASSENGER], pathDetails: RIDE_DETAILS },
 ];
 
 export const driverRouteGroup = [{ path: `${MY_PROFILE.path}${CREATE_RIDE.path}`, component: CreateRide, roles: [DRIVER], pathDetails: CREATE_RIDE }];

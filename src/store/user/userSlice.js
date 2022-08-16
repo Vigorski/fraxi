@@ -21,8 +21,6 @@ const userSlice = createSlice({
       state.userDetails.ridePreferences = action.payload;
     },
     updateUserDetails (state, action) {
-      console.log(action.payload);
-      console.log({...state.userDetails, ...action.payload});
       state.userDetails = {...state.userDetails, ...action.payload};
     }
   },

@@ -16,6 +16,12 @@ export const SEARCH_RIDES = {
   description: 'Search for avaiable rides'
 }
 
+export const RIDE_DETAILS = {
+  title: 'Ride details',
+  path: '/ride-details',
+  description: 'Details of individual ride'
+}
+
 export const MY_PROFILE = {
   title: 'My profile',
   path: '/my-profile',

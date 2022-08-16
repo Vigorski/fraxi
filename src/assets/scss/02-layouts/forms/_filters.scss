@@ -1,33 +1,84 @@
 ﻿.filters {
-  margin: 0 calc-rem(-6px);
+	margin: 0 calc-rem(-6px);
 
-  &-flex {
-    display: flex;
-    align-items: center;
-  }
+	.form-field {
+    margin-bottom: calc-rem(14px);
 
-  &-item {
-    flex: 1;
-    min-width: calc-rem(220px);
-    margin: 0 calc-rem(6px);
-  }
+		> label {
+			display: none;
+		}
+	}
 
-  &-search {
-    position: relative;
-    flex: 1 1 calc-rem(500px);
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      right: calc-rem(15px);
-      width: calc-rem(20px);
-      height: calc-rem(20px);
-      background-image: get-icon("search", $color-primary);
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
-      transform: translateY(-50%);
+  .react-select {
+    &__control {
+      min-height: calc-rem(38px);
     }
+  }
+
+  textarea, 
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"] {
+    padding-top: calc-rem(10px);
+    padding-bottom: calc-rem(10px);
+  }
+
+	&__route {
+		display: flex;
+		align-items: center;
+
+		.react-select {
+			&-wrapper {
+				min-width: calc-rem(100px);
+			}
+
+			&__control {
+				box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
+				border-radius: $border-radius-lg;
+				font-size: calc-rem(13px);
+				line-height: calc-rem(16px);
+			}
+
+			&__value-container {
+				padding-left: calc-rem(45px);
+
+				&::before {
+					content: '';
+					position: absolute;
+					top: calc(50% + 1px);
+					left: calc-rem(18px);
+					background: $icon-direction no-repeat center center;
+					background-size: cover;
+					width: calc-rem(16px);
+					height: calc-rem(16px);
+					transform: translateY(-50%);
+				}
+			}
+
+			&__indicators {
+				display: none;
+			}
+		}
+	}
+
+  &__additional {
+    margin-top: calc-rem(16px);
+  }
+
+	&__dash {
+		flex: 1;
+		height: 1px;
+		border-bottom: 1px dashed rgba($color-white, 0.6);
+		margin: 0 calc-rem(12px) calc-rem(14px);
+	}
+
+  &__more button {
+    font-size: calc-rem(12px);
+    text-decoration: underline;
+    text-align: center;
+    width: 100%;
   }
 }

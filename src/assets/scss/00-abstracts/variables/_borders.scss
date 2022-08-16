@@ -1,10 +1,13 @@
-﻿$border-color: $color-blue-light-2; 
+﻿$border-color: $color-blue-light-2;
+
 $border-radius-xs: calc-rem(2px);
 $border-radius-sm: calc-rem(3px);
 $border-radius-md: calc-rem(4px);
 $border-radius: calc-rem(6px);
+$border-radius-lg: calc-rem(8px);
 $border-radius-xl: calc-rem(12px);
 $border-radius-xxl: calc-rem(20px);
+
 $border-radius-footer: calc-rem(24px);
 $border-radius-pill: calc-rem(50px);
 $border-radius-circle: 50%;

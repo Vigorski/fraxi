@@ -81,6 +81,10 @@
     font-size: calc-rem(14px);
     font-weight: 700;
   }
+
+  &-link {
+    @include base-button($color-white, transparent, transparent);
+  }
 }
 
 // based on size

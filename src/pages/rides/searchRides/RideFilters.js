@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Field, ErrorMessage } from 'formik';
 
-import FormIKSelect from '../../components/forms/FormIKSelect';
-import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
+import FormIKSelect from '../../../components/forms/FormIKSelect';
+import { MKD_CITIES_ABBREVIATED } from '../../../utilities/constants/cities';
 
 const citiesOptions = Object.entries(MKD_CITIES_ABBREVIATED).map(([cityKey, cityVal]) => {
   return { value: cityVal, label: cityKey };

@@ -63,7 +63,7 @@ const MyProfile = ({history}) => {
                   </div>
                   <div className="card__body">
                     <div className='card__section'>
-                      <dl className='list-desc__columns row'>
+                      <dl className='list-desc__columns'>
                         <div className='list-desc__col text-center'>
                           <dt>Departure</dt>
                           <dd>{`${getShortDate(ride.departureDate) ?? 'N/A'} • ${getTime(ride.departureDate) ?? 'N/A'}`}</dd>

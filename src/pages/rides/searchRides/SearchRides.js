@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Layout from '../../components/shared/Layout';
-import FormFilters from '../../components/forms/FormFilters';
+import Layout from '../../../components/shared/Layout';
+import FormFilters from '../../../components/forms/FormFilters';
 import RideResults from './RideResults';
 import RideFilters from './RideFilters';
 
-import { getFilteredRides } from '../../store/rides/ridesActions';
+import { getFilteredRides } from '../../../store/rides/ridesActions';
 
 const SearchRides = () => {
 	const dispatch = useDispatch();
