@@ -1,14 +1,5 @@
 .profile {
-  &::before {
-    content: attr(data-username);
-    position: absolute;
-    top: calc-rem(90px);
-    font-size: 16vW;
-    color: rgba($color-white, .03);
-    font-family: $font-lato;
-    font-weight: 700;
-    z-index: -1;
-  }
+	@extend %background-pseudo-text;
 
 	&__edit {
 		position: absolute;

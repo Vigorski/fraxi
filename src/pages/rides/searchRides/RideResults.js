@@ -21,7 +21,7 @@ const RideResults = ({ filteredRides }) => {
 										<p>{getTime(ride.departureDate) ?? 'N/A'}</p>
 									</div>
 									<div className='col-5'>
-										<div className='card__ride-thumbnail'>
+										<div className='thumbnail__user'>
 											{driverHasPicture ? <img src={ride.driverDetails.profilePicture} alt='driver thumbnail' /> : <IconUserPlaceholder />}
 										</div>
 									</div>

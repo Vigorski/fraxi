@@ -45,3 +45,9 @@ export const CREATE_RIDE = {
   path: '/create-ride',
   description: 'Create a new ride'
 }
+
+export const ACTIVE_RIDES = {
+  title: 'Your bookings',
+  path: '/active-rides',
+  description: 'Booked and active rides'
+}

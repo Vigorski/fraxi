@@ -54,7 +54,7 @@ const CreateRide = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(addNewRide(userDetails.userId, values, history));
+						await dispatch(addNewRide(userDetails, values, history));
 						setSubmitting(false);
 					}}
 				>

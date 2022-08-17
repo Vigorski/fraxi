@@ -13,14 +13,14 @@ const ridesSlice = createSlice({
 		populateActiveRides(state, action) {
 			state.activeRides = action.payload;
 		},
-		populateFilteredRides(state, action) {
-			state.filteredRides = action.payload;
-		},
 		addActiveRide(state, action) {
 			state.activeRides.push(action.payload);
 		},
 		// removeRide (state, action) {
 		// },
+		populateFilteredRides(state, action) {
+			state.filteredRides = action.payload;
+		},
 		populateRidesHistory(state, action) {
 			state.ridesHistory = action.payload;
 		},

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import { MY_PROFILE, SEARCH_RIDES } from '../../utilities/constants/routes';
+import { MY_PROFILE, SEARCH_RIDES, ACTIVE_RIDES } from '../../utilities/constants/routes';
 import { IconUser, IconBell, IconBookmark, IconSearch } from '../icons';
 
 const Footer = () => {
@@ -19,7 +19,7 @@ const Footer = () => {
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to='/favorites' activeClassName='active'>
+						<NavLink to={ACTIVE_RIDES.path} activeClassName='active'>
 							<IconBookmark />
 						</NavLink>
 					</li>

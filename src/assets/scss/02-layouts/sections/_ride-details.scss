@@ -1,0 +1,52 @@
+.ride-details {
+  @extend %background-pseudo-text;
+
+  &::before {
+    left: 46%;
+    width: 54%;
+    overflow: hidden;
+  }
+
+	&__driver {
+		padding: 0 calc-rem(14px);
+		margin-bottom: calc-rem(40px);
+	}
+
+	&__photo {
+		border-radius: calc-rem(4px);
+		padding-bottom: 95%;
+	}
+
+	&__info {
+    display: flex;
+		flex-direction: column;
+		justify-content: center;
+		height: 100%;
+
+    p, h3 {
+			font-family: $font-lato;
+			font-weight: 700;
+    }
+
+		p {
+      display: flex;
+      align-items: center;
+			font-size: calc-rem(12px);
+			color: $color-light-gray-2;
+			margin-bottom: calc-rem(12px);
+
+      .svg-inline {
+        font-size: calc-rem(14px);
+        fill: $color-light-gray-2;
+        margin-right: calc-rem(16px);
+      }
+		}
+
+		h3 {
+			color: $color-light-gray-3;
+			font-size: calc-rem(20px);
+			line-height: calc-rem(22px);
+			margin-top: calc-rem(6px);
+		}
+	}
+}

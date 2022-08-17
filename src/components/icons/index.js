@@ -5,6 +5,8 @@ import {IconBookmark} from './IconBookmark';
 import {IconBack} from './IconBack';
 import {IconUserPlaceholder} from './IconUserPlaceholder';
 import {IconEdit} from './IconEdit';
+import {IconPhone} from './IconPhone';
+import {IconMarker} from './IconMarker';
 
 export {
   IconUser,
@@ -14,4 +16,6 @@ export {
   IconBack,
   IconUserPlaceholder,
   IconEdit,
+  IconPhone,
+  IconMarker,
 }

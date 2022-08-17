@@ -6,8 +6,9 @@ import MyProfile from '../../pages/user/MyProfile';
 import EditMyProfile from '../../pages/user/EditMyProfile';
 import EditMyPreferences from '../../pages/user/passenger/EditMyPreferences';
 import CreateRide from '../../pages/user/driver/CreateRide';
+import ActiveRides from '../../pages/rides/activeRides/ActiveRides';
 
-import { LOGIN, REGISTER, SEARCH_RIDES, RIDE_DETAILS, MY_PROFILE, EDIT_USER, EDIT_PREFERENCES, CREATE_RIDE } from './routes';
+import { LOGIN, REGISTER, SEARCH_RIDES, RIDE_DETAILS, MY_PROFILE, EDIT_USER, EDIT_PREFERENCES, CREATE_RIDE, ACTIVE_RIDES } from './routes';
 import { DRIVER, PASSENGER } from './users';
 
 export const authRouteGroup = [
@@ -23,7 +24,11 @@ export const profileRouteGroup = [
 export const passengerRouteGroup = [
 	{ path: `${MY_PROFILE.path}${EDIT_PREFERENCES.path}`, component: EditMyPreferences, roles: [PASSENGER], pathDetails: EDIT_PREFERENCES },
 	{ path: SEARCH_RIDES.path, component: SearchRides, roles: [PASSENGER], pathDetails: SEARCH_RIDES },
-	{ path: RIDE_DETAILS.path, component: RideDetails, roles: [PASSENGER], pathDetails: RIDE_DETAILS },
 ];
 
 export const driverRouteGroup = [{ path: `${MY_PROFILE.path}${CREATE_RIDE.path}`, component: CreateRide, roles: [DRIVER], pathDetails: CREATE_RIDE }];
+
+export const ridesRouteGroup = [
+	{ path: `${ACTIVE_RIDES.path}`, component: ActiveRides, roles: [DRIVER, PASSENGER], pathDetails: ACTIVE_RIDES },
+	{ path: RIDE_DETAILS.path, component: RideDetails, roles: [PASSENGER, DRIVER], pathDetails: RIDE_DETAILS },
+];

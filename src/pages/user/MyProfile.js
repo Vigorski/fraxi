@@ -1,31 +1,24 @@
-import { useEffect } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Layout from '../../components/shared/Layout';
-import { IconUserPlaceholder, IconEdit } from '../../components/icons';
 import PassengerPreferences from './passenger/Preferences';
+import { IconUserPlaceholder, IconEdit } from '../../components/icons';
 import { userLogout } from '../../store/user/userActions';
-import { getUserActiveRides } from '../../store/rides/ridesActions';
+
 import { DRIVER, PASSENGER } from '../../utilities/constants/users';
 import { MY_PROFILE } from '../../utilities/constants/routes';
-import { getTime, getShortDate } from '../../utilities/date-time';
+
 
 const MyProfile = ({history}) => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
-  const { activeRides } = useSelector(state => state.rides);
   const ridePreferences = userDetails?.ridePreferences;
 
   const handleLogout = () => {
     dispatch(userLogout(history));
   }
-
-  useEffect(() => {
-    if (userDetails) {
-      dispatch(getUserActiveRides(userDetails.userId));
-    }
-  }, [dispatch, userDetails]);
 
 	return (
 		<Layout>
@@ -46,40 +39,6 @@ const MyProfile = ({history}) => {
         {userDetails?.userType === DRIVER &&
           <Link to={`${MY_PROFILE.path}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>
         }
-
-        <div className="card__wrapper">
-          {activeRides.length > 0 &&
-            activeRides.map((ride) => {
-              return (
-                <div className='card card--dark card--stats' key={ride.rideId}>  
-                  <div className="card__header">
-                    <div className={`card__section card__section--border-dashed card__decorated card__decorated--${ride.status}`}>
-                      <p>{ride.originAbbr ?? 'N/A'}</p>
-                      <div className="card__decorated-dash" />
-                      <i className="icon-car-ride icon-md" />
-                      <div className="card__decorated-dash" />
-                      <p>{ride.destinationAbbr ?? 'N/A'}</p>
-                    </div>
-                  </div>
-                  <div className="card__body">
-                    <div className='card__section'>
-                      <dl className='list-desc__columns'>
-                        <div className='list-desc__col text-center'>
-                          <dt>Departure</dt>
-                          <dd>{`${getShortDate(ride.departureDate) ?? 'N/A'} • ${getTime(ride.departureDate) ?? 'N/A'}`}</dd>
-                        </div>
-                        <div className='list-desc__col text-center'>
-                          <dt>Passengers</dt>
-                          <dd>{`${ride.passengers.length}/${ride.maxPassengers}`}</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-              )
-            })
-          }
-        </div>
 
         <button className="btn-primary btn-block btn-sm mt-xxl">Load Rides History</button>
         <button className="btn-primary-ghost btn-block btn-sm mt-xxl" onClick={handleLogout}>Logout</button>

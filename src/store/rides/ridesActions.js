@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { userActions } from '../user/userSlice';
 import { ridesActions } from './ridesSlice';
 import { httpActions } from '../http/httpSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
@@ -9,6 +10,16 @@ import { arrayUnion } from 'firebase/firestore';
 
 const cityAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
 const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
+
+const addDriverToRide = (rides, drivers) => {
+	const updatedRides = rides.map(ride => {
+		// using the first index of the response since it always returns an array which will only have a single item
+		const driverDetails = drivers.find(driver => driver[0].userId === ride.driverId);
+		return { ...ride, driverDetails: driverDetails[0] };
+	});
+
+	return updatedRides;
+}
 
 const transformRideValues = (driverId, values) => {
 	const newRideId = 'ride_' + uuidv4();
@@ -31,16 +42,18 @@ const transformRideValues = (driverId, values) => {
 	};
 };
 
-export const addNewRide = (driverId, values, history) => {
-	const transformedValues = transformRideValues(driverId, values);
+export const addNewRide = (driver, values, history) => {
+	const transformedValues = transformRideValues(driver.userId, values);
+	const transformedDriverActiveRides = { activeRides: [...driver.activeRides, transformedValues.rideId] };
 
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 		try {
 			await addFBWithId('/rides', transformedValues, transformedValues.rideId);
-			await updateFB('/users', driverId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
-			dispatch(httpActions.requestSuccess());
+			await updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
+			dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
 			dispatch(ridesActions.addActiveRide(transformedValues));
+			dispatch(httpActions.requestSuccess());
 			history.push(MY_PROFILE.path);
 		} catch (err) {
 			console.log(err);
@@ -49,15 +62,37 @@ export const addNewRide = (driverId, values, history) => {
 	};
 };
 
-export const getUserActiveRides = driverId => {
+export const bookRide = (passenger, ride, history) => {
+	const transformedPassengerActiveRides = { activeRides: [...passenger.activeRides, ride.rideId] };
+
+	return async dispatch => {
+		dispatch(httpActions.requestSend);
+		try {
+			await updateFB('/rides', ride.rideId, { passengers: arrayUnion(passenger.userId) }, true);
+			await updateFB('/users', passenger.userId, { activeRides: arrayUnion(ride.rideId) }, true);
+			dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
+			dispatch(ridesActions.addActiveRide(ride));
+			dispatch(httpActions.requestSuccess());
+			// history.push(BOOKINGS.path);
+		} catch (err) {
+			console.log(err);
+			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+		}
+	};
+};
+
+export const getUserActiveRides = userActiveRides => {
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			const responseData = await getFB('/rides', { driverId }, ['driverId']);
+			const ridesResponse = await Promise.all(userActiveRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId'])));
+			const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
+			const driversResponse = await Promise.all(spreadRidesResponse.map(driver => getFB('/users', { userId: driver.driverId }, ['userId'])));			
+			const updatedRides = addDriverToRide(spreadRidesResponse, driversResponse);
 
-			if (responseData.length > 0) {
-				dispatch(ridesActions.populateActiveRides(responseData));
+			if (updatedRides.length > 0) {
+				dispatch(ridesActions.populateActiveRides(updatedRides));
 				dispatch(httpActions.requestSuccess());
 			}
 		} catch (err) {
@@ -67,30 +102,23 @@ export const getUserActiveRides = driverId => {
 	};
 };
 
-export const getFilteredRides = ridePreferences => {
+export const getFilteredRides = searchPreferences => {
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 
 		try {
 			const uniqueDriverIds = [];
 			// TODO: make additional conditional filters for less important aspects
-			const ridesResponse = await getFB('/rides', ridePreferences, ['destination', 'origin', 'rideType', 'smoking']);
-			
+			const ridesResponse = await getFB('/rides', searchPreferences, ['destination', 'origin', 'rideType', 'smoking']);
+
 			for (const ride of ridesResponse) {
-				if( uniqueDriverIds.indexOf(ride.driverId) === -1 ) {
+				if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
 					uniqueDriverIds.push(ride.driverId);
 				}
 			}
 
-			const driversResponse = await Promise.all(
-				uniqueDriverIds.map(driver => getFB('/users', {userId: driver}, ['userId']))
-			);
-
-			const updatedRides = ridesResponse.map( ride => {
-				// using the first index of the response since it always returns an array which will only have a single item
-				const driverDetails = driversResponse.find(driver => driver[0].userId === ride.driverId);
-				return {...ride, driverDetails: driverDetails[0]}
-			} );
+			const driversResponse = await Promise.all(uniqueDriverIds.map(driver => getFB('/users', { userId: driver }, ['userId'])));
+			const updatedRides = addDriverToRide(ridesResponse, driversResponse);
 
 			dispatch(ridesActions.populateFilteredRides(updatedRides));
 			dispatch(httpActions.requestSuccess());

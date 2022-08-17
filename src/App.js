@@ -8,7 +8,7 @@ import NotFound from './components/shared/NotFount';
 import { userRelogin } from './store/user/userActions';
 import { httpActions } from './store/http/httpSlice';
 
-import { authRouteGroup, profileRouteGroup, passengerRouteGroup, driverRouteGroup } from './utilities/constants/routeGroups';
+import { authRouteGroup, profileRouteGroup, passengerRouteGroup, driverRouteGroup, ridesRouteGroup } from './utilities/constants/routeGroups';
 import { LOGIN, MY_PROFILE } from './utilities/constants/routes';
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
 		...passengerRouteGroup,
 		...driverRouteGroup,
 		...profileRouteGroup,
+		...ridesRouteGroup
 	];
 	
 	useEffect(() => {
