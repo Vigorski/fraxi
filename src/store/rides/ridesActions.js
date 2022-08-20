@@ -6,7 +6,7 @@ import { httpActions } from '../http/httpSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
 import { MY_PROFILE, ACTIVE_RIDES } from '../../utilities/constants/routes';
 import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
-import { arrayUnion } from 'firebase/firestore';
+import { arrayUnion, arrayRemove } from 'firebase/firestore';
 
 const cityAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
 const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
@@ -62,17 +62,21 @@ export const addNewRide = (driver, values, history) => {
 	};
 };
 
-export const removeRide = (rideId, history) => {
+export const removePassengerRide = (rideId, userId, history) => {
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			// await updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
-			// await updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
-			// await addFBWithId('/rides', transformedValues, transformedValues.rideId);
+			await Promise.all([
+				updateFB('/users', userId, { activeRides: arrayRemove(rideId) }, true),
+				updateFB('/users', userId, { ridesHistory: arrayUnion(rideId) }, true),
+				updateFB('/rides', rideId, { passengers: arrayRemove(userId) }, true)
+			]);
 
 			dispatch(userActions.removeActiveRide(rideId));
+			dispatch(userActions.addRideToHistory(rideId));
 			dispatch(httpActions.requestSuccess());
+
 			history.push(ACTIVE_RIDES.path);
 		} catch (err) {
 			console.log(err);

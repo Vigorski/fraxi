@@ -30,7 +30,10 @@ const userSlice = createSlice({
 					return;
 				}
 			});
-    }
+    },
+    addRideToHistory(state, action) {
+			state.userDetails.ridesHistory.push(action.payload);
+		},
   },
 });
 

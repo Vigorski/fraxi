@@ -4,7 +4,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Layout from '../../../components/shared/Layout';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
-import { bookRide, removeRide } from '../../../store/rides/ridesActions';
+import { bookRide, removePassengerRide } from '../../../store/rides/ridesActions';
 import { PASSENGER } from '../../../utilities/constants/users';
 
 const RideDetails = () => {
@@ -27,7 +27,7 @@ const RideDetails = () => {
 	};
 
 	const handleCancelRide = async () => {
-		await dispatch(removeRide(ridePure.rideId, history));
+		await dispatch(removePassengerRide(ridePure.rideId, userDetails.userId, history));
 	};
 
 	return (

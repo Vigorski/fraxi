@@ -36,6 +36,9 @@ function App() {
 		if (userActiveRides) {
 			dispatch(getUserActiveRides(userActiveRides));
 		}
+		// if (userHistoryRides) {
+		// 	dispatch(getUserActiveRides(userActiveRides));
+		// }
 	}, [dispatch, userActiveRides]);
 
 

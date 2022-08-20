@@ -10,11 +10,11 @@ const ridesSlice = createSlice({
 	name: 'rides',
 	initialState,
 	reducers: {
-		populateActiveRides(state, action) {
-			state.activeRides = action.payload;
-		},
 		addActiveRide(state, action) {
 			state.activeRides.push(action.payload);
+		},
+		populateActiveRides(state, action) {
+			state.activeRides = action.payload;
 		},
 		populateFilteredRides(state, action) {
 			state.filteredRides = action.payload;
@@ -22,12 +22,10 @@ const ridesSlice = createSlice({
 		populateRidesHistory(state, action) {
 			state.ridesHistory = action.payload;
 		},
-		addRideToHistory(state, action) {
-			state.ridesHistory.push(action.payload);
-		},
 		resetRides(state) {
 			state.activeRides = [];
 			state.ridesHistory = [];
+			state.filteredRides = [];
 		}
 	},
 });
