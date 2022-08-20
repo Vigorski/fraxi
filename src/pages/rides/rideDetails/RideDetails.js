@@ -1,12 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 import Layout from '../../../components/shared/Layout';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
-import { bookRide } from '../../../store/rides/ridesActions';
+import { bookRide, removeRide } from '../../../store/rides/ridesActions';
+import { PASSENGER } from '../../../utilities/constants/users';
 
 const RideDetails = () => {
+	const history = useHistory();
 	const location = useLocation();
 	const userDetails = useSelector(state => state.user.userDetails);
 	const dispatch = useDispatch();
@@ -22,6 +24,10 @@ const RideDetails = () => {
 		if (!doesRideExist) {
 			await dispatch(bookRide(userDetails, ridePure));
 		}
+	};
+
+	const handleCancelRide = async () => {
+		await dispatch(removeRide(ridePure.rideId, history));
 	};
 
 	return (
@@ -101,9 +107,17 @@ const RideDetails = () => {
 					</div>
 				</div>
 
-				<button className='btn-primary btn-block mt-xxl' disabled={isRideBooked} onClick={handleBookRide}>
-					Book ride
-				</button>
+				{(userDetails.userType === PASSENGER && !isRideBooked) &&
+					<button className='btn-primary btn-block mt-xxl' disabled={isRideBooked} onClick={handleBookRide}>
+						Book ride
+					</button>
+				}
+
+				{isRideBooked && 
+					<button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide}>
+						Cancel ride
+					</button>
+				}
 			</section>
 		</Layout>
 	);

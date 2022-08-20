@@ -4,7 +4,7 @@ import { userActions } from '../user/userSlice';
 import { ridesActions } from './ridesSlice';
 import { httpActions } from '../http/httpSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
-import { MY_PROFILE } from '../../utilities/constants/routes';
+import { MY_PROFILE, ACTIVE_RIDES } from '../../utilities/constants/routes';
 import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
 import { arrayUnion } from 'firebase/firestore';
 
@@ -62,7 +62,26 @@ export const addNewRide = (driver, values, history) => {
 	};
 };
 
-export const bookRide = (passenger, ride, history) => {
+export const removeRide = (rideId, history) => {
+	return async dispatch => {
+		dispatch(httpActions.requestSend);
+
+		try {
+			// await updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
+			// await updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
+			// await addFBWithId('/rides', transformedValues, transformedValues.rideId);
+
+			dispatch(userActions.removeActiveRide(rideId));
+			dispatch(httpActions.requestSuccess());
+			history.push(ACTIVE_RIDES.path);
+		} catch (err) {
+			console.log(err);
+			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+		}
+	}
+}
+
+export const bookRide = (passenger, ride) => {
 	const transformedPassengerActiveRides = { activeRides: [...passenger.activeRides, ride.rideId] };
 
 	return async dispatch => {
@@ -91,10 +110,8 @@ export const getUserActiveRides = userActiveRides => {
 			const driversResponse = await Promise.all(spreadRidesResponse.map(driver => getFB('/users', { userId: driver.driverId }, ['userId'])));			
 			const updatedRides = addDriverToRide(spreadRidesResponse, driversResponse);
 
-			if (updatedRides.length > 0) {
-				dispatch(ridesActions.populateActiveRides(updatedRides));
-				dispatch(httpActions.requestSuccess());
-			}
+			dispatch(ridesActions.populateActiveRides(updatedRides));
+			dispatch(httpActions.requestSuccess());
 		} catch (err) {
 			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));

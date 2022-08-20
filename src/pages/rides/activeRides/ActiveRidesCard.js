@@ -41,7 +41,7 @@ const ActiveRidesCard = ({ activeRides }) =>
               </div>
               <div className='list-desc__row'>
                 <dt>Driver</dt>
-                <dd className='text-center'>{ride.driverDetails.name}</dd>
+                <dd className='text-center'>{ride.driverDetails?.name}</dd>
               </div>
               <div className='list-desc__row'>
                 <dt>Route</dt>

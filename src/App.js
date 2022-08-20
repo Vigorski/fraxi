@@ -7,6 +7,7 @@ import NotFound from './components/shared/NotFount';
 
 import { userRelogin } from './store/user/userActions';
 import { httpActions } from './store/http/httpSlice';
+import { getUserActiveRides } from './store/rides/ridesActions';
 
 import { authRouteGroup, profileRouteGroup, passengerRouteGroup, driverRouteGroup, ridesRouteGroup } from './utilities/constants/routeGroups';
 import { LOGIN, MY_PROFILE } from './utilities/constants/routes';
@@ -16,6 +17,7 @@ function App() {
 	const dispatch = useDispatch();
 	const { isLoggedIn, userDetails } = useSelector(state => state.user);
 	const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
+	const userActiveRides = userDetails?.activeRides;
 
 	const routesCombined = [
 		...passengerRouteGroup,
@@ -29,6 +31,13 @@ function App() {
 			dispatch(userRelogin(isLoggedInLocalStorage))
 		}
 	}, [dispatch, isLoggedInLocalStorage])
+
+	useEffect(() => {
+		if (userActiveRides) {
+			dispatch(getUserActiveRides(userActiveRides));
+		}
+	}, [dispatch, userActiveRides]);
+
 
 	useEffect(() => { // not sure if this is the correct way to nullify http statuses
 		dispatch(httpActions.requestReset());

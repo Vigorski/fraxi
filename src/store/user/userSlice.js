@@ -22,6 +22,14 @@ const userSlice = createSlice({
     },
     updateUserDetails (state, action) {
       state.userDetails = {...state.userDetails, ...action.payload};
+    },
+    removeActiveRide (state, action) {
+      state.userDetails.activeRides.forEach((rideId, i) => {
+				if(rideId === action.payload) {
+					state.userDetails.activeRides.splice(i, 1);
+					return;
+				}
+			});
     }
   },
 });

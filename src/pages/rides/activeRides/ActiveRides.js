@@ -1,20 +1,10 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Layout from '../../../components/shared/Layout';
 import ActiveRidesCard from './ActiveRidesCard';
-import { getUserActiveRides } from '../../../store/rides/ridesActions';
 
 const ActiveRides = () => {
-	const dispatch = useDispatch();
-	const { userDetails } = useSelector(state => state.user);
 	const { activeRides } = useSelector(state => state.rides);
-
-	useEffect(() => {
-		if (userDetails) {
-			dispatch(getUserActiveRides(userDetails.activeRides));
-		}
-	}, [dispatch, userDetails]);
 
 	return (
 		<Layout>

@@ -16,8 +16,6 @@ const ridesSlice = createSlice({
 		addActiveRide(state, action) {
 			state.activeRides.push(action.payload);
 		},
-		// removeRide (state, action) {
-		// },
 		populateFilteredRides(state, action) {
 			state.filteredRides = action.payload;
 		},
