@@ -18,7 +18,7 @@ const transformUserRegisterValues = (values) => {
 	const { confirmPassword, ...filteredValues } = values;
 	const additionalValues = {
 		userId: uuidv4(),
-		ridesHistory: [],
+		historyRides: [],
 		activeRides: []
 	};
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 
@@ -5,7 +6,8 @@ import Layout from '../../../components/shared/Layout';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
 import { bookRide, removePassengerRide } from '../../../store/rides/ridesActions';
-import { PASSENGER } from '../../../utilities/constants/users';
+import { getUsers } from '../../../utilities/api/api';
+import { PASSENGER, DRIVER } from '../../../utilities/constants/users';
 
 const RideDetails = () => {
 	const history = useHistory();
@@ -18,6 +20,17 @@ const RideDetails = () => {
 	const driverHasPicture = driverDetails.profilePicture.length > 0;
 	const isRideBooked = userDetails.activeRides.indexOf(rideDetails.rideId) >= 0;
 
+	useEffect(() => {
+		async function fetchPassengers () {
+			const passengersFull = await getUsers(rideDetails.passengers);
+			console.log(passengersFull);
+		}
+		if(rideDetails?.passengers) {
+			fetchPassengers();
+		}
+		console.log('after');
+	}, [rideDetails.passengers]);
+
 	const handleBookRide = async () => {
 		const doesRideExist = userDetails.activeRides.indexOf(ridePure.rideId) >= 0;
 
@@ -27,7 +40,7 @@ const RideDetails = () => {
 	};
 
 	const handleCancelRide = async () => {
-		await dispatch(removePassengerRide(ridePure.rideId, userDetails.userId, history));
+		await dispatch(removePassengerRide(rideDetails, userDetails, history));
 	};
 
 	return (
@@ -55,7 +68,7 @@ const RideDetails = () => {
 
 				<div className='card card--dark card--stats' key={rideDetails.rideId}>
 					<div className='card__header'>
-						<div className={`card__section card__section--border-dashed card__decorated ${isRideBooked ? 'card__decorated--active' : ''}`}>
+						<div className={`card__section card__decorated ${isRideBooked ? 'card__decorated--active' : ''}`}>
 							<p>{rideDetails.originAbbr ?? 'N/A'}</p>
 							<div className='card__decorated-dash' />
 							<i className='icon-car-ride icon-md' />
@@ -64,7 +77,7 @@ const RideDetails = () => {
 						</div>
 					</div>
 					<div className='card__body'>
-						<div className='card__section'>
+						<div className='card__section card__section--border-dashed'>
 							<dl className='list-desc__columns'>
 								<div className='list-desc__col text-center'>
 									<dt>Date</dt>
@@ -80,16 +93,20 @@ const RideDetails = () => {
 								</div>
 							</dl>
 						</div>
-						<div className='card__section'>
+						<div className='card__section card__section--border-dashed'>
 							<dl className='list-desc__rows'>
-								<div className='list-desc__row'>
-									<dt>Passengers</dt>
-									<dd className='text-center'>{`${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</dd>
-								</div>
-								<div className='list-desc__row'>
-									<dt>Driver</dt>
-									<dd className='text-center'>{driverDetails.name}</dd>
-								</div>
+								{userDetails.userType === PASSENGER && 
+									<>
+										<div className='list-desc__row'>
+											<dt>Passengers</dt>
+											<dd className='text-center'>{`${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</dd>
+										</div>
+										<div className='list-desc__row'>
+											<dt>Driver</dt>
+											<dd className='text-center'>{driverDetails.name}</dd>
+										</div>
+									</>
+								}
 								<div className='list-desc__row'>
 									<dt>Route</dt>
 									<dd className='text-center'>{rideDetails.rideType}</dd>
@@ -104,6 +121,16 @@ const RideDetails = () => {
 								</div>
 							</dl>
 						</div>
+						{userDetails.userType === DRIVER &&
+							<div className='card__section'>
+								<h4>{`Passengers: ${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</h4>
+								<ul className='list'>
+									{rideDetails.passengers.map(passenger => 
+										<li key={passenger}>{`${rideDetails.passengers}`}</li>
+									)}
+								</ul>
+							</div>
+						}
 					</div>
 				</div>
 

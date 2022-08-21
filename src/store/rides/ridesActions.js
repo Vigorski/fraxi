@@ -5,6 +5,7 @@ import { ridesActions } from './ridesSlice';
 import { httpActions } from '../http/httpSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
 import { MY_PROFILE, ACTIVE_RIDES } from '../../utilities/constants/routes';
+import { DRIVER, PASSENGER } from '../../utilities/constants/users';
 import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
 import { arrayUnion, arrayRemove } from 'firebase/firestore';
 
@@ -48,12 +49,17 @@ export const addNewRide = (driver, values, history) => {
 
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
+
 		try {
-			await addFBWithId('/rides', transformedValues, transformedValues.rideId);
-			await updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true);
+			await Promise.all([
+				addFBWithId('/rides', transformedValues, transformedValues.rideId),
+				updateFB('/users', driver.userId, { activeRides: arrayUnion(transformedValues.rideId) }, true)
+			]);
+
 			dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
 			dispatch(ridesActions.addActiveRide(transformedValues));
 			dispatch(httpActions.requestSuccess());
+
 			history.push(MY_PROFILE.path);
 		} catch (err) {
 			console.log(err);
@@ -62,19 +68,35 @@ export const addNewRide = (driver, values, history) => {
 	};
 };
 
-export const removePassengerRide = (rideId, userId, history) => {
+export const removePassengerRide = (ride, userDetails, history) => {
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
 
 		try {
-			await Promise.all([
-				updateFB('/users', userId, { activeRides: arrayRemove(rideId) }, true),
-				updateFB('/users', userId, { ridesHistory: arrayUnion(rideId) }, true),
-				updateFB('/rides', rideId, { passengers: arrayRemove(userId) }, true)
-			]);
+			const comboRemoveRideCall = [
+				updateFB('/users', userDetails.userId, { activeRides: arrayRemove(ride.rideId) }),
+				updateFB('/users', userDetails.userId, { historyRides: arrayUnion(ride.rideId) })
+			];
 
-			dispatch(userActions.removeActiveRide(rideId));
-			dispatch(userActions.addRideToHistory(rideId));
+			if(userDetails.userType === PASSENGER) {
+				comboRemoveRideCall.push(updateFB('/rides', ride.rideId, { passengers: arrayRemove(userDetails.userId) }));
+			}
+
+			if(userDetails.userType === DRIVER) {
+				comboRemoveRideCall.push(updateFB('/rides', ride.rideId, { status: 'canceled' }));
+
+				ride.passengers.forEach(passengerId => {
+					comboRemoveRideCall.push(updateFB('/users', passengerId, { activeRides: arrayRemove(ride.rideId) }));
+					comboRemoveRideCall.push(updateFB('/users', passengerId, { historyRides: arrayUnion(ride.rideId) }));
+				})
+			}
+
+			await Promise.all(comboRemoveRideCall);
+
+			dispatch(userActions.removeActiveRide(ride.rideId));
+			dispatch(userActions.addHistoryRide(ride.rideId));
+			dispatch(ridesActions.removeActiveRide(ride.rideId));
+			dispatch(ridesActions.addHistoryRide(ride));
 			dispatch(httpActions.requestSuccess());
 
 			history.push(ACTIVE_RIDES.path);
@@ -90,13 +112,16 @@ export const bookRide = (passenger, ride) => {
 
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
+
 		try {
-			await updateFB('/rides', ride.rideId, { passengers: arrayUnion(passenger.userId) }, true);
-			await updateFB('/users', passenger.userId, { activeRides: arrayUnion(ride.rideId) }, true);
+			await Promise.all([
+				updateFB('/rides', ride.rideId, { passengers: arrayUnion(passenger.userId) }, true),
+				updateFB('/users', passenger.userId, { activeRides: arrayUnion(ride.rideId) }, true)
+			])
+
 			dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
 			dispatch(ridesActions.addActiveRide(ride));
 			dispatch(httpActions.requestSuccess());
-			// history.push(BOOKINGS.path);
 		} catch (err) {
 			console.log(err);
 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
@@ -104,17 +129,19 @@ export const bookRide = (passenger, ride) => {
 	};
 };
 
-export const getUserActiveRides = userActiveRides => {
+export const getRidesState = (userRides, ridesMethod) => {
+	// first arg -> ride data
+	// second arg -> which ride method to be used (active or history)
 	return async dispatch => {
 		dispatch(httpActions.requestSend);
-
+		
 		try {
-			const ridesResponse = await Promise.all(userActiveRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId'])));
+			const ridesResponse = await Promise.all(userRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId'])));
 			const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
-			const driversResponse = await Promise.all(spreadRidesResponse.map(driver => getFB('/users', { userId: driver.driverId }, ['userId'])));			
-			const updatedRides = addDriverToRide(spreadRidesResponse, driversResponse);
+			const activeDriversResponse = await Promise.all(spreadRidesResponse.map(driver => getFB('/users', { userId: driver.driverId }, ['userId'])));			
+			const updatedRides = addDriverToRide(spreadRidesResponse, activeDriversResponse);
 
-			dispatch(ridesActions.populateActiveRides(updatedRides));
+			dispatch(ridesActions[ridesMethod](updatedRides));
 			dispatch(httpActions.requestSuccess());
 		} catch (err) {
 			console.log(err);

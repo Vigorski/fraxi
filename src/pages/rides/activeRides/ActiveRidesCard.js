@@ -8,7 +8,7 @@ const ActiveRidesCard = ({ activeRides }) =>
 		return (
       <Link to={{ pathname: RIDE_DETAILS.path, state: { rideDetails: ride } }} className='card card--dark card--stats' key={ride.rideId}>
         <div className='card__header'>
-          <div className='card__section card__section--border-dashed card__decorated card__decorated--active'>
+          <div className='card__section card__decorated card__decorated--active'>
             <p>{ride.originAbbr ?? 'N/A'}</p>
             <div className='card__decorated-dash' />
             <i className='icon-car-ride icon-md' />
@@ -17,7 +17,7 @@ const ActiveRidesCard = ({ activeRides }) =>
           </div>
         </div>
         <div className='card__body'>
-          <div className='card__section card__section--border-dashed'>
+          <div className='card__section'>
             <dl className='list-desc__columns'>
               <div className='list-desc__col text-center'>
                 <dt>Date</dt>
@@ -30,30 +30,6 @@ const ActiveRidesCard = ({ activeRides }) =>
               <div className='list-desc__col text-center'>
                 <dt>Price</dt>
                 <dd>{`$${ride.price}`}</dd>
-              </div>
-            </dl>
-          </div>
-          <div className='card__section'>
-            <dl className='list-desc__rows'>
-              <div className='list-desc__row'>
-                <dt>Passengers</dt>
-                <dd className='text-center'>{`${ride.passengers.length} / ${ride.maxPassengers}`}</dd>
-              </div>
-              <div className='list-desc__row'>
-                <dt>Driver</dt>
-                <dd className='text-center'>{ride.driverDetails?.name}</dd>
-              </div>
-              <div className='list-desc__row'>
-                <dt>Route</dt>
-                <dd className='text-center'>{ride.rideType}</dd>
-              </div>
-              <div className='list-desc__row'>
-                <dt>Smoking</dt>
-                <dd className='text-center'>{`${ride.smoking ? 'Yes' : 'No'}`}</dd>
-              </div>
-              <div className='list-desc__row'>
-                <dt># of stops</dt>
-                <dd className='text-center'>{ride.passengers.length}</dd>
               </div>
             </dl>
           </div>

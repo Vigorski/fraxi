@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	activeRides: [],
-	ridesHistory: [],
-	filteredRides: []
+	historyRides: [],
+	filteredRides: [],
 };
 
 const ridesSlice = createSlice({
@@ -13,20 +13,31 @@ const ridesSlice = createSlice({
 		addActiveRide(state, action) {
 			state.activeRides.push(action.payload);
 		},
+		removeActiveRide(state, action) {
+			state.activeRides.forEach((ride, i) => {
+				if (ride.rideId === action.payload) {
+					state.activeRides.splice(i, 1);
+					return;
+				}
+			});
+		},
 		populateActiveRides(state, action) {
 			state.activeRides = action.payload;
 		},
 		populateFilteredRides(state, action) {
 			state.filteredRides = action.payload;
 		},
-		populateRidesHistory(state, action) {
-			state.ridesHistory = action.payload;
+		addHistoryRide(state, action) {
+			state.historyRides.push(action.payload);
+		},
+		populateHistoryRides(state, action) {
+			state.historyRides = action.payload;
 		},
 		resetRides(state) {
 			state.activeRides = [];
-			state.ridesHistory = [];
+			state.historyRides = [];
 			state.filteredRides = [];
-		}
+		},
 	},
 });
 
