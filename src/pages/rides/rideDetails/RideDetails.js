@@ -5,8 +5,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Layout from '../../../components/shared/Layout';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
-import { bookRide, removePassengerRide } from '../../../store/rides/ridesActions';
-import { getUsers } from '../../../utilities/api/api';
+import { bookRide, removePassengerRide, addPassengersDetailsToActiveRides } from '../../../store/rides/ridesActions';
 import { PASSENGER, DRIVER } from '../../../utilities/constants/users';
 
 const RideDetails = () => {
@@ -19,17 +18,14 @@ const RideDetails = () => {
 	const { driverDetails, ...ridePure } = rideDetails;
 	const driverHasPicture = driverDetails.profilePicture.length > 0;
 	const isRideBooked = userDetails.activeRides.indexOf(rideDetails.rideId) >= 0;
-
+	const isUserPassenger = userDetails.userType === PASSENGER;
+	const isUserDriver = userDetails.userType === DRIVER;
+console.log(rideDetails)
 	useEffect(() => {
-		async function fetchPassengers () {
-			const passengersFull = await getUsers(rideDetails.passengers);
-			console.log(passengersFull);
-		}
 		if(rideDetails?.passengers) {
-			fetchPassengers();
+			dispatch(addPassengersDetailsToActiveRides(rideDetails.passengers));
 		}
-		console.log('after');
-	}, [rideDetails.passengers]);
+	}, [dispatch, rideDetails.passengers]);
 
 	const handleBookRide = async () => {
 		const doesRideExist = userDetails.activeRides.indexOf(ridePure.rideId) >= 0;
@@ -45,7 +41,7 @@ const RideDetails = () => {
 
 	return (
 		<Layout>
-			<section className='ride-details' data-username={`${userDetails?.name} ${userDetails?.surname}`}>
+			<section className='ride-details' data-username={`${driverDetails?.name} ${driverDetails?.surname}`}>
 				<div className='ride-details__driver'>
 					<div className='row'>
 						<div className='col-6'>
@@ -93,9 +89,9 @@ const RideDetails = () => {
 								</div>
 							</dl>
 						</div>
-						<div className='card__section card__section--border-dashed'>
+						<div className={`card__section ${isUserDriver ? 'card__section--border-dashed' : ''}`}>
 							<dl className='list-desc__rows'>
-								{userDetails.userType === PASSENGER && 
+								{isUserPassenger && 
 									<>
 										<div className='list-desc__row'>
 											<dt>Passengers</dt>
@@ -121,20 +117,20 @@ const RideDetails = () => {
 								</div>
 							</dl>
 						</div>
-						{userDetails.userType === DRIVER &&
+						{isUserDriver &&
 							<div className='card__section'>
 								<h4>{`Passengers: ${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</h4>
-								<ul className='list'>
-									{rideDetails.passengers.map(passenger => 
-										<li key={passenger}>{`${rideDetails.passengers}`}</li>
+								{/* <ul className='list'>
+									{passengersDetails.map(passenger => 
+										<li key={passenger.userId}>{`${passenger.name} ${passenger.surname}`}</li>
 									)}
-								</ul>
+								</ul> */}
 							</div>
 						}
 					</div>
 				</div>
 
-				{(userDetails.userType === PASSENGER && !isRideBooked) &&
+				{(isUserPassenger && !isRideBooked) &&
 					<button className='btn-primary btn-block mt-xxl' disabled={isRideBooked} onClick={handleBookRide}>
 						Book ride
 					</button>

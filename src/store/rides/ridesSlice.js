@@ -21,6 +21,9 @@ const ridesSlice = createSlice({
 				}
 			});
 		},
+		updateActiveRides(state, action) {
+			// state.activeRides = [...state.activeRides, action.payload]
+		},
 		populateActiveRides(state, action) {
 			state.activeRides = action.payload;
 		},

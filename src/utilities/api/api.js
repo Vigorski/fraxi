@@ -1,5 +1,3 @@
-import { getFB } from './firebase-api';
-
 export const makeRequest = async requestDetails => {
 	const response = await fetch(requestDetails.url, {
 		method: requestDetails.method || 'GET',
@@ -15,24 +13,3 @@ export const makeRequest = async requestDetails => {
 
   return data;
 };
-
-export const getUsers = async users => {
-	// dispatch(httpActions.requestSend);
-
-	try {
-		const comboUsersCall = users.map(userId => getFB(`/users`, { userId }, ['userId']));
-
-		const usersFull = await Promise.all(comboUsersCall);
-		const usersSpread = usersFull.map(user => user[0]);
-
-		return usersSpread;
-		// dispatch(httpActions.requestSuccess());
-	} catch (err) {
-		console.log(err);
-		// dispatch(
-		// 	httpActions.requestError({
-		// 		errorMessage: err.message || 'Something went wrong!',
-		// 	})
-		// );
-	}
-}
