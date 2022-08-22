@@ -1,37 +1,44 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Layout from '../../../components/shared/Layout';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
-import { bookRide, removePassengerRide, addPassengersDetailsToActiveRides } from '../../../store/rides/ridesActions';
+import { bookRide, removePassengerRide } from '../../../store/rides/ridesActions';
+import { getUsers } from '../../../utilities/api/api';
 import { PASSENGER, DRIVER } from '../../../utilities/constants/users';
 
 const RideDetails = () => {
-	const history = useHistory();
-	const location = useLocation();
-	const userDetails = useSelector(state => state.user.userDetails);
 	const dispatch = useDispatch();
+	const history = useHistory();
+	const params = useParams();
+	const userDetails = useSelector(state => state.user.userDetails);
+	const activeRides = useSelector(state => state.rides.activeRides);
+	const [allPassengersDetails, setAllPassengersDetails] = useState(null);
 
-	const { rideDetails } = location.state;
-	const { driverDetails, ...ridePure } = rideDetails;
-	const driverHasPicture = driverDetails.profilePicture.length > 0;
-	const isRideBooked = userDetails.activeRides.indexOf(rideDetails.rideId) >= 0;
+	const rideDetails = activeRides.find(ride => ride.rideId === params.rideId);
+	const driverDetails = rideDetails?.driverDetails;
+	const driverHasPicture = driverDetails?.profilePicture.length > 0;
+	const isRideBooked = userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
 	const isUserPassenger = userDetails.userType === PASSENGER;
 	const isUserDriver = userDetails.userType === DRIVER;
-console.log(rideDetails)
+
 	useEffect(() => {
-		if(rideDetails?.passengers) {
-			dispatch(addPassengersDetailsToActiveRides(rideDetails.passengers));
+		async function fetchPassengers () {
+			const passengersFull = await getUsers(rideDetails.passengers);
+			setAllPassengersDetails(passengersFull)
 		}
-	}, [dispatch, rideDetails.passengers]);
+		if(rideDetails?.passengers) {
+			fetchPassengers();
+		}
+	}, [rideDetails?.passengers]);
 
 	const handleBookRide = async () => {
-		const doesRideExist = userDetails.activeRides.indexOf(ridePure.rideId) >= 0;
+		const doesRideExist = userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
 
 		if (!doesRideExist) {
-			await dispatch(bookRide(userDetails, ridePure));
+			await dispatch(bookRide(userDetails, rideDetails));
 		}
 	};
 
@@ -39,6 +46,14 @@ console.log(rideDetails)
 		await dispatch(removePassengerRide(rideDetails, userDetails, history));
 	};
 
+	if (activeRides.length === 0) {
+		return (
+			<Layout>
+				<h3>Page loading...</h3>
+			</Layout>
+		)
+	}
+	
 	return (
 		<Layout>
 			<section className='ride-details' data-username={`${driverDetails?.name} ${driverDetails?.surname}`}>
@@ -120,11 +135,11 @@ console.log(rideDetails)
 						{isUserDriver &&
 							<div className='card__section'>
 								<h4>{`Passengers: ${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</h4>
-								{/* <ul className='list'>
-									{passengersDetails.map(passenger => 
+								<ul className='list'>
+									{!!allPassengersDetails && allPassengersDetails.map(passenger => 
 										<li key={passenger.userId}>{`${passenger.name} ${passenger.surname}`}</li>
 									)}
-								</ul> */}
+								</ul>
 							</div>
 						}
 					</div>

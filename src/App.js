@@ -44,7 +44,7 @@ function App() {
 	useEffect(() => { // not sure if this is the correct way to nullify http statuses
 		dispatch(httpActions.requestReset());
   }, [location, dispatch]);
-
+	
 	return (
 		<Switch>
 			<Route path="/" exact>

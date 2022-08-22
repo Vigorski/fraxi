@@ -48,7 +48,7 @@ export const addNewRide = (driver, values, history) => {
 	const transformedDriverActiveRides = { activeRides: [...driver.activeRides, transformedValues.rideId] };
 
 	return async dispatch => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			await Promise.all([
@@ -70,7 +70,7 @@ export const addNewRide = (driver, values, history) => {
 
 export const removePassengerRide = (ride, userDetails, history) => {
 	return async dispatch => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			const comboRemoveRideCall = [
@@ -111,7 +111,7 @@ export const bookRide = (passenger, ride) => {
 	const transformedPassengerActiveRides = { activeRides: [...passenger.activeRides, ride.rideId] };
 
 	return async dispatch => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			await Promise.all([
@@ -133,7 +133,7 @@ export const getRidesState = (userRides, ridesMethod) => {
 	// first arg -> ride data
 	// second arg -> which ride method to be used (active or history)
 	return async dispatch => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 		
 		try {
 			const ridesResponse = await Promise.all(userRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId'])));
@@ -152,7 +152,7 @@ export const getRidesState = (userRides, ridesMethod) => {
 
 export const getFilteredRides = searchPreferences => {
 	return async dispatch => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			const uniqueDriverIds = [];
@@ -177,19 +177,28 @@ export const getFilteredRides = searchPreferences => {
 	};
 };
 
-export const addPassengersDetailsToActiveRides = users => {
-	return async dispatch => {
-		dispatch(httpActions.requestSend);
+// export const addPassengersDetailsToActiveRide = ride => {
+// 	return async dispatch => {
+// 		dispatch(httpActions.requestSend());
 
-		try {
-			const comboUsersCall = users.map(userId => getFB(`/users`, { userId }, ['userId']));
-			const usersDetails = await Promise.all(comboUsersCall);
-			const usersSpread = usersDetails.map(user => user[0]);
-			
-			dispatch(httpActions.requestSuccess());
-		} catch (err) {
-			console.log(err);
-			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
-		}
-	}
-}
+// 		try {
+// 			const comboPassengersRequest = ride.passengers.map(passengerId => getFB(`/users`, { userId: passengerId }, ['userId']));
+// 			const passengersResponse = await Promise.all(comboPassengersRequest);
+
+// 			const passengersDetails = passengersResponse.map(user => {
+// 				const { password, ...transformedValues } = user[0];
+// 				return transformedValues;
+// 			});
+
+// 			const updatedActiveRide = {...ride, passengersDetails}
+
+// 			console.log(updatedActiveRide);
+
+// 			dispatch(ridesActions.updateActiveRides(updatedActiveRide));			
+// 			dispatch(httpActions.requestSuccess());
+// 		} catch (err) {
+// 			console.log(err);
+// 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+// 		}
+// 	}
+// }

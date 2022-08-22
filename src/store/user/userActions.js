@@ -44,7 +44,7 @@ export const userRegister = (values, history) => {
 	const transformedValues = transformUserRegisterValues(values);
 
 	return async (dispatch) => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			await addFBWithId('/users', transformedValues, transformedValues.userId);
@@ -65,7 +65,7 @@ export const userUpdate = (userId, values, history) => {
 	const transformedValues = transformUserUpdateValues(values);
 
 	return async (dispatch) => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			await updateFB('/users', userId, transformedValues);
@@ -85,7 +85,7 @@ export const userUpdate = (userId, values, history) => {
 
 export const userLogin = (credentials, history) => {
 	return async (dispatch) => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 		dispatch(errorActions.setGlobalFormError({ errorMessage: '' }));
 
 		try {
@@ -130,7 +130,7 @@ export const userLogin = (credentials, history) => {
 
 export const userRelogin = (userId) => {
 	return async (dispatch) => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			const responseData = await getFB(`/users`, { userId }, ['userId']);
@@ -175,7 +175,7 @@ export const userLogout = (history) => {
 
 export const updateRidePreferences = (userId, values, history) => {
 	return async (dispatch) => {
-		dispatch(httpActions.requestSend);
+		dispatch(httpActions.requestSend());
 
 		try {
 			await updateFB('/users', userId, { ridePreferences: values });

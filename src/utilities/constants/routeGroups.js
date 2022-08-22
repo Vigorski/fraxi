@@ -30,5 +30,5 @@ export const driverRouteGroup = [{ path: `${MY_PROFILE.path}${CREATE_RIDE.path}`
 
 export const ridesRouteGroup = [
 	{ path: `${ACTIVE_RIDES.path}`, component: ActiveRides, roles: [DRIVER, PASSENGER], pathDetails: ACTIVE_RIDES },
-	{ path: RIDE_DETAILS.path, component: RideDetails, roles: [PASSENGER, DRIVER], pathDetails: RIDE_DETAILS },
+	{ path: `${RIDE_DETAILS.path}/:rideId`, component: RideDetails, roles: [PASSENGER, DRIVER], pathDetails: RIDE_DETAILS },
 ];
