@@ -17,8 +17,6 @@ export const makeRequest = async requestDetails => {
 };
 
 export const getUsers = async users => {
-	// dispatch(httpActions.requestSend);
-
 	try {
 		const comboUsersCall = users.map(userId => getFB(`/users`, { userId }, ['userId']));
 
@@ -26,13 +24,7 @@ export const getUsers = async users => {
 		const usersSpread = usersFull.map(user => user[0]);
 
 		return usersSpread;
-		// dispatch(httpActions.requestSuccess());
 	} catch (err) {
 		console.log(err);
-		// dispatch(
-		// 	httpActions.requestError({
-		// 		errorMessage: err.message || 'Something went wrong!',
-		// 	})
-		// );
 	}
 } 

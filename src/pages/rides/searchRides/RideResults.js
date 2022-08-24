@@ -11,7 +11,7 @@ const RideResults = ({ filteredRides }) => {
 				const driverHasPicture = ride.driverDetails.profilePicture.length > 0;
 
 				return (
-					<Link to={{ pathname: RIDE_DETAILS.path, state: { rideDetails: ride } }} className='card card__ride card--gray' key={ride.rideId}>
+					<Link to={{ pathname: `${RIDE_DETAILS.path}/${ride.rideId}`, state: { rideDetails: ride } }} className='card card__ride card--gray' key={ride.rideId}>
 						<div className='card__body'>
 							<div className='card__section card__ride-info card__section--clip card__section--border-dashed'>
 								<div className='row'>

@@ -176,29 +176,3 @@ export const getFilteredRides = searchPreferences => {
 		}
 	};
 };
-
-// export const addPassengersDetailsToActiveRide = ride => {
-// 	return async dispatch => {
-// 		dispatch(httpActions.requestSend());
-
-// 		try {
-// 			const comboPassengersRequest = ride.passengers.map(passengerId => getFB(`/users`, { userId: passengerId }, ['userId']));
-// 			const passengersResponse = await Promise.all(comboPassengersRequest);
-
-// 			const passengersDetails = passengersResponse.map(user => {
-// 				const { password, ...transformedValues } = user[0];
-// 				return transformedValues;
-// 			});
-
-// 			const updatedActiveRide = {...ride, passengersDetails}
-
-// 			console.log(updatedActiveRide);
-
-// 			dispatch(ridesActions.updateActiveRides(updatedActiveRide));			
-// 			dispatch(httpActions.requestSuccess());
-// 		} catch (err) {
-// 			console.log(err);
-// 			dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
-// 		}
-// 	}
-// }

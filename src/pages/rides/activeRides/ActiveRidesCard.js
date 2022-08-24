@@ -6,7 +6,7 @@ import { getTime, getShortDate } from '../../../utilities/date-time';
 const ActiveRidesCard = ({ activeRides }) =>
 	activeRides.map(ride => {
 		return (
-      <Link to={{ pathname: `${RIDE_DETAILS.path}/${ride.rideId}` }} className='card card--dark card--stats' key={ride.rideId}>
+      <Link to={{ pathname: `${RIDE_DETAILS.path}/${ride.rideId}`, state: { rideDetails: ride } }} className='card card--dark card--stats' key={ride.rideId}>
         <div className='card__header'>
           <div className='card__section card__decorated card__decorated--active'>
             <p>{ride.originAbbr ?? 'N/A'}</p>
