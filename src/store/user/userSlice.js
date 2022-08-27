@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { userUpdate } from './userAsyncActions';
 
 const initialState = {
 	isLoggedIn: false,
@@ -20,9 +21,9 @@ const userSlice = createSlice({
 		updateRidePreferences(state, action) {
 			state.userDetails.ridePreferences = action.payload;
 		},
-		updateUserDetails(state, action) {
-			state.userDetails = { ...state.userDetails, ...action.payload };
-		},
+		// updateUserDetails(state, action) {
+		// 	state.userDetails = { ...state.userDetails, ...action.payload };
+		// },
 		removeActiveRide(state, action) {
 			state.userDetails.activeRides.forEach((rideId, i) => {
 				if (rideId === action.payload) {
@@ -35,6 +36,11 @@ const userSlice = createSlice({
 			state.userDetails.historyRides.push(action.payload);
 		},
 	},
+	extraReducers: (builder) => {
+    builder.addCase(userUpdate.fulfilled, (state, action) => {
+      state.userDetails = { ...state.userDetails, ...action.payload };
+    })
+  },
 });
 
 export const userActions = userSlice.actions;

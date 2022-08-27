@@ -2,7 +2,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { userRegister, userUpdate } from '../../store/user/userActions';
+import { userUpdate } from '../../store/user/userAsyncActions';
+import { userRegister } from '../../store/user/userActions';
 
 const RegisterEditUser = ({ editUserProfile }) => {
 	const history = useHistory();
@@ -72,7 +73,10 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			validate={handleValidation}
 			onSubmit={async (values, { setSubmitting }) => {
 				if (editUserProfile) {
-					await dispatch(userUpdate(userDetails.userId, values, history));
+					await dispatch(userUpdate({userId: userDetails.userId, values, history}))
+						.then((res) => {
+							setSubmitting(false);
+						});
 				} else {
 					await dispatch(userRegister(values, history));
 				}

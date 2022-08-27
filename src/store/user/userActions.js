@@ -29,17 +29,6 @@ const transformUserRegisterValues = (values) => {
 	return { ...filteredValues, ...additionalValues };
 };
 
-const transformUserUpdateValues = (values) => {
-	const { email, userType, ...filteredValues } = values;
-
-	if (values.password.length === 0) {
-		delete filteredValues.password;
-		delete filteredValues.confirmPassword;
-	}
-
-	return { ...filteredValues };
-};
-
 export const userRegister = (values, history) => {
 	const transformedValues = transformUserRegisterValues(values);
 
@@ -50,28 +39,6 @@ export const userRegister = (values, history) => {
 			await addFBWithId('/users', transformedValues, transformedValues.userId);
 			dispatch(httpActions.requestSuccess());
 			history.push(LOGIN.path);
-		} catch (err) {
-			console.log(err);
-			dispatch(
-				httpActions.requestError({
-					errorMessage: err.message || 'Something went wrong!',
-				})
-			);
-		}
-	};
-};
-
-export const userUpdate = (userId, values, history) => {
-	const transformedValues = transformUserUpdateValues(values);
-
-	return async (dispatch) => {
-		dispatch(httpActions.requestSend());
-
-		try {
-			await updateFB('/users', userId, transformedValues);
-			dispatch(userActions.updateUserDetails(transformedValues));
-			dispatch(httpActions.requestSuccess());
-			history.push(MY_PROFILE.path);
 		} catch (err) {
 			console.log(err);
 			dispatch(
