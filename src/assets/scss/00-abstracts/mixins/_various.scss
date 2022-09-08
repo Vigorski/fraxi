@@ -94,6 +94,8 @@
     color: rgba($color-white, .03);
     font-family: $font-lato;
     font-weight: 700;
+    max-width: calc(100% - calc-rem(50px));
+    overflow: hidden;
     z-index: -1;
   }
 }

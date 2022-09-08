@@ -2,8 +2,9 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { userUpdate } from '../../store/user/userAsyncActions';
-import { userRegister } from '../../store/user/userActions';
+import FormIkUserImage from '../forms/FormIkUserImage';
+import { userUpdate, userRegister } from '../../store/user/userAsyncActions';
+import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
 
 const RegisterEditUser = ({ editUserProfile }) => {
 	const history = useHistory();
@@ -12,6 +13,14 @@ const RegisterEditUser = ({ editUserProfile }) => {
 
 	const handleValidation = values => {
 		const errors = {};
+
+		if (values.profilePicture !== undefined && values.profilePicture !== '') {
+			const validFileType = values.profilePicture.type === 'image/jpeg' || values.profilePicture.type === 'image/png';
+
+			if( !validFileType ) {
+				errors.profilePicture = 'Not a supported image type';
+			}
+		}
 
 		if (!values.name) {
 			errors.name = 'Required';
@@ -25,7 +34,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			errors.surname = 'Surname must be at least 6 characters long';
 		}
 
-		if(!editUserProfile) {
+		if (!editUserProfile) {
 			if (!values.email) {
 				errors.email = 'Required';
 			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
@@ -33,7 +42,6 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			}
 		}
 
-		
 		if (!values.password && !editUserProfile) {
 			errors.password = ['Required'];
 		} else if (values.password.length > 0) {
@@ -49,18 +57,18 @@ const RegisterEditUser = ({ editUserProfile }) => {
 		} else if (values.password !== values.confirmPassword) {
 			errors.confirmPassword = 'Passwords must match';
 		}
-		
+
 		if (!values.userType && !editUserProfile) {
 			errors.userType = 'Required';
 		}
-		
+
 		return errors;
 	};
 
 	return (
 		<Formik
 			initialValues={{
-				profilePicture: !!userDetails ? userDetails.profilePicture : '',
+				profilePicture: '',
 				name: !!userDetails ? userDetails.name : '',
 				surname: !!userDetails ? userDetails.surname : '',
 				email: '',
@@ -69,25 +77,24 @@ const RegisterEditUser = ({ editUserProfile }) => {
 				phone: !!userDetails ? userDetails.phone : '',
 				userType: null,
 			}}
-      enableReinitialize={true}
+			enableReinitialize={true}
 			validate={handleValidation}
 			onSubmit={async (values, { setSubmitting }) => {
 				if (editUserProfile) {
-					await dispatch(userUpdate({userId: userDetails.userId, values, history}))
-						.then((res) => {
-							setSubmitting(false);
-						});
+					await dispatch(userUpdate({ userId: userDetails.userId, values })).unwrap();
+					setSubmitting(false);
+					history.push(MY_PROFILE.path);
 				} else {
-					await dispatch(userRegister(values, history));
+					await dispatch(userRegister({ values })).unwrap();
+					setSubmitting(false);
+					history.push(LOGIN.path);
 				}
-
-        setSubmitting(false);
 			}}
 		>
 			{({ isSubmitting }) => (
 				<Form>
 					<div className='form-field'>
-						<Field type='file' name='profilePicture' />
+						<Field name='profilePicture' id='profilePicture' component={FormIkUserImage} profilePicture={userDetails?.profilePicture} />
 						<ErrorMessage name='profilePicture' component='span' className='input-message-error' />
 					</div>
 					<div className='form-field'>

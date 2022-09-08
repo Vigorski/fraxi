@@ -5,7 +5,7 @@ const EditMyProfile = () => {
 	return (
 		<Layout>
 			<section className='profile profile--edit'>
-				<h1>Edit profile</h1>
+				<h3>Edit profile</h3>
 				<RegisterEditUser editUserProfile={true} />
 			</section>
 		</Layout>

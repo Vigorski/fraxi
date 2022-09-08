@@ -12,12 +12,35 @@
 	}
 
 	&__img {
+		position: relative;
+		display: block;
 		margin: 0 auto;
 		width: calc-rem(130px);
 		height: calc-rem(130px);
 		background-color: $color-gray-2;
 		border-radius: $border-radius-md;
 		box-shadow: calc-rem(-9px) calc-rem(9px) calc-rem(14px) rgb(36, 40, 55);
+		overflow: hidden;
+		cursor: pointer;
+	}
+
+	&__file {
+		&-input {
+			display: none;
+		}
+
+		&-change {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			text-align: center;
+			padding: calc-rem(10px) 0;
+			background-color: rgba($color-light-gray-2, 40%);
+			font-weight: 700;
+			font-size: calc-rem(12px);
+			line-height: 1;
+			color: $color-white;
+		}
 	}
 
 	&__svg-wrapper {

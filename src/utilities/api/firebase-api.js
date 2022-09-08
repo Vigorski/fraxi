@@ -41,18 +41,21 @@ export const getFB = async (url, val, queryParamValues) => {
 // push
 export const addFB = async (url, values) => {
 	const colRef = collection(dbFB, url);
-	await addDoc(colRef, values);
+	const docResponse = await addDoc(colRef, values);
+	return docResponse;
 };
 
 export const addFBWithId = async (url, values, id) => {
 	const docRef = doc(dbFB, url, id);
-	await setDoc(docRef, values);
+	const docResponse = await setDoc(docRef, values, { merge: true });
+	return docResponse;
 };
 
 // update
-export const updateFB = async (url, id, fields) => {
+export const updateFB = async (url, id, values) => {
 	const docRef = doc(dbFB, url, id);
-	await updateDoc(docRef, fields);
+	const docResponse = await updateDoc(docRef, values);
+	return docResponse;
 };
 
 ///////////////////////////////////////////////////////////////

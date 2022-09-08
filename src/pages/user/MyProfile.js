@@ -1,4 +1,3 @@
-
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -21,15 +20,18 @@ const MyProfile = ({history}) => {
   }
 
 	return (
-		<Layout>
+    <Layout>
 			<section className="profile" data-username={`${userDetails?.name} ${userDetails?.surname}`}>
         <div className="profile__edit">
           <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`}><IconEdit /></Link>
         </div>
         <div className="profile__img">
-          <div className="profile__svg-wrapper">
-            <IconUserPlaceholder />
-          </div>
+          {userDetails?.profilePicture !== '' ?
+            <img src={userDetails?.profilePicture} alt="user avatar" /> :
+            <div className="profile__svg-wrapper">
+              <IconUserPlaceholder />
+            </div>
+          }
         </div>
         <h4 className="profile__name">{userDetails?.name} {userDetails?.surname}</h4>
 

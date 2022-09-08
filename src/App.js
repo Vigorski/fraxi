@@ -5,7 +5,7 @@ import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { AuthRoute, PrivateRoute } from './components/shared/Routes';
 import NotFound from './components/shared/NotFount';
 
-import { userRelogin } from './store/user/userActions';
+import { userRelogin } from './store/user/userAsyncActions';
 import { httpActions } from './store/http/httpSlice';
 import { getRidesState } from './store/rides/ridesActions';
 
@@ -28,8 +28,15 @@ function App() {
 	];
 	
 	useEffect(() => {
+		const relogin = async () => {
+			await dispatch(userRelogin(isLoggedInLocalStorage))
+				.then(res => {
+					// setSubmitting(false);
+				});
+		}
+
 		if(isLoggedInLocalStorage !== null) {
-			dispatch(userRelogin(isLoggedInLocalStorage))
+			relogin();
 		}
 	}, [dispatch, isLoggedInLocalStorage])
 

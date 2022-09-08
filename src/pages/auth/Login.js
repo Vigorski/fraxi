@@ -2,9 +2,9 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { userLogin } from '../../store/user/userActions'
+import { userLogin } from '../../store/user/userAsyncActions'
 import Layout from '../../components/shared/Layout';
-
+import { MY_PROFILE } from '../../utilities/constants/routes';
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -39,8 +39,11 @@ const Login = () => {
 				}}
 				validate={handleValidation}
 				onSubmit={async (values, { setSubmitting }) => {
-					await dispatch(userLogin(values, history));
-					setSubmitting(false);
+					await dispatch(userLogin({values}))
+						.then(res => {
+							setSubmitting(false);
+							history.push(MY_PROFILE.path);
+						});
 				}}
 			>
 				{({ isSubmitting }) => (

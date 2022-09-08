@@ -5,7 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FormIKSelect from '../../../components/forms/FormIKSelect';
 import { MKD_CITIES } from '../../../utilities/constants/cities';
 import Layout from '../../../components/shared/Layout';
-import { updateRidePreferences } from '../../../store/user/userActions';
+import { updateRidePreferences } from '../../../store/user/userAsyncActions';
+import { MY_PROFILE } from '../../../utilities/constants/routes';
 
 const EditMyPreferences = () => {
 	const history = useHistory();
@@ -44,8 +45,11 @@ const EditMyPreferences = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(updateRidePreferences(userDetails.userId, values, history));
-						setSubmitting(false);
+						await dispatch(updateRidePreferences({userId: userDetails.userId, values}))
+							.then(res => {
+								history.push(MY_PROFILE.path);
+								setSubmitting(false);
+							});
 					}}
 				>
 					{({ isSubmitting }) => (
