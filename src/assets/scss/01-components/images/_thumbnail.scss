@@ -4,10 +4,12 @@
     box-shadow: calc-rem(3px) calc-rem(5px) calc-rem(9px) rgba($color-black, 0.25);
     padding-bottom: 85%;
     position: relative;
+    overflow: hidden;
 
     img, 
     .svg-inline {
         @include absolute-fullsize;
+        height: 100%;
     }
     
     .svg-inline {

@@ -14,6 +14,12 @@ const userSlice = createSlice({
 			state.userDetails = null;
 			state.isLoggedIn = false;
 		},
+		updateUserDetails(state, action) {
+			state.userDetails = { ...state.userDetails, ...action.payload };
+		},
+		addHistoryRide(state, action) {
+			state.userDetails.historyRides.push(action.payload);
+		},
 		removeActiveRide(state, action) {
 			state.userDetails.activeRides.forEach((rideId, i) => {
 				if (rideId === action.payload) {
@@ -21,9 +27,6 @@ const userSlice = createSlice({
 					return;
 				}
 			});
-		},
-		addHistoryRide(state, action) {
-			state.userDetails.historyRides.push(action.payload);
 		},
 	},
 	extraReducers: (builder) => {

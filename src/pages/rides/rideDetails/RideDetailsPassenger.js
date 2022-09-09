@@ -1,27 +1,30 @@
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { bookRide, removePassengerRide } from '../../../store/rides/ridesActions';
+import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
+import { bookRide } from '../../../store/rides/ridesAsyncActions';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
+import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
 
 const RideDetailsPassenger = ({userDetails, rideDetails}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const driverDetails = rideDetails?.driverDetails;
-  const driverHasPicture = driverDetails?.profilePicture.length > 0;
+  const driverHasPicture = driverDetails?.profilePicture !== '';
   const isRideBooked = userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
 
   const handleBookRide = async () => {
-		const doesRideExist = userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
+		const rideExists = userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
 
-		if (!doesRideExist) {
-			await dispatch(bookRide(userDetails, rideDetails));
+		if (!rideExists) {
+			await dispatch(bookRide({ passenger: userDetails, rideDetails })).unwrap();
 		}
 	};
 
 	const handleCancelRide = async () => {
-		await dispatch(removePassengerRide(rideDetails, userDetails, history));
+		await dispatch(removePassengerRide({ rideDetails, userDetails })).unwrap();
+    history.push(ACTIVE_RIDES.path);
 	};
 
   return (

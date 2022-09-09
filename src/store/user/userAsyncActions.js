@@ -39,12 +39,24 @@ const transformUserLoginValues = values => {
 	return transformedValues;
 };
 
-// TODO: finish image for register
+const uploadUserImage = async (profilePicture, userId) => {
+	const url = `images/users/userAvatar__${userId}`;
+	await uploadImage(url, profilePicture, { contentType: profilePicture.type });
+	const imageRealLocation = await getFileUrl(url);
+	return imageRealLocation;
+};
+
+// TODO: check if mail exists
 export const userRegister = createAsyncThunk('user/userRegister', async ({ values }, { dispatch }) => {
 	dispatch(httpActions.requestSend());
-	const transformedValues = transformUserRegisterValues(values);
+	const { profilePicture, ...transformedValues } = transformUserRegisterValues(values);
 
 	try {
+		const profilePictureExists = profilePicture !== undefined && profilePicture !== '';
+		if (profilePictureExists) {
+			transformedValues.profilePicture = await uploadUserImage(profilePicture, transformedValues.userId);
+		}
+
 		const registerResponse = await addFBWithId('/users', transformedValues, transformedValues.userId);
 		dispatch(httpActions.requestSuccess());
 
@@ -62,22 +74,15 @@ export const userRegister = createAsyncThunk('user/userRegister', async ({ value
 export const userUpdate = createAsyncThunk('user/userUpdate', async ({ userId, values }, { dispatch }) => {
 	dispatch(httpActions.requestSend());
 	const { profilePicture, ...transformedValues } = transformUserUpdateValues(values);
-	const profilePictureExists = profilePicture !== undefined && profilePicture !== '';
 
 	try {
-		if ( profilePictureExists ) {
-			await uploadImage(
-				`images/users/userAvatar__${userId}`,
-				profilePicture,
-				{contentType: profilePicture.type}
-			);
+		const profilePictureExists = profilePicture !== undefined && profilePicture !== '';
 
-			const imageRealLocation = await getFileUrl(`images/users/userAvatar__${userId}`)
-			transformedValues.profilePicture = imageRealLocation;
+		if (profilePictureExists) {
+			transformedValues.profilePicture = await uploadUserImage(profilePicture, userId);
 		}
 
 		await updateFB('/users', userId, transformedValues);
-
 		dispatch(httpActions.requestSuccess());
 
 		return transformedValues;

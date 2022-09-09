@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { removePassengerRide } from '../../../store/rides/ridesActions';
+import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
 import { getUsers } from '../../../utilities/api/api';
 import { getTime, getShortDate } from '../../../utilities/date-time';
+import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
 
 const RideDetailsDriver = ({userDetails, rideDetails}) => {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ const RideDetailsDriver = ({userDetails, rideDetails}) => {
 	}, [rideDetails.passengers]);
 
   const handleCancelRide = async () => {
-		await dispatch(removePassengerRide(rideDetails, userDetails, history));
+		await dispatch(removePassengerRide({ rideDetails, userDetails })).unwrap();
+    history.push(ACTIVE_RIDES.path);
 	};
 
   return (

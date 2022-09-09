@@ -6,7 +6,7 @@ import FormFilters from '../../../components/forms/FormFilters';
 import RideResults from './RideResults';
 import RideFilters from './RideFilters';
 
-import { getFilteredRides } from '../../../store/rides/ridesActions';
+import { getFilteredRides } from '../../../store/rides/ridesAsyncActions';
 
 const SearchRides = () => {
 	const dispatch = useDispatch();
@@ -15,8 +15,8 @@ const SearchRides = () => {
 	const ridePreferences = userDetails?.ridePreferences;
 	const isRidePreferencesValid = ridePreferences && Object.keys(ridePreferences).length !== 0;
 
-	const handleObserverValues = useCallback(values => {
-		dispatch(getFilteredRides(values));
+	const handleObserverValues = useCallback(async values => {
+		await dispatch(getFilteredRides({ searchPreferences: values })).unwrap();
 	}, [dispatch]);
 
 	return (

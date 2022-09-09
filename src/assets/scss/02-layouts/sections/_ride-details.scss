@@ -15,6 +15,7 @@
 	&__photo {
 		border-radius: calc-rem(4px);
 		padding-bottom: 95%;
+		overflow: hidden;
 	}
 
 	&__info {

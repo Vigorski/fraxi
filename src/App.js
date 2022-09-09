@@ -7,7 +7,7 @@ import NotFound from './components/shared/NotFount';
 
 import { userRelogin } from './store/user/userAsyncActions';
 import { httpActions } from './store/http/httpSlice';
-import { getRidesState } from './store/rides/ridesActions';
+import { getRidesState } from './store/rides/ridesAsyncActions';
 
 import { authRouteGroup, profileRouteGroup, passengerRouteGroup, driverRouteGroup, ridesRouteGroup } from './utilities/constants/routeGroups';
 import { LOGIN, MY_PROFILE } from './utilities/constants/routes';
@@ -41,10 +41,14 @@ function App() {
 	}, [dispatch, isLoggedInLocalStorage])
 
 	useEffect(() => {
-		if (!isFirstLoad && userDetails !== undefined && userDetails !== null) {
-			dispatch(getRidesState(userDetails.activeRides, 'populateActiveRides'));
-			setIsFirstLoad(true);
+		const populateActiveRides = async () => {
+			if (!isFirstLoad && userDetails !== undefined && userDetails !== null) {
+				await dispatch(getRidesState({ userRides: userDetails.activeRides, ridesMethod: 'activeRides' })).unwrap();
+				setIsFirstLoad(true);
+			}
 		}
+
+		populateActiveRides();
 	}, [dispatch, userDetails, isFirstLoad]);
 
 

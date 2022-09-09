@@ -6,10 +6,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import FormIKSelect from '../../../components/forms/FormIKSelect';
-import { MKD_CITIES } from '../../../utilities/constants/cities';
 import Layout from '../../../components/shared/Layout';
-import { addNewRide } from '../../../store/rides/ridesActions';
+import { addNewRide } from '../../../store/rides/ridesAsyncActions';
 import { addTime } from '../../../utilities/date-time';
+import { MKD_CITIES } from '../../../utilities/constants/cities';
+import { MY_PROFILE } from '../../../utilities/constants/routes';
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
@@ -54,8 +55,9 @@ const CreateRide = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(addNewRide(userDetails, values, history));
+						await dispatch(addNewRide({ driver: userDetails, values })).unwrap();
 						setSubmitting(false);
+						history.push(MY_PROFILE.path);
 					}}
 				>
 					{({ isSubmitting }) => (

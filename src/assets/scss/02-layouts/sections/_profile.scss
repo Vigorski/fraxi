@@ -22,6 +22,10 @@
 		box-shadow: calc-rem(-9px) calc-rem(9px) calc-rem(14px) rgb(36, 40, 55);
 		overflow: hidden;
 		cursor: pointer;
+
+		img {
+			height: 100%;
+		}
 	}
 
 	&__file {

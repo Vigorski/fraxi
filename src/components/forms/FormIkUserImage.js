@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IconUserPlaceholder } from '../icons';
 
 const FormIkUserImage = ({ field, form, profilePicture }) => {
-  const [url, setURL] = useState(profilePicture);
+  const [url, setURL] = useState(!!profilePicture ? profilePicture : '');
 
   function handleChange(e) {
     if (e.currentTarget.files[0]) {
@@ -10,7 +10,7 @@ const FormIkUserImage = ({ field, form, profilePicture }) => {
       setURL(URL.createObjectURL(e.currentTarget.files[0]));
     }
   }
-
+  
 	return (
     <label htmlFor={field.name} className="profile__img">
       <div className="profile__file-input">

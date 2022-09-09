@@ -10,7 +10,6 @@ export const uploadImage = async (fileName, file) => {
   if ( file.type === 'image/jpeg' || file.type === 'image/png' ) {
     const storageRef = ref(storage, fileName);
     const imageRes = await uploadBytes(storageRef, file)
-    console.log(imageRes);
     
     return imageRes;
   } else {
