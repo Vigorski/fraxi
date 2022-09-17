@@ -119,6 +119,7 @@ export const removePassengerRide = createAsyncThunk('rides/removePassengerRide',
   }	
 });
 
+// TODO: perhaps populate history state at the same time?
 export const getRidesState = createAsyncThunk('rides/getRidesState', async ({ userRides, ridesMethod }, { dispatch }) => {
 	// first arg -> ride data
 	// second arg -> which ride method to be used (active or history)

@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import FormIkUserImage from '../forms/FormIkUserImage';
+import FormIkUserImage from '../../components/forms/FormIkUserImage';
 import { userUpdate, userRegister } from '../../store/user/userAsyncActions';
 import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
 

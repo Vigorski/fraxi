@@ -165,7 +165,6 @@ export const updateRidePreferences = createAsyncThunk('user/updateRidePreference
 	dispatch(httpActions.requestSend());
 
 	try {
-		// const updateRes =
 		await updateFB('/users', userId, { ridePreferences: values });
 		dispatch(httpActions.requestSuccess());
 

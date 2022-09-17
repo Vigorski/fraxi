@@ -7,14 +7,14 @@ export const uploadImage = async (fileName, file) => {
     throw new Error(`Not an image, the file is a /${typeof(file)}/`);
   }
 
-  if ( file.type === 'image/jpeg' || file.type === 'image/png' ) {
-    const storageRef = ref(storage, fileName);
-    const imageRes = await uploadBytes(storageRef, file)
-    
-    return imageRes;
-  } else {
+  if ( file.type !== 'image/jpeg' && file.type !== 'image/png' ) {
     throw new Error('Not a supported image type');
   }
+
+  const storageRef = ref(storage, fileName);
+  const imageRes = await uploadBytes(storageRef, file)
+  
+  return imageRes;  
 };
 
 export const downloadImage = (fileName) => {
@@ -29,23 +29,24 @@ export const downloadImage = (fileName) => {
       switch (error.code) {
         case 'storage/object-not-found':
           // File doesn't exist
-          break;
+          throw new Error('File does not exist.');
         case 'storage/unauthorized':
           // User doesn't have permission to access the object
-          break;
-        case 'storage/canceled':
-          // User canceled the upload
-          break;
+          throw new Error('Access denied. User has no permission.');
+        // case 'storage/canceled':
+        //   // User canceled the upload
+        //   throw new Error('Upload canceled')
         case 'storage/unknown':
         default:
           // Unknown error occurred, inspect the server response
-          break;
+          throw new Error('Unknown error occurred, inspect the server response');
       }
     });
 
   return imageRes
 };
 
+// this returns a lightweight reference to the image
 export const getFileUrl = async (fileName) => {
   const fileUrlRes = await getDownloadURL(ref(storage, fileName));
   return fileUrlRes;

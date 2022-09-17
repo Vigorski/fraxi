@@ -1,5 +1,5 @@
 import Layout from '../../components/shared/Layout';
-import RegisterEditUser from '../../components/shared/RegisterEditUser';
+import RegisterEditUser from './RegisterEditUser';
 
 const EditMyProfile = () => {
 	return (
