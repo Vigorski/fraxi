@@ -3,6 +3,10 @@
   .text-#{$name} {
     color: $color;
   }
+
+  .fill-#{$name} {
+    fill: $color;
+  }
 }
 
 // MANUAL TEXT COLORS

@@ -13,9 +13,8 @@
 	}
 
 	&__photo {
-		border-radius: calc-rem(4px);
+		border-radius: $border-radius-lg;
 		padding-bottom: 95%;
-		overflow: hidden;
 	}
 
 	&__info {

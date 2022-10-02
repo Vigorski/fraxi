@@ -9,17 +9,20 @@ const PassengerPreferences = ({ridePreferences}) => {
 	return (
 		<div className='card card--stats'>
 			<Tabs>
-				<div className='card__tabs card__section--clip card__section--border-dashed'>
+				<div className='card__tabs card__radius--top--sm'>
 					<TabList>
 						<Tab>Preferences</Tab>
 						<Tab>Saved drivers</Tab>
 					</TabList>
 				</div>
 				<TabPanel>
-					<div className='card__section card__section--clip card__section--border-dashed text-center'>
+					<div className='card__section text-center pb-0'>
 						<Link to={`${MY_PROFILE.path}/edit-preferences`}>Edit Preferences</Link>
 					</div>
-					<div className='card__section card__section--border-dashed'>
+					<div className="card__stamp">
+						<div className="card__stamp-border" />
+					</div>
+					<div className='card__section pv-0'>
 						<dl className='list-desc__columns profile__routes'>
 							<div className='list-desc__col'>
 								<dt>Origin</dt>
@@ -31,7 +34,10 @@ const PassengerPreferences = ({ridePreferences}) => {
 							</div>
 						</dl>
 					</div>
-					<div className='card__section'>
+					<div className="card__stamp">
+						<div className="card__stamp-border" />
+					</div>
+					<div className='card__section card__radius--bottom pt-0'>
 						<dl className='list-desc__rows'>
 							<div className='list-desc__row'>
 								<dt># of Stops</dt>

@@ -1,10 +1,22 @@
+
 .card {
+  position: relative;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	background-color: $color-gray-3;
-	border-radius: $border-radius-xl;
-	box-shadow: calc-rem(3px) calc-rem(4px) calc-rem(45px) rgba($color-black, 0.25);
+  --card-bg: #{$color-gray-3};
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: calc(100% - calc-rem(24px));
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: calc-rem(3px) calc-rem(4px) calc-rem(45px) calc-rem(10px) rgba($color-black, 0.25);
+    z-index: -1;
+  }
 
 	&__wrapper {
 		.card {
@@ -12,13 +24,48 @@
 		}
 	}
 
-	&__section {
-		padding: calc-rem(14px) calc-rem(40px);
+  &__header,
+  &__section {
+    padding: calc-rem(14px) calc-rem(40px);
+    background-color: var(--card-bg);
+  }
+  
+  &__stamp {
+    position: relative;
+    background-color: var(--card-bg);
+    width: calc(100% - calc-rem(24px));
+    margin: 0 auto;
+    padding: calc-rem(12px) 0;
+    
+    &-border {
+      position: absolute;
+      width: 100%;
+      top: calc(50% - 0.5px);
+      left: 0;
+      border-top: 1px dashed rgba($color-white, 0.18);
+    }
 
-		&--border-dashed {
-			border-bottom: 1px dashed rgba($color-white, 0.18);
-		}
-	}
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: calc-rem(12px);
+      height: calc-rem(24px);
+      background-color: var(--card-bg);
+      clip-path: $half-circle-stamp;
+    }
+
+    &::before {
+      left: calc-rem(-12px);
+      transform: rotate(360deg);
+    }
+
+    &::after {
+      right: calc-rem(-12px);
+      transform: rotate(180deg);
+    }
+  }
 
   &__decorated {
     position: relative;
@@ -65,29 +112,49 @@
     }
   }
 
-	&--dark {
-		background: linear-gradient(180deg, $color-gray-2 4.56%, $color-blue-dark-3 116.16%)
+  &__tabs {
+    background-color: var(--card-bg);
+    border-bottom: 1px dashed rgba($color-white, 0.18);
+  }
+
+	&__radius {
+    &--top {
+      border-top-left-radius: $border-radius-xl;
+      border-top-right-radius: $border-radius-xl;
+  
+      &--sm {
+        border-top-left-radius: $border-radius-md;
+        border-top-right-radius: $border-radius-md;
+      }
+    }
+    
+    &--bottom {
+      border-bottom-left-radius: $border-radius-xl;
+      border-bottom-right-radius: $border-radius-xl;
+    }
+  }
+
+
+  &--dark {
+    --card-bg: #{$color-gray-2};
+		// background: linear-gradient(180deg, $color-gray-2 4.56%, $color-blue-dark-3 116.16%)
 	}
 
 	&--gray {
-		background: linear-gradient(180deg, $color-gray-2 -8.9%, rgba($color-gray-2, 0.49) 122.95%);
+    --card-bg: #{$color-gray-2};
+		//background: linear-gradient(180deg, $color-gray-2 -8.9%, rgba($color-gray-2, 0.49) 122.95%);
 	}
 
-	&--stats {
-		border-top-left-radius: $border-radius-md;
-		border-top-right-radius: $border-radius-md;
-	}
+	// &--expandable {
+	// 	.card__body {
+	// 		display: none;
+	// 	}
 
-	&--expandable {
-		.card__body {
-			display: none;
-		}
-
-		&.active {
-			.card__body {
-				display: block;
-			}
-		}
-	}
+	// 	&.active {
+	// 		.card__body {
+	// 			display: block;
+	// 		}
+	// 	}
+	// }
 
 }

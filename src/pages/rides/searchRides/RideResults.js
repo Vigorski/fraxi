@@ -13,7 +13,7 @@ const RideResults = ({ filteredRides }) => {
 				return (
 					<Link to={{ pathname: `${RIDE_DETAILS.path}/${ride.rideId}`, state: { rideDetails: ride } }} className='card card__ride card--gray' key={ride.rideId}>
 						<div className='card__body'>
-							<div className='card__section card__ride-info card__section--clip card__section--border-dashed'>
+							<div className='card__section card__ride-info card__radius--top pb-0'>
 								<div className='row'>
 									<div className='col-7'>
 										<h6>{ride.driverDetails.name + ' ' + ride.driverDetails.surname}</h6>
@@ -27,7 +27,10 @@ const RideResults = ({ filteredRides }) => {
 									</div>
 								</div>
 							</div>
-							<div className='card__section card__ride-price'>
+							<div className="card__stamp">
+								<div className="card__stamp-border" />
+							</div>
+							<div className='card__section card__ride-price card__radius--bottom pt-0'>
 								<div className='row'>
 									<div className='col-7'>
 										<h6>Price</h6>
