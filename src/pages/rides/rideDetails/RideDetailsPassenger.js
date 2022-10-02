@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import CardRideDetails from '../../../components/cards/CardRideDetails';
+import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
 import { bookRide } from '../../../store/rides/ridesAsyncActions';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
@@ -50,7 +50,7 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 				</div>
 			</div>
 
-			<CardRideDetails userType={userDetails.userType} rideDetails={rideDetails} driverDetails={driverDetails} isRideBooked={isRideBooked} />
+			<RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} driverDetails={driverDetails} isRideBooked={isRideBooked} />
 
 			{!isRideBooked && (
 				<button className='btn-primary btn-block mt-xxl' disabled={isRideBooked} onClick={handleBookRide}>

@@ -1,6 +1,6 @@
-import { DRIVER, PASSENGER } from '../../utilities/constants/users';
-import { getTime, getShortDate } from '../../utilities/date-time';
-import { IconUser } from '../icons';
+import { DRIVER, PASSENGER } from '../../../utilities/constants/users';
+import { getTime, getShortDate } from '../../../utilities/date-time';
+import { IconUser } from '../../../components/icons';
 
 const CardRideDetails = ({rideDetails, userType, driverDetails, isRideBooked, allPassengersDetails}) => {
   const isPassenger = userType === PASSENGER;

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
 import { getUsers } from '../../../utilities/api/api';
-import CardRideDetails from '../../../components/cards/CardRideDetails';
 import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
 
 const RideDetailsDriver = ({userDetails, rideDetails}) => {
@@ -14,7 +14,6 @@ const RideDetailsDriver = ({userDetails, rideDetails}) => {
 
   useEffect(() => {
 		async function fetchPassengers () {
-      // TODO: fix the getUser function (already have a FB api file)
 			const passengersFull = await getUsers(rideDetails.passengers);
 			setAllPassengersDetails(passengersFull)
 		}
@@ -31,7 +30,7 @@ const RideDetailsDriver = ({userDetails, rideDetails}) => {
   return (
     <section className='ride-details'>
       
-      <CardRideDetails userType={userDetails.userType} rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
+      <RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
 
       <button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide}>
         Cancel ride

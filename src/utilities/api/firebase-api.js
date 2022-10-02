@@ -21,7 +21,7 @@ const dbFB = getFirestore(app);
 
 //get once
 export const getFB = async (url, val, queryParamValues) => {
-	// this is probably not a good way to make queries
+	// this is probably not a good way to make complex queries
 	const queryParams = queryParamValues.map((param) => {
 		return where(param, '==', val[param]);
 	});
