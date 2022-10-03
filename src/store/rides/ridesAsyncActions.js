@@ -55,12 +55,12 @@ export const addNewRide = createAsyncThunk('rides/addNewRide', async ({ driver, 
     ]);
 
     dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
-    dispatch(httpActions.requestSuccess());
+    dispatch(httpActions.requestSuccess('New ride created.'));
 
     return transformedValues;
   } catch (err) {
     console.log(err);
-    dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+    dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
   }
 });
 
@@ -75,12 +75,12 @@ export const bookRide = createAsyncThunk('rides/bookRide', async ({ passenger, r
     ])
 
     dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
-    dispatch(httpActions.requestSuccess());
+    dispatch(httpActions.requestSuccess('Ride booked.'));
 
     return rideDetails;
   } catch (err) {
     console.log(err);
-    dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+    dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
   }
 });
 
@@ -110,12 +110,12 @@ export const removePassengerRide = createAsyncThunk('rides/removePassengerRide',
 
     dispatch(userActions.removeActiveRide(rideDetails.rideId));
     dispatch(userActions.addHistoryRide(rideDetails.rideId));
-    dispatch(httpActions.requestSuccess());
+    dispatch(httpActions.requestSuccess('Ride successfully canceled.'));
     
     return rideDetails;
   } catch (err) {
     console.log(err);
-    dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+    dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
   }	
 });
 
@@ -135,7 +135,7 @@ export const getRidesState = createAsyncThunk('rides/getRidesState', async ({ us
     return { ridesMethod, updatedRides };
   } catch (err) {
     console.log(err);
-    dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+    dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
   }
 });
 
@@ -145,6 +145,7 @@ export const getFilteredRides = createAsyncThunk('rides/getFilteredRides', async
   try {
     const uniqueDriverIds = [];
     // TODO: make additional conditional filters for less important aspects
+    // TODO: if too few results, remove some filters
     const ridesResponse = await getFB('/rides', searchPreferences, ['destination', 'origin', 'rideType', 'smoking']);
 
     for (const ride of ridesResponse) {
@@ -160,6 +161,6 @@ export const getFilteredRides = createAsyncThunk('rides/getFilteredRides', async
     return updatedRides;
   } catch (err) {
     console.log(err);
-    dispatch(httpActions.requestError({ errorMessage: err.message || 'Something went wrong!' }));
+    dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
   }
 });

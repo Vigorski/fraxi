@@ -56,6 +56,7 @@ const CreateRide = () => {
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
 						await dispatch(addNewRide({ driver: userDetails, values })).unwrap();
+						// toast("Wow so easy !")
 						setSubmitting(false);
 						history.push(MY_PROFILE.path);
 					}}

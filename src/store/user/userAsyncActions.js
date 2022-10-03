@@ -58,16 +58,12 @@ export const userRegister = createAsyncThunk('user/userRegister', async ({ value
 		}
 
 		const registerResponse = await addFBWithId('/users', transformedValues, transformedValues.userId);
-		dispatch(httpActions.requestSuccess());
+		dispatch(httpActions.requestSuccess('Succesfully created new user.'));
 
 		return registerResponse;
 	} catch (err) {
 		console.log(err);
-		dispatch(
-			httpActions.requestError({
-				errorMessage: err.message || 'Something went wrong!',
-			})
-		);
+		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
 	}
 });
 
@@ -83,16 +79,12 @@ export const userUpdate = createAsyncThunk('user/userUpdate', async ({ userId, v
 		}
 
 		await updateFB('/users', userId, transformedValues);
-		dispatch(httpActions.requestSuccess());
+		dispatch(httpActions.requestSuccess('Updated user details.'));
 
 		return transformedValues;
 	} catch (err) {
 		console.log(err);
-		dispatch(
-			httpActions.requestError({
-				errorMessage: err.message || 'Something went wrong!',
-			})
-		);
+		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
 	}
 });
 
@@ -106,7 +98,7 @@ export const userLogin = createAsyncThunk('user/userLogin', async ({ values }, {
 		if (responseData.length > 0) {
 			const transformedValues = transformUserLoginValues(responseData[0]);
 
-			dispatch(httpActions.requestSuccess(transformedValues));
+			dispatch(httpActions.requestSuccess());
 			localStorage.setItem('loggedUser', JSON.stringify(transformedValues.userId));
 
 			return {
@@ -122,11 +114,7 @@ export const userLogin = createAsyncThunk('user/userLogin', async ({ values }, {
 		}
 	} catch (err) {
 		console.log(err);
-		dispatch(
-			httpActions.requestError({
-				errorMessage: err.message || 'Something went wrong!',
-			})
-		);
+		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
 	}
 });
 
@@ -138,26 +126,18 @@ export const userRelogin = createAsyncThunk('user/userRelogin', async (userId, {
 
 		if (responseData.length > 0) {
 			const transformedValues = transformUserLoginValues(responseData[0]);
-			dispatch(httpActions.requestSuccess(transformedValues));
+			dispatch(httpActions.requestSuccess());
 
 			return {
 				isLoggedIn: true,
 				user: transformedValues,
 			};
 		} else {
-			dispatch(
-				httpActions.requestError({
-					errorMessage: 'We were unable to log you in.',
-				})
-			);
+			dispatch(httpActions.requestError('We were unable to log you in.'));
 		}
 	} catch (err) {
 		console.log(err);
-		dispatch(
-			httpActions.requestError({
-				errorMessage: err.message || 'Something went wrong!',
-			})
-		);
+		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
 	}
 });
 
@@ -166,15 +146,11 @@ export const updateRidePreferences = createAsyncThunk('user/updateRidePreference
 
 	try {
 		await updateFB('/users', userId, { ridePreferences: values });
-		dispatch(httpActions.requestSuccess());
+		dispatch(httpActions.requestSuccess('Updated user\'s ride preferences'));
 
 		return values;
 	} catch (err) {
 		console.log(err);
-		dispatch(
-			httpActions.requestError({
-				errorMessage: err.message || 'Something went wrong!',
-			})
-		);
+		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
 	}
 });
