@@ -9,6 +9,7 @@ import RideDetailsDriver from './RideDetailsDriver';
 
 const RideDetails = () => {
 	// TODO: use the rideId from params to pull ride data from DB
+	// ride passengers has same number after booking
 	// const params = useParams();
 	const location = useLocation();
 	const userDetails = useSelector(state => state.user.userDetails);

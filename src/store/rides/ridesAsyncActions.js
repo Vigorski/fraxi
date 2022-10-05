@@ -68,11 +68,15 @@ export const bookRide = createAsyncThunk('rides/bookRide', async ({ passenger, r
   dispatch(httpActions.requestSend());
   
   try {
+    if (rideDetails.passengers.length === rideDetails.maxPassengers) {
+      throw new Error('Ride reached max passengers!');
+    }
+
     const transformedPassengerActiveRides = { activeRides: [...passenger.activeRides, rideDetails.rideId] };
     await Promise.all([
       updateFB('/rides', rideDetails.rideId, { passengers: arrayUnion(passenger.userId) }, true),
       updateFB('/users', passenger.userId, { activeRides: arrayUnion(rideDetails.rideId) }, true)
-    ])
+    ]);
 
     dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
     dispatch(httpActions.requestSuccess('Ride booked.'));

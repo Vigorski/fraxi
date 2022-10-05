@@ -29,7 +29,6 @@ const RideDetailsDriver = ({userDetails, rideDetails}) => {
 
   return (
     <section className='ride-details'>
-      
       <RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
 
       <button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide}>

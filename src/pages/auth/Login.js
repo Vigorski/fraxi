@@ -1,10 +1,10 @@
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import { userLogin } from '../../store/user/userAsyncActions'
 import Layout from '../../components/shared/Layout';
-import { MY_PROFILE } from '../../utilities/constants/routes';
+import { MY_PROFILE, REGISTER } from '../../utilities/constants/routes';
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -61,12 +61,16 @@ const Login = () => {
 							<Field type='password' name='password' placeholder='Password' />
 							<ErrorMessage name='password' component='span' className='input-message-error' />
 						</div>
-						<button className='btn-primary' type='submit' disabled={isSubmitting}>
+						<button className='btn-primary btn-block' type='submit' disabled={isSubmitting}>
 							Sign in
 						</button>
 					</Form>
 				)}
 			</Formik>
+			<div className="auth__or">
+				<span>OR</span>
+			</div>
+			<Link className="btn-primary-ghost btn-block" to={REGISTER.path}>Register</Link>
 		</Layout>
 	);
 };

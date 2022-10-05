@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ToastContainer, toast, Slide } from 'react-toastify';
@@ -20,7 +20,7 @@ function App() {
 	const { status, message } = useSelector(state => state.http);
 	const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
 
-	const [isFirstLoad, setIsFirstLoad] = useState(false);
+	// const [isFirstLoad, setIsFirstLoad] = useState(false);
 
 	const routesCombined = [...passengerRouteGroup, ...driverRouteGroup, ...profileRouteGroup, ...ridesRouteGroup];
 
@@ -36,14 +36,13 @@ function App() {
 
 	useEffect(() => {
 		const populateActiveRides = async () => {
-			if (!isFirstLoad && userDetails !== undefined && userDetails !== null) {
+			if (userDetails !== undefined && userDetails !== null) {
 				await dispatch(getRidesState({ userRides: userDetails.activeRides, ridesMethod: 'activeRides' })).unwrap();
-				setIsFirstLoad(true);
 			}
 		};
 
 		populateActiveRides();
-	}, [dispatch, userDetails, isFirstLoad]);
+	}, [dispatch, userDetails]);
 
 	useEffect(() => {
 		// TODO: perhaps it would be a better idea to use a toast on each page where its necessary instead of a global toast

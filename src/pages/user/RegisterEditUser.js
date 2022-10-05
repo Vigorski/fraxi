@@ -4,14 +4,17 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import FormIkUserImage from '../../components/forms/FormIkUserImage';
 import { userUpdate, userRegister } from '../../store/user/userAsyncActions';
+import { httpActions } from '../../store/http/httpSlice';
 import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
+import { getFB } from '../../utilities/api/firebase-api';
+
 
 const RegisterEditUser = ({ editUserProfile }) => {
 	const history = useHistory();
 	const { userDetails } = useSelector(state => state.user);
 	const dispatch = useDispatch();
 
-	const handleValidation = values => {
+	const handleValidation = async values => {
 		const errors = {};
 
 		if (values.profilePicture !== undefined && values.profilePicture !== '') {
@@ -39,6 +42,13 @@ const RegisterEditUser = ({ editUserProfile }) => {
 				errors.email = 'Required';
 			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
 				errors.email = 'Invalid email address';
+			} else {
+				const doesUserExist = await getFB(`/users`, values, ['email']);
+				if(doesUserExist?.length > 0) {
+					const userExists = 'User mail already exists!';
+					errors.email = userExists;
+					dispatch(httpActions.requestError(userExists));
+				}
 			}
 		}
 
@@ -79,6 +89,8 @@ const RegisterEditUser = ({ editUserProfile }) => {
 			}}
 			enableReinitialize={true}
 			validate={handleValidation}
+			validateOnChange={false}
+			validateOnBlur={false}
 			onSubmit={async (values, { setSubmitting }) => {
 				if (editUserProfile) {
 					await dispatch(userUpdate({ userId: userDetails.userId, values })).unwrap();
@@ -145,7 +157,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
 							<ErrorMessage name='userType' component='span' className='input-message-error' />
 						</div>
 					)}
-					<button className='btn-primary' type='submit' disabled={isSubmitting}>
+					<button className='btn-primary btn-block' type='submit' disabled={isSubmitting}>
 						{editUserProfile ? 'Update' : 'Register'}
 					</button>
 				</Form>

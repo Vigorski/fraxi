@@ -51,7 +51,7 @@ export const userRegister = createAsyncThunk('user/userRegister', async ({ value
 	dispatch(httpActions.requestSend());
 	const { profilePicture, ...transformedValues } = transformUserRegisterValues(values);
 
-	try {
+	try {		
 		const profilePictureExists = profilePicture !== undefined && profilePicture !== '';
 		if (profilePictureExists) {
 			transformedValues.profilePicture = await uploadUserImage(profilePicture, transformedValues.userId);

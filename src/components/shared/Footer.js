@@ -1,9 +1,13 @@
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import { MY_PROFILE, SEARCH_RIDES, ACTIVE_RIDES } from '../../utilities/constants/routes';
+import { PASSENGER } from '../../utilities/constants/users';
 import { IconUser, IconBell, IconBookmark, IconSearch } from '../icons';
 
 const Footer = () => {
+	const { userDetails } = useSelector(state => state.user);
+
 	return (
 		<footer className='footer'>
 			<nav className='footer__nav'>
@@ -13,11 +17,13 @@ const Footer = () => {
 							<IconUser />
 						</NavLink>
 					</li>
-					<li>
-						<NavLink to={SEARCH_RIDES.path} activeClassName='active'>
-							<IconSearch />
-						</NavLink>
-					</li>
+					{userDetails.userType === PASSENGER &&
+						<li>
+							<NavLink to={SEARCH_RIDES.path} activeClassName='active'>
+								<IconSearch />
+							</NavLink>
+						</li>
+					}
 					<li>
 						<NavLink to={ACTIVE_RIDES.path} activeClassName='active'>
 							<IconBookmark />
