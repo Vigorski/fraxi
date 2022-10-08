@@ -1,12 +1,14 @@
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { motion } from 'framer-motion';
 
 import FormIkUserImage from '../../components/forms/FormIkUserImage';
 import { userUpdate, userRegister } from '../../store/user/userAsyncActions';
 import { httpActions } from '../../store/http/httpSlice';
 import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
 import { getFB } from '../../utilities/api/firebase-api';
+import { itemAnimate } from '../../utilities/constants/framerVariants';
 
 
 const RegisterEditUser = ({ editUserProfile }) => {
@@ -105,25 +107,25 @@ const RegisterEditUser = ({ editUserProfile }) => {
 		>
 			{({ isSubmitting }) => (
 				<Form>
-					<div className='form-field'>
+					<motion.div className='form-field' variants={itemAnimate}>
 						<Field name='profilePicture' id='profilePicture' component={FormIkUserImage} profilePicture={userDetails?.profilePicture} />
 						<ErrorMessage name='profilePicture' component='span' className='input-message-error' />
-					</div>
-					<div className='form-field'>
+					</motion.div>
+					<motion.div className='form-field' variants={itemAnimate}>
 						<Field type='text' name='name' placeholder='Name' />
 						<ErrorMessage name='name' component='span' className='input-message-error' />
-					</div>
-					<div className='form-field'>
+					</motion.div>
+					<motion.div className='form-field' variants={itemAnimate}>
 						<Field type='text' name='surname' placeholder='Last name' />
 						<ErrorMessage name='surname' component='span' className='input-message-error' />
-					</div>
+					</motion.div>
 					{!editUserProfile && (
-						<div className='form-field'>
+						<motion.div className='form-field' variants={itemAnimate}>
 							<Field type='email' name='email' placeholder='Email' />
 							<ErrorMessage name='email' component='span' className='input-message-error' />
-						</div>
+						</motion.div>
 					)}
-					<div className='form-field'>
+					<motion.div className='form-field' variants={itemAnimate}>
 						<Field type='password' name='password' placeholder='Password' />
 						<ErrorMessage name='password'>
 							{msg => (
@@ -134,17 +136,17 @@ const RegisterEditUser = ({ editUserProfile }) => {
 								</ul>
 							)}
 						</ErrorMessage>
-					</div>
-					<div className='form-field'>
+					</motion.div>
+					<motion.div className='form-field' variants={itemAnimate}>
 						<Field type='password' name='confirmPassword' placeholder='Confirm password' />
 						<ErrorMessage name='confirmPassword' component='span' className='input-message-error' />
-					</div>
-					<div className='form-field'>
+					</motion.div>
+					<motion.div className='form-field' variants={itemAnimate}>
 						<Field type='tel' name='phone' placeholder='Phone' />
 						<ErrorMessage name='phone' component='span' className='input-message-error' />
-					</div>
+					</motion.div>
 					{!editUserProfile && (
-						<div className='form-field'>
+						<motion.div className='form-field' variants={itemAnimate}>
 							<h4>What do you want to register as?</h4>
 							<div className='input-radio'>
 								<Field id='userPassenger' type='radio' name='userType' value='passenger' />
@@ -155,11 +157,11 @@ const RegisterEditUser = ({ editUserProfile }) => {
 								<label htmlFor='userDriver'>Driver</label>
 							</div>
 							<ErrorMessage name='userType' component='span' className='input-message-error' />
-						</div>
+						</motion.div>
 					)}
-					<button className='btn-primary btn-block' type='submit' disabled={isSubmitting}>
+					<motion.button className='btn-primary btn-block' type='submit' disabled={isSubmitting} variants={itemAnimate}>
 						{editUserProfile ? 'Update' : 'Register'}
-					</button>
+					</motion.button>
 				</Form>
 			)}
 		</Formik>

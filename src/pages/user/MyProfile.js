@@ -1,13 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import Layout from '../../components/shared/Layout';
 import PassengerPreferences from './passenger/Preferences';
 import { IconUserPlaceholder, IconEdit } from '../../components/icons';
 import { userLogout } from '../../store/user/userActions';
-
 import { DRIVER, PASSENGER } from '../../utilities/constants/users';
 import { MY_PROFILE } from '../../utilities/constants/routes';
+import { containerAnimate, itemAnimate } from '../../utilities/constants/framerVariants';
 
 
 const MyProfile = ({history}) => {
@@ -21,30 +22,38 @@ const MyProfile = ({history}) => {
 
 	return (
     <Layout>
-			<section className="profile" data-username={`${userDetails?.name} ${userDetails?.surname}`}>
-        <div className="profile__edit">
+			<motion.section 
+        className="profile"
+        data-username={`${userDetails?.name} ${userDetails?.surname}`}
+        variants={containerAnimate}
+				initial="hidden"
+    		animate="visible"
+      >
+        <motion.div className="profile__edit" variants={itemAnimate}>
           <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`}><IconEdit /></Link>
-        </div>
-        <div className="profile__img">
+        </motion.div>
+        <motion.div className="profile__img" variants={itemAnimate}>
           {userDetails?.profilePicture !== '' ?
             <img src={userDetails?.profilePicture} alt="user avatar" /> :
             <div className="profile__svg-wrapper">
               <IconUserPlaceholder />
             </div>
           }
-        </div>
-        <h4 className="profile__name">{userDetails?.name} {userDetails?.surname}</h4>
+        </motion.div>
+        <motion.h4 className="profile__name" variants={itemAnimate}>{userDetails?.name} {userDetails?.surname}</motion.h4>
 
         {userDetails?.userType === PASSENGER &&
           <PassengerPreferences ridePreferences={ridePreferences} />
         }
         {userDetails?.userType === DRIVER &&
-          <Link to={`${MY_PROFILE.path}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>
+          <motion.div variants={itemAnimate}>
+            <Link to={`${MY_PROFILE.path}/create-ride`} className="btn-primary btn-block">Create a new ride</Link>
+          </motion.div>
         }
 
-        <button className="btn-primary btn-block btn-sm mt-xxl">Load Rides History</button>
-        <button className="btn-primary-ghost btn-block btn-sm mt-xxl" onClick={handleLogout}>Logout</button>
-      </section>
+        <motion.button className="btn-primary btn-block btn-sm mt-xxl" variants={itemAnimate}>Load Rides History</motion.button>
+        <motion.button className="btn-primary-ghost btn-block btn-sm mt-xxl" onClick={handleLogout} variants={itemAnimate}>Logout</motion.button>
+      </motion.section>
 		</Layout>
 	);
 };

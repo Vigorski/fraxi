@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { AnimatePresence } from 'framer-motion';
 
 import { AuthRoute, PrivateRoute } from './components/shared/Routes';
 import NotFound from './components/shared/NotFount';
@@ -56,23 +57,25 @@ function App() {
 
 	return (
 		<>
-			<Switch>
-				<Route path='/' exact>
-					<Redirect to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
-				</Route>
+			<AnimatePresence>
+				<Switch key="main-switch">
+					<Route path='/' exact>
+						<Redirect to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
+					</Route>
 
-				{authRouteGroup.map(route => {
-					return <AuthRoute key={route.path} isLoggedIn={isLoggedIn} {...route} />;
-				})}
+					{authRouteGroup.map(route => {
+						return <AuthRoute key={route.path} isLoggedIn={isLoggedIn} {...route} />;
+					})}
 
-				{routesCombined.map(route => {
-					return <PrivateRoute key={route.path} user={{ isLoggedIn, userDetails, isLoggedInLocalStorage: isLoggedInLocalStorage }} {...route} />;
-				})}
+					{routesCombined.map(route => {
+						return <PrivateRoute key={route.path} user={{ isLoggedIn, userDetails, isLoggedInLocalStorage: isLoggedInLocalStorage }} {...route} />;
+					})}
 
-				<Route path={'*'}>
-					<NotFound />
-				</Route>
-			</Switch>
+					<Route path={'*'}>
+						<NotFound />
+					</Route>
+				</Switch>
+			</AnimatePresence>
 			<ToastContainer 
 				limit={3}
 				autoClose={2000}

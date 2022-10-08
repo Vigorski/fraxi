@@ -2,6 +2,11 @@ h1 {
     font: 700 calc-rem(60px) $font-montserrat;
     letter-spacing: -0.88px;
     line-height: calc-rem(64px);
+
+    &.h1-sm {
+        font-size: calc-rem(22px);
+        line-height: calc-rem(26px);
+    }
 }
 
 h2 {

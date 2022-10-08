@@ -1,10 +1,12 @@
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { motion } from 'framer-motion';
 
 import { userLogin } from '../../store/user/userAsyncActions'
 import Layout from '../../components/shared/Layout';
 import { MY_PROFILE, REGISTER } from '../../utilities/constants/routes';
+import { containerAnimate, itemAnimate } from '../../utilities/constants/framerVariants';
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -30,47 +32,59 @@ const Login = () => {
 
 	return (
 		<Layout>
-			<h1>Login</h1>
-
-			<Formik
-				initialValues={{
-					email: '',
-					password: '',
-				}}
-				validate={handleValidation}
-				onSubmit={async (values, { setSubmitting }) => {
-					await dispatch(userLogin({values}))
-						.then(res => {
-							setSubmitting(false);
-							history.push(MY_PROFILE.path);
-						});
-				}}
+			<motion.div
+				variants={containerAnimate}
+				initial="hidden"
+    		animate="visible"
+				key="main-variant"
+				// initial={{scale: 0}}
+				// animate={{scale: 1}}
+				// exit={{scale: 0}}
 			>
-				{({ isSubmitting }) => (
-					<Form>
-						{authError && (
-							<div className='form-field'>
-								<span className='input-message-error'>{globalFormError}</span>
-							</div>
-						)}
-						<div className='form-field'>
-							<Field type='email' name='email' placeholder='Email' />
-							<ErrorMessage name='email' component='span' className='input-message-error' />
-						</div>
-						<div className='form-field'>
-							<Field type='password' name='password' placeholder='Password' />
-							<ErrorMessage name='password' component='span' className='input-message-error' />
-						</div>
-						<button className='btn-primary btn-block' type='submit' disabled={isSubmitting}>
-							Sign in
-						</button>
-					</Form>
-				)}
-			</Formik>
-			<div className="auth__or">
-				<span>OR</span>
-			</div>
-			<Link className="btn-primary-ghost btn-block" to={REGISTER.path}>Register</Link>
+
+				<motion.h1 className="h1-sm mb-xxl" variants={itemAnimate}>Login</motion.h1>
+				<Formik
+					initialValues={{
+						email: '',
+						password: '',
+					}}
+					validate={handleValidation}
+					onSubmit={async (values, { setSubmitting }) => {
+						await dispatch(userLogin({values}))
+							.then(res => {
+								setSubmitting(false);
+								history.push(MY_PROFILE.path);
+							});
+					}}
+				>
+					{({ isSubmitting }) => (
+						<Form>
+							{authError && (
+								<div className='form-field'>
+									<span className='input-message-error'>{globalFormError}</span>
+								</div>
+							)}
+							<motion.div className='form-field' variants={itemAnimate}>
+								<Field type='email' name='email' placeholder='Email' />
+								<ErrorMessage name='email' component='span' className='input-message-error' />
+							</motion.div>
+							<motion.div className='form-field' variants={itemAnimate}>
+								<Field type='password' name='password' placeholder='Password' />
+								<ErrorMessage name='password' component='span' className='input-message-error' />
+							</motion.div>
+							<motion.button className='btn-primary btn-block' type='submit' disabled={isSubmitting} variants={itemAnimate}>
+								Sign in
+							</motion.button>
+						</Form>
+					)}
+				</Formik>
+				<motion.div className="auth__or" variants={itemAnimate}>
+					<span>OR</span>
+				</motion.div>
+				<motion.div variants={itemAnimate}>
+					<Link className="btn-primary-ghost btn-block" to={REGISTER.path}>Register</Link>
+				</motion.div>
+			</motion.div>
 		</Layout>
 	);
 };
