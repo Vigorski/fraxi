@@ -8,7 +8,7 @@ import { userUpdate, userRegister } from '../../store/user/userAsyncActions';
 import { httpActions } from '../../store/http/httpSlice';
 import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
 import { getFB } from '../../utilities/api/firebase-api';
-import { itemAnimate } from '../../utilities/constants/framerVariants';
+import { itemVariants } from '../../utilities/constants/framerVariants';
 
 
 const RegisterEditUser = ({ editUserProfile }) => {
@@ -107,25 +107,25 @@ const RegisterEditUser = ({ editUserProfile }) => {
 		>
 			{({ isSubmitting }) => (
 				<Form>
-					<motion.div className='form-field' variants={itemAnimate}>
+					<motion.div className='form-field' variants={itemVariants}>
 						<Field name='profilePicture' id='profilePicture' component={FormIkUserImage} profilePicture={userDetails?.profilePicture} />
 						<ErrorMessage name='profilePicture' component='span' className='input-message-error' />
 					</motion.div>
-					<motion.div className='form-field' variants={itemAnimate}>
+					<motion.div className='form-field' variants={itemVariants}>
 						<Field type='text' name='name' placeholder='Name' />
 						<ErrorMessage name='name' component='span' className='input-message-error' />
 					</motion.div>
-					<motion.div className='form-field' variants={itemAnimate}>
+					<motion.div className='form-field' variants={itemVariants}>
 						<Field type='text' name='surname' placeholder='Last name' />
 						<ErrorMessage name='surname' component='span' className='input-message-error' />
 					</motion.div>
 					{!editUserProfile && (
-						<motion.div className='form-field' variants={itemAnimate}>
+						<motion.div className='form-field' variants={itemVariants}>
 							<Field type='email' name='email' placeholder='Email' />
 							<ErrorMessage name='email' component='span' className='input-message-error' />
 						</motion.div>
 					)}
-					<motion.div className='form-field' variants={itemAnimate}>
+					<motion.div className='form-field' variants={itemVariants}>
 						<Field type='password' name='password' placeholder='Password' />
 						<ErrorMessage name='password'>
 							{msg => (
@@ -137,16 +137,16 @@ const RegisterEditUser = ({ editUserProfile }) => {
 							)}
 						</ErrorMessage>
 					</motion.div>
-					<motion.div className='form-field' variants={itemAnimate}>
+					<motion.div className='form-field' variants={itemVariants}>
 						<Field type='password' name='confirmPassword' placeholder='Confirm password' />
 						<ErrorMessage name='confirmPassword' component='span' className='input-message-error' />
 					</motion.div>
-					<motion.div className='form-field' variants={itemAnimate}>
+					<motion.div className='form-field' variants={itemVariants}>
 						<Field type='tel' name='phone' placeholder='Phone' />
 						<ErrorMessage name='phone' component='span' className='input-message-error' />
 					</motion.div>
 					{!editUserProfile && (
-						<motion.div className='form-field' variants={itemAnimate}>
+						<motion.div className='form-field' variants={itemVariants}>
 							<h4>What do you want to register as?</h4>
 							<div className='input-radio'>
 								<Field id='userPassenger' type='radio' name='userType' value='passenger' />
@@ -159,7 +159,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
 							<ErrorMessage name='userType' component='span' className='input-message-error' />
 						</motion.div>
 					)}
-					<motion.button className='btn-primary btn-block' type='submit' disabled={isSubmitting} variants={itemAnimate}>
+					<motion.button className='btn-primary btn-block' type='submit' disabled={isSubmitting} variants={itemVariants}>
 						{editUserProfile ? 'Update' : 'Register'}
 					</motion.button>
 				</Form>

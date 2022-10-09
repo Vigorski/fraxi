@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { motion } from 'framer-motion';
 
 import FormIKSelect from '../../../components/forms/FormIKSelect';
 import Layout from '../../../components/shared/Layout';
@@ -11,6 +12,7 @@ import { addNewRide } from '../../../store/rides/ridesAsyncActions';
 import { addTime } from '../../../utilities/date-time';
 import { MKD_CITIES } from '../../../utilities/constants/cities';
 import { MY_PROFILE } from '../../../utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
@@ -42,7 +44,13 @@ const CreateRide = () => {
 
 	return (
 		<Layout>
-			<section className='profile profile--edit'>
+			<motion.section
+				className='profile profile--edit'
+				variants={mainContainerVariants}
+				initial="initial"
+    		animate="visible"
+				exit="hidden"
+			>
 				<Formik
 					initialValues={{
 						origin: 'Skopje',
@@ -63,17 +71,17 @@ const CreateRide = () => {
 				>
 					{({ isSubmitting }) => (
 						<Form>
-							<div className='form-field'>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='origin'>Origin</label>
 								<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />
 								<ErrorMessage name='origin' component='span' className='input-message-error' />
-							</div>
-							<div className='form-field'>
+							</motion.div>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='destination'>Destination</label>
 								<Field name='destination' id='destination' component={FormIKSelect} options={citiesOptions} />
 								<ErrorMessage name='destination' component='span' className='input-message-error' />
-							</div>
-							<div className='form-field'>
+							</motion.div>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='departureDate'>Departure date</label>
 								<DatePicker
 									name='departureDate'
@@ -86,18 +94,18 @@ const CreateRide = () => {
 									timeIntervals={15}
 								/>
 								<ErrorMessage name='departureDate' component='span' className='input-message-error' />
-							</div>
-							<div className='form-field'>
+							</motion.div>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='price'>Price per person</label>
 								<Field name='price' id='price' type='number' />
 								<ErrorMessage name='price' component='span' className='input-message-error' />
-							</div>
-							<div className='form-field'>
+							</motion.div>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='maxPassengers'>Maximum number of passengers</label>
 								<Field name='maxPassengers' id='maxPassengers' type='number' />
 								<ErrorMessage name='maxPassengers' component='span' className='input-message-error' />
-							</div>
-							<div className='form-field'>
+							</motion.div>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='rideType'>Ride</label>
 								<Field
 									name='rideType'
@@ -109,8 +117,8 @@ const CreateRide = () => {
 									]}
 								/>
 								<ErrorMessage name='rideType' component='span' className='input-message-error' />
-							</div>
-							<div className='form-field'>
+							</motion.div>
+							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='smoking'>Smoking</label>
 								<Field
 									name='smoking'
@@ -122,15 +130,15 @@ const CreateRide = () => {
 									]}
 								/>
 								<ErrorMessage name='smoking' component='span' className='input-message-error' />
-							</div>
+							</motion.div>
 
-							<button className='btn-primary btn-block mt-xl' type='submit' disabled={isSubmitting}>
+							<motion.button className='btn-primary btn-block mt-xl' type='submit' disabled={isSubmitting} variants={itemVariants}>
 								Create ride
-							</button>
+							</motion.button>
 						</Form>
 					)}
 				</Formik>
-			</section>
+			</motion.section>
 		</Layout>
 	);
 };

@@ -1,13 +1,16 @@
+import { motion } from 'framer-motion';
+
 import { DRIVER, PASSENGER } from '../../../utilities/constants/users';
 import { getTime, getShortDate } from '../../../utilities/date-time';
 import { IconUser } from '../../../components/icons';
+import { itemVariants } from '../../../utilities/constants/framerVariants';
 
 const CardRideDetails = ({rideDetails, userType, driverDetails, isRideBooked, allPassengersDetails}) => {
   const isPassenger = userType === PASSENGER;
   const isDriver = userType === DRIVER;
 
   return (
-    <div className='card card--dark'>
+    <motion.div className='card card--dark' variants={itemVariants}>
       <div className={`card__header card__decorated card__radius--top--sm ${isRideBooked || isDriver ? 'card__decorated--active' : ''}`}>
         <p>{rideDetails.originAbbr ?? 'N/A'}</p>
         <div className='card__decorated-dash' />
@@ -82,7 +85,7 @@ const CardRideDetails = ({rideDetails, userType, driverDetails, isRideBooked, al
           </>
         }
       </div>
-    </div>
+    </motion.div>
   );
 }
 

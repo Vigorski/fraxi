@@ -1,11 +1,13 @@
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
 import { bookRide } from '../../../store/rides/ridesAsyncActions';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
 import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
 
 const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 	const dispatch = useDispatch();
@@ -28,22 +30,28 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 	};
 
 	return (
-		<section className='ride-details'>
+		<motion.section
+			className='ride-details'
+			variants={mainContainerVariants}
+			initial="initial"
+			animate="visible"
+			exit="hidden"
+		>
 			<div className='ride-details__driver'>
 				<div className='row'>
 					<div className='col-6'>
-						<div className='ride-details__photo thumbnail__user'>
+						<motion.div className='ride-details__photo thumbnail__user' variants={itemVariants}>
 							{driverHasPicture ? <img src={driverDetails.profilePicture} alt='driver thumbnail' /> : <IconUserPlaceholder />}
-						</div>
+						</motion.div>
 					</div>
 					<div className='col-6'>
 						<div className='ride-details__info'>
-							<p>
+							<motion.p variants={itemVariants}>
 								<IconMarker /> <span>{rideDetails.origin}</span>
-							</p>
-							<p>
+							</motion.p>
+							<motion.p variants={itemVariants}>
 								<IconPhone /> <span>{driverDetails.phone}</span>
-							</p>
+							</motion.p>
 							<h3>{`${driverDetails.name} ${driverDetails.surname}`}</h3>
 						</div>
 					</div>
@@ -53,17 +61,17 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 			<RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} driverDetails={driverDetails} isRideBooked={isRideBooked} />
 
 			{!isRideBooked && (
-				<button className='btn-primary btn-block mt-xxl' disabled={isRideBooked} onClick={handleBookRide}>
+				<motion.button className='btn-primary btn-block mt-xxl' disabled={isRideBooked} onClick={handleBookRide} variants={itemVariants}>
 					Book ride
-				</button>
+				</motion.button>
 			)}
 
 			{isRideBooked && (
-				<button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide}>
+				<motion.button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide} variants={itemVariants}>
 					Cancel ride
-				</button>
+				</motion.button>
 			)}
-		</section>
+		</motion.section>
 	);
 };
 

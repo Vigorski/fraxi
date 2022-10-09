@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { userLogin } from '../../store/user/userAsyncActions'
 import Layout from '../../components/shared/Layout';
 import { MY_PROFILE, REGISTER } from '../../utilities/constants/routes';
-import { containerAnimate, itemAnimate } from '../../utilities/constants/framerVariants';
+import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -33,16 +33,12 @@ const Login = () => {
 	return (
 		<Layout>
 			<motion.div
-				variants={containerAnimate}
-				initial="hidden"
+				variants={mainContainerVariants}
+				initial="initial"
     		animate="visible"
-				key="main-variant"
-				// initial={{scale: 0}}
-				// animate={{scale: 1}}
-				// exit={{scale: 0}}
+				exit="hidden"
 			>
-
-				<motion.h1 className="h1-sm mb-xxl" variants={itemAnimate}>Login</motion.h1>
+				<motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>Login</motion.h1>
 				<Formik
 					initialValues={{
 						email: '',
@@ -64,24 +60,24 @@ const Login = () => {
 									<span className='input-message-error'>{globalFormError}</span>
 								</div>
 							)}
-							<motion.div className='form-field' variants={itemAnimate}>
+							<motion.div className='form-field' variants={itemVariants}>
 								<Field type='email' name='email' placeholder='Email' />
 								<ErrorMessage name='email' component='span' className='input-message-error' />
 							</motion.div>
-							<motion.div className='form-field' variants={itemAnimate}>
+							<motion.div className='form-field' variants={itemVariants}>
 								<Field type='password' name='password' placeholder='Password' />
 								<ErrorMessage name='password' component='span' className='input-message-error' />
 							</motion.div>
-							<motion.button className='btn-primary btn-block' type='submit' disabled={isSubmitting} variants={itemAnimate}>
+							<motion.button className='btn-primary btn-block' type='submit' disabled={isSubmitting} variants={itemVariants}>
 								Sign in
 							</motion.button>
 						</Form>
 					)}
 				</Formik>
-				<motion.div className="auth__or" variants={itemAnimate}>
+				<motion.div className="auth__or" variants={itemVariants}>
 					<span>OR</span>
 				</motion.div>
-				<motion.div variants={itemAnimate}>
+				<motion.div variants={itemVariants}>
 					<Link className="btn-primary-ghost btn-block" to={REGISTER.path}>Register</Link>
 				</motion.div>
 			</motion.div>

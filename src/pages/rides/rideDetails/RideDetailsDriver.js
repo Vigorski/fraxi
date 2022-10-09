@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
 import { getUsers } from '../../../utilities/api/api';
 import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
 
 const RideDetailsDriver = ({userDetails, rideDetails}) => {
   const dispatch = useDispatch();
@@ -28,13 +30,19 @@ const RideDetailsDriver = ({userDetails, rideDetails}) => {
 	};
 
   return (
-    <section className='ride-details'>
+    <motion.section
+      className='ride-details'
+      variants={mainContainerVariants}
+			initial="initial"
+			animate="visible"
+			exit="hidden"
+    >
       <RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
 
-      <button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide}>
+      <motion.button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide} variants={itemVariants}>
         Cancel ride
-      </button>
-    </section>
+      </motion.button>
+    </motion.section>
   );
 }
 

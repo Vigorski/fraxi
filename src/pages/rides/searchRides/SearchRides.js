@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { motion } from 'framer-motion';
 
 import Layout from '../../../components/shared/Layout';
 import FormFilters from '../../../components/forms/FormFilters';
@@ -7,6 +8,7 @@ import RideResults from './RideResults';
 import RideFilters from './RideFilters';
 
 import { getFilteredRides } from '../../../store/rides/ridesAsyncActions';
+import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
 
 const SearchRides = () => {
 	const dispatch = useDispatch();
@@ -21,7 +23,13 @@ const SearchRides = () => {
 
 	return (
 		<Layout>
-			<section className='search-rides'>
+			<motion.section
+				className='search-rides'
+				variants={mainContainerVariants}
+				initial="initial"
+    		animate="visible"
+				exit="hidden"
+			>
 				<FormFilters
 					initialValues={{
 						origin: isRidePreferencesValid ? ridePreferences.origin : '',
@@ -36,10 +44,12 @@ const SearchRides = () => {
 				</FormFilters>
 				
 				{filteredRides.length > 0 ?
-					<RideResults filteredRides={filteredRides} /> :
-					<h2>No rides match your preferences</h2>
+					<div className='card__wrapper'>
+						<RideResults filteredRides={filteredRides} /> 
+					</div> :
+					<motion.h2 variants={itemVariants} className="h2-sm">No rides match your preferences</motion.h2>
 				}
-			</section>
+			</motion.section>
 		</Layout>
 	);
 };

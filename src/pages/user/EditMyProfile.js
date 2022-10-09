@@ -1,13 +1,22 @@
+import { motion } from 'framer-motion';
+
 import Layout from '../../components/shared/Layout';
 import RegisterEditUser from './RegisterEditUser';
+import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
 
 const EditMyProfile = () => {
 	return (
 		<Layout>
-			<section className='profile profile--edit'>
-				<h3>Edit profile</h3>
+			<motion.section
+				className='profile profile--edit'
+				variants={mainContainerVariants}
+				initial="initial"
+    		animate="visible"
+				exit="hidden"
+			>
+				<motion.h3 variants={itemVariants}>Edit profile</motion.h3>
 				<RegisterEditUser editUserProfile={true} />
-			</section>
+			</motion.section>
 		</Layout>
 	);
 };

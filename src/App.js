@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { AnimatePresence } from 'framer-motion';
@@ -17,6 +17,7 @@ import { FULLFILLED, REJECTED } from './utilities/constants/httpRequestStatus';
 
 function App() {
 	const dispatch = useDispatch();
+	const location = useLocation();
 	const { isLoggedIn, userDetails } = useSelector(state => state.user);
 	const { status, message } = useSelector(state => state.http);
 	const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
@@ -57,8 +58,8 @@ function App() {
 
 	return (
 		<>
-			<AnimatePresence>
-				<Switch key="main-switch">
+			<AnimatePresence mode='wait'>
+				<Switch key={location.pathname} location={location}>
 					<Route path='/' exact>
 						<Redirect to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
 					</Route>
