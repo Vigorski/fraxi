@@ -8,12 +8,11 @@ import { itemVariants } from '../../../utilities/constants/framerVariants';
 
 const RideResults = ({ filteredRides }) => {
 	return (
-		<>
-		{filteredRides.map(ride => {
+		filteredRides.map((ride, index) => {
 			const driverHasPicture = ride.driverDetails.profilePicture.length > 0;
 
 			return (
-				<motion.div variants={itemVariants} key={ride.rideId}>
+				<motion.div variants={itemVariants} transition={{delay: 0.1 * index}} key={ride.rideId}>
 					<Link to={{ pathname: `${RIDE_DETAILS.path}/${ride.rideId}`, state: { rideDetails: ride } }} className='card card__ride card--gray'>
 						<div className='card__body'>
 							<div className='card__section card__ride-info card__radius--top pb-0'>
@@ -47,41 +46,7 @@ const RideResults = ({ filteredRides }) => {
 					</Link>
 				</motion.div>	
 			);
-		})}
-		<motion.div variants={itemVariants}>
-							<Link className='card card__ride card--gray'>
-								<div className='card__body'>
-									<div className='card__section card__ride-info card__radius--top pb-0'>
-										<div className='row'>
-											<div className='col-7'>
-												<h6>{'ride.driverDetails.name'}</h6>
-												<p>{'N/A'}</p>
-												<p>{'N/A'}</p>
-											</div>
-											<div className='col-5'>
-												<div className='thumbnail__user'>
-													{<IconUserPlaceholder />}
-												</div>
-											</div>
-										</div>
-									</div>
-									<div className="card__stamp">
-										<div className="card__stamp-border" />
-									</div>
-									<div className='card__section card__ride-price card__radius--bottom pt-0'>
-										<div className='row'>
-											<div className='col-7'>
-												<h6>Price</h6>
-											</div>
-											<div className='col-5'>
-												<h6>${66}</h6>
-											</div>
-										</div>
-									</div>
-								</div>
-							</Link>
-						</motion.div>	
-		</>
+		})
 	);
 };
 

@@ -1,5 +1,7 @@
 ﻿.filters {
+	position: relative;
 	margin: 0 calc-rem(-6px);
+	z-index: 10;
 
 	.form-field {
     margin-bottom: calc-rem(14px);
