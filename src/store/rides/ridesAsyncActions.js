@@ -11,7 +11,7 @@ import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
 const cityAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
 const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
 
-const transformRideValues = (driverId, values) => {
+const transformRideValues = (driverId, route, values) => {
 	const newRideId = 'ride_' + uuidv4();
 	const creationDate = new Date().toUTCString();
 	const departureDateParsed = values.departureDate.toUTCString();
@@ -26,6 +26,7 @@ const transformRideValues = (driverId, values) => {
 		passengers: [],
 		numOfStops: null,
 		creationDate,
+    route,
 		status: 'active',
 		originAbbr: cityAbbr[indexOfOrigin],
 		destinationAbbr: cityAbbr[indexOfDestination],
@@ -42,11 +43,11 @@ const addDriverToRide = (rides, drivers) => {
 	return updatedRides;
 }
 
-export const addNewRide = createAsyncThunk('rides/addNewRide', async ({ driver, values }, { dispatch }) => {
+export const addNewRide = createAsyncThunk('rides/addNewRide', async ({ driver, route, values }, { dispatch }) => {
   dispatch(httpActions.requestSend());
   
   try {
-    const transformedValues = transformRideValues(driver.userId, values);
+    const transformedValues = transformRideValues(driver.userId, route, values);
     const transformedDriverActiveRides = { activeRides: [...driver.activeRides, transformedValues.rideId] };
 
     await Promise.all([

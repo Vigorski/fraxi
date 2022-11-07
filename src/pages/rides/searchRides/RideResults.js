@@ -7,6 +7,7 @@ import { RIDE_DETAILS } from '../../../utilities/constants/routes';
 import { itemVariants } from '../../../utilities/constants/framerVariants';
 
 const RideResults = ({ filteredRides }) => {
+	// TODO: fix error when selecting same city
 	return (
 		filteredRides.map((ride, index) => {
 			const driverHasPicture = ride.driverDetails.profilePicture.length > 0;

@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { motion } from 'framer-motion';
 
 import FormIKSelect from '../../../components/forms/FormIKSelect';
 import Layout from '../../../components/shared/Layout';
 import { addNewRide } from '../../../store/rides/ridesAsyncActions';
 import { addTime } from '../../../utilities/date-time';
-import { MKD_CITIES } from '../../../utilities/constants/cities';
+// import { MKD_CITIES } from '../../../utilities/constants/cities';
 import { MY_PROFILE } from '../../../utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
+import Map from '../../../components/shared/Map';
+import { mapsKey } from '../../../utilities/constants/map';
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
@@ -20,6 +23,7 @@ const CreateRide = () => {
 	const history = useHistory();
 	const { userDetails } = useSelector(state => state.user);
 	const dispatch = useDispatch();
+	const routeMapDetails = useRef({})
 
 	const handleValidation = values => {
 		const errors = {};
@@ -38,9 +42,19 @@ const CreateRide = () => {
 		return errors;
 	};
 
-	const citiesOptions = MKD_CITIES.map(city => {
-		return { value: city, label: city };
-	});
+	// const citiesOptions = MKD_CITIES.map(city => {
+	// 	return { value: city, label: city };
+	// });
+
+	const mapRender = (status) => {
+		if (status === Status.FAILURE) return <p>Error loading maps</p>;
+  	
+		return <p>Loading...</p>;
+	};
+
+	const handleRouteMapDetails = useCallback((route) => {
+		routeMapDetails.current = route;
+	}, []);
 
 	return (
 		<Layout>
@@ -53,8 +67,8 @@ const CreateRide = () => {
 			>
 				<Formik
 					initialValues={{
-						origin: 'Skopje',
-						destination: 'Skopje',
+						// origin: 'Skopje',
+						// destination: 'Skopje',
 						price: 0,
 						maxPassengers: 4,
 						departureDate: minDepartureDate,
@@ -63,15 +77,14 @@ const CreateRide = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(addNewRide({ driver: userDetails, values })).unwrap();
-						// toast("Wow so easy !")
+						await dispatch(addNewRide({ driver: userDetails, route: routeMapDetails.current, values })).unwrap();
 						setSubmitting(false);
 						history.push(MY_PROFILE.path);
 					}}
 				>
-					{({ isSubmitting }) => (
+					{({ isSubmitting, values }) => (
 						<Form>
-							<motion.div className='form-field' variants={itemVariants}>
+							{/* <motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='origin'>Origin</label>
 								<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />
 								<ErrorMessage name='origin' component='span' className='input-message-error' />
@@ -80,6 +93,17 @@ const CreateRide = () => {
 								<label htmlFor='destination'>Destination</label>
 								<Field name='destination' id='destination' component={FormIKSelect} options={citiesOptions} />
 								<ErrorMessage name='destination' component='span' className='input-message-error' />
+							</motion.div> */}
+							<motion.div className='form-field' variants={itemVariants}>
+								<Wrapper apiKey={mapsKey} render={mapRender}>
+									<Map 
+										center={{lat: -34.397, lng: 150.644}}
+										zoom={20}
+										originCity={'Skopje'}
+										destinationCity={'Prilep'}
+										handleRouteMapDetails={handleRouteMapDetails}
+									/>
+								</Wrapper>
 							</motion.div>
 							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='departureDate'>Departure date</label>
@@ -131,7 +155,6 @@ const CreateRide = () => {
 								/>
 								<ErrorMessage name='smoking' component='span' className='input-message-error' />
 							</motion.div>
-
 							<motion.button className='btn-primary btn-block mt-xl' type='submit' disabled={isSubmitting} variants={itemVariants}>
 								Create ride
 							</motion.button>
