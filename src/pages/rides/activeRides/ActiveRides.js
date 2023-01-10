@@ -14,7 +14,7 @@ const ActiveRides = () => {
 				className='active-rides'
 				variants={mainContainerVariants}
 				initial="initial"
-    		animate="visible"
+    			animate="visible"
 				exit="hidden"
 			>
 				<div className='card__wrapper'>

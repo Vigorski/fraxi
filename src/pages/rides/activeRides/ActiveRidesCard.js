@@ -11,11 +11,11 @@ const ActiveRidesCard = ({ activeRides }) =>
       <motion.div variants={itemVariants} key={ride.rideId}>
         <Link to={{ pathname: `${RIDE_DETAILS.path}/${ride.rideId}`, state: { rideDetails: ride } }} className='card card--dark card--stats'>
           <div className='card__header card__decorated card__decorated--active'>
-            <p>{ride.originAbbr ?? 'N/A'}</p>
+            <p>{ride.route.startLoc.cityAbbr ?? 'N/A'}</p>
             <div className='card__decorated-dash' />
             <i className='icon-car-ride icon-md' />
             <div className='card__decorated-dash' />
-            <p>{ride.destinationAbbr ?? 'N/A'}</p>
+            <p>{ride.route.endLoc.cityAbbr ?? 'N/A'}</p>
           </div>
           <div className='card__body'>
             <div className='card__section card__radius--bottom'>

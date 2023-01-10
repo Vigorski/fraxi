@@ -6,30 +6,22 @@ import { userActions } from '../user/userSlice';
 import { httpActions } from '../http/httpSlice';
 import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
 import { DRIVER, PASSENGER } from '../../utilities/constants/users';
-import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
-
-const cityAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
-const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
 
 const transformRideValues = (driverId, route, values) => {
 	const newRideId = 'ride_' + uuidv4();
 	const creationDate = new Date().toUTCString();
 	const departureDateParsed = values.departureDate.toUTCString();
-	const indexOfOrigin = citiesFull.indexOf(values.origin);
-	const indexOfDestination = citiesFull.indexOf(values.destination);
 
 	return {
 		...values,
+		creationDate,
 		departureDate: departureDateParsed,
 		rideId: newRideId,
 		driverId,
-		passengers: [],
-		numOfStops: null,
-		creationDate,
     route,
-		status: 'active',
-		originAbbr: cityAbbr[indexOfOrigin],
-		destinationAbbr: cityAbbr[indexOfDestination],
+		passengers: [],
+		numOfStops: 0,
+		status: 'active'
 	};
 };
 

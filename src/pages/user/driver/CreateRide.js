@@ -11,11 +11,10 @@ import FormIKSelect from '../../../components/forms/FormIKSelect';
 import Layout from '../../../components/shared/Layout';
 import { addNewRide } from '../../../store/rides/ridesAsyncActions';
 import { addTime } from '../../../utilities/date-time';
-// import { MKD_CITIES } from '../../../utilities/constants/cities';
 import { MY_PROFILE } from '../../../utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
-import Map from '../../../components/shared/Map';
 import { mapsKey } from '../../../utilities/constants/map';
+import Map from '../../../components/shared/Map';
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
@@ -42,10 +41,6 @@ const CreateRide = () => {
 		return errors;
 	};
 
-	// const citiesOptions = MKD_CITIES.map(city => {
-	// 	return { value: city, label: city };
-	// });
-
 	const mapRender = (status) => {
 		if (status === Status.FAILURE) return <p>Error loading maps</p>;
   	
@@ -62,13 +57,11 @@ const CreateRide = () => {
 				className='profile profile--edit'
 				variants={mainContainerVariants}
 				initial="initial"
-    		animate="visible"
+    			animate="visible"
 				exit="hidden"
 			>
 				<Formik
 					initialValues={{
-						// origin: 'Skopje',
-						// destination: 'Skopje',
 						price: 0,
 						maxPassengers: 4,
 						departureDate: minDepartureDate,
@@ -84,18 +77,8 @@ const CreateRide = () => {
 				>
 					{({ isSubmitting, values }) => (
 						<Form>
-							{/* <motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='origin'>Origin</label>
-								<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />
-								<ErrorMessage name='origin' component='span' className='input-message-error' />
-							</motion.div>
 							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='destination'>Destination</label>
-								<Field name='destination' id='destination' component={FormIKSelect} options={citiesOptions} />
-								<ErrorMessage name='destination' component='span' className='input-message-error' />
-							</motion.div> */}
-							<motion.div className='form-field' variants={itemVariants}>
-								<Wrapper apiKey={mapsKey} render={mapRender}>
+								<Wrapper apiKey={mapsKey} render={mapRender} language='en'>
 									<Map 
 										center={{lat: -34.397, lng: 150.644}}
 										zoom={20}
