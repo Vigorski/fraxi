@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -14,7 +14,9 @@ import { addTime } from '../../../utilities/date-time';
 import { MY_PROFILE } from '../../../utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
 import { mapsKey } from '../../../utilities/constants/map';
-import Map from '../../../components/shared/Map';
+import { MKD_CITIES_ABBREVIATED } from '../../../utilities/constants/cities';
+import Map from '../../../components/map/Map';
+
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
@@ -47,9 +49,44 @@ const CreateRide = () => {
 		return <p>Loading...</p>;
 	};
 
-	const handleRouteMapDetails = useCallback((route) => {
-		routeMapDetails.current = route;
-	}, []);
+	const storeRouteMapDetails = (directions) => {
+		routeMapDetails.current = directions;
+	}
+
+	const extrapolateDirectionsData = type => {
+		const directions = routeMapDetails.current;
+		const citiesAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
+		const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
+		const splitAddress = directions.routes[0].legs[0][`${type}_address`].replace(/,/g, '').split(' ');
+		let city = null;
+	  let cityAbbr = null;
+
+		for(const chunk of splitAddress) {
+			for(let i = 0; i < citiesFull.length; i++) {
+				if(citiesFull[i] === chunk){
+					city = chunk;
+					cityAbbr = citiesAbbr[i];
+				}
+			}
+	  }
+
+		return {
+			lat: directions.routes[0].legs[0][`${type}_location`].lat(),
+			lng: directions.routes[0].legs[0][`${type}_location`].lng(),
+			address: directions.routes[0].legs[0][`${type}_address`],
+			city,
+			cityAbbr
+		}
+	}
+
+	const handleRouteMapDetails = () => {
+	  // there should be only one leg, no need to iterate
+	  return {
+			startLoc: extrapolateDirectionsData('start'),          
+			endLoc: extrapolateDirectionsData('end'),
+			waypoints: null
+	  }
+	}
 
 	return (
 		<Layout>
@@ -70,7 +107,7 @@ const CreateRide = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(addNewRide({ driver: userDetails, route: routeMapDetails.current, values })).unwrap();
+						await dispatch(addNewRide({ driver: userDetails, route: handleRouteMapDetails(), values })).unwrap();
 						setSubmitting(false);
 						history.push(MY_PROFILE.path);
 					}}
@@ -84,7 +121,7 @@ const CreateRide = () => {
 										zoom={20}
 										originCity={'Skopje'}
 										destinationCity={'Prilep'}
-										handleRouteMapDetails={handleRouteMapDetails}
+										storeRouteMapDetails={storeRouteMapDetails}
 									/>
 								</Wrapper>
 							</motion.div>

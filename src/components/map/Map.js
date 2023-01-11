@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-import { MKD_CITIES_ABBREVIATED } from '../../utilities/constants/cities';
-
 function displayRoute(origin, destination, service, display) {
   service
     .route({
@@ -44,7 +42,7 @@ function computeTotalDistanceAndDuration(result) {
   }
 }
 
-const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', handleRouteMapDetails}) => {
+const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', storeRouteMapDetails}) => {
   const mapRef = useRef(null);
   const [map, setMap] = useState();
   const shouldMapRerender = useRef(false);
@@ -56,15 +54,13 @@ const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', h
   
   useEffect(() => {
     if (mapRef.current && !map) {
-      const cityAbbrArray = Object.keys(MKD_CITIES_ABBREVIATED);
-      const citiesFullArray = Object.values(MKD_CITIES_ABBREVIATED);
-
       const map = new window.google.maps.Map(mapRef.current, {
         center,
         zoom,
         streetViewControl: false,
         fullscreenControl: false,
         mapTypeControl: false,
+        mapId: 'ffdebe996c6f4496',
         // disableDefaultUI: true
       });
 
@@ -89,52 +85,8 @@ const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', h
           //     console.log('Geocode was not successful for the following reason: ' + status);
           //   }
           // });
-
-          // #TODO: turn the abbreviated city seciton in a more readable block
-          const splitOriginAddress = directions.routes[0].legs[0].start_address.replace(/,/g, '').split(' ');
-          const splitDestinationAddress = directions.routes[0].legs[0].end_address.replace(/,/g, '').split(' ');
-          let originCity = null;
-          let destinationCity = null;
-          let originCityAbbr = null;
-          let destinationCityAbbr = null;
-
-          for(const chunk of splitOriginAddress) {
-            for(let i = 0; i < citiesFullArray.length; i++) {
-              if(citiesFullArray[i] === chunk){
-                originCity = chunk;
-                originCityAbbr = cityAbbrArray[i];
-              }
-            }
-          }
-
-          for(const chunk of splitDestinationAddress) {
-            for(let i = 0; i < citiesFullArray.length; i++) {
-              if(citiesFullArray[i] === chunk){
-                destinationCity = chunk;
-                destinationCityAbbr = cityAbbrArray[i];
-              }
-            }
-          }
-
-          // there should be only one leg, no need to iterate
-          const routeDetails = {
-            startLoc: {
-              lat: directions.routes[0].legs[0].start_location.lat(),
-              lng: directions.routes[0].legs[0].start_location.lng(),
-              address: directions.routes[0].legs[0].start_address,
-              city: originCity,
-              cityAbbr: originCityAbbr
-            },          
-            endLoc: {
-              lat: directions.routes[0].legs[0].end_location.lat(),
-              lng: directions.routes[0].legs[0].end_location.lng(),
-              address: directions.routes[0].legs[0].end_address,
-              city: destinationCity,
-              cityAbbr: destinationCityAbbr
-            }
-          }
-          
-          handleRouteMapDetails(routeDetails)
+          console.log(directions)
+          storeRouteMapDetails(directions)
           setTotalDistanceAndDuration(computeTotalDistanceAndDuration(directions));
           setOrigin(directions.routes[0].legs[0].start_address);
           setDestination(directions.routes[0].legs[0].end_address);  
@@ -148,7 +100,7 @@ const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', h
         directionsRendererRef.current
       );
     }
-  }, [map, mapRef, center, zoom, origin, destination, directionsService, handleRouteMapDetails]);
+  }, [map, mapRef, center, zoom, origin, destination, directionsService, storeRouteMapDetails]);
 
   useEffect(() => {
     if(shouldMapRerender.current) {
@@ -161,7 +113,7 @@ const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', h
           directionsService,
           directionsRendererRef.current
         );
-      }, 500);
+      }, 1000);
   
       return () => {
         clearTimeout(handler);
