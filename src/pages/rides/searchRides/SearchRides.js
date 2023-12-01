@@ -27,7 +27,7 @@ const SearchRides = () => {
 				className='search-rides'
 				variants={mainContainerVariants}
 				initial="initial"
-    		animate="visible"
+    			animate="visible"
 				exit="hidden"
 			>
 				<FormFilters

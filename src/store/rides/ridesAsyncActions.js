@@ -4,7 +4,7 @@ import { arrayUnion, arrayRemove } from 'firebase/firestore';
 
 import { userActions } from '../user/userSlice';
 import { httpActions } from '../http/httpSlice';
-import { getFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
+import { getFB, getNestedFB, addFBWithId, updateFB } from '../../utilities/api/firebase-api';
 import { DRIVER, PASSENGER } from '../../utilities/constants/users';
 
 const transformRideValues = (driverId, route, values) => {
@@ -143,7 +143,12 @@ export const getFilteredRides = createAsyncThunk('rides/getFilteredRides', async
     const uniqueDriverIds = [];
     // TODO: make additional conditional filters for less important aspects
     // TODO: if too few results, remove some filters
-    const ridesResponse = await getFB('/rides', searchPreferences, ['destination', 'origin', 'rideType', 'smoking']);
+    const ridesResponse = await getNestedFB(
+      '/rides',
+      searchPreferences,
+      ['route.endLoc.city', 'route.startLoc.city', 'rideType', 'smoking' ],
+      ['destination', 'origin', 'rideType', 'smoking']
+    );
 
     for (const ride of ridesResponse) {
       if (uniqueDriverIds.indexOf(ride.driverId) === -1) {

@@ -22,8 +22,26 @@ const dbFB = getFirestore(app);
 //get once
 export const getFB = async (url, val, queryParamValues) => {
 	// this is probably not a good way to make complex queries
-	const queryParams = queryParamValues.map((param) => {
+	const queryParams = queryParamValues.map(param => {		
 		return where(param, '==', val[param]);
+	});
+	const data = [];
+	const colRef = collection(dbFB, url);
+	const complexQuery = query(colRef, ...queryParams);
+
+	const snapshot = await getDocs(complexQuery);
+
+	snapshot.docs.forEach((doc) => {
+		data.push({ ...doc.data(), id: doc.id });
+	});
+
+	return data;
+};
+
+// get nested
+export const getNestedFB = async (url, val, queryParamValues, nestedObjectAccessNodes = false) => {
+	const queryParams = queryParamValues.map((param, index) => {
+		return where(param, '==', val[nestedObjectAccessNodes[index]]);
 	});
 	const data = [];
 	const colRef = collection(dbFB, url);

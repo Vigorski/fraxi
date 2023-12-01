@@ -47,7 +47,7 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 					<div className='col-6'>
 						<div className='ride-details__info'>
 							<motion.p variants={itemVariants}>
-								<IconMarker /> <span>{rideDetails.origin}</span>
+								<IconMarker /> <span>{rideDetails.route.startLoc.city}</span>
 							</motion.p>
 							<motion.p variants={itemVariants}>
 								<IconPhone /> <span>{driverDetails.phone}</span>

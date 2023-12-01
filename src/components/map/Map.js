@@ -5,9 +5,7 @@ function displayRoute(origin, destination, service, display) {
     .route({
       origin,
       destination,
-      // waypoints: [
-      //   { location: "Hristo Smirnenski 22, Skopje" }
-      // ],
+      waypoints: [],
       travelMode: window.google.maps.TravelMode.DRIVING,
       // avoidTolls: true,
     })
@@ -60,7 +58,8 @@ const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', s
         streetViewControl: false,
         fullscreenControl: false,
         mapTypeControl: false,
-        mapId: 'ffdebe996c6f4496',
+        mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
+        language: 'en',
         // disableDefaultUI: true
       });
 
@@ -74,22 +73,53 @@ const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', s
       //no need to remove listener here because event is attached only once
       directionsRendererRef.current.addListener("directions_changed", () => {
         const directions = directionsRendererRef.current.getDirections();
+        const currentRoute = {
+          start_address: directions.routes[0].legs[0].start_address,
+          start_location: {
+            lat: directions.routes[0].legs[0].start_location.lat(),
+            lng: directions.routes[0].legs[0].start_location.lng()
+          },
+          end_address: directions.routes[0].legs[0].end_address,
+          end_location: {
+            lat: directions.routes[0].legs[0].end_location.lat(),
+            lng: directions.routes[0].legs[0].end_location.lng()
+          },
+          start_city: null,
+          end_city: null,
+        }
 
         if (directions) {
-          // const geocoder = new window.google.maps.Geocoder();
-          // geocoder.geocode({location: {lat: directions.routes[0].legs[0].start_location.lat(), lng: directions.routes[0].legs[0].start_location.lng()}}, function(results, status) {
-          //   if (status === 'OK') {
-          //     console.log(results[0])
-          //     console.log(results[0].address_components[results[0].address_components.length - 4].long_name)
-          //   } else {
-          //     console.log('Geocode was not successful for the following reason: ' + status);
-          //   }
-          // });
-          console.log(directions)
-          storeRouteMapDetails(directions)
+          const geocoder = new window.google.maps.Geocoder();
+
+          geocoder.geocode(
+            {
+              location: {
+                lat: currentRoute.start_location.lat,
+                lng: currentRoute.start_location.lng
+              },
+              language: 'en'
+            },
+            function(results, status) {
+              const originCity = results[0].address_components.find(component => component.types.includes("locality") || component.types.includes("administrative_area_level_3")).long_name;
+
+              if (status === 'OK') {
+                if(!!originCity) {
+                  console.log(directions);
+                  currentRoute.start_city = originCity;
+                } else {
+                  // dispatch(httpActions.requestError('Location not supported!'));
+                }
+              } else {
+                console.log('Geocode was not successful for the following reason: ' + status);
+              }
+            }
+          );
+          
+          // console.log(directions.routes[0].legs[0].end_address)
+          storeRouteMapDetails(currentRoute)
           setTotalDistanceAndDuration(computeTotalDistanceAndDuration(directions));
-          setOrigin(directions.routes[0].legs[0].start_address);
-          setDestination(directions.routes[0].legs[0].end_address);  
+          setOrigin(currentRoute.start_address);
+          setDestination(currentRoute.end_address);  
         }
       });
 

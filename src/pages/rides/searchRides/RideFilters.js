@@ -7,7 +7,7 @@ import { MKD_CITIES_ABBREVIATED } from '../../../utilities/constants/cities';
 import { itemVariants } from '../../../utilities/constants/framerVariants';
 
 const citiesOptions = Object.entries(MKD_CITIES_ABBREVIATED).map(([cityKey, cityVal]) => {
-  return { value: cityVal, label: cityKey };
+  return { label: cityKey, value: cityVal };
 });
 
 const RideFilters = () => {

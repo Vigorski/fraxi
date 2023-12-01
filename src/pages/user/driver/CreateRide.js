@@ -13,7 +13,6 @@ import { addNewRide } from '../../../store/rides/ridesAsyncActions';
 import { addTime } from '../../../utilities/date-time';
 import { MY_PROFILE } from '../../../utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
-import { mapsKey } from '../../../utilities/constants/map';
 import { MKD_CITIES_ABBREVIATED } from '../../../utilities/constants/cities';
 import Map from '../../../components/map/Map';
 
@@ -24,7 +23,9 @@ const CreateRide = () => {
 	const history = useHistory();
 	const { userDetails } = useSelector(state => state.user);
 	const dispatch = useDispatch();
-	const routeMapDetails = useRef({})
+	const routeMapDetails = useRef({});
+	const citiesAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
+	const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
 
 	const handleValidation = values => {
 		const errors = {};
@@ -41,39 +42,34 @@ const CreateRide = () => {
 		}
 
 		return errors;
-	};
+	}
 
-	const mapRender = (status) => {
+	const mapRender = status => {
 		if (status === Status.FAILURE) return <p>Error loading maps</p>;
   	
 		return <p>Loading...</p>;
-	};
+	}
 
-	const storeRouteMapDetails = (directions) => {
+	const storeRouteMapDetails = directions => {
 		routeMapDetails.current = directions;
 	}
 
 	const extrapolateDirectionsData = type => {
-		const directions = routeMapDetails.current;
-		const citiesAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
-		const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
-		const splitAddress = directions.routes[0].legs[0][`${type}_address`].replace(/,/g, '').split(' ');
+		const directionsCity = routeMapDetails.current[`${type}_location`];
 		let city = null;
-	  let cityAbbr = null;
+	  	let cityAbbr = null;
 
-		for(const chunk of splitAddress) {
-			for(let i = 0; i < citiesFull.length; i++) {
-				if(citiesFull[i] === chunk){
-					city = chunk;
-					cityAbbr = citiesAbbr[i];
-				}
+		for(let i = 0; i < citiesFull.length; i++) {
+			if(citiesFull[i] === directionsCity){
+				city = citiesFull[i];
+				cityAbbr = citiesAbbr[i];
 			}
-	  }
+		}
 
 		return {
-			lat: directions.routes[0].legs[0][`${type}_location`].lat(),
-			lng: directions.routes[0].legs[0][`${type}_location`].lng(),
-			address: directions.routes[0].legs[0][`${type}_address`],
+			lat: routeMapDetails.current[`${type}_location`].lat,
+			lng: routeMapDetails.current[`${type}_location`].lng,
+			address: routeMapDetails.current[`${type}_address`],
 			city,
 			cityAbbr
 		}
@@ -115,7 +111,7 @@ const CreateRide = () => {
 					{({ isSubmitting, values }) => (
 						<Form>
 							<motion.div className='form-field' variants={itemVariants}>
-								<Wrapper apiKey={mapsKey} render={mapRender} language='en'>
+								<Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} render={mapRender}>
 									<Map 
 										center={{lat: -34.397, lng: 150.644}}
 										zoom={20}
