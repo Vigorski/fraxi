@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { motion } from 'framer-motion';
 
 import FormIKSelect from '../../../components/forms/FormIKSelect';
@@ -42,12 +41,6 @@ const CreateRide = () => {
 		}
 
 		return errors;
-	}
-
-	const mapRender = status => {
-		if (status === Status.FAILURE) return <p>Error loading maps</p>;
-  	
-		return <p>Loading...</p>;
 	}
 
 	const storeRouteMapDetails = directions => {
@@ -111,15 +104,13 @@ const CreateRide = () => {
 					{({ isSubmitting, values }) => (
 						<Form>
 							<motion.div className='form-field' variants={itemVariants}>
-								<Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} render={mapRender}>
-									<Map 
-										center={{lat: -34.397, lng: 150.644}}
-										zoom={20}
-										originCity={'Skopje'}
-										destinationCity={'Prilep'}
-										storeRouteMapDetails={storeRouteMapDetails}
-									/>
-								</Wrapper>
+								<Map 
+									center={{lat: 41.6, lng: 21.7}}
+									zoom={8}
+									originCity={'Skopje'}
+									destinationCity={'Prilep'}
+									storeRouteMapDetails={storeRouteMapDetails}
+								/>
 							</motion.div>
 							<motion.div className='form-field' variants={itemVariants}>
 								<label htmlFor='departureDate'>Departure date</label>

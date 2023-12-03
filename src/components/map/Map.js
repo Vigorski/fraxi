@@ -1,183 +1,158 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useRef, useEffect, memo, useCallback } from 'react';
+import {
+	useJsApiLoader,
+	GoogleMap,
+	Marker,
+	Autocomplete,
+	DirectionsRenderer
+} from '@react-google-maps/api';
 
-function displayRoute(origin, destination, service, display) {
-  service
-    .route({
-      origin,
-      destination,
-      waypoints: [],
-      travelMode: window.google.maps.TravelMode.DRIVING,
-      // avoidTolls: true,
-    })
-    .then((result) => {
-      display.setDirections(result);
-    })
-    .catch((e) => {
-      console.log("Could not display directions due to: " + e);
-    });
-}
+const libraries = ['places'];
 
-function computeTotalDistanceAndDuration(result) {
-  let totalDistance = 0;
-  let totalDuration = 0;
-  const myroute = result.routes[0];
+const Map = ({
+	center,
+	zoom,
+	originCity,
+	destinationCity,
+	storeRouteMapDetails
+}) => {
+	const { isLoaded, loadError } = useJsApiLoader({
+		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+		libraries: libraries
+	});
 
-  if (!myroute) {
-    return;
-  }
+	const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+	const [origin, setOrigin] = useState('');
+	const [destination, setDestination] = useState('');
+	const [directions, setDirections] = useState(null);
+	// const originMarkerRef = useRef(null);
+  // const destinationMarkerRef = useRef(null);
+  const originObjRef = useRef(null);
+  const destinationObjRef = useRef(null);
 
-  for (let i = 0; i < myroute.legs.length; i++) {
-    totalDistance += myroute.legs[i].distance.value;
-    totalDuration += myroute.legs[i].duration.value;
-  }
+	const onLoad = map => {
+		setMap(map);
+	};
+console.log('before component')
+	const onDirectionsChanged = () => {
+		if (map) {
+			const directionsRenderer = new window.google.maps.DirectionsRenderer();
+			directionsRenderer.setMap(map);
+			directionsRenderer.setDirections(directions);
+		}
+	};
 
-  totalDistance = totalDistance / 1000;
-  totalDuration = totalDuration / 60 / 60;
+	useEffect(() => {
+		console.log('inside useEffect - setting destination');
+		if (origin && destination) {
+			const directionsService = new window.google.maps.DirectionsService();
+			directionsService.route(
+				{
+					origin,
+					destination,
+					travelMode: window.google.maps.TravelMode.DRIVING
+				},
+				(result, status) => {
+					if (status === window.google.maps.DirectionsStatus.OK) {
+						setDirections(result);
+					} else {
+						console.error(`Error fetching directions ${result}`);
+					}
+				}
+			);
+		}
+	}, [origin, destination]);
 
-  return {
-    distance: totalDistance.toFixed(1),
-    duration: totalDuration.toFixed(2)
-  }
-}
+	const handleOriginChange = () => {
+		setOrigin(originObjRef.current.getPlace().formatted_address);
+		console.log(originObjRef.current.getPlace())
+	};
 
-const Map = ({center, zoom, originCity = 'Skopje', destinationCity = 'Prilep', storeRouteMapDetails}) => {
-  const mapRef = useRef(null);
-  const [map, setMap] = useState();
-  const shouldMapRerender = useRef(false);
-  const [origin, setOrigin] = useState(originCity);
-  const [destination, setDestination] = useState(destinationCity);
-  const [totalDistanceAndDuration, setTotalDistanceAndDuration] = useState({});
-  const directionsRendererRef = useRef();
-  const directionsService = useMemo(() => new window.google.maps.DirectionsService(), []);
-  
-  useEffect(() => {
-    if (mapRef.current && !map) {
-      const map = new window.google.maps.Map(mapRef.current, {
-        center,
-        zoom,
-        streetViewControl: false,
-        fullscreenControl: false,
-        mapTypeControl: false,
-        mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
-        language: 'en',
-        // disableDefaultUI: true
-      });
+	const handleDestinationChange = () => {
+		setDestination(destinationObjRef.current.getPlace().formatted_address);
+	};
 
-      setMap(map);
+	if (loadError) {
+		return <div>Error loading Google Maps API: {loadError.message}</div>;
+	}
 
-      directionsRendererRef.current = new window.google.maps.DirectionsRenderer({
-        draggable: true,
-        map: map
-      });
-      
-      //no need to remove listener here because event is attached only once
-      directionsRendererRef.current.addListener("directions_changed", () => {
-        const directions = directionsRendererRef.current.getDirections();
-        const currentRoute = {
-          start_address: directions.routes[0].legs[0].start_address,
-          start_location: {
-            lat: directions.routes[0].legs[0].start_location.lat(),
-            lng: directions.routes[0].legs[0].start_location.lng()
-          },
-          end_address: directions.routes[0].legs[0].end_address,
-          end_location: {
-            lat: directions.routes[0].legs[0].end_location.lat(),
-            lng: directions.routes[0].legs[0].end_location.lng()
-          },
-          start_city: null,
-          end_city: null,
-        }
+	if (!isLoaded) {
+		return <div>Loading...</div>;
+	}
 
-        if (directions) {
-          const geocoder = new window.google.maps.Geocoder();
+	return (
+		<>
+		{console.log('inside comp')}
+			<div className="form-field">
+				<label htmlFor="origin">Origin</label>
+				<Autocomplete onLoad={(ac => {originObjRef.current = ac})} onPlaceChanged={handleOriginChange}>
+					<input
+						type="text"
+						id="origin"
+						placeholder="Enter origin"
+						// value={origin}
+						// onChange={e => setOrigin(e.target.value)}
+					/>
+				</Autocomplete>
+			</div>
+			<div className="form-field">
+				<label htmlFor="destination">Destination</label>
+				<Autocomplete onLoad={(ac => {destinationObjRef.current = ac})} onPlaceChanged={handleDestinationChange}>
+					<input
+						type="text"
+						id="destination"
+						placeholder="Enter destination"
+						// value={destination}
+						// onChange={e => setDestination(e.target.value)}
+					/>
+				</Autocomplete>
+			</div>
+			<div className="map__wrapper">
+				{/* {directionsResponse && (
+					<div className="map__distance">
+						{distance} / {duration}
+					</div>
+				)} */}
+				<GoogleMap
+					center={center}
+					zoom={zoom}
+					mapContainerStyle={{ width: '100%', height: '500px' }}
+					options={{
+						zoomControl: false,
+						streetViewControl: false,
+						mapTypeControl: false,
+						fullscreenControl: false,
+						mapId: process.env.REACT_APP_GOOGLE_MAP_ID
+					}}
+					onLoad={onLoad}
+					onUnmount={() => setMap(null)}
+				>
+					{/* {origin && (
+						<Marker
+							position={{ lat: parseFloat(origin.split(',')[0]), lng: parseFloat(origin.split(',')[1]) }}
+							draggable={true}
+							onDragEnd={(e) => onMarkerDragEnd('origin', e)}
+							ref={originMarkerRef}
+						/>
+					)}
+					{destination && (
+						<Marker
+							position={{ lat: parseFloat(destination.split(',')[0]), lng: parseFloat(destination.split(',')[1]) }}
+							draggable={true}
+							onDragEnd={(e) => onMarkerDragEnd('destination', e)}
+							ref={destinationMarkerRef}
+						/>
+					)} */}
+					{directions && (
+						<DirectionsRenderer
+							directions={directions}
+							onChange={onDirectionsChanged}
+						/>
+					)}
+				</GoogleMap>
+			</div>
+		</>
+	);
+};
 
-          geocoder.geocode(
-            {
-              location: {
-                lat: currentRoute.start_location.lat,
-                lng: currentRoute.start_location.lng
-              },
-              language: 'en'
-            },
-            function(results, status) {
-              const originCity = results[0].address_components.find(component => component.types.includes("locality") || component.types.includes("administrative_area_level_3")).long_name;
-
-              if (status === 'OK') {
-                if(!!originCity) {
-                  console.log(directions);
-                  currentRoute.start_city = originCity;
-                } else {
-                  // dispatch(httpActions.requestError('Location not supported!'));
-                }
-              } else {
-                console.log('Geocode was not successful for the following reason: ' + status);
-              }
-            }
-          );
-          
-          // console.log(directions.routes[0].legs[0].end_address)
-          storeRouteMapDetails(currentRoute)
-          setTotalDistanceAndDuration(computeTotalDistanceAndDuration(directions));
-          setOrigin(currentRoute.start_address);
-          setDestination(currentRoute.end_address);  
-        }
-      });
-
-      displayRoute(
-        origin,
-        destination,
-        directionsService,
-        directionsRendererRef.current
-      );
-    }
-  }, [map, mapRef, center, zoom, origin, destination, directionsService, storeRouteMapDetails]);
-
-  useEffect(() => {
-    if(shouldMapRerender.current) {
-      shouldMapRerender.current = false;
-
-      const handler = setTimeout(() => {
-        displayRoute(
-          origin,
-          destination,
-          directionsService,
-          directionsRendererRef.current
-        );
-      }, 1000);
-  
-      return () => {
-        clearTimeout(handler);
-      };
-    }
-  }, [origin, destination, directionsService, directionsRendererRef]);
-
-  const handleOriginInput = e => {
-    shouldMapRerender.current = true;
-    setOrigin(e.target.value)
-  }
-
-  const handleDestinationInput = e => {
-    shouldMapRerender.current = true;
-    setDestination(e.target.value)
-  }
-  
-  return (
-    <>
-      <div className="form-field">
-        <label htmlFor="origin">Origin</label>
-        <input type='text' id="origin" value={origin} onChange={handleOriginInput} />
-      </div>
-      <div className="form-field">
-        <label htmlFor="destination">Destination</label>
-        <input type='text' id="destination" value={destination} onChange={handleDestinationInput} />
-      </div>
-      
-      <div className="map__wrapper">
-        <div className="map__distance">{totalDistanceAndDuration.distance} km / {totalDistanceAndDuration.duration}h</div>
-        <div ref={mapRef} id='map' className="map__route" style={{height: '500px'}} />
-      </div>
-    </>
-  );
-}
-
-export default Map;
+export default memo(Map);
