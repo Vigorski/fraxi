@@ -8,6 +8,7 @@ import { bookRide } from '../../../store/rides/ridesAsyncActions';
 import { IconUserPlaceholder, IconMarker, IconPhone } from '../../../components/icons';
 import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
+import Map from '../../../components/map/Map';
 
 const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 	const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 					<div className='col-6'>
 						<div className='ride-details__info'>
 							<motion.p variants={itemVariants}>
-								<IconMarker /> <span>{rideDetails.route.startLoc.city}</span>
+								<IconMarker /> <span>{rideDetails.route.origin.address_components.city}</span>
 							</motion.p>
 							<motion.p variants={itemVariants}>
 								<IconPhone /> <span>{driverDetails.phone}</span>
@@ -57,6 +58,16 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 					</div>
 				</div>
 			</div>
+
+			<motion.div className='form-field' variants={itemVariants}>
+				<Map 
+					center={{lat: 41.6, lng: 21.7}}
+					zoom={8}
+					// originCity={'Skopje, North Macedonia'}
+					// destinationCity={'Prilep, North Macedonia'}
+					// storeRouteMapDetails={storeRouteMapDetails}
+				/>
+			</motion.div>
 
 			<RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} driverDetails={driverDetails} isRideBooked={isRideBooked} />
 

@@ -12,8 +12,8 @@ import { addNewRide } from '../../../store/rides/ridesAsyncActions';
 import { addTime } from '../../../utilities/date-time';
 import { MY_PROFILE } from '../../../utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
-import { MKD_CITIES_ABBREVIATED } from '../../../utilities/constants/cities';
-import Map from '../../../components/map/Map';
+// import Map from '../../../components/map/Map';
+import CreateRouteMap from '../../../components/map/CreateRouteMap';
 
 
 const CreateRide = () => {
@@ -23,8 +23,6 @@ const CreateRide = () => {
 	const { userDetails } = useSelector(state => state.user);
 	const dispatch = useDispatch();
 	const routeMapDetails = useRef({});
-	const citiesAbbr = Object.keys(MKD_CITIES_ABBREVIATED);
-	const citiesFull = Object.values(MKD_CITIES_ABBREVIATED);
 
 	const handleValidation = values => {
 		const errors = {};
@@ -47,36 +45,6 @@ const CreateRide = () => {
 		routeMapDetails.current = directions;
 	}
 
-	const extrapolateDirectionsData = type => {
-		const directionsCity = routeMapDetails.current[`${type}_location`];
-		let city = null;
-	  	let cityAbbr = null;
-
-		for(let i = 0; i < citiesFull.length; i++) {
-			if(citiesFull[i] === directionsCity){
-				city = citiesFull[i];
-				cityAbbr = citiesAbbr[i];
-			}
-		}
-
-		return {
-			lat: routeMapDetails.current[`${type}_location`].lat,
-			lng: routeMapDetails.current[`${type}_location`].lng,
-			address: routeMapDetails.current[`${type}_address`],
-			city,
-			cityAbbr
-		}
-	}
-
-	const handleRouteMapDetails = () => {
-	  // there should be only one leg, no need to iterate
-	  return {
-			startLoc: extrapolateDirectionsData('start'),          
-			endLoc: extrapolateDirectionsData('end'),
-			waypoints: null
-	  }
-	}
-
 	return (
 		<Layout>
 			<motion.section
@@ -96,7 +64,7 @@ const CreateRide = () => {
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(addNewRide({ driver: userDetails, route: handleRouteMapDetails(), values })).unwrap();
+						await dispatch(addNewRide({ driver: userDetails, route: routeMapDetails.current, values })).unwrap();
 						setSubmitting(false);
 						history.push(MY_PROFILE.path);
 					}}
@@ -104,11 +72,11 @@ const CreateRide = () => {
 					{({ isSubmitting, values }) => (
 						<Form>
 							<motion.div className='form-field' variants={itemVariants}>
-								<Map 
+								<CreateRouteMap 
 									center={{lat: 41.6, lng: 21.7}}
 									zoom={8}
-									originCity={'Skopje'}
-									destinationCity={'Prilep'}
+									// originCity={'Skopje, North Macedonia'}
+									// destinationCity={'Prilep, North Macedonia'}
 									storeRouteMapDetails={storeRouteMapDetails}
 								/>
 							</motion.div>

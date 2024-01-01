@@ -1,15 +1,18 @@
-import { useState, useRef, useEffect, memo, useCallback } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import {
 	useJsApiLoader,
 	GoogleMap,
-	Marker,
+	// Marker,
 	Autocomplete,
 	DirectionsRenderer
 } from '@react-google-maps/api';
+import { aggregateRouteDetails } from '../../utilities/helpers';
+// import { IconMarker } from '../icons';
 
 const libraries = ['places'];
 
 const Map = ({
+	children,
 	center,
 	zoom,
 	originCity,
@@ -21,55 +24,62 @@ const Map = ({
 		libraries: libraries
 	});
 
-	const [map, setMap] = useState(/** @type google.maps.Map */ (null));
-	const [origin, setOrigin] = useState('');
-	const [destination, setDestination] = useState('');
+	// const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+	const [origin, setOrigin] = useState(originCity ?? undefined);
+	const [destination, setDestination] = useState(destinationCity ?? undefined);
 	const [directions, setDirections] = useState(null);
 	// const originMarkerRef = useRef(null);
   // const destinationMarkerRef = useRef(null);
   const originObjRef = useRef(null);
   const destinationObjRef = useRef(null);
 
-	const onLoad = map => {
-		setMap(map);
-	};
-console.log('before component')
-	const onDirectionsChanged = () => {
-		if (map) {
-			const directionsRenderer = new window.google.maps.DirectionsRenderer();
-			directionsRenderer.setMap(map);
-			directionsRenderer.setDirections(directions);
-		}
-	};
+	// const onLoad = map => {
+	// 	setMap(map);
+	// };
+
+	// const onDirectionsChanged = () => {
+	// 	if (map) {
+	// 		const directionsRenderer = new window.google.maps.DirectionsRenderer();
+	// 		directionsRenderer.setMap(map);
+	// 		directionsRenderer.setDirections(directions);
+	// 		console.log(directions)
+	// 	}
+	// };
 
 	useEffect(() => {
-		console.log('inside useEffect - setting destination');
-		if (origin && destination) {
+		if (origin && destination && isLoaded) {
 			const directionsService = new window.google.maps.DirectionsService();
 			directionsService.route(
 				{
-					origin,
-					destination,
+					origin: origin.formatted_address,
+					destination: destination.formatted_address,
 					travelMode: window.google.maps.TravelMode.DRIVING
 				},
 				(result, status) => {
 					if (status === window.google.maps.DirectionsStatus.OK) {
+						const directionsAugmentedData = {
+							origin: aggregateRouteDetails(origin),
+							destination: aggregateRouteDetails(destination),
+							waypoints: [],
+							travelMode: window.google.maps.TravelMode.DRIVING
+						};
+
 						setDirections(result);
+						storeRouteMapDetails(directionsAugmentedData);
 					} else {
 						console.error(`Error fetching directions ${result}`);
 					}
 				}
 			);
 		}
-	}, [origin, destination]);
+	}, [origin, destination, isLoaded, storeRouteMapDetails]);
 
 	const handleOriginChange = () => {
-		setOrigin(originObjRef.current.getPlace().formatted_address);
-		console.log(originObjRef.current.getPlace())
+		setOrigin(originObjRef.current.getPlace());
 	};
-
+	
 	const handleDestinationChange = () => {
-		setDestination(destinationObjRef.current.getPlace().formatted_address);
+		setDestination(destinationObjRef.current.getPlace());
 	};
 
 	if (loadError) {
@@ -82,7 +92,6 @@ console.log('before component')
 
 	return (
 		<>
-		{console.log('inside comp')}
 			<div className="form-field">
 				<label htmlFor="origin">Origin</label>
 				<Autocomplete onLoad={(ac => {originObjRef.current = ac})} onPlaceChanged={handleOriginChange}>
@@ -107,12 +116,15 @@ console.log('before component')
 					/>
 				</Autocomplete>
 			</div>
+
+			{children && React.cloneElement(children, { origin: origin })}
+
 			<div className="map__wrapper">
-				{/* {directionsResponse && (
+				{directions && (
 					<div className="map__distance">
-						{distance} / {duration}
+						{directions.routes[0].legs[0].distance.text} / {directions.routes[0].legs[0].duration.text}
 					</div>
-				)} */}
+				)}
 				<GoogleMap
 					center={center}
 					zoom={zoom}
@@ -124,29 +136,27 @@ console.log('before component')
 						fullscreenControl: false,
 						mapId: process.env.REACT_APP_GOOGLE_MAP_ID
 					}}
-					onLoad={onLoad}
-					onUnmount={() => setMap(null)}
+					// onLoad={onLoad}
+					// onUnmount={() => setMap(null)}
 				>
-					{/* {origin && (
-						<Marker
-							position={{ lat: parseFloat(origin.split(',')[0]), lng: parseFloat(origin.split(',')[1]) }}
-							draggable={true}
-							onDragEnd={(e) => onMarkerDragEnd('origin', e)}
-							ref={originMarkerRef}
-						/>
-					)}
-					{destination && (
-						<Marker
-							position={{ lat: parseFloat(destination.split(',')[0]), lng: parseFloat(destination.split(',')[1]) }}
-							draggable={true}
-							onDragEnd={(e) => onMarkerDragEnd('destination', e)}
-							ref={destinationMarkerRef}
-						/>
-					)} */}
 					{directions && (
 						<DirectionsRenderer
 							directions={directions}
-							onChange={onDirectionsChanged}
+							// onChange={onDirectionsChanged}
+							// options={{
+							// 	polylineOptions: {
+							// 		strokeColor: '#2093cf',
+							// 		strokeOpacity: 0.8,
+							// 		strokeWeight: 4,
+							// 	},
+							// 	markerOptions: {
+							// 		icon: {
+							// 			// component: <IconMarker />
+							// 			icon: '../../assets/icons/location.svg',
+							// 			scaledSize: new window.google.maps.Size(40, 40)
+							// 		},
+							// 	},
+							// }}
 						/>
 					)}
 				</GoogleMap>

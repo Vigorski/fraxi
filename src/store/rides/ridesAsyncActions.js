@@ -146,7 +146,7 @@ export const getFilteredRides = createAsyncThunk('rides/getFilteredRides', async
     const ridesResponse = await getNestedFB(
       '/rides',
       searchPreferences,
-      ['route.endLoc.city', 'route.startLoc.city', 'rideType', 'smoking' ],
+      ['route.destination.address_components.city', 'route.origin.address_components.city', 'rideType', 'smoking' ],
       ['destination', 'origin', 'rideType', 'smoking']
     );
 
