@@ -1,19 +1,19 @@
 form {
   margin: calc-rem(32px) 0;
+}
 
-  .form {
-    &-group {
-      display: flex;
-      flex-flow: column;
-    }
+.form {
+	&-group {
+		display: flex;
+		flex-flow: column;
+	}
 
-    &-field {
-      margin-bottom: calc-rem(24px);
-    }
+	&-field {
+		margin-bottom: calc-rem(24px);
+	}
 
-    &-footer {
-      margin-top: calc-rem(25px);
-      align-items: center;
-    }
-  }
+	&-footer {
+		margin-top: calc-rem(25px);
+		align-items: center;
+	}
 }

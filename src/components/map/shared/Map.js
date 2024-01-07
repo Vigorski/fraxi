@@ -1,37 +1,29 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
 	useJsApiLoader,
 	GoogleMap,
 	// Marker,
-	Autocomplete,
 	DirectionsRenderer
 } from '@react-google-maps/api';
-import { aggregateRouteDetails } from '../../utilities/helpers';
 // import { IconMarker } from '../icons';
 
 const libraries = ['places'];
 
 const Map = ({
 	children,
-	center,
-	zoom,
-	originCity,
-	destinationCity,
-	storeRouteMapDetails
+	origin,
+	destination,
+	waypoints,
+	directionsCallback
 }) => {
 	const { isLoaded, loadError } = useJsApiLoader({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 		libraries: libraries
 	});
-
 	// const [map, setMap] = useState(/** @type google.maps.Map */ (null));
-	const [origin, setOrigin] = useState(originCity ?? undefined);
-	const [destination, setDestination] = useState(destinationCity ?? undefined);
 	const [directions, setDirections] = useState(null);
 	// const originMarkerRef = useRef(null);
-  // const destinationMarkerRef = useRef(null);
-  const originObjRef = useRef(null);
-  const destinationObjRef = useRef(null);
+	// const destinationMarkerRef = useRef(null);
 
 	// const onLoad = map => {
 	// 	setMap(map);
@@ -48,39 +40,30 @@ const Map = ({
 
 	useEffect(() => {
 		if (origin && destination && isLoaded) {
+			const recunstructedWaypoints = waypoints?.map(waypoint => ({
+				location: waypoint.location,
+				stopover: waypoint.stopover
+			}));
+
 			const directionsService = new window.google.maps.DirectionsService();
 			directionsService.route(
 				{
 					origin: origin.formatted_address,
 					destination: destination.formatted_address,
+					waypoints: recunstructedWaypoints,
 					travelMode: window.google.maps.TravelMode.DRIVING
 				},
 				(result, status) => {
 					if (status === window.google.maps.DirectionsStatus.OK) {
-						const directionsAugmentedData = {
-							origin: aggregateRouteDetails(origin),
-							destination: aggregateRouteDetails(destination),
-							waypoints: [],
-							travelMode: window.google.maps.TravelMode.DRIVING
-						};
-
 						setDirections(result);
-						storeRouteMapDetails(directionsAugmentedData);
+						directionsCallback && directionsCallback({ origin, destination, waypoints });
 					} else {
 						console.error(`Error fetching directions ${result}`);
 					}
 				}
 			);
 		}
-	}, [origin, destination, isLoaded, storeRouteMapDetails]);
-
-	const handleOriginChange = () => {
-		setOrigin(originObjRef.current.getPlace());
-	};
-	
-	const handleDestinationChange = () => {
-		setDestination(destinationObjRef.current.getPlace());
-	};
+	}, [origin, destination, waypoints, isLoaded, directionsCallback]);
 
 	if (loadError) {
 		return <div>Error loading Google Maps API: {loadError.message}</div>;
@@ -92,43 +75,19 @@ const Map = ({
 
 	return (
 		<>
-			<div className="form-field">
-				<label htmlFor="origin">Origin</label>
-				<Autocomplete onLoad={(ac => {originObjRef.current = ac})} onPlaceChanged={handleOriginChange}>
-					<input
-						type="text"
-						id="origin"
-						placeholder="Enter origin"
-						// value={origin}
-						// onChange={e => setOrigin(e.target.value)}
-					/>
-				</Autocomplete>
-			</div>
-			<div className="form-field">
-				<label htmlFor="destination">Destination</label>
-				<Autocomplete onLoad={(ac => {destinationObjRef.current = ac})} onPlaceChanged={handleDestinationChange}>
-					<input
-						type="text"
-						id="destination"
-						placeholder="Enter destination"
-						// value={destination}
-						// onChange={e => setDestination(e.target.value)}
-					/>
-				</Autocomplete>
-			</div>
-
-			{children && React.cloneElement(children, { origin: origin })}
+			{children && React.cloneElement(children, { testProp: 'test-prop' })}
 
 			<div className="map__wrapper">
 				{directions && (
 					<div className="map__distance">
-						{directions.routes[0].legs[0].distance.text} / {directions.routes[0].legs[0].duration.text}
+						{directions.routes[0].legs[0].distance.text} /{' '}
+						{directions.routes[0].legs[0].duration.text}
 					</div>
 				)}
 				<GoogleMap
-					center={center}
-					zoom={zoom}
 					mapContainerStyle={{ width: '100%', height: '500px' }}
+					center={{ lat: 41.6, lng: 21.7 }}
+					zoom={8}
 					options={{
 						zoomControl: false,
 						streetViewControl: false,
