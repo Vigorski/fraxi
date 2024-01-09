@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-import Layout from '../../components/shared/Layout';
+import Layout from 'components/shared/Layout';
+import { IconUserPlaceholder, IconEdit } from 'components/icons';
+import { userLogout } from 'store/user/userActions';
+import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import { MY_PROFILE } from 'utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 import PassengerPreferences from './passenger/Preferences';
-import { IconUserPlaceholder, IconEdit } from '../../components/icons';
-import { userLogout } from '../../store/user/userActions';
-import { DRIVER, PASSENGER } from '../../utilities/constants/users';
-import { MY_PROFILE } from '../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
 
 
 const MyProfile = ({history}) => {

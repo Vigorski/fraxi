@@ -1,12 +1,11 @@
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-
-import Layout from '../../../components/shared/Layout';
+import Layout from 'components/shared/Layout';
 import ActiveRidesCard from './ActiveRidesCard';
 import {
 	mainContainerVariants,
 	itemVariants
-} from '../../../utilities/constants/framerVariants';
+} from 'utilities/constants/framerVariants';
 
 const ActiveRides = () => {
 	const { activeRides } = useSelector(state => state.rides);

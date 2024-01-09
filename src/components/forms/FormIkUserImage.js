@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconUserPlaceholder } from '../icons';
+import { IconUserPlaceholder } from 'components/icons';
 
 const FormIkUserImage = ({ field, form, profilePicture }) => {
   const [url, setURL] = useState(!!profilePicture ? profilePicture : '');

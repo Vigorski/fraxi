@@ -5,18 +5,17 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
-
-import FormIKSelect from '../../../components/forms/FormIKSelect';
-import Layout from '../../../components/shared/Layout';
-import { addNewRide } from '../../../store/rides/ridesAsyncActions';
-import { addTime } from '../../../utilities/date-time';
-import { MY_PROFILE } from '../../../utilities/constants/routes';
+import FormIKSelect from 'components/forms/FormIKSelect';
+import Layout from 'components/shared/Layout';
+// import Map from 'components/map/Map';
+import CreateRouteMap from 'components/map/CreateRouteMap';
+import { addNewRide } from 'store/rides/ridesAsyncActions';
+import { addTime } from 'utilities/helpers/date-time';
+import { MY_PROFILE } from 'utilities/constants/routes';
 import {
 	mainContainerVariants,
 	itemVariants
-} from '../../../utilities/constants/framerVariants';
-// import Map from '../../../components/map/Map';
-import CreateRouteMap from '../../../components/map/CreateRouteMap';
+} from 'utilities/constants/framerVariants';
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));

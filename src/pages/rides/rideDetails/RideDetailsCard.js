@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { DRIVER, PASSENGER } from '../../../utilities/constants/users';
-import { getTime, getShortDate } from '../../../utilities/date-time';
-import { IconUser } from '../../../components/icons';
-import { itemVariants } from '../../../utilities/constants/framerVariants';
+import { IconUser } from 'components/icons';
+import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import { getTime, getShortDate } from 'utilities/helpers';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 const CardRideDetails = ({
 	rideDetails,

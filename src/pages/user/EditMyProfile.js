@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
-
-import Layout from '../../components/shared/Layout';
+import Layout from 'components/shared/Layout';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 import RegisterEditUser from './RegisterEditUser';
-import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
 
 const EditMyProfile = () => {
 	return (

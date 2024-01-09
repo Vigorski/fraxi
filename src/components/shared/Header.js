@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-import { IconBack } from '../icons';
-import { MY_PROFILE } from '../../utilities/constants/routes';
+import { IconBack } from 'components/icons';
+import { MY_PROFILE } from 'utilities/constants/routes';
 
 const Header = () => {
 	const currentRoute = useSelector(state => state.route.currentRoute);

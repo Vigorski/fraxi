@@ -2,13 +2,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-
-import FormIKSelect from '../../../components/forms/FormIKSelect';
-import { MKD_CITIES } from '../../../utilities/constants/cities';
-import Layout from '../../../components/shared/Layout';
-import { updateRidePreferences } from '../../../store/user/userAsyncActions';
-import { MY_PROFILE } from '../../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
+import FormIKSelect from 'components/forms/FormIKSelect';
+import Layout from 'components/shared/Layout';
+import { updateRidePreferences } from 'store/user/userAsyncActions';
+import { MKD_CITIES } from 'utilities/constants/cities';
+import { MY_PROFILE } from 'utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 
 const EditMyPreferences = () => {
 	const history = useHistory();

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { RIDE_DETAILS } from '../../../utilities/constants/routes';
-import { getTime, getShortDate } from '../../../utilities/date-time';
-import { itemVariants } from '../../../utilities/constants/framerVariants';
+import { RIDE_DETAILS } from 'utilities/constants/routes';
+import { getTime, getShortDate } from 'utilities/helpers';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 const ActiveRidesCard = ({ activeRides }) =>
 	activeRides.map(ride => {

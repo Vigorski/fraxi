@@ -1,16 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { arrayUnion, arrayRemove } from 'firebase/firestore';
-
-import { userActions } from '../user/userSlice';
-import { httpActions } from '../http/httpSlice';
+import { userActions } from 'store/user/userSlice';
+import { httpActions } from 'store/http/httpSlice';
 import {
 	getFB,
 	getNestedFB,
 	addFBWithId,
 	updateFB
-} from '../../utilities/api/firebase-api';
-import { DRIVER, PASSENGER } from '../../utilities/constants/users';
+} from 'utilities/api/firebase-api';
+import { DRIVER, PASSENGER } from 'utilities/constants/users';
 
 const transformRideValues = (driverId, route, values) => {
 	const newRideId = 'ride_' + uuidv4();

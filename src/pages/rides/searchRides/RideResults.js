@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-import { getTime, getShortDate } from '../../../utilities/date-time';
-import { IconUserPlaceholder } from '../../../components/icons';
-import { RIDE_DETAILS } from '../../../utilities/constants/routes';
-import { itemVariants } from '../../../utilities/constants/framerVariants';
+import { IconUserPlaceholder } from 'components/icons';
+import { getTime, getShortDate } from 'utilities/helpers';
+import { RIDE_DETAILS } from 'utilities/constants/routes';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 const RideResults = ({ filteredRides }) => {
 	// TODO: fix error when selecting same city

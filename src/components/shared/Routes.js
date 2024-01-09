@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
-import { routeActions } from '../../store/routes/routeSlice';
-import { LOGIN, MY_PROFILE } from '../../utilities/constants/routes';
+import { routeActions } from 'store/routes/routeSlice';
+import { LOGIN, MY_PROFILE } from 'utilities/constants/routes';
 
 export const PrivateRoute = ({ component: Component, roles, user, pathDetails, ...rest }) => {
 	const dispatch = useDispatch();

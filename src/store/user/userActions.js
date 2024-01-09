@@ -1,6 +1,6 @@
+import { LOGIN } from 'utilities/constants/routes';
+import { ridesActions } from 'store/rides/ridesSlice';
 import { userActions } from './userSlice';
-import { ridesActions } from '../rides/ridesSlice';
-import { LOGIN } from '../../utilities/constants/routes';
 
 export const userLogout = (history) => {
 	return (dispatch) => {

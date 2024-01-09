@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
 import RideDetailsCard from './RideDetailsCard';
-import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
-import { getUsers } from '../../../utilities/api/api';
-import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
+import { removePassengerRide } from 'store/rides/ridesAsyncActions';
+import { getUsers } from 'utilities/api/api';
+import { ACTIVE_RIDES } from 'utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 
 const RideDetailsDriver = ({userDetails, rideDetails}) => {
   const dispatch = useDispatch();

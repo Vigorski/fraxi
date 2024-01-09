@@ -1,4 +1,3 @@
-
 export const mainContainerVariants = {
 	initial: {
     y: 0,

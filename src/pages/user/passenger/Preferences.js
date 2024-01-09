@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
-import { MY_PROFILE } from '../../../utilities/constants/routes';
+import { MY_PROFILE } from 'utilities/constants/routes';
 
 const PassengerPreferences = ({ridePreferences}) => {
   const { origin, destination, numOfStops, rideType, smoking } = ridePreferences !== undefined ? ridePreferences : {};

@@ -1,13 +1,12 @@
-import Login from '../../pages/auth/Login';
-import Register from '../../pages/auth/Register';
-import SearchRides from '../../pages/rides/searchRides/SearchRides';
-import RideDetails from '../../pages/rides/rideDetails/RideDetails';
-import MyProfile from '../../pages/user/MyProfile';
-import EditMyProfile from '../../pages/user/EditMyProfile';
-import EditMyPreferences from '../../pages/user/passenger/EditMyPreferences';
-import CreateRide from '../../pages/user/driver/CreateRide';
-import ActiveRides from '../../pages/rides/activeRides/ActiveRides';
-
+import Login from 'pages/auth/Login';
+import Register from 'pages/auth/Register';
+import SearchRides from 'pages/rides/searchRides/SearchRides';
+import RideDetails from 'pages/rides/rideDetails/RideDetails';
+import MyProfile from 'pages/user/MyProfile';
+import EditMyProfile from 'pages/user/EditMyProfile';
+import EditMyPreferences from 'pages/user/passenger/EditMyPreferences';
+import CreateRide from 'pages/user/driver/CreateRide';
+import ActiveRides from 'pages/rides/activeRides/ActiveRides';
 import { LOGIN, REGISTER, SEARCH_RIDES, RIDE_DETAILS, MY_PROFILE, EDIT_USER, EDIT_PREFERENCES, CREATE_RIDE, ACTIVE_RIDES } from './routes';
 import { DRIVER, PASSENGER } from './users';
 

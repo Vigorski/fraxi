@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
-import { aggregateRouteDetails } from '../../../utilities/helpers';
+import { aggregateRouteDetails } from 'utilities/helpers';
 
 const CreateRouteInputs = ({ setOrigin, setDestination }) => {
 	const originObjRef = useRef(null);

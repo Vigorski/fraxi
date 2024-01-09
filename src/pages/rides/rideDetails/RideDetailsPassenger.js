@@ -2,21 +2,20 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
 import RideDetailsCard from './RideDetailsCard';
-import { removePassengerRide } from '../../../store/rides/ridesAsyncActions';
-import { bookRide } from '../../../store/rides/ridesAsyncActions';
+import { removePassengerRide } from 'store/rides/ridesAsyncActions';
+import { bookRide } from 'store/rides/ridesAsyncActions';
 import {
 	IconUserPlaceholder,
 	IconMarker,
 	IconPhone
-} from '../../../components/icons';
-import { ACTIVE_RIDES } from '../../../utilities/constants/routes';
+} from 'components/icons';
+import RouteMapPassenger from 'components/map/RouteMapPassenger';
+import { ACTIVE_RIDES } from 'utilities/constants/routes';
 import {
 	mainContainerVariants,
 	itemVariants
-} from '../../../utilities/constants/framerVariants';
-import RouteMapPassenger from '../../../components/map/RouteMapPassenger';
+} from 'utilities/constants/framerVariants';
 
 const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 	const dispatch = useDispatch();
