@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import SetRouteWaypoint from './shared/SetRouteWaypoint';
 import Map from './shared/Map';
 
-const RouteMapPassenger = ({ originCity, destinationCity, waypoints, userId, storeRouteMapDetails }) => {
+const PassengerRouteMap = ({ originCity, destinationCity, waypoints, storeRouteMapDetails }) => {
+	// state only for waypoints. storeRouteMapDetails contains the entire route
 	const [newWaypoints, setNewWaypoints] = useState(waypoints);
 
 	return (
@@ -12,9 +13,9 @@ const RouteMapPassenger = ({ originCity, destinationCity, waypoints, userId, sto
 			waypoints={newWaypoints}
 			directionsCallback={storeRouteMapDetails}
 		>
-			<SetRouteWaypoint setWaypoints={setNewWaypoints} userId={userId} />
+			<SetRouteWaypoint setWaypoints={setNewWaypoints} />
 		</Map>
 	);
 };
 
-export default RouteMapPassenger;
+export default PassengerRouteMap;

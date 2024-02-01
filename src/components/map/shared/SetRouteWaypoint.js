@@ -1,14 +1,22 @@
 import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Autocomplete } from '@react-google-maps/api';
 
-const CreateRouteInputs = ({ setWaypoints, userId, randomProp }) => {
+const CreateRouteInputs = ({ setWaypoints, randomProp }) => {
+	const { userId } = useSelector(state => state.user.userDetails);
 	const waypointObjRef = useRef(null);
 
 	const handleWaypointChange = () => {
+		const geoPoint = waypointObjRef.current.getPlace().geometry.location;
+		const location = {
+			lat: geoPoint.lat(),
+			lng: geoPoint.lng()
+		}
+
 		setWaypoints(prev => {
 			const newWaypoint = {
 				userId,
-				location: waypointObjRef.current.getPlace().geometry.location,
+				location,
 				stopover: true
 			};
 

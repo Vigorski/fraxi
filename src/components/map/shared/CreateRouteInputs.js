@@ -2,7 +2,12 @@ import { useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import { aggregateRouteDetails } from 'utilities/helpers';
 
-const CreateRouteInputs = ({ setOrigin, setDestination }) => {
+const CreateRouteInputs = ({
+	origin,
+	setOrigin,
+	destination,
+	setDestination
+}) => {
 	const originObjRef = useRef(null);
 	const destinationObjRef = useRef(null);
 
@@ -16,27 +21,51 @@ const CreateRouteInputs = ({ setOrigin, setDestination }) => {
 
 	return (
 		<>
-			<div className="form-field">
+			<div className={`form-field ${origin ? 'form-field--disabled' : ''}`}>
 				<label htmlFor="origin">Origin</label>
-				<Autocomplete
-					onLoad={ac => {
-						originObjRef.current = ac;
-					}}
-					onPlaceChanged={handleOriginChange}
-				>
-					<input type="text" id="origin" placeholder="Enter origin" />
-				</Autocomplete>
+				{origin ? (
+					<input
+						type="text"
+						id="origin"
+						value={origin.formatted_address}
+						disabled
+						placeholder="Enter origin"
+					/>
+				) : (
+					<Autocomplete
+						onLoad={ac => {
+							originObjRef.current = ac;
+						}}
+						onPlaceChanged={handleOriginChange}
+					>
+						<input type="text" id="origin" placeholder="Enter origin" />
+					</Autocomplete>
+				)}
 			</div>
-			<div className="form-field">
+			<div className={`form-field ${destination ? 'form-field--disabled' : ''}`}>
 				<label htmlFor="destination">Destination</label>
-				<Autocomplete
-					onLoad={ac => {
-						destinationObjRef.current = ac;
-					}}
-					onPlaceChanged={handleDestinationChange}
-				>
-					<input type="text" id="destination" placeholder="Enter destination" />
-				</Autocomplete>
+				{destination ? (
+					<input
+						type="text"
+						id="origin"
+						value={destination.formatted_address}
+						disabled
+						placeholder="Enter origin"
+					/>
+				) : (
+					<Autocomplete
+						onLoad={ac => {
+							destinationObjRef.current = ac;
+						}}
+						onPlaceChanged={handleDestinationChange}
+					>
+						<input
+							type="text"
+							id="destination"
+							placeholder="Enter destination"
+						/>
+					</Autocomplete>
+				)}
 			</div>
 		</>
 	);

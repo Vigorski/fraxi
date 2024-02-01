@@ -33,8 +33,8 @@ const MyProfile = ({history}) => {
           <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`}><IconEdit /></Link>
         </motion.div>
         <motion.div className="profile__img" variants={itemVariants}>
-          {userDetails?.profilePicture !== '' ?
-            <img src={userDetails?.profilePicture} alt="user avatar" /> :
+          {!!userDetails?.profilePicture ?
+            <img src={userDetails.profilePicture} alt="user avatar" /> :
             <div className="profile__svg-wrapper">
               <IconUserPlaceholder />
             </div>

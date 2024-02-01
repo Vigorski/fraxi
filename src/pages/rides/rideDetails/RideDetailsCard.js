@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { IconUser } from 'components/icons';
 import { DRIVER, PASSENGER } from 'utilities/constants/users';
@@ -6,11 +7,11 @@ import { itemVariants } from 'utilities/constants/framerVariants';
 
 const CardRideDetails = ({
 	rideDetails,
-	userType,
 	driverDetails,
 	isRideBooked,
 	allPassengersDetails
 }) => {
+	const { userType } = useSelector(state => state.user.userDetails);
 	const isPassenger = userType === PASSENGER;
 	const isDriver = userType === DRIVER;
 

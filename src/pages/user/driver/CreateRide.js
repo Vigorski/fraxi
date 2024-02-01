@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -7,8 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import FormIKSelect from 'components/forms/FormIKSelect';
 import Layout from 'components/shared/Layout';
-// import Map from 'components/map/Map';
-import CreateRouteMap from 'components/map/CreateRouteMap';
+import DriverRouteMap from 'components/map/DriverRouteMap';
 import { addNewRide } from 'store/rides/ridesAsyncActions';
 import { addTime } from 'utilities/helpers/date-time';
 import { MY_PROFILE } from 'utilities/constants/routes';
@@ -21,9 +20,9 @@ const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
 	const [departureDate, setDepartureDate] = useState(minDepartureDate);
 	const history = useHistory();
-	const { userDetails } = useSelector(state => state.user);
+	const userDetails = useSelector(state => state.user.userDetails);
 	const dispatch = useDispatch();
-	const routeMapDetails = useRef({});
+	const [routeMapDetails, setRouteMapDetails] = useState({});
 
 	const handleValidation = values => {
 		const errors = {};
@@ -42,7 +41,7 @@ const CreateRide = () => {
 		return errors;
 	};
 
-	const storeRouteMapDetails = ({origin, destination, waypoints}) => {
+	const storeRouteMapDetails = useCallback(({origin, destination, waypoints}) => {
 		const directionsAugmentedData = {
 			origin,
 			destination,
@@ -50,8 +49,8 @@ const CreateRide = () => {
 			travelMode: window.google.maps.TravelMode.DRIVING
 		};
 
-		routeMapDetails.current = directionsAugmentedData;
-	};
+		setRouteMapDetails(directionsAugmentedData);
+	}, []);
 
 	return (
 		<Layout>
@@ -75,7 +74,7 @@ const CreateRide = () => {
 						await dispatch(
 							addNewRide({
 								driver: userDetails,
-								route: routeMapDetails.current,
+								route: routeMapDetails,
 								values
 							})
 						).unwrap();
@@ -86,7 +85,7 @@ const CreateRide = () => {
 					{({ isSubmitting, values }) => (
 						<Form>
 							<motion.div className="form-field" variants={itemVariants}>
-								<CreateRouteMap
+								<DriverRouteMap
 									// originCity={'Skopje, North Macedonia'}
 									// destinationCity={'Prilep, North Macedonia'}
 									storeRouteMapDetails={storeRouteMapDetails}

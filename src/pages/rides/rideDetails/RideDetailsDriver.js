@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
@@ -7,10 +7,12 @@ import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { getUsers } from 'utilities/api/api';
 import { ACTIVE_RIDES } from 'utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
+import DriverrRouteMap from 'components/map/DriverRouteMap';
 
-const RideDetailsDriver = ({userDetails, rideDetails}) => {
+const RideDetailsDriver = ({rideDetails}) => {
   const dispatch = useDispatch();
   const history = useHistory();
+	const userDetails = useSelector(state => state.user.userDetails);
   const [allPassengersDetails, setAllPassengersDetails] = useState(null);
 
   useEffect(() => {
@@ -36,7 +38,15 @@ const RideDetailsDriver = ({userDetails, rideDetails}) => {
 			animate="visible"
 			exit="hidden"
     >
-      <RideDetailsCard userType={userDetails.userType} rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
+			<motion.div className="form-field" variants={itemVariants}>
+				<DriverrRouteMap
+					originCity={rideDetails.route.origin}
+					destinationCity={rideDetails.route.destination}
+					waypoints={rideDetails.route.waypoints}
+				/>
+			</motion.div>
+
+      <RideDetailsCard rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
 
       <motion.button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide} variants={itemVariants}>
         Cancel ride

@@ -2,21 +2,25 @@ import React, { useState } from 'react';
 import CreateRouteInputs from './shared/CreateRouteInputs';
 import Map from './shared/Map';
 
-const CreateRouteMap = ({
+const DriverRouteMap = ({
 	originCity,
 	destinationCity,
+	waypoints,
 	storeRouteMapDetails
 }) => {
-	const [origin, setOrigin] = useState(originCity ?? undefined);
-	const [destination, setDestination] = useState(destinationCity ?? undefined);
+	const [origin, setOrigin] = useState(originCity ?? null);
+	const [destination, setDestination] = useState(destinationCity ?? null);
 
 	return (
 		<Map
 			origin={origin}
 			destination={destination}
+			waypoints={waypoints}
 			directionsCallback={storeRouteMapDetails}
 		>
 			<CreateRouteInputs
+				origin={origin}
+				destination={destination}
 				setOrigin={setOrigin}
 				setDestination={setDestination}
 			/>
@@ -24,4 +28,4 @@ const CreateRouteMap = ({
 	);
 };
 
-export default CreateRouteMap;
+export default DriverRouteMap;

@@ -10,6 +10,12 @@ form {
 
 	&-field {
 		margin-bottom: calc-rem(24px);
+
+		&--disabled {
+			label {
+				color: lighten($color-light-gray, 15%)
+			}
+		}
 	}
 
 	&-footer {

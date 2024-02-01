@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
@@ -10,45 +10,46 @@ import {
 	IconMarker,
 	IconPhone
 } from 'components/icons';
-import RouteMapPassenger from 'components/map/RouteMapPassenger';
+import PassengerRouteMap from 'components/map/PassengerRouteMap';
 import { ACTIVE_RIDES } from 'utilities/constants/routes';
 import {
 	mainContainerVariants,
 	itemVariants
 } from 'utilities/constants/framerVariants';
 
-const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
+const RideDetailsPassenger = ({ rideDetails }) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const userDetails = useSelector(state => state.user.userDetails);
+	const [routeMapDetails, setRouteMapDetails] = useState(rideDetails.route);
 	const driverDetails = rideDetails?.driverDetails;
 	const driverHasPicture = driverDetails?.profilePicture !== '';
 	const isRideBooked =
 		userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
-	const routeMapWaypoints = useRef([]);
+	const isWaypointPicked = routeMapDetails.waypoints.find(
+		waypoint => waypoint.userId === userDetails.userId
+	);
 
 	const handleBookRide = async () => {
-		const rideExists =
-			userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
-
-		if (!rideExists) {
+		if (!isRideBooked && isWaypointPicked) {
 			await dispatch(
 				bookRide({
 					passenger: userDetails,
 					rideDetails,
-					waypoints: routeMapWaypoints.current
+					waypoints: routeMapDetails.waypoints
 				})
 			).unwrap();
 		}
 	};
 
 	const handleCancelRide = async () => {
-		const waypoints = routeMapWaypoints.current.filter(waypoint => waypoint.userId !== userDetails.userId)
-		await dispatch(removePassengerRide({ rideDetails, userDetails, waypoints })).unwrap();
+		const waypoints = routeMapDetails.waypoints.filter(
+			waypoint => waypoint.userId !== userDetails.userId
+		);
+		await dispatch(
+			removePassengerRide({ rideDetails, userDetails, waypoints })
+		).unwrap();
 		history.push(ACTIVE_RIDES.path);
-	};
-
-	const storeRouteMapDetails = ({ waypoints }) => {
-		routeMapWaypoints.current = waypoints;
 	};
 
 	return (
@@ -92,12 +93,12 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 			</div>
 
 			<motion.div className="form-field" variants={itemVariants}>
-				<RouteMapPassenger
+				<PassengerRouteMap
 					originCity={rideDetails.route.origin}
 					destinationCity={rideDetails.route.destination}
 					waypoints={rideDetails.route.waypoints}
 					userId={userDetails.userId}
-					storeRouteMapDetails={storeRouteMapDetails}
+					storeRouteMapDetails={setRouteMapDetails}
 				/>
 			</motion.div>
 
@@ -121,6 +122,7 @@ const RideDetailsPassenger = ({ userDetails, rideDetails }) => {
 					className="btn-primary btn-block mt-xxl"
 					onClick={handleBookRide}
 					variants={itemVariants}
+					disabled={!isWaypointPicked}
 				>
 					Book ride
 				</motion.button>

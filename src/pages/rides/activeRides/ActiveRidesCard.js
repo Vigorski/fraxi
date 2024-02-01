@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { RIDE_DETAILS } from 'utilities/constants/routes';
-import { getTime, getShortDate } from 'utilities/helpers';
+import { getTime, getDate } from 'utilities/helpers';
 import { itemVariants } from 'utilities/constants/framerVariants';
 
 const ActiveRidesCard = ({ activeRides }) =>
@@ -24,13 +24,14 @@ const ActiveRidesCard = ({ activeRides }) =>
 					</div>
 					<div className="card__body">
 						<div className="card__section card__radius--bottom">
-							<dl className="list-desc__columns">
+							<dl className="list-desc__columns list-desc--sm">
 								<div className="list-desc__col text-center">
-									<dt>Date</dt>
-									<dd>{`${getShortDate(ride.departureDate) ?? 'N/A'}`}</dd>
+									<dt>Passengers</dt>
+									<dd>{`${ride.passengers.length} of ${ride.maxPassengers}`}</dd>
 								</div>
 								<div className="list-desc__col text-center">
 									<dt>Departure</dt>
+									<dd>{`${getDate(ride.departureDate) ?? 'N/A'}`}</dd>
 									<dd>{`${getTime(ride.departureDate) ?? 'N/A'}`}</dd>
 								</div>
 								<div className="list-desc__col text-center">

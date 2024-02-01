@@ -57,6 +57,7 @@ ol {
     dd {
       font-weight: 400;
     }
+
   }
 
   &__columns {
@@ -80,6 +81,13 @@ ol {
   &--double {
     flex: 2
   }
+
+	&--sm {
+		dd {
+			margin-top: calc-rem(6px);
+			margin-bottom: calc-rem(6px);
+		}
+	}
 }
 
 .list__users {

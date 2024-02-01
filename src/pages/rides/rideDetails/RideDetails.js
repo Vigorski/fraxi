@@ -20,8 +20,8 @@ const RideDetails = () => {
 	
 	return (
 		<Layout>
-			{isUserPassenger && <RideDetailsPassenger userDetails={userDetails} rideDetails={rideDetails} />}
-			{isUserDriver && <RideDetailsDriver userDetails={userDetails} rideDetails={rideDetails} />}
+			{isUserPassenger && <RideDetailsPassenger rideDetails={rideDetails} />}
+			{isUserDriver && <RideDetailsDriver rideDetails={rideDetails} />}
 		</Layout>
 	);
 };

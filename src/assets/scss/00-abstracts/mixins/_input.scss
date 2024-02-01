@@ -26,6 +26,14 @@
       background-color: $color-light-gray;
       color: darken($color-dark-gray, 10%);
     }
+
+		&[disabled],
+		&.disabled {
+			font-weight: 700;
+			border: none;
+			color: $color-gray-3;
+			background-color: $color-light-gray-2;	
+		}
   
     &.floating-label {
       & + label {

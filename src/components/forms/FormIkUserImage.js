@@ -24,7 +24,6 @@ const FormIkUserImage = ({ field, form, profilePicture }) => {
       }
       <div className="profile__file-change"><span>Change</span></div>
     </label>
-    
 	);
 };
 

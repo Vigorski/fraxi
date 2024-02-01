@@ -16,6 +16,11 @@ export const getTime = (time) => {
   return `${currentHours}:${currentMinutes}`;
 }
 
+export const getDate = (date) => {
+  const ms = new Date(date);
+  return `${ms.getDate()} ${ms.toLocaleString('default', {month: 'long'})}`;
+}
+
 export const getShortDate = (date) => {
   const ms = new Date(date);
   return `${ms.getDate()} ${ms.toLocaleString('default', {month: 'short'})}`;

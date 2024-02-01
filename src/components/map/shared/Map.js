@@ -40,7 +40,7 @@ const Map = ({
 
 	useEffect(() => {
 		if (origin && destination && isLoaded) {
-			const recunstructedWaypoints = waypoints?.map(waypoint => ({
+			const recunstructedWaypoints = waypoints.map(waypoint => ({
 				location: waypoint.location,
 				stopover: waypoint.stopover
 			}));
@@ -50,13 +50,17 @@ const Map = ({
 				{
 					origin: origin.formatted_address,
 					destination: destination.formatted_address,
-					waypoints: recunstructedWaypoints,
+					waypoints: recunstructedWaypoints.length
+						? recunstructedWaypoints
+						: [],
+					optimizeWaypoints: true,
 					travelMode: window.google.maps.TravelMode.DRIVING
 				},
 				(result, status) => {
 					if (status === window.google.maps.DirectionsStatus.OK) {
 						setDirections(result);
-						directionsCallback && directionsCallback({ origin, destination, waypoints });
+						directionsCallback &&
+							directionsCallback({ origin, destination, waypoints });
 					} else {
 						console.error(`Error fetching directions ${result}`);
 					}
@@ -75,6 +79,13 @@ const Map = ({
 
 	return (
 		<>
+			{/*
+				children is currently used for inserting input fields to handle directions and waypoints.
+				It gives the advantage of passing props directly from the Map to children,
+				but it is not being used at the moment.
+				This can be removed from Map and placed as a sibling to it for greater flexibility 
+				in terms of the elements position.
+			*/}
 			{children && React.cloneElement(children, { testProp: 'test-prop' })}
 
 			<div className="map__wrapper">
@@ -124,4 +135,7 @@ const Map = ({
 	);
 };
 
+Map.defaultProps = {
+	waypoints: []
+}
 export default memo(Map);
