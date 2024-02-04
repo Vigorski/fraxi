@@ -7,7 +7,7 @@ import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { getUsers } from 'utilities/api/api';
 import { ACTIVE_RIDES } from 'utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
-import DriverrRouteMap from 'components/map/DriverRouteMap';
+import DriverRouteMap from 'components/map/DriverRouteMap';
 
 const RideDetailsDriver = ({rideDetails}) => {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const RideDetailsDriver = ({rideDetails}) => {
 			exit="hidden"
     >
 			<motion.div className="form-field" variants={itemVariants}>
-				<DriverrRouteMap
+				<DriverRouteMap
 					originCity={rideDetails.route.origin}
 					destinationCity={rideDetails.route.destination}
 					waypoints={rideDetails.route.waypoints}

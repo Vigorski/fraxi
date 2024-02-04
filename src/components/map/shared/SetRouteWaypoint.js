@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Autocomplete } from '@react-google-maps/api';
 
-const CreateRouteInputs = ({ setWaypoints, randomProp }) => {
+const SetRouteWaypoint = ({ setWaypoints, randomProp }) => {
 	const { userId } = useSelector(state => state.user.userDetails);
 	const waypointObjRef = useRef(null);
 
@@ -53,4 +53,4 @@ const CreateRouteInputs = ({ setWaypoints, randomProp }) => {
 	);
 };
 
-export default CreateRouteInputs;
+export default SetRouteWaypoint;

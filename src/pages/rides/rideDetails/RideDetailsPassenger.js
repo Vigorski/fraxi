@@ -97,7 +97,6 @@ const RideDetailsPassenger = ({ rideDetails }) => {
 					originCity={rideDetails.route.origin}
 					destinationCity={rideDetails.route.destination}
 					waypoints={rideDetails.route.waypoints}
-					userId={userDetails.userId}
 					storeRouteMapDetails={setRouteMapDetails}
 				/>
 			</motion.div>

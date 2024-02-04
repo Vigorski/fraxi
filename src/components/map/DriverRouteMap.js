@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CreateRouteInputs from './shared/CreateRouteInputs';
+import ReadonlyRouteInputs from './shared/ReadonlyRouteInputs';
 import Map from './shared/Map';
 
 const DriverRouteMap = ({
@@ -18,12 +19,18 @@ const DriverRouteMap = ({
 			waypoints={waypoints}
 			directionsCallback={storeRouteMapDetails}
 		>
-			<CreateRouteInputs
-				origin={origin}
-				destination={destination}
-				setOrigin={setOrigin}
-				setDestination={setDestination}
-			/>
+			{
+				originCity && destinationCity ?
+					<ReadonlyRouteInputs
+						origin={originCity}
+						destination={destinationCity}
+					/>
+					:
+					<CreateRouteInputs
+						setOrigin={setOrigin}
+						setDestination={setDestination}
+					/>
+			}
 		</Map>
 	);
 };
