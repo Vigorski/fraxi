@@ -2,10 +2,14 @@ import React, { useState, useEffect, memo } from 'react';
 import {
 	useJsApiLoader,
 	GoogleMap,
-	// Marker,
+	Marker,
 	DirectionsRenderer
 } from '@react-google-maps/api';
-// import { IconMarker } from '../icons';
+import { useSelector } from 'react-redux';
+import markerIcon from 'assets/icons/marker.svg';
+import markerIconUnique from 'assets/icons/marker-unique.svg';
+import flagIcon from 'assets/icons/flag.svg';
+import { formattedRouteDistanceAndDuration } from 'utilities/helpers/route-measurements';
 
 const libraries = ['places'];
 
@@ -22,21 +26,9 @@ const Map = ({
 	});
 	// const [map, setMap] = useState(/** @type google.maps.Map */ (null));
 	const [directions, setDirections] = useState(null);
-	// const originMarkerRef = useRef(null);
-	// const destinationMarkerRef = useRef(null);
-
-	// const onLoad = map => {
-	// 	setMap(map);
-	// };
-
-	// const onDirectionsChanged = () => {
-	// 	if (map) {
-	// 		const directionsRenderer = new window.google.maps.DirectionsRenderer();
-	// 		directionsRenderer.setMap(map);
-	// 		directionsRenderer.setDirections(directions);
-	// 		console.log(directions)
-	// 	}
-	// };
+	const [distance, setDistance] = useState(null);
+	const [duration, setDuration] = useState(null);
+	const { userId } = useSelector(state => state.user.userDetails);
 
 	useEffect(() => {
 		if (origin && destination && isLoaded) {
@@ -58,6 +50,10 @@ const Map = ({
 				},
 				(result, status) => {
 					if (status === window.google.maps.DirectionsStatus.OK) {
+						const [totalDistanceInKm, totalFormattedDuration] = formattedRouteDistanceAndDuration(result.routes[0].legs);
+
+						setDistance(totalDistanceInKm);
+						setDuration(totalFormattedDuration);
 						setDirections(result);
 						directionsCallback &&
 							directionsCallback({ origin, destination, waypoints });
@@ -91,8 +87,8 @@ const Map = ({
 			<div className="map__wrapper">
 				{directions && (
 					<div className="map__distance">
-						{directions.routes[0].legs[0].distance.text} /{' '}
-						{directions.routes[0].legs[0].duration.text}
+						{distance} /{' '}
+						{duration}
 					</div>
 				)}
 				<GoogleMap
@@ -104,29 +100,46 @@ const Map = ({
 						streetViewControl: false,
 						mapTypeControl: false,
 						fullscreenControl: false,
-						mapId: process.env.REACT_APP_GOOGLE_MAP_ID
+						mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
+						gestureHandling: "greedy"
 					}}
-					// onLoad={onLoad}
-					// onUnmount={() => setMap(null)}
 				>
+					<Marker
+						position={origin.location}
+						icon={{ url: flagIcon }}
+					/>
+					<Marker
+						position={destination.location}
+						icon={{ url: flagIcon }}
+					/>
+					{
+						waypoints.map(waypoint => {
+							if (waypoint.userId === userId) {
+								return <Marker
+									key={waypoint.userId}
+									position={waypoint.location}
+									icon={{ url: markerIconUnique }}
+								/>
+							}
+
+							return <Marker
+								key={waypoint.userId}
+								position={waypoint.location}
+								icon={{ url: markerIcon }}
+							/>
+						})
+					}
 					{directions && (
 						<DirectionsRenderer
 							directions={directions}
-							// onChange={onDirectionsChanged}
-							// options={{
-							// 	polylineOptions: {
-							// 		strokeColor: '#2093cf',
-							// 		strokeOpacity: 0.8,
-							// 		strokeWeight: 4,
-							// 	},
-							// 	markerOptions: {
-							// 		icon: {
-							// 			// component: <IconMarker />
-							// 			icon: '../../assets/icons/location.svg',
-							// 			scaledSize: new window.google.maps.Size(40, 40)
-							// 		},
-							// 	},
-							// }}
+							options={{
+								polylineOptions: {
+									strokeColor: '#2980d7',
+									strokeOpacity: 0.8,
+									strokeWeight: 3,
+								},
+								suppressMarkers: true
+							}}
 						/>
 					)}
 				</GoogleMap>
