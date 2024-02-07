@@ -13,6 +13,26 @@ import { formattedRouteDistanceAndDuration } from 'utilities/helpers/route-measu
 
 const libraries = ['places'];
 
+const WaypointMarkers = ({ waypoints }) => {
+	const { userId } = useSelector(state => state.user.userDetails);
+
+	return waypoints.map(waypoint => {
+		if (waypoint.userId === userId) {
+			return <Marker
+				key={waypoint.userId}
+				position={waypoint.location}
+				icon={{ url: markerIconUnique }}
+			/>
+		}
+
+		return <Marker
+			key={waypoint.userId}
+			position={waypoint.location}
+			icon={{ url: markerIcon }}
+		/>
+	})
+}
+
 const Map = ({
 	children,
 	origin,
@@ -28,7 +48,6 @@ const Map = ({
 	const [directions, setDirections] = useState(null);
 	const [distance, setDistance] = useState(null);
 	const [duration, setDuration] = useState(null);
-	const { userId } = useSelector(state => state.user.userDetails);
 
 	useEffect(() => {
 		if (origin && destination && isLoaded) {
@@ -104,37 +123,24 @@ const Map = ({
 						gestureHandling: "greedy"
 					}}
 				>
-					<Marker
+					{origin && <Marker
 						position={origin.location}
 						icon={{ url: flagIcon }}
-					/>
-					<Marker
+					/>}
+					{destination && <Marker
 						position={destination.location}
 						icon={{ url: flagIcon }}
-					/>
-					{
-						waypoints.map(waypoint => {
-							if (waypoint.userId === userId) {
-								return <Marker
-									key={waypoint.userId}
-									position={waypoint.location}
-									icon={{ url: markerIconUnique }}
-								/>
-							}
-
-							return <Marker
-								key={waypoint.userId}
-								position={waypoint.location}
-								icon={{ url: markerIcon }}
-							/>
-						})
+					/>}
+					{waypoints &&
+						<WaypointMarkers waypoints={waypoints} />
 					}
+
 					{directions && (
 						<DirectionsRenderer
 							directions={directions}
 							options={{
 								polylineOptions: {
-									strokeColor: '#2980d7',
+									strokeColor: '#585E76',
 									strokeOpacity: 0.8,
 									strokeWeight: 3,
 								},

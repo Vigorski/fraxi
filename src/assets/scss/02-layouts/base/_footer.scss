@@ -7,6 +7,7 @@
   border-top-right-radius: $border-radius-footer;
   background-color: $color-gray-2;
   box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
+  z-index: 900;
   
   &__nav {
     padding: calc-rem(18px) calc-rem(35px);

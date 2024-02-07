@@ -17,7 +17,7 @@ const ReadonlyRouteInputs = ({
 				<label htmlFor="destination">Destination</label>
                 <input
                     type="text"
-                    id="origin"
+                    id="destination"
                     value={destination.formatted_address}
                     disabled
                 />

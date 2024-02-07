@@ -5,12 +5,13 @@
 
   &__distance {
     position: absolute;
-    left: calc-rem(10px);
-    top: calc-rem(10px);
-    padding: calc-rem(4px) calc-rem(6px);
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding: calc-rem(12px) calc-rem(6px);
     color: $color-white;
-    background-color: $color-secondary;
-    border-radius: $border-radius;
+    background: linear-gradient(169.12deg, $color-green-2 -80%, $color-green-3 100%);
+    text-align: center;
     z-index: 99;
   }
   
