@@ -59,6 +59,7 @@ const RideDetailsPassenger = ({ rideDetails }) => {
 			initial="initial"
 			animate="visible"
 			exit="hidden"
+			data-username={`${userDetails?.name} ${userDetails?.surname}`}
 		>
 			<div className="ride-details__driver">
 				<div className="row">

@@ -22,8 +22,8 @@
 //Mixin container create container fluid
 @mixin make-container() {
   width: 100%;
-  padding-right: calc($grid-gutter-width);
-  padding-left: calc($grid-gutter-width);
+  // padding-right: calc($grid-gutter-width);
+  // padding-left: calc($grid-gutter-width);
   margin-right: auto;
   margin-left: auto;
 }

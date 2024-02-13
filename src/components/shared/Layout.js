@@ -6,15 +6,13 @@ const Layout = ({children}) => {
   const { isLoggedIn } = useSelector(state => state.user);
 
   return (
-    <>
+    <div className="container">
       {isLoggedIn && <Header />}
       <main>
-        <div className="container">
-          {children}
-        </div>
+        {children}
       </main>
       {isLoggedIn && <Footer />}
-    </>
+    </div>
   );
 }
 

@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
-import { aggregateRouteDetails } from 'utilities/helpers';
+import { aggregateRouteDetails, removeAutocompletePacContainer } from 'utilities/helpers';
 
 const CreateRouteInputs = ({
 	setOrigin,
@@ -16,6 +16,14 @@ const CreateRouteInputs = ({
 	const handleDestinationChange = () => {
 		setDestination(aggregateRouteDetails(destinationObjRef.current.getPlace()));
 	};
+
+	
+	useEffect(() => {
+		return () => {
+			removeAutocompletePacContainer(originObjRef.current);
+			removeAutocompletePacContainer(destinationObjRef.current);
+		}
+	}, []);
 
 	return (
 		<>

@@ -89,7 +89,7 @@
 	&::before {
     content: attr(data-username);
     position: absolute;
-    top: calc-rem(90px);
+    top: calc-rem(42px);
     font-size: 16vW;
     color: rgba($color-white, .03);
     font-family: $font-lato;

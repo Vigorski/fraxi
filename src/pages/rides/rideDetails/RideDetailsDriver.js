@@ -9,35 +9,36 @@ import { ACTIVE_RIDES } from 'utilities/constants/routes';
 import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 import DriverRouteMap from 'components/map/DriverRouteMap';
 
-const RideDetailsDriver = ({rideDetails}) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+const RideDetailsDriver = ({ rideDetails }) => {
+	const dispatch = useDispatch();
+	const history = useHistory();
 	const userDetails = useSelector(state => state.user.userDetails);
-  const [allPassengersDetails, setAllPassengersDetails] = useState(null);
+	const [allPassengersDetails, setAllPassengersDetails] = useState(null);
 
-  useEffect(() => {
-		async function fetchPassengers () {
+	useEffect(() => {
+		async function fetchPassengers() {
 			const passengersFull = await getUsers(rideDetails.passengers);
 			setAllPassengersDetails(passengersFull)
 		}
-		if(rideDetails.passengers) {
+		if (rideDetails.passengers) {
 			fetchPassengers();
 		}
 	}, [rideDetails.passengers]);
 
-  const handleCancelRide = async () => {
+	const handleCancelRide = async () => {
 		await dispatch(removePassengerRide({ rideDetails, userDetails })).unwrap();
-    history.push(ACTIVE_RIDES.path);
+		history.push(ACTIVE_RIDES.path);
 	};
 
-  return (
-    <motion.section
-      className='ride-details'
-      variants={mainContainerVariants}
+	return (
+		<motion.section
+			className='ride-details'
+			variants={mainContainerVariants}
 			initial="initial"
 			animate="visible"
 			exit="hidden"
-    >
+			data-username={`${userDetails?.name} ${userDetails?.surname}`}
+		>
 			<motion.div className="form-field" variants={itemVariants}>
 				<DriverRouteMap
 					originCity={rideDetails.route.origin}
@@ -46,13 +47,13 @@ const RideDetailsDriver = ({rideDetails}) => {
 				/>
 			</motion.div>
 
-      <RideDetailsCard rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
+			<RideDetailsCard rideDetails={rideDetails} allPassengersDetails={allPassengersDetails} />
 
-      <motion.button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide} variants={itemVariants}>
-        Cancel ride
-      </motion.button>
-    </motion.section>
-  );
+			<motion.button className='btn-primary-ghost btn-block mt-xxl' onClick={handleCancelRide} variants={itemVariants}>
+				Cancel ride
+			</motion.button>
+		</motion.section>
+	);
 }
 
 export default RideDetailsDriver;

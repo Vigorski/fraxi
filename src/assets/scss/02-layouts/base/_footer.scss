@@ -1,8 +1,10 @@
 .footer {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
   width: 100%;
+  max-width: get-variable("sm", $container-max-widths);
+  transform: translateX(-50%);
   border-top-left-radius: $border-radius-footer;
   border-top-right-radius: $border-radius-footer;
   background-color: $color-gray-2;
