@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-
-import FormIKSelect from '../../../components/forms/FormIKSelect';
-import { MKD_CITIES_ABBREVIATED } from '../../../utilities/constants/cities';
-import { itemVariants } from '../../../utilities/constants/framerVariants';
+import FormIKSelect from 'components/forms/FormIKSelect';
+import { MKD_CITIES_ABBREVIATED } from 'utilities/constants/cities';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 const citiesOptions = Object.entries(MKD_CITIES_ABBREVIATED).map(([cityKey, cityVal]) => {
-  return { value: cityVal, label: cityKey };
+  return { label: cityVal, value: cityKey };
 });
 
 const RideFilters = () => {

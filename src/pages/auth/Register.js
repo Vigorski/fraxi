@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-import Layout from '../../components/shared/Layout';
-import RegisterEditUser from '../user/RegisterEditUser';
-import { LOGIN } from '../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
+import Layout from 'components/shared/Layout';
+import RegisterEditUser from 'pages/user/RegisterEditUser';
+import { LOGIN } from 'utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 
 const Register = () => {
 	return (

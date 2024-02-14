@@ -2,11 +2,10 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-
-import { userLogin } from '../../store/user/userAsyncActions'
-import Layout from '../../components/shared/Layout';
-import { MY_PROFILE, REGISTER } from '../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
+import { userLogin } from 'store/user/userAsyncActions'
+import Layout from 'components/shared/Layout';
+import { MY_PROFILE, REGISTER } from 'utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 
 const Login = () => {
 	const dispatch = useDispatch();

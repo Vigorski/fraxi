@@ -47,7 +47,7 @@ html a {
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 a {
@@ -129,8 +129,7 @@ input[type="submit"] {
 
 button[disabled],
 html input[disabled] {
-  cursor: not-allowed;
-  opacity: 0.5;
+  cursor: default;
 }
 
 button::-moz-focus-inner,

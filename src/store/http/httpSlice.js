@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { PENDING, FULLFILLED, REJECTED } from '../../utilities/constants/httpRequestStatus'
+import { PENDING, FULLFILLED, REJECTED } from 'utilities/constants/httpRequestStatus'
 
 const initialState = {
 	status: '',

@@ -1,25 +1,28 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
-
-import FormIKSelect from '../../../components/forms/FormIKSelect';
-import Layout from '../../../components/shared/Layout';
-import { addNewRide } from '../../../store/rides/ridesAsyncActions';
-import { addTime } from '../../../utilities/date-time';
-import { MKD_CITIES } from '../../../utilities/constants/cities';
-import { MY_PROFILE } from '../../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../../utilities/constants/framerVariants';
+import FormIKSelect from 'components/forms/FormIKSelect';
+import Layout from 'components/shared/Layout';
+import DriverRouteMap from 'components/map/DriverRouteMap';
+import { addNewRide } from 'store/rides/ridesAsyncActions';
+import { addTime } from 'utilities/helpers/date-time';
+import { MY_PROFILE } from 'utilities/constants/routes';
+import {
+	mainContainerVariants,
+	itemVariants
+} from 'utilities/constants/framerVariants';
 
 const CreateRide = () => {
 	const minDepartureDate = new Date(addTime([1]));
 	const [departureDate, setDepartureDate] = useState(minDepartureDate);
 	const history = useHistory();
-	const { userDetails } = useSelector(state => state.user);
+	const userDetails = useSelector(state => state.user.userDetails);
 	const dispatch = useDispatch();
+	const [routeMapDetails, setRouteMapDetails] = useState({});
 
 	const handleValidation = values => {
 		const errors = {};
@@ -38,101 +41,134 @@ const CreateRide = () => {
 		return errors;
 	};
 
-	const citiesOptions = MKD_CITIES.map(city => {
-		return { value: city, label: city };
-	});
+	const storeRouteMapDetails = useCallback(({origin, destination, waypoints}) => {
+		const directionsAugmentedData = {
+			origin,
+			destination,
+			waypoints,
+			travelMode: window.google.maps.TravelMode.DRIVING
+		};
+
+		setRouteMapDetails(directionsAugmentedData);
+	}, []);
 
 	return (
 		<Layout>
 			<motion.section
-				className='profile profile--edit'
+				className="profile profile--edit"
 				variants={mainContainerVariants}
 				initial="initial"
-    		animate="visible"
+				animate="visible"
 				exit="hidden"
 			>
 				<Formik
 					initialValues={{
-						origin: 'Skopje',
-						destination: 'Skopje',
 						price: 0,
 						maxPassengers: 4,
 						departureDate: minDepartureDate,
 						rideType: 'regular',
-						smoking: false,
+						smoking: false
 					}}
 					validate={handleValidation}
 					onSubmit={async (values, { setSubmitting }) => {
-						await dispatch(addNewRide({ driver: userDetails, values })).unwrap();
-						// toast("Wow so easy !")
+						await dispatch(
+							addNewRide({
+								driver: userDetails,
+								route: routeMapDetails,
+								values
+							})
+						).unwrap();
 						setSubmitting(false);
 						history.push(MY_PROFILE.path);
 					}}
 				>
-					{({ isSubmitting }) => (
+					{({ isSubmitting, values }) => (
 						<Form>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='origin'>Origin</label>
-								<Field name='origin' id='origin' component={FormIKSelect} options={citiesOptions} />
-								<ErrorMessage name='origin' component='span' className='input-message-error' />
+							<motion.div className="form-field" variants={itemVariants}>
+								<DriverRouteMap
+									// originCity={'Skopje, North Macedonia'}
+									// destinationCity={'Prilep, North Macedonia'}
+									storeRouteMapDetails={storeRouteMapDetails}
+								/>
 							</motion.div>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='destination'>Destination</label>
-								<Field name='destination' id='destination' component={FormIKSelect} options={citiesOptions} />
-								<ErrorMessage name='destination' component='span' className='input-message-error' />
-							</motion.div>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='departureDate'>Departure date</label>
+							<motion.div className="form-field" variants={itemVariants}>
+								<label htmlFor="departureDate">Departure date</label>
 								<DatePicker
-									name='departureDate'
-									id='departureDate'
+									name="departureDate"
+									id="departureDate"
 									selected={departureDate}
-									onChange={(date) => setDepartureDate(date)}
+									onChange={date => setDepartureDate(date)}
 									showTimeSelect
 									dateFormat="d MMMM, yyyy h:mm aa"
-									timeFormat='HH:mm'
+									timeFormat="HH:mm"
 									timeIntervals={15}
 								/>
-								<ErrorMessage name='departureDate' component='span' className='input-message-error' />
+								<ErrorMessage
+									name="departureDate"
+									component="span"
+									className="input-message-error"
+								/>
 							</motion.div>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='price'>Price per person</label>
-								<Field name='price' id='price' type='number' />
-								<ErrorMessage name='price' component='span' className='input-message-error' />
+							<motion.div className="form-field" variants={itemVariants}>
+								<label htmlFor="price">Price per person</label>
+								<Field name="price" id="price" type="number" />
+								<ErrorMessage
+									name="price"
+									component="span"
+									className="input-message-error"
+								/>
 							</motion.div>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='maxPassengers'>Maximum number of passengers</label>
-								<Field name='maxPassengers' id='maxPassengers' type='number' />
-								<ErrorMessage name='maxPassengers' component='span' className='input-message-error' />
+							<motion.div className="form-field" variants={itemVariants}>
+								<label htmlFor="maxPassengers">
+									Maximum number of passengers
+								</label>
+								<Field name="maxPassengers" id="maxPassengers" type="number" />
+								<ErrorMessage
+									name="maxPassengers"
+									component="span"
+									className="input-message-error"
+								/>
 							</motion.div>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='rideType'>Ride</label>
+							<motion.div className="form-field" variants={itemVariants}>
+								<label htmlFor="rideType">Ride</label>
 								<Field
-									name='rideType'
-									id='rideType'
+									name="rideType"
+									id="rideType"
 									component={FormIKSelect}
 									options={[
 										{ value: 'regular', label: 'Regular' },
-										{ value: 'irregular', label: 'Irregular' },
+										{ value: 'irregular', label: 'Irregular' }
 									]}
 								/>
-								<ErrorMessage name='rideType' component='span' className='input-message-error' />
+								<ErrorMessage
+									name="rideType"
+									component="span"
+									className="input-message-error"
+								/>
 							</motion.div>
-							<motion.div className='form-field' variants={itemVariants}>
-								<label htmlFor='smoking'>Smoking</label>
+							<motion.div className="form-field" variants={itemVariants}>
+								<label htmlFor="smoking">Smoking</label>
 								<Field
-									name='smoking'
-									id='smoking'
+									name="smoking"
+									id="smoking"
 									component={FormIKSelect}
 									options={[
 										{ value: false, label: 'No smoking' },
-										{ value: true, label: 'Smoking' },
+										{ value: true, label: 'Smoking' }
 									]}
 								/>
-								<ErrorMessage name='smoking' component='span' className='input-message-error' />
+								<ErrorMessage
+									name="smoking"
+									component="span"
+									className="input-message-error"
+								/>
 							</motion.div>
-
-							<motion.button className='btn-primary btn-block mt-xl' type='submit' disabled={isSubmitting} variants={itemVariants}>
+							<motion.button
+								className="btn-primary btn-block mt-xl"
+								type="submit"
+								disabled={isSubmitting}
+								variants={itemVariants}
+							>
 								Create ride
 							</motion.button>
 						</Form>

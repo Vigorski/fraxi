@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-import Layout from '../../components/shared/Layout';
+import Layout from 'components/shared/Layout';
+import { IconUserPlaceholder, IconEdit } from 'components/icons';
+import { userLogout } from 'store/user/userActions';
+import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import { MY_PROFILE } from 'utilities/constants/routes';
+import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 import PassengerPreferences from './passenger/Preferences';
-import { IconUserPlaceholder, IconEdit } from '../../components/icons';
-import { userLogout } from '../../store/user/userActions';
-import { DRIVER, PASSENGER } from '../../utilities/constants/users';
-import { MY_PROFILE } from '../../utilities/constants/routes';
-import { mainContainerVariants, itemVariants } from '../../utilities/constants/framerVariants';
 
 
 const MyProfile = ({history}) => {
@@ -34,8 +33,8 @@ const MyProfile = ({history}) => {
           <Link className="btn-icon-center btn-stripped" to={`${MY_PROFILE.path}/edit-user`}><IconEdit /></Link>
         </motion.div>
         <motion.div className="profile__img" variants={itemVariants}>
-          {userDetails?.profilePicture !== '' ?
-            <img src={userDetails?.profilePicture} alt="user avatar" /> :
+          {!!userDetails?.profilePicture ?
+            <img src={userDetails.profilePicture} alt="user avatar" /> :
             <div className="profile__svg-wrapper">
               <IconUserPlaceholder />
             </div>

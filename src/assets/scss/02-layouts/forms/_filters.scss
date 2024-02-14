@@ -29,8 +29,10 @@
   }
 
 	&__route {
+		position: relative;
 		display: flex;
 		align-items: center;
+		z-index: 10;
 
 		.react-select {
 			&-wrapper {

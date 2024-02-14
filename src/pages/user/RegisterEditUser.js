@@ -2,13 +2,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-
-import FormIkUserImage from '../../components/forms/FormIkUserImage';
-import { userUpdate, userRegister } from '../../store/user/userAsyncActions';
-import { httpActions } from '../../store/http/httpSlice';
-import { MY_PROFILE, LOGIN } from '../../utilities/constants/routes';
-import { getFB } from '../../utilities/api/firebase-api';
-import { itemVariants } from '../../utilities/constants/framerVariants';
+import FormIkUserImage from 'components/forms/FormIkUserImage';
+import { userUpdate, userRegister } from 'store/user/userAsyncActions';
+import { httpActions } from 'store/http/httpSlice';
+import { MY_PROFILE, LOGIN } from 'utilities/constants/routes';
+import { getFB } from 'utilities/api/firebase-api';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 
 const RegisterEditUser = ({ editUserProfile }) => {

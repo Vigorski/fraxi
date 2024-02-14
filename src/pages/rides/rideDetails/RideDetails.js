@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux';
 // import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
-import Layout from '../../../components/shared/Layout';
-import { PASSENGER, DRIVER } from '../../../utilities/constants/users';
+import Layout from 'components/shared/Layout';
+import { PASSENGER, DRIVER } from 'utilities/constants/users';
 import RideDetailsPassenger from './RideDetailsPassenger';
 import RideDetailsDriver from './RideDetailsDriver';
 
@@ -21,8 +20,8 @@ const RideDetails = () => {
 	
 	return (
 		<Layout>
-			{isUserPassenger && <RideDetailsPassenger userDetails={userDetails} rideDetails={rideDetails} />}
-			{isUserDriver && <RideDetailsDriver userDetails={userDetails} rideDetails={rideDetails} />}
+			{isUserPassenger && <RideDetailsPassenger rideDetails={rideDetails} />}
+			{isUserDriver && <RideDetailsDriver rideDetails={rideDetails} />}
 		</Layout>
 	);
 };

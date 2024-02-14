@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 import { addNewRide, bookRide, removePassengerRide, getRidesState, getFilteredRides } from './ridesAsyncActions';
 
 const initialState = {

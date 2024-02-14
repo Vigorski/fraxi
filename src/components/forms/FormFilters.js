@@ -1,6 +1,5 @@
 import { Formik, Form } from 'formik';
-
-import FormObserver from '../../components/forms/FormObserver';
+import FormObserver from 'components/forms/FormObserver';
 
 const FormFilters = ({children, initialValues, handleObserverValues}) => {
   return (
