@@ -55,7 +55,7 @@ function App() {
 			toast.error(message);
 		}
 	}, [status, message]);
-
+console.log('new stuff');
 	return (
 		<>
 			<AnimatePresence mode='wait'>
