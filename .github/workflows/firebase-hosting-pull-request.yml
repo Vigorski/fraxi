@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print out Secret
-        run: echo ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }} | sed 's/.& /g'
+        run: echo ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }} | sed 's/./& /g'
         
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
