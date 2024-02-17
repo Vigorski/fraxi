@@ -55,7 +55,7 @@ function App() {
 			toast.error(message);
 		}
 	}, [status, message]);
-console.log('new stuff');
+console.log(process.env.REACT_APP_FIREBASE_PROJECT_ID);
 	return (
 		<>
 			<AnimatePresence mode='wait'>
