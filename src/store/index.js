@@ -11,8 +11,8 @@ const store = configureStore({
     rides: ridesReducer,
     http: httpReducer,
     route: routeReducer,
-    errors: errorReducer
-  }
+    errors: errorReducer,
+  },
 });
 
 export default store;

@@ -4,260 +4,260 @@ import { arrayUnion, arrayRemove } from 'firebase/firestore';
 import { userActions } from 'store/user/userSlice';
 import { httpActions } from 'store/http/httpSlice';
 import {
-	getFB,
-	getNestedFB,
-	addFBWithId,
-	updateFB
+  getFB,
+  getNestedFB,
+  addFBWithId,
+  updateFB,
 } from 'utilities/api/firebase-api';
 import { DRIVER, PASSENGER } from 'utilities/constants/users';
 
 const transformRideValues = (driverId, route, values) => {
-	const newRideId = 'ride_' + uuidv4();
-	const creationDate = new Date().toUTCString();
-	const departureDateParsed = values.departureDate.toUTCString();
+  const newRideId = 'ride_' + uuidv4();
+  const creationDate = new Date().toUTCString();
+  const departureDateParsed = values.departureDate.toUTCString();
 
-	return {
-		...values,
-		creationDate,
-		departureDate: departureDateParsed,
-		rideId: newRideId,
-		driverId,
-		route,
-		passengers: [],
-		numOfStops: 0,
-		status: 'active'
-	};
+  return {
+    ...values,
+    creationDate,
+    departureDate: departureDateParsed,
+    rideId: newRideId,
+    driverId,
+    route,
+    passengers: [],
+    numOfStops: 0,
+    status: 'active',
+  };
 };
 
 const addDriverToRide = (rides, drivers) => {
-	const updatedRides = rides.map(ride => {
-		// using the first index of the response since it always returns an array which will only have a single item
-		const driverDetails = drivers.find(
-			driver => driver[0].userId === ride.driverId
-		);
-		return { ...ride, driverDetails: driverDetails[0] };
-	});
+  const updatedRides = rides.map(ride => {
+    // using the first index of the response since it always returns an array which will only have a single item
+    const driverDetails = drivers.find(
+      driver => driver[0].userId === ride.driverId,
+    );
+    return { ...ride, driverDetails: driverDetails[0] };
+  });
 
-	return updatedRides;
+  return updatedRides;
 };
 
 export const addNewRide = createAsyncThunk(
-	'rides/addNewRide',
-	async ({ driver, route, values }, { dispatch }) => {
-		dispatch(httpActions.requestSend());
+  'rides/addNewRide',
+  async ({ driver, route, values }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-		try {
-			const transformedValues = transformRideValues(
-				driver.userId,
-				route,
-				values
-			);
-			const transformedDriverActiveRides = {
-				activeRides: [...driver.activeRides, transformedValues.rideId]
-			};
+    try {
+      const transformedValues = transformRideValues(
+        driver.userId,
+        route,
+        values,
+      );
+      const transformedDriverActiveRides = {
+        activeRides: [...driver.activeRides, transformedValues.rideId],
+      };
 
-			await Promise.all([
-				addFBWithId('/rides', transformedValues, transformedValues.rideId),
-				updateFB(
-					'/users',
-					driver.userId,
-					{ activeRides: arrayUnion(transformedValues.rideId) },
-					true
-				)
-			]);
+      await Promise.all([
+        addFBWithId('/rides', transformedValues, transformedValues.rideId),
+        updateFB(
+          '/users',
+          driver.userId,
+          { activeRides: arrayUnion(transformedValues.rideId) },
+          true,
+        ),
+      ]);
 
-			dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
-			dispatch(httpActions.requestSuccess('New ride created.'));
+      dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
+      dispatch(httpActions.requestSuccess('New ride created.'));
 
-			return transformedValues;
-		} catch (err) {
-			console.error(err);
-			dispatch(
-				httpActions.requestError(err.message || 'Something went wrong!')
-			);
-		}
-	}
+      return transformedValues;
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
 );
 
 export const bookRide = createAsyncThunk(
-	'rides/bookRide',
-	async ({ passenger, rideDetails, waypoints }, { dispatch }) => {
-		dispatch(httpActions.requestSend());
+  'rides/bookRide',
+  async ({ passenger, rideDetails, waypoints }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-		try {
-			if (rideDetails.passengers.length === rideDetails.maxPassengers) {
-				throw new Error('Reached max passengers per ride!');
-			}
+    try {
+      if (rideDetails.passengers.length === rideDetails.maxPassengers) {
+        throw new Error('Reached max passengers per ride!');
+      }
 
-			const transformedPassengerActiveRides = {
-				activeRides: [...passenger.activeRides, rideDetails.rideId]
-			};
+      const transformedPassengerActiveRides = {
+        activeRides: [...passenger.activeRides, rideDetails.rideId],
+      };
 
-			await Promise.all([
-				updateFB(
-					'/rides',
-					rideDetails.rideId,
-					{
-						passengers: arrayUnion(passenger.userId),
-						'route.waypoints': waypoints
-					},
-					true
-				),
-				updateFB(
-					'/users',
-					passenger.userId,
-					{ activeRides: arrayUnion(rideDetails.rideId) },
-					true
-				)
-			]);
+      await Promise.all([
+        updateFB(
+          '/rides',
+          rideDetails.rideId,
+          {
+            passengers: arrayUnion(passenger.userId),
+            'route.waypoints': waypoints,
+          },
+          true,
+        ),
+        updateFB(
+          '/users',
+          passenger.userId,
+          { activeRides: arrayUnion(rideDetails.rideId) },
+          true,
+        ),
+      ]);
 
-			dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
-			dispatch(httpActions.requestSuccess('Ride booked.'));
+      dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
+      dispatch(httpActions.requestSuccess('Ride booked.'));
 
-			return rideDetails;
-		} catch (err) {
-			console.error(err);
-			dispatch(
-				httpActions.requestError(err.message || 'Something went wrong!')
-			);
-		}
-	}
+      return rideDetails;
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
 );
 
 export const removePassengerRide = createAsyncThunk(
-	'rides/removePassengerRide',
-	async ({ rideDetails, userDetails, waypoints }, { dispatch }) => {
-		dispatch(httpActions.requestSend());
+  'rides/removePassengerRide',
+  async ({ rideDetails, userDetails, waypoints }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-		try {
-			const comboRemoveRideCall = [
-				updateFB('/users', userDetails.userId, {
-					activeRides: arrayRemove(rideDetails.rideId)
-				}),
-				updateFB('/users', userDetails.userId, {
-					historyRides: arrayUnion(rideDetails.rideId)
-				})
-			];
+    try {
+      const comboRemoveRideCall = [
+        updateFB('/users', userDetails.userId, {
+          activeRides: arrayRemove(rideDetails.rideId),
+        }),
+        updateFB('/users', userDetails.userId, {
+          historyRides: arrayUnion(rideDetails.rideId),
+        }),
+      ];
 
-			if (userDetails.userType === PASSENGER) {
-				comboRemoveRideCall.push(
-					updateFB('/rides', rideDetails.rideId, {
-						passengers: arrayRemove(userDetails.userId),
-						'route.waypoints': waypoints
-					})
-				);
-			}
+      if (userDetails.userType === PASSENGER) {
+        comboRemoveRideCall.push(
+          updateFB('/rides', rideDetails.rideId, {
+            passengers: arrayRemove(userDetails.userId),
+            'route.waypoints': waypoints,
+          }),
+        );
+      }
 
-			if (userDetails.userType === DRIVER) {
-				comboRemoveRideCall.push(
-					updateFB('/rides', rideDetails.rideId, { status: 'canceled' })
-				);
+      if (userDetails.userType === DRIVER) {
+        comboRemoveRideCall.push(
+          updateFB('/rides', rideDetails.rideId, { status: 'canceled' }),
+        );
 
-				rideDetails.passengers.forEach(passengerId => {
-					comboRemoveRideCall.push(
-						updateFB('/users', passengerId, {
-							activeRides: arrayRemove(rideDetails.rideId)
-						})
-					);
-					comboRemoveRideCall.push(
-						updateFB('/users', passengerId, {
-							historyRides: arrayUnion(rideDetails.rideId)
-						})
-					);
-				});
-			}
+        rideDetails.passengers.forEach(passengerId => {
+          comboRemoveRideCall.push(
+            updateFB('/users', passengerId, {
+              activeRides: arrayRemove(rideDetails.rideId),
+            }),
+          );
+          comboRemoveRideCall.push(
+            updateFB('/users', passengerId, {
+              historyRides: arrayUnion(rideDetails.rideId),
+            }),
+          );
+        });
+      }
 
-			await Promise.all(comboRemoveRideCall);
+      await Promise.all(comboRemoveRideCall);
 
-			dispatch(userActions.removeActiveRide(rideDetails.rideId));
-			dispatch(userActions.addHistoryRide(rideDetails.rideId));
-			dispatch(httpActions.requestSuccess('Ride successfully canceled.'));
+      dispatch(userActions.removeActiveRide(rideDetails.rideId));
+      dispatch(userActions.addHistoryRide(rideDetails.rideId));
+      dispatch(httpActions.requestSuccess('Ride successfully canceled.'));
 
-			return rideDetails;
-		} catch (err) {
-			console.error(err);
-			dispatch(
-				httpActions.requestError(err.message || 'Something went wrong!')
-			);
-		}
-	}
+      return rideDetails;
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
 );
 
 // TODO: perhaps populate history state at the same time?
 export const getRidesState = createAsyncThunk(
-	'rides/getRidesState',
-	async ({ userRides, ridesMethod }, { dispatch }) => {
-		// first arg -> ride data
-		// second arg -> which ride method to be used (active or history)
-		dispatch(httpActions.requestSend());
+  'rides/getRidesState',
+  async ({ userRides, ridesMethod }, { dispatch }) => {
+    // first arg -> ride data
+    // second arg -> which ride method to be used (active or history)
+    dispatch(httpActions.requestSend());
 
-		try {
-			const ridesResponse = await Promise.all(
-				userRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId']))
-			);
-			const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
-			const activeDriversResponse = await Promise.all(
-				spreadRidesResponse.map(driver =>
-					getFB('/users', { userId: driver.driverId }, ['userId'])
-				)
-			);
-			const updatedRides = addDriverToRide(
-				spreadRidesResponse,
-				activeDriversResponse
-			);
+    try {
+      const ridesResponse = await Promise.all(
+        userRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId'])),
+      );
+      const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
+      const activeDriversResponse = await Promise.all(
+        spreadRidesResponse.map(driver =>
+          getFB('/users', { userId: driver.driverId }, ['userId']),
+        ),
+      );
+      const updatedRides = addDriverToRide(
+        spreadRidesResponse,
+        activeDriversResponse,
+      );
 
-			dispatch(httpActions.requestSuccess());
-			return { ridesMethod, updatedRides };
-		} catch (err) {
-			console.error(err);
-			dispatch(
-				httpActions.requestError(err.message || 'Something went wrong!')
-			);
-		}
-	}
+      dispatch(httpActions.requestSuccess());
+      return { ridesMethod, updatedRides };
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
 );
 
 export const getFilteredRides = createAsyncThunk(
-	'rides/getFilteredRides',
-	async ({ searchPreferences }, { dispatch }) => {
-		dispatch(httpActions.requestSend());
+  'rides/getFilteredRides',
+  async ({ searchPreferences }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-		try {
-			const uniqueDriverIds = [];
-			// TODO: make additional conditional filters for less important aspects
-			// TODO: if too few results, remove some filters
-			const ridesResponse = await getNestedFB(
-				'/rides',
-				searchPreferences,
-				[
-					'route.destination.address_components.city',
-					'route.origin.address_components.city',
-					'rideType',
-					'smoking'
-				],
-				['destination', 'origin', 'rideType', 'smoking']
-			);
+    try {
+      const uniqueDriverIds = [];
+      // TODO: make additional conditional filters for less important aspects
+      // TODO: if too few results, remove some filters
+      const ridesResponse = await getNestedFB(
+        '/rides',
+        searchPreferences,
+        [
+          'route.destination.address_components.city',
+          'route.origin.address_components.city',
+          'rideType',
+          'smoking',
+        ],
+        ['destination', 'origin', 'rideType', 'smoking'],
+      );
 
-			for (const ride of ridesResponse) {
-				if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
-					uniqueDriverIds.push(ride.driverId);
-				}
-			}
+      for (const ride of ridesResponse) {
+        if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
+          uniqueDriverIds.push(ride.driverId);
+        }
+      }
 
-			const driversResponse = await Promise.all(
-				uniqueDriverIds.map(driver =>
-					getFB('/users', { userId: driver }, ['userId'])
-				)
-			);
-			const updatedRides = addDriverToRide(ridesResponse, driversResponse);
+      const driversResponse = await Promise.all(
+        uniqueDriverIds.map(driver =>
+          getFB('/users', { userId: driver }, ['userId']),
+        ),
+      );
+      const updatedRides = addDriverToRide(ridesResponse, driversResponse);
 
-			dispatch(httpActions.requestSuccess());
-			return updatedRides;
-		} catch (err) {
-			console.error(err);
-			dispatch(
-				httpActions.requestError(err.message || 'Something went wrong!')
-			);
-		}
-	}
+      dispatch(httpActions.requestSuccess());
+      return updatedRides;
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
 );

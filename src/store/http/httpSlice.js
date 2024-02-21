@@ -1,20 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PENDING, FULLFILLED, REJECTED } from 'utilities/constants/httpRequestStatus'
+import {
+  PENDING,
+  FULLFILLED,
+  REJECTED,
+} from 'utilities/constants/httpRequestStatus';
 
 const initialState = {
-	status: '',
-	message: null,
+  status: '',
+  message: null,
 };
 
 const httpSlice = createSlice({
-	name: 'http',
-	initialState,
-	reducers: {
+  name: 'http',
+  initialState,
+  reducers: {
     requestReset(state) {
       state.status = '';
       state.message = null;
     },
-		requestSend(state) {
+    requestSend(state) {
       state.status = PENDING;
       state.message = null;
     },
@@ -25,8 +29,8 @@ const httpSlice = createSlice({
     requestError(state, action) {
       state.status = REJECTED;
       state.message = action.payload;
-    }
-	},
+    },
+  },
 });
 
 export const httpActions = httpSlice.actions;
