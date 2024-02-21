@@ -8,7 +8,7 @@ import {
   getNestedFB,
   addFBWithId,
   updateFB,
-} from 'utilities/api/firebase-api';
+} from 'services/firebase-api';
 import { DRIVER, PASSENGER } from 'utilities/constants/users';
 
 const transformRideValues = (driverId, route, values) => {

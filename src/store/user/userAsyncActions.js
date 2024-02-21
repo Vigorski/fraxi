@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { httpActions } from 'store/http/httpSlice';
 import { errorActions } from 'store/errors/errorSlice';
-import { getFB, addFBWithId, updateFB } from 'utilities/api/firebase-api';
-import { uploadImage, getFileUrl } from 'utilities/api/firebase-storage-api';
+import { getFB, addFBWithId, updateFB } from 'services/firebase-api';
+import { uploadImage, getFileUrl } from 'services/firebase-storage-api';
 import { PASSENGER } from 'utilities/constants/users';
 
 const transformUserUpdateValues = values => {

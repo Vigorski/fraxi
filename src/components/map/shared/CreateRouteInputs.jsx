@@ -3,7 +3,7 @@ import { Autocomplete } from '@react-google-maps/api';
 import {
   aggregateRouteDetails,
   removeAutocompletePacContainer,
-} from 'utilities/helpers';
+} from 'utilities/map';
 
 const CreateRouteInputs = ({ setOrigin, setDestination }) => {
   const originObjRef = useRef(null);

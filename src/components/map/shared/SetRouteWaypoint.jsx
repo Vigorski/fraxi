@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Autocomplete } from '@react-google-maps/api';
-import { removeAutocompletePacContainer } from 'utilities/helpers';
+import { removeAutocompletePacContainer } from 'utilities/map';
 
 const SetRouteWaypoint = ({ setWaypoints, randomProp }) => {
   const { userId } = useSelector(state => state.user.userDetails);

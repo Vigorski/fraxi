@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from 'store/rides/ridesAsyncActions';
-import { getUsers } from 'utilities/api/api';
+import { getUsers } from 'services/api';
 import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
