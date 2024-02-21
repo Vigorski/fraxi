@@ -14,7 +14,7 @@ import {
 	// orderBy,
 	// serverTimestamp, //simply invoke this fn and will return a timestamp
 } from 'firebase/firestore';
-import { FIREBASE_CONFIG } from 'utilities/constants/db';
+import { FIREBASE_CONFIG } from 'utilities/constants/firebaseConfig';
 
 const app = initializeApp(FIREBASE_CONFIG);
 const dbFB = getFirestore(app);

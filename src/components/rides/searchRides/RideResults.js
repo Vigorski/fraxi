@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IconUserPlaceholder } from 'components/icons';
 import { getTime, getShortDate } from 'utilities/helpers';
-import { RIDE_DETAILS } from 'utilities/constants/routes';
+import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
 
 const RideResults = ({ filteredRides }) => {

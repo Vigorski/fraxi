@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-import Layout from 'components/shared/Layout';
+import Layout from 'layout/Layout';
 import FormFilters from 'components/forms/FormFilters';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
 import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
-import RideResults from './RideResults';
-import RideFilters from './RideFilters';
+import RideResults from '../../components/rides/searchRides/RideResults';
+import RideFilters from '../../components/rides/searchRides/RideFilters';
 
 const SearchRides = () => {
 	const dispatch = useDispatch();

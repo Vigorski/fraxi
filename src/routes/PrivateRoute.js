@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { routeActions } from 'store/routes/routeSlice';
-import { LOGIN, MY_PROFILE } from 'utilities/constants/routes';
+import { LOGIN, MY_PROFILE } from 'utilities/constants/routesConfig';
 
 export const PrivateRoute = ({ component: Component, roles, user, pathDetails, ...rest }) => {
 	const dispatch = useDispatch();
@@ -35,19 +35,3 @@ export const PrivateRoute = ({ component: Component, roles, user, pathDetails, .
 		/>
 	);
 };
-
-export const AuthRoute = ({ component: Component, isLoggedIn, ...rest }) => (
-	<Route
-		{...rest}
-		render={props => {
-			if (isLoggedIn) {
-				// already logged in so redirect to profile page with the return url
-				return <Redirect to={{ pathname: MY_PROFILE.path, state: { from: props.location } }} />;
-			}
-
-			// otherwise return component
-			return <Component {...props} />;
-		}}
-		exact
-	/>
-);

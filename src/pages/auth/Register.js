@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Layout from 'components/shared/Layout';
+import Layout from 'layout/Layout';
 import RegisterEditUser from 'pages/user/RegisterEditUser';
-import { LOGIN } from 'utilities/constants/routes';
+import { LOGIN } from 'utilities/constants/routesConfig';
 import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 
 const Register = () => {

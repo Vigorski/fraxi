@@ -11,7 +11,7 @@ import {
 	IconPhone
 } from 'components/icons';
 import PassengerRouteMap from 'components/map/PassengerRouteMap';
-import { ACTIVE_RIDES } from 'utilities/constants/routes';
+import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
 	mainContainerVariants,
 	itemVariants
@@ -59,7 +59,7 @@ const RideDetailsPassenger = ({ rideDetails }) => {
 			initial="initial"
 			animate="visible"
 			exit="hidden"
-			data-username={`${userDetails?.name} ${userDetails?.surname}`}
+			data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}
 		>
 			<div className="ride-details__driver">
 				<div className="row">

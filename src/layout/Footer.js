@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { MY_PROFILE, SEARCH_RIDES, ACTIVE_RIDES } from 'utilities/constants/routes';
+import { MY_PROFILE, SEARCH_RIDES, ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import { PASSENGER } from 'utilities/constants/users';
 import { IconUser, IconBookmark, IconSearch } from 'components/icons';
 

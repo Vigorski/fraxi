@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { RIDE_DETAILS } from 'utilities/constants/routes';
+import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { getTime, getDate } from 'utilities/helpers';
 import { itemVariants } from 'utilities/constants/framerVariants';
 

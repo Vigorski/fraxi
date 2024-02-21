@@ -6,11 +6,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import FormIKSelect from 'components/forms/FormIKSelect';
-import Layout from 'components/shared/Layout';
+import Layout from 'layout/Layout';
 import DriverRouteMap from 'components/map/DriverRouteMap';
 import { addNewRide } from 'store/rides/ridesAsyncActions';
 import { addTime } from 'utilities/helpers/date-time';
-import { MY_PROFILE } from 'utilities/constants/routes';
+import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import {
 	mainContainerVariants,
 	itemVariants

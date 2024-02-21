@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import Layout from 'components/shared/Layout';
-import ActiveRidesCard from './ActiveRidesCard';
+import Layout from 'layout/Layout';
+import ActiveRidesCard from '../../components/rides/activeRides/ActiveRidesCard';
 import {
 	mainContainerVariants,
 	itemVariants

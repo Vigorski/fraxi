@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-
 import userReducer from './user/userSlice';
 import ridesReducer from './rides/ridesSlice';
 import httpReducer from './http/httpSlice';

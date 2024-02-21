@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { getUsers } from 'utilities/api/api';
-import { ACTIVE_RIDES } from 'utilities/constants/routes';
+import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import { mainContainerVariants, itemVariants } from 'utilities/constants/framerVariants';
 import DriverRouteMap from 'components/map/DriverRouteMap';
 
@@ -37,7 +37,7 @@ const RideDetailsDriver = ({ rideDetails }) => {
 			initial="initial"
 			animate="visible"
 			exit="hidden"
-			data-username={`${userDetails?.name} ${userDetails?.surname}`}
+			data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}
 		>
 			<motion.div className="form-field" variants={itemVariants}>
 				<DriverRouteMap

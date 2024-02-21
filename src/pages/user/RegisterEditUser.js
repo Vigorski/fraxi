@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import FormIkUserImage from 'components/forms/FormIkUserImage';
 import { userUpdate, userRegister } from 'store/user/userAsyncActions';
 import { httpActions } from 'store/http/httpSlice';
-import { MY_PROFILE, LOGIN } from 'utilities/constants/routes';
+import { MY_PROFILE, LOGIN } from 'utilities/constants/routesConfig';
 import { getFB } from 'utilities/api/firebase-api';
 import { itemVariants } from 'utilities/constants/framerVariants';
 

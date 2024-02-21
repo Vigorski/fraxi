@@ -1,4 +1,4 @@
-import { LOGIN } from 'utilities/constants/routes';
+import { LOGIN } from 'utilities/constants/routesConfig';
 import { ridesActions } from 'store/rides/ridesSlice';
 import { userActions } from './userSlice';
 

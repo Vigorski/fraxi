@@ -5,14 +5,15 @@ import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { AnimatePresence } from 'framer-motion';
 
-import { AuthRoute, PrivateRoute } from './components/shared/Routes';
-import NotFound from './components/shared/NotFount';
+import { PrivateRoute } from './routes/PrivateRoute';
+import { AuthRoute } from './routes/AuthRoute';
+import NotFound from './layout/NotFount';
 
 import { userRelogin } from './store/user/userAsyncActions';
 import { getRidesState } from './store/rides/ridesAsyncActions';
 
 import { authRouteGroup, profileRouteGroup, passengerRouteGroup, driverRouteGroup, ridesRouteGroup } from './utilities/constants/routeGroups';
-import { LOGIN, MY_PROFILE } from './utilities/constants/routes';
+import { LOGIN, MY_PROFILE } from './utilities/constants/routesConfig';
 import { FULLFILLED, REJECTED } from './utilities/constants/httpRequestStatus';
 
 function App() {

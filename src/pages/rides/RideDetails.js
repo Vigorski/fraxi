@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 // import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import Layout from 'components/shared/Layout';
+import Layout from 'layout/Layout';
 import { PASSENGER, DRIVER } from 'utilities/constants/users';
-import RideDetailsPassenger from './RideDetailsPassenger';
-import RideDetailsDriver from './RideDetailsDriver';
+import RideDetailsPassenger from '../../components/rides/rideDetails/RideDetailsPassenger';
+import RideDetailsDriver from '../../components/rides/rideDetails/RideDetailsDriver';
 
 const RideDetails = () => {
 	// TODO: use the rideId from params to pull ride data from DB
