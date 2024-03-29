@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
 import { errorActions } from 'store/errors/errorSlice';
-import { getFB, addFBWithId, updateFB } from 'services/firebase-api';
-import { uploadImage, getFileUrl } from 'services/firebase-storage-api';
+import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
+import FirebaseStorageService from 'services/FirebaseStorageService';
 import { PASSENGER } from 'utilities/constants/users';
 
 const transformUserUpdateValues = values => {
@@ -40,8 +41,8 @@ const transformUserLoginValues = values => {
 
 const uploadUserImage = async (profilePicture, userId) => {
   const url = `images/users/userAvatar__${userId}`;
-  await uploadImage(url, profilePicture, { contentType: profilePicture.type });
-  const imageRealLocation = await getFileUrl(url);
+  await FirebaseStorageService.uploadImage(url, profilePicture, { contentType: profilePicture.type });
+  const imageRealLocation = await FirebaseStorageService.getFileUrl(url);
   return imageRealLocation;
 };
 
@@ -63,10 +64,10 @@ export const userRegister = createAsyncThunk(
         );
       }
 
-      const registerResponse = await addFBWithId(
+      const registerResponse = await FirebaseFirestoreService.add(
         '/users',
-        transformedValues,
         transformedValues.userId,
+        transformedValues,
       );
       dispatch(httpActions.requestSuccess('Succesfully created new user.'));
 
@@ -98,7 +99,7 @@ export const userUpdate = createAsyncThunk(
         );
       }
 
-      await updateFB('/users', userId, transformedValues);
+      await FirebaseFirestoreService.update('/users', userId, transformedValues);
       dispatch(httpActions.requestSuccess('Updated user details.'));
 
       return transformedValues;
@@ -118,7 +119,10 @@ export const userLogin = createAsyncThunk(
     dispatch(errorActions.setGlobalFormError({ errorMessage: '' }));
 
     try {
-      const responseData = await getFB(`/users`, values, ['email', 'password']);
+      const queryParams = ['email', 'password'].map(param =>
+        where(param, '==', values[param]),
+      );
+      const responseData = await FirebaseFirestoreService.get('/users', queryParams);
 
       if (responseData.length > 0) {
         const transformedValues = transformUserLoginValues(responseData[0]);
@@ -155,7 +159,9 @@ export const userRelogin = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
-      const responseData = await getFB(`/users`, { userId }, ['userId']);
+      const responseData = await FirebaseFirestoreService.get('/users', [
+        where('userId', '==', userId),
+      ]);
 
       if (responseData.length > 0) {
         const transformedValues = transformUserLoginValues(responseData[0]);
@@ -183,7 +189,7 @@ export const updateRidePreferences = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
-      await updateFB('/users', userId, { ridePreferences: values });
+      await FirebaseFirestoreService.update('/users', userId, { ridePreferences: values });
       dispatch(httpActions.requestSuccess("Updated user's ride preferences"));
 
       return values;

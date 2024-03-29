@@ -3,13 +3,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { arrayUnion, arrayRemove } from 'firebase/firestore';
 import { userActions } from 'store/user/userSlice';
 import { httpActions } from 'store/http/httpSlice';
-import {
-  getFB,
-  getNestedFB,
-  addFBWithId,
-  updateFB,
-} from 'services/firebase-api';
 import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
+import { where } from 'firebase/firestore';
 
 const transformRideValues = (driverId, route, values) => {
   const newRideId = 'ride_' + uuidv4();
@@ -57,13 +53,14 @@ export const addNewRide = createAsyncThunk(
       };
 
       await Promise.all([
-        addFBWithId('/rides', transformedValues, transformedValues.rideId),
-        updateFB(
-          '/users',
-          driver.userId,
-          { activeRides: arrayUnion(transformedValues.rideId) },
-          true,
+        FirebaseFirestoreService.add(
+          '/rides',
+          transformedValues.rideId,
+          transformedValues,
         ),
+        FirebaseFirestoreService.update('/users', driver.userId, {
+          activeRides: arrayUnion(transformedValues.rideId),
+        }),
       ]);
 
       dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
@@ -94,21 +91,13 @@ export const bookRide = createAsyncThunk(
       };
 
       await Promise.all([
-        updateFB(
-          '/rides',
-          rideDetails.rideId,
-          {
-            passengers: arrayUnion(passenger.userId),
-            'route.waypoints': waypoints,
-          },
-          true,
-        ),
-        updateFB(
-          '/users',
-          passenger.userId,
-          { activeRides: arrayUnion(rideDetails.rideId) },
-          true,
-        ),
+        FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
+          passengers: arrayUnion(passenger.userId),
+          'route.waypoints': waypoints,
+        }),
+        FirebaseFirestoreService.update('/users', passenger.userId, {
+          activeRides: arrayUnion(rideDetails.rideId),
+        }),
       ]);
 
       dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
@@ -131,17 +120,17 @@ export const removePassengerRide = createAsyncThunk(
 
     try {
       const comboRemoveRideCall = [
-        updateFB('/users', userDetails.userId, {
+        FirebaseFirestoreService.update('/users', userDetails.userId, {
           activeRides: arrayRemove(rideDetails.rideId),
         }),
-        updateFB('/users', userDetails.userId, {
+        FirebaseFirestoreService.update('/users', userDetails.userId, {
           historyRides: arrayUnion(rideDetails.rideId),
         }),
       ];
 
       if (userDetails.userType === PASSENGER) {
         comboRemoveRideCall.push(
-          updateFB('/rides', rideDetails.rideId, {
+          FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
             passengers: arrayRemove(userDetails.userId),
             'route.waypoints': waypoints,
           }),
@@ -150,17 +139,19 @@ export const removePassengerRide = createAsyncThunk(
 
       if (userDetails.userType === DRIVER) {
         comboRemoveRideCall.push(
-          updateFB('/rides', rideDetails.rideId, { status: 'canceled' }),
+          FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
+            status: 'canceled',
+          }),
         );
 
         rideDetails.passengers.forEach(passengerId => {
           comboRemoveRideCall.push(
-            updateFB('/users', passengerId, {
+            FirebaseFirestoreService.update('/users', passengerId, {
               activeRides: arrayRemove(rideDetails.rideId),
             }),
           );
           comboRemoveRideCall.push(
-            updateFB('/users', passengerId, {
+            FirebaseFirestoreService.update('/users', passengerId, {
               historyRides: arrayUnion(rideDetails.rideId),
             }),
           );
@@ -193,12 +184,16 @@ export const getRidesState = createAsyncThunk(
 
     try {
       const ridesResponse = await Promise.all(
-        userRides.map(ride => getFB('/rides', { rideId: ride }, ['rideId'])),
+        userRides.map(rideId =>
+          FirebaseFirestoreService.get('/rides', [where('rideId', '==', rideId)]),
+        ),
       );
       const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
       const activeDriversResponse = await Promise.all(
         spreadRidesResponse.map(driver =>
-          getFB('/users', { userId: driver.driverId }, ['userId']),
+          FirebaseFirestoreService.get('/users', [
+            where('userId', '==', driver.driverId),
+          ]),
         ),
       );
       const updatedRides = addDriverToRide(
@@ -223,19 +218,22 @@ export const getFilteredRides = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
-      const uniqueDriverIds = [];
       // TODO: make additional conditional filters for less important aspects
       // TODO: if too few results, remove some filters
-      const ridesResponse = await getNestedFB(
+      const uniqueDriverIds = [];
+      const fullDBPaths = [
+        'route.destination.address_components.city',
+        'route.origin.address_components.city',
+        'rideType',
+        'smoking',
+      ];
+      const propertyNames = ['destination', 'origin', 'rideType', 'smoking'];
+      const queryParams = fullDBPaths.map((param, index) => {
+        return where(param, '==', searchPreferences[propertyNames[index]]);
+      });
+      const ridesResponse = await FirebaseFirestoreService.get(
         '/rides',
-        searchPreferences,
-        [
-          'route.destination.address_components.city',
-          'route.origin.address_components.city',
-          'rideType',
-          'smoking',
-        ],
-        ['destination', 'origin', 'rideType', 'smoking'],
+        queryParams,
       );
 
       for (const ride of ridesResponse) {
@@ -245,8 +243,8 @@ export const getFilteredRides = createAsyncThunk(
       }
 
       const driversResponse = await Promise.all(
-        uniqueDriverIds.map(driver =>
-          getFB('/users', { userId: driver }, ['userId']),
+        uniqueDriverIds.map(driverId =>
+          FirebaseFirestoreService.get('/users', [where('userId', '==', driverId)]),
         ),
       );
       const updatedRides = addDriverToRide(ridesResponse, driversResponse);

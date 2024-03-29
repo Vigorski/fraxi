@@ -6,8 +6,9 @@ import FormIkUserImage from 'components/forms/FormIkUserImage';
 import { userUpdate, userRegister } from 'store/user/userAsyncActions';
 import { httpActions } from 'store/http/httpSlice';
 import { MY_PROFILE, LOGIN } from 'utilities/constants/routesConfig';
-import { getFB } from 'services/firebase-api';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
+import { where } from 'firebase/firestore';
 
 const RegisterEditUser = ({ editUserProfile }) => {
   const history = useHistory();
@@ -47,7 +48,10 @@ const RegisterEditUser = ({ editUserProfile }) => {
       ) {
         errors.email = 'Invalid email address';
       } else {
-        const doesUserExist = await getFB(`/users`, values, ['email']);
+        const doesUserExist = await FirebaseFirestoreService.get(
+          '/users',
+          [where('email', '==', values.email)],
+        );
         if (doesUserExist?.length > 0) {
           const userExists = 'User mail already exists!';
           errors.email = userExists;

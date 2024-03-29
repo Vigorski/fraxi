@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import markerIcon from 'assets/icons/marker.svg';
 import markerIconUnique from 'assets/icons/marker-unique.svg';
 import flagIcon from 'assets/icons/flag.svg';
-import { formattedRouteDistanceAndDuration } from 'utilities/map/route-measurements';
+import { formattedRouteDistanceAndDuration } from 'utilities/map/routeMeasurements';
 
 const libraries = ['places'];
 

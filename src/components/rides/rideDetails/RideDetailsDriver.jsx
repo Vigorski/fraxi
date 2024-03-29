@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from 'store/rides/ridesAsyncActions';
-import { getUsers } from 'services/api';
+import { getUsersList } from 'utilities/shared/getUsersList';
 import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
@@ -20,7 +20,7 @@ const RideDetailsDriver = ({ rideDetails }) => {
 
   useEffect(() => {
     async function fetchPassengers() {
-      const passengersFull = await getUsers(rideDetails.passengers);
+      const passengersFull = await getUsersList(rideDetails.passengers);
       setAllPassengersDetails(passengersFull);
     }
     if (rideDetails.passengers) {
