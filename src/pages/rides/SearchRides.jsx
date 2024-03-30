@@ -20,11 +20,23 @@ const SearchRides = () => {
     ridePreferences && Object.keys(ridePreferences).length !== 0;
 
   const handleObserverValues = useCallback(
-    async values => {
-      await dispatch(getFilteredRides({ searchPreferences: values })).unwrap();
+    values => {
+      dispatch(getFilteredRides({ searchPreferences: values }));
     },
     [dispatch],
   );
+
+  const formInitialValues = {
+    origin: isRidePreferencesValid ? ridePreferences.origin : '',
+    destination: isRidePreferencesValid
+      ? ridePreferences.destination
+      : '',
+    numOfStops: isRidePreferencesValid ? ridePreferences.numOfStops : 2,
+    rideType: isRidePreferencesValid
+      ? ridePreferences.rideType
+      : 'regular',
+    smoking: isRidePreferencesValid ? ridePreferences.smoking : false,
+  }
 
   return (
     <Layout>
@@ -35,17 +47,7 @@ const SearchRides = () => {
         animate="visible"
         exit="hidden">
         <FormFilters
-          initialValues={{
-            origin: isRidePreferencesValid ? ridePreferences.origin : '',
-            destination: isRidePreferencesValid
-              ? ridePreferences.destination
-              : '',
-            numOfStops: isRidePreferencesValid ? ridePreferences.numOfStops : 2,
-            rideType: isRidePreferencesValid
-              ? ridePreferences.rideType
-              : 'regular',
-            smoking: isRidePreferencesValid ? ridePreferences.smoking : false,
-          }}
+          initialValues={formInitialValues}
           handleObserverValues={handleObserverValues}>
           <RideFilters />
         </FormFilters>

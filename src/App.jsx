@@ -34,28 +34,20 @@ function App() {
   ];
 
   useEffect(() => {
-    const relogin = async () => {
-      await dispatch(userRelogin(isLoggedInLocalStorage)).unwrap();
-    };
-
     if (isLoggedInLocalStorage !== null) {
-      relogin();
+      dispatch(userRelogin(isLoggedInLocalStorage));
     }
   }, [dispatch, isLoggedInLocalStorage]);
 
   useEffect(() => {
-    const populateActiveRides = async () => {
-      if (userDetails !== undefined && userDetails !== null) {
-        await dispatch(
-          getRidesState({
-            userRides: userDetails.activeRides,
-            ridesMethod: 'activeRides',
-          }),
-        ).unwrap();
-      }
-    };
-
-    populateActiveRides();
+    if (userDetails !== undefined && userDetails !== null) {
+      dispatch(
+        getRidesState({
+          userRides: userDetails.activeRides,
+          ridesMethod: 'activeRides',
+        }),
+      );
+    }
   }, [dispatch, userDetails]);
 
   useEffect(() => {

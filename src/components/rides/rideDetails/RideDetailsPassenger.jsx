@@ -26,15 +26,15 @@ const RideDetailsPassenger = ({ rideDetails }) => {
     waypoint => waypoint.userId === userDetails.userId,
   );
 
-  const handleBookRide = async () => {
+  const handleBookRide = () => {
     if (!isRideBooked && isWaypointPicked) {
-      await dispatch(
+      dispatch(
         bookRide({
           passenger: userDetails,
           rideDetails,
           waypoints: routeMapDetails.waypoints,
         }),
-      ).unwrap();
+      );
     }
   };
 

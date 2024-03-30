@@ -41,6 +41,18 @@ const CreateRide = () => {
     return errors;
   };
 
+  const handleSubmit = async (values, { setSubmitting }) => {
+    await dispatch(
+      addNewRide({
+        driver: userDetails,
+        route: routeMapDetails,
+        values,
+      }),
+    ).unwrap();
+    setSubmitting(false);
+    history.push(MY_PROFILE.path);
+  };
+
   const storeRouteMapDetails = useCallback(
     ({ origin, destination, waypoints }) => {
       const directionsAugmentedData = {
@@ -55,6 +67,14 @@ const CreateRide = () => {
     [],
   );
 
+  const formInitialValues = {
+    price: 0,
+    maxPassengers: 4,
+    departureDate: minDepartureDate,
+    rideType: 'regular',
+    smoking: false,
+  }
+
   return (
     <Layout>
       <motion.section
@@ -64,26 +84,10 @@ const CreateRide = () => {
         animate="visible"
         exit="hidden">
         <Formik
-          initialValues={{
-            price: 0,
-            maxPassengers: 4,
-            departureDate: minDepartureDate,
-            rideType: 'regular',
-            smoking: false,
-          }}
+          initialValues={formInitialValues}
           validate={handleValidation}
-          onSubmit={async (values, { setSubmitting }) => {
-            await dispatch(
-              addNewRide({
-                driver: userDetails,
-                route: routeMapDetails,
-                values,
-              }),
-            ).unwrap();
-            setSubmitting(false);
-            history.push(MY_PROFILE.path);
-          }}>
-          {({ isSubmitting, values }) => (
+          onSubmit={handleSubmit}>
+          {({ isSubmitting }) => (
             <Form>
               <motion.div className="form-field" variants={itemVariants}>
                 <DriverRouteMap
