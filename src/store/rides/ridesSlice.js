@@ -17,29 +17,6 @@ const ridesSlice = createSlice({
   name: 'rides',
   initialState,
   reducers: {
-    // addActiveRide(state, action) {
-    // 	state.activeRides.push(action.payload);
-    // },
-    // removeActiveRide(state, action) {
-    // 	state.activeRides.forEach((ride, i) => {
-    // 		if (ride.rideId === action.payload) {
-    // 			state.activeRides.splice(i, 1);
-    // 			return;
-    // 		}
-    // 	});
-    // },
-    // addHistoryRide(state, action) {
-    // 	state.historyRides.push(action.payload);
-    // },
-    // populateActiveRides(state, action) {
-    // 	state.activeRides = action.payload;
-    // },
-    // populateHistoryRides(state, action) {
-    // 	state.historyRides = action.payload;
-    // },
-    // populateFilteredRides(state, action) {
-    // 	state.filteredRides = action.payload;
-    // },
     resetRides(state) {
       state.activeRides = [];
       state.historyRides = [];

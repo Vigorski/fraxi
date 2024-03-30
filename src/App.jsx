@@ -4,14 +4,11 @@ import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { AnimatePresence } from 'framer-motion';
-
 import { PrivateRoute } from './routes/PrivateRoute';
 import { AuthRoute } from './routes/AuthRoute';
-import NotFound from './layout/NotFount';
-
+import NotFound from './layout/NotFound';
 import { userRelogin } from './store/user/userAsyncActions';
 import { getRidesState } from './store/rides/ridesAsyncActions';
-
 import {
   authRouteGroup,
   profileRouteGroup,
@@ -28,8 +25,6 @@ function App() {
   const { isLoggedIn, userDetails } = useSelector(state => state.user);
   const { status, message } = useSelector(state => state.http);
   const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
-
-  // const [isFirstLoad, setIsFirstLoad] = useState(false);
 
   const routesCombined = [
     ...passengerRouteGroup,
