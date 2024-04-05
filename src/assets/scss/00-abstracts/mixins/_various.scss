@@ -87,7 +87,7 @@
 
 %background-pseudo-text {
 	&::before {
-    content: attr(data-username);
+    content: attr(data-bg-text);
     position: absolute;
     top: calc-rem(42px);
     font-size: 16vW;

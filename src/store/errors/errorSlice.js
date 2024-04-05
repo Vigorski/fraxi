@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  globalFormError: ''
-}
+  globalFormError: '',
+};
 
 const errorSlice = createSlice({
   name: 'errors',
   initialState,
   reducers: {
-    setGlobalFormError (state, action) {
-      state.globalFormError = action.payload.errorMessage
-    }
-  }
+    setGlobalFormError(state, action) {
+      state.globalFormError = action.payload.errorMessage;
+    },
+  },
 });
 
 export const errorActions = errorSlice.actions;
