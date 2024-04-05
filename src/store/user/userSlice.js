@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   userLogin,
-  userRelogin,
+  userRegister,
+  getAndStoreUserData,
   updateRidePreferences,
   userUpdate,
 } from './userAsyncActions';
@@ -39,12 +40,11 @@ const userSlice = createSlice({
       state.userDetails = { ...state.userDetails, ...action.payload };
     });
 
-    builder.addCase(userLogin.fulfilled, (state, action) => {
-      state.userDetails = action.payload.user;
-      state.isLoggedIn = action.payload.isLoggedIn;
-    });
+    builder.addCase(userRegister.fulfilled);
 
-    builder.addCase(userRelogin.fulfilled, (state, action) => {
+    builder.addCase(userLogin.fulfilled);
+
+    builder.addCase(getAndStoreUserData.fulfilled, (state, action) => {
       state.userDetails = action.payload.user;
       state.isLoggedIn = action.payload.isLoggedIn;
     });

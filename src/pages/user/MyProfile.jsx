@@ -12,13 +12,13 @@ import {
 } from 'utilities/constants/framerVariants';
 import PassengerPreferences from './passenger/PassengerPreferences';
 
-const MyProfile = ({ history }) => {
+const MyProfile = () => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const ridePreferences = userDetails?.ridePreferences;
 
   const handleLogout = () => {
-    dispatch(userLogout(history));
+    dispatch(userLogout());
   };
 
   return (

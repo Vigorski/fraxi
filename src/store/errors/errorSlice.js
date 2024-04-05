@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// #TODO: this global error might be obsolete. Check after implementing auth
+
 const initialState = {
   globalFormError: '',
 };

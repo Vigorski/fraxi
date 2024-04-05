@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import FormIkUserImage from 'components/forms/FormIkUserImage';
 import { userUpdate, userRegister } from 'store/user/userAsyncActions';
 import { httpActions } from 'store/http/httpSlice';
-import { MY_PROFILE, LOGIN } from 'utilities/constants/routesConfig';
+import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
@@ -36,8 +36,6 @@ const RegisterEditUser = ({ editUserProfile }) => {
 
     if (!values.surname) {
       errors.surname = 'Required';
-    } else if (values.surname.length < 6) {
-      errors.surname = 'Surname must be at least 6 characters long';
     }
 
     if (!editUserProfile) {
@@ -63,13 +61,18 @@ const RegisterEditUser = ({ editUserProfile }) => {
     if (!values.password && !editUserProfile) {
       errors.password = ['Required'];
     } else if (values.password.length > 0) {
-      // errors.password = [];
-      // if (!/^(?=.*[A-Z])/.test(values.password)) errors.password.push('one uppercase letter');
-      // if (!/^(?=.*[a-z])/.test(values.password)) errors.password.push('one lowercase letter');
-      // if (!/^(?=.*\d)/i.test(values.password)) errors.password.push('one digit');
-      // if (!/^(?=.*(\W|_))/i.test(values.password)) errors.password.push('one symbol');
-      // if (!/.{5,}$/i.test(values.password)) errors.password.push('at least 4 characters long');
+      const passwordErrors = [];
+      // if (!/^(?=.*[A-Z])/.test(values.password)) passwordErrors.push('at least one uppercase letter');
+      // if (!/^(?=.*[a-z])/.test(values.password)) passwordErrors.push('at least one lowercase letter');
+      if (!/^(?=.*\d)/i.test(values.password)) passwordErrors.push('one digit');
+      if (!/^(?=.*(\W|_))/i.test(values.password)) passwordErrors.push('one symbol');
+      if (!/.{6,}$/i.test(values.password)) passwordErrors.push('at least 6 characters long');
+
+      if (passwordErrors.length > 0) {
+        errors.password = passwordErrors;
+      }
     }
+    
     if (!values.confirmPassword && !editUserProfile) {
       errors.confirmPassword = 'Required';
     } else if (values.password !== values.confirmPassword) {
@@ -81,6 +84,19 @@ const RegisterEditUser = ({ editUserProfile }) => {
     }
 
     return errors;
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    if (editUserProfile) {
+      await dispatch(
+        userUpdate({ userId: userDetails.userId, values }),
+      ).unwrap();
+      setSubmitting(false);
+      history.push(MY_PROFILE.path);
+    } else {
+      await dispatch(userRegister({ values })).unwrap();
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -99,19 +115,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
       validate={handleValidation}
       validateOnChange={false}
       validateOnBlur={false}
-      onSubmit={async (values, { setSubmitting }) => {
-        if (editUserProfile) {
-          await dispatch(
-            userUpdate({ userId: userDetails.userId, values }),
-          ).unwrap();
-          setSubmitting(false);
-          history.push(MY_PROFILE.path);
-        } else {
-          await dispatch(userRegister({ values })).unwrap();
-          setSubmitting(false);
-          history.push(LOGIN.path);
-        }
-      }}>
+      onSubmit={handleSubmit}>
       {({ isSubmitting }) => (
         <Form>
           <motion.div className="form-field" variants={itemVariants}>

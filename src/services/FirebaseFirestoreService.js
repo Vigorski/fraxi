@@ -11,12 +11,12 @@ import {
   // orderBy,
   // serverTimestamp, //simply invoke this fn and will return a timestamp
 } from 'firebase/firestore';
-import FirebaseDbInstance from './FirebaseDatabase';
+import FirebaseAppInstance from './FirebaseApp';
 
 export default class FirebaseFirestoreService {
   static async get(path, queryParams) {
     const data = [];
-    const colRef = collection(FirebaseDbInstance.firestore, path);
+    const colRef = collection(FirebaseAppInstance.firestore, path);
     const complexQuery = query(colRef, ...queryParams);
     const snapshot = await getDocs(complexQuery);
 
@@ -28,13 +28,13 @@ export default class FirebaseFirestoreService {
   }
 
   static async add(path, id, values) {
-    const docRef = doc(FirebaseDbInstance.firestore, path, id);
+    const docRef = doc(FirebaseAppInstance.firestore, path, id);
     const docResponse = await setDoc(docRef, values, { merge: true });
     return docResponse;
   }
 
   static async update(path, id, values) {
-    const docRef = doc(FirebaseDbInstance.firestore, path, id);
+    const docRef = doc(FirebaseAppInstance.firestore, path, id);
     const docResponse = await updateDoc(docRef, values);
     return docResponse;
   }

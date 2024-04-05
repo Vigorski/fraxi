@@ -1,10 +1,10 @@
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import { userLogin } from 'store/user/userAsyncActions';
 import Layout from 'layout/Layout';
-import { MY_PROFILE, REGISTER } from 'utilities/constants/routesConfig';
+import { REGISTER } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
@@ -12,7 +12,6 @@ import {
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { userDetails } = useSelector(state => state.user);
   const { globalFormError } = useSelector(state => state.errors);
 
@@ -32,6 +31,11 @@ const Login = () => {
 
   const authError = userDetails === null && globalFormError.trim().length !== 0;
 
+  const handleLogin = async (values, { setSubmitting }) => {
+    await dispatch(userLogin({ values })).unwrap();
+    setSubmitting(false);
+  }
+
   return (
     <Layout>
       <motion.div
@@ -48,12 +52,7 @@ const Login = () => {
             password: '',
           }}
           validate={handleValidation}
-          onSubmit={async (values, { setSubmitting }) => {
-            await dispatch(userLogin({ values })).then(res => {
-              setSubmitting(false);
-              history.push(MY_PROFILE.path);
-            });
-          }}>
+          onSubmit={handleLogin}>
           {({ isSubmitting }) => (
             <Form>
               {authError && (

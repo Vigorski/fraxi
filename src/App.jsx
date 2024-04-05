@@ -7,7 +7,7 @@ import { AnimatePresence } from 'framer-motion';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { AuthRoute } from './routes/AuthRoute';
 import NotFound from './layout/NotFound';
-import { userRelogin } from './store/user/userAsyncActions';
+import { getAndStoreUserData } from './store/user/userAsyncActions';
 import { getRidesState } from './store/rides/ridesAsyncActions';
 import {
   authRouteGroup,
@@ -18,13 +18,28 @@ import {
 } from './utilities/constants/routeGroups';
 import { LOGIN, MY_PROFILE } from './utilities/constants/routesConfig';
 import { FULLFILLED, REJECTED } from './utilities/constants/httpRequestStatus';
+import FirebaseAuthService from 'services/FirebaseAuthService';
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { isLoggedIn, userDetails } = useSelector(state => state.user);
   const { status, message } = useSelector(state => state.http);
-  const isLoggedInLocalStorage = JSON.parse(localStorage.getItem('loggedUser'));
+
+  useEffect(() => {
+    const authObserverCallback = user => {
+      console.log(user)
+      if (user && !isLoggedIn) {
+        dispatch(getAndStoreUserData(user.uid));
+      } else {
+        // dispatch(userLogout...)
+      }
+    }
+    
+    const unsubscribe = FirebaseAuthService.authObserver(authObserverCallback);
+
+    return () => unsubscribe();
+  }, [dispatch, isLoggedIn]);
 
   const routesCombined = [
     ...passengerRouteGroup,
@@ -32,12 +47,6 @@ function App() {
     ...profileRouteGroup,
     ...ridesRouteGroup,
   ];
-
-  useEffect(() => {
-    if (isLoggedInLocalStorage !== null) {
-      dispatch(userRelogin(isLoggedInLocalStorage));
-    }
-  }, [dispatch, isLoggedInLocalStorage]);
 
   useEffect(() => {
     if (userDetails !== undefined && userDetails !== null) {
@@ -81,7 +90,6 @@ function App() {
                 user={{
                   isLoggedIn,
                   userDetails,
-                  isLoggedInLocalStorage: isLoggedInLocalStorage,
                 }}
                 {...route}
               />

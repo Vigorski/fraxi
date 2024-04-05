@@ -1,8 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from "firebase/auth";
 import { FIREBASE_CONFIG } from 'utilities/constants/firebaseConfig';
 
-class FirebaseDatabase {
+class FirebaseApp {
   constructor() {
     if (!this._instance) {
       this.init();
@@ -16,12 +17,13 @@ class FirebaseDatabase {
     try {
       this.app = initializeApp(FIREBASE_CONFIG);
       this.firestore = getFirestore(this.app);
+      this.auth = getAuth(this.app)
     } catch (error) {
       console.error(`Firebase initialization error: ${error}`);
     }
   }
 }
 
-const FirebaseDbInstance = new FirebaseDatabase();
+const FirebaseAppInstance = new FirebaseApp();
 
-export default FirebaseDbInstance; 
+export default FirebaseAppInstance; 

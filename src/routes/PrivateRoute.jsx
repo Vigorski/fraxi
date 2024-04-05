@@ -21,16 +21,14 @@ export const PrivateRoute = ({
     <Route
       {...rest}
       render={props => {
-        if (!user.isLoggedIn && !user.isLoggedInLocalStorage) {
+        if (!user.isLoggedIn) {
           // not logged in so redirect to login page with the return url
           return (
             <Redirect
               to={{ pathname: LOGIN.path, state: { from: props.location } }}
             />
           );
-        }
-
-        if (user.isLoggedIn) {
+        } else {
           // check if route is restricted by role
           if (roles && roles.indexOf(user.userDetails.userType) === -1) {
             // role not authorised so redirect to home page
