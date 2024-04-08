@@ -18,4 +18,4 @@ export {
   IconEdit,
   IconPhone,
   IconMarker,
-}
+};

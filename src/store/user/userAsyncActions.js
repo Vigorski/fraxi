@@ -1,155 +1,188 @@
-import { v4 as uuidv4 } from 'uuid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
-import { errorActions } from 'store/errors/errorSlice';
-import { getFB, addFBWithId, updateFB } from 'utilities/api/firebase-api';
-import { uploadImage, getFileUrl } from 'utilities/api/firebase-storage-api';
+import { userActions } from 'store/user/userSlice';
+import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
+import FirebaseStorageService from 'services/FirebaseStorageService';
 import { PASSENGER } from 'utilities/constants/users';
+import FirebaseAuthService from 'services/FirebaseAuthService';
 
 const transformUserUpdateValues = values => {
-	const { email, userType, ...filteredValues } = values;
+  const { email, userType, password, confirmPassword, ...filteredValues } = values;
 
-	if (values.password.length === 0) {
-		delete filteredValues.password;
-		delete filteredValues.confirmPassword;
-	}
-
-	return { ...filteredValues };
+  return filteredValues;
 };
 
 const transformUserRegisterValues = values => {
-	const { confirmPassword, ...filteredValues } = values;
-	const additionalValues = {
-		userId: uuidv4(),
-		historyRides: [],
-		activeRides: [],
-	};
+  const { password, confirmPassword, ...filteredValues } = values;
+  const additionalValues = {
+    historyRides: [],
+    activeRides: [],
+  };
 
-	if (values.userType === PASSENGER) {
-		additionalValues.ridePreferences = {};
-	}
+  if (values.userType === PASSENGER) {
+    additionalValues.ridePreferences = {};
+  }
 
-	return { ...filteredValues, ...additionalValues };
+  return { ...filteredValues, ...additionalValues };
 };
 
-const transformUserLoginValues = values => {
-	const { password, ...transformedValues } = values;
+const handleUserPictureUpload = async (profilePicture, userId) => {
+  if (!profilePicture) return null;
+  
+  const url = `images/users/userAvatar__${userId}`;
 
-	return transformedValues;
+  try {
+    await FirebaseStorageService.uploadImage(url, profilePicture, {
+      contentType: profilePicture.type,
+    });
+    const imageRealLocation = await FirebaseStorageService.getFileUrl(url);
+    return imageRealLocation;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
-const uploadUserImage = async (profilePicture, userId) => {
-	const url = `images/users/userAvatar__${userId}`;
-	await uploadImage(url, profilePicture, { contentType: profilePicture.type });
-	const imageRealLocation = await getFileUrl(url);
-	return imageRealLocation;
-};
+export const userRegister = createAsyncThunk(
+  'user/userRegister',
+  async ({ values }, { dispatch }) => {
+    dispatch(userActions.setIsRegistering(true));
+    dispatch(httpActions.requestSend());
 
-// TODO: check if mail exists
-export const userRegister = createAsyncThunk('user/userRegister', async ({ values }, { dispatch }) => {
-	dispatch(httpActions.requestSend());
-	const { profilePicture, ...transformedValues } = transformUserRegisterValues(values);
+    try {
+      const authUser = await FirebaseAuthService.registerWithEmail(
+        values.email,
+        values.password,
+      );
 
-	try {		
-		const profilePictureExists = profilePicture !== undefined && profilePicture !== '';
-		if (profilePictureExists) {
-			transformedValues.profilePicture = await uploadUserImage(profilePicture, transformedValues.userId);
-		}
+      const { profilePicture, ...userData } = transformUserRegisterValues({
+        ...values,
+        userId: authUser.uid,
+      });
 
-		const registerResponse = await addFBWithId('/users', transformedValues, transformedValues.userId);
-		dispatch(httpActions.requestSuccess('Succesfully created new user.'));
+      const profilePictureUrl = await handleUserPictureUpload(
+        profilePicture,
+        userData.userId,
+      );
 
-		return registerResponse;
-	} catch (err) {
-		console.log(err);
-		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
-	}
-});
+      if (profilePictureUrl) {
+        userData.profilePicture = profilePictureUrl;
+      }
 
-export const userUpdate = createAsyncThunk('user/userUpdate', async ({ userId, values }, { dispatch }) => {
-	dispatch(httpActions.requestSend());
-	const { profilePicture, ...transformedValues } = transformUserUpdateValues(values);
+      await FirebaseFirestoreService.add(
+        '/users',
+        userData.userId,
+        userData,
+      );
 
-	try {
-		const profilePictureExists = profilePicture !== undefined && profilePicture !== '';
+      dispatch(httpActions.requestSuccess('Succesfully created new user.'));
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Unable to create new user.'),
+      );
+    }
 
-		if (profilePictureExists) {
-			transformedValues.profilePicture = await uploadUserImage(profilePicture, userId);
-		}
+    dispatch(userActions.setIsRegistering(false));
+  },
+);
 
-		await updateFB('/users', userId, transformedValues);
-		dispatch(httpActions.requestSuccess('Updated user details.'));
+export const userUpdate = createAsyncThunk(
+  'user/userUpdate',
+  async ({ userId, values }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-		return transformedValues;
-	} catch (err) {
-		console.log(err);
-		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
-	}
-});
+    const { profilePicture, ...userData } = transformUserUpdateValues(values);
 
-export const userLogin = createAsyncThunk('user/userLogin', async ({ values }, { dispatch }) => {
-	dispatch(httpActions.requestSend());
-	dispatch(errorActions.setGlobalFormError({ errorMessage: '' }));
+    try {
+      const profilePictureUrl = await handleUserPictureUpload(
+        profilePicture,
+        userId,
+      );
 
-	try {
-		const responseData = await getFB(`/users`, values, ['email', 'password']);
+      if (profilePictureUrl) {
+        userData.profilePicture = profilePictureUrl;
+      }
 
-		if (responseData.length > 0) {
-			const transformedValues = transformUserLoginValues(responseData[0]);
+      if (values.password.length !== 0) {
+        await FirebaseAuthService.updatePassword(userData.password);
+      }
 
-			dispatch(httpActions.requestSuccess());
-			localStorage.setItem('loggedUser', JSON.stringify(transformedValues.userId));
+      await FirebaseFirestoreService.update('/users', userId, userData);
 
-			return {
-				isLoggedIn: true,
-				user: transformedValues,
-			};
-		} else {
-			dispatch(
-				errorActions.setGlobalFormError({
-					errorMessage: 'Wrong email or password!',
-				})
-			);
-		}
-	} catch (err) {
-		console.log(err);
-		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
-	}
-});
+      dispatch(httpActions.requestSuccess('Updated user details.'));
 
-export const userRelogin = createAsyncThunk('user/userRelogin', async (userId, { dispatch }) => {
-	dispatch(httpActions.requestSend());
+      return userData;
+    } catch (err) {
+      console.log(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
+);
 
-	try {
-		const responseData = await getFB(`/users`, { userId }, ['userId']);
+export const userLogin = createAsyncThunk(
+  'user/userLogin',
+  async ({ values }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-		if (responseData.length > 0) {
-			const transformedValues = transformUserLoginValues(responseData[0]);
-			dispatch(httpActions.requestSuccess());
+    try {
+      await FirebaseAuthService.loginWithEmail(values.email, values.password);
+      dispatch(httpActions.requestSuccess());
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Unable to login user.'),
+      );
+    }
+  },
+);
 
-			return {
-				isLoggedIn: true,
-				user: transformedValues,
-			};
-		} else {
-			dispatch(httpActions.requestError('We were unable to log you in.'));
-		}
-	} catch (err) {
-		console.log(err);
-		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
-	}
-});
+export const getAndStoreUserData = createAsyncThunk(
+  'user/getAndStoreUserData',
+  async (userId, { dispatch }) => {
+    dispatch(httpActions.requestSend());
 
-export const updateRidePreferences = createAsyncThunk('user/updateRidePreferences', async ({ userId, values }, { dispatch }) => {
-	dispatch(httpActions.requestSend());
+    try {
+      const responseData = await FirebaseFirestoreService.get('/users', [
+        where('userId', '==', userId),
+      ]);
 
-	try {
-		await updateFB('/users', userId, { ridePreferences: values });
-		dispatch(httpActions.requestSuccess('Updated user\'s ride preferences'));
+      dispatch(httpActions.requestSuccess());
 
-		return values;
-	} catch (err) {
-		console.log(err);
-		dispatch(httpActions.requestError(err.message || 'Something went wrong!'));
-	}
-});
+      return {
+        isLoggedIn: true,
+        user: responseData[0],
+      };
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(err.message || 'Something went wrong!'),
+      );
+    }
+  },
+);
+
+export const updateRidePreferences = createAsyncThunk(
+  'user/updateRidePreferences',
+  async ({ userId, values }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    try {
+      await FirebaseFirestoreService.update('/users', userId, {
+        ridePreferences: values,
+      });
+      dispatch(httpActions.requestSuccess("Updated user's ride preferences."));
+
+      return values;
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        httpActions.requestError(
+          err.message || 'Unable to update ride preferences.',
+        ),
+      );
+    }
+  },
+);

@@ -1,30 +1,30 @@
 export const mainContainerVariants = {
-	initial: {
+  initial: {
     y: 0,
     opacity: 0,
-    scale: 0
+    scale: 0,
   },
-	hidden: {
+  hidden: {
     y: '100%',
     opacity: 0,
-    scale: 1
+    scale: 1,
   },
-	visible: {
+  visible: {
     opacity: 1,
     scale: 1,
-		y: 0,
-		transition: {
-			delayChildren: 0.1,
-			staggerChildren: 0.05,
-		}
-	},
+    y: 0,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.05,
+    },
+  },
 };
 
 export const itemVariants = {
-	initial: { y: 20, opacity: 0  },
-	hidden: { y: 0, opacity: 0  },
-	visible: {
-		y: 0,
-		opacity: 1,
-	},
+  initial: { y: 20, opacity: 0 },
+  hidden: { y: 0, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
 };
