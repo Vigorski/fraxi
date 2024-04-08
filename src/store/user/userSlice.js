@@ -7,8 +7,12 @@ import {
   userUpdate,
 } from './userAsyncActions';
 
+// isLoggedIn: boolean | null
+// initially null so the router does not jump between login and other pages
+// all other scenarios are boolean
 const initialState = {
-  isLoggedIn: false,
+  isRegistering: false,
+  isLoggedIn: null,
   userDetails: null,
 };
 
@@ -34,6 +38,9 @@ const userSlice = createSlice({
         }
       });
     },
+    setIsRegistering(state, action) {
+      state.isRegistering = action.payload;
+    }
   },
   extraReducers: builder => {
     builder.addCase(userUpdate.fulfilled, (state, action) => {

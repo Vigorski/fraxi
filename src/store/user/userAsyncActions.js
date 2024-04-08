@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
+import { userActions } from 'store/user/userSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
 import { PASSENGER } from 'utilities/constants/users';
@@ -45,6 +46,7 @@ const handleUserPictureUpload = async (profilePicture, userId) => {
 export const userRegister = createAsyncThunk(
   'user/userRegister',
   async ({ values }, { dispatch }) => {
+    dispatch(userActions.setIsRegistering(true));
     dispatch(httpActions.requestSend());
 
     try {
@@ -80,6 +82,8 @@ export const userRegister = createAsyncThunk(
         httpActions.requestError(err.message || 'Unable to create new user.'),
       );
     }
+
+    dispatch(userActions.setIsRegistering(false));
   },
 );
 
