@@ -18,27 +18,27 @@ import {
   EDIT_PREFERENCES,
   CREATE_RIDE,
   ACTIVE_RIDES,
-  REGISTEROAUTH,
+  REGISTER_OAUTH,
 } from './routesConfig';
-import { DRIVER, PASSENGER } from './users';
+import { USER_TYPES } from './userTypes';
 
 export const authRouteGroup = [
   { path: LOGIN.path, component: Login },
   { path: REGISTER.path, component: Register },
-  { path: REGISTEROAUTH.path, component: RegisterOAuth },
+  { path: REGISTER_OAUTH.path, component: RegisterOAuth },
 ];
 
 export const profileRouteGroup = [
   {
     path: `${MY_PROFILE.path}${EDIT_USER.path}`,
     component: EditMyProfile,
-    roles: [DRIVER, PASSENGER],
+    roles: [USER_TYPES.driver, USER_TYPES.passenger],
     pathDetails: EDIT_USER,
   },
   {
     path: MY_PROFILE.path,
     component: MyProfile,
-    roles: [DRIVER, PASSENGER],
+    roles: [USER_TYPES.driver, USER_TYPES.passenger],
     pathDetails: MY_PROFILE,
   },
 ];
@@ -47,13 +47,13 @@ export const passengerRouteGroup = [
   {
     path: `${MY_PROFILE.path}${EDIT_PREFERENCES.path}`,
     component: EditMyPreferences,
-    roles: [PASSENGER],
+    roles: [USER_TYPES.passenger],
     pathDetails: EDIT_PREFERENCES,
   },
   {
     path: SEARCH_RIDES.path,
     component: SearchRides,
-    roles: [PASSENGER],
+    roles: [USER_TYPES.passenger],
     pathDetails: SEARCH_RIDES,
   },
 ];
@@ -62,7 +62,7 @@ export const driverRouteGroup = [
   {
     path: `${MY_PROFILE.path}${CREATE_RIDE.path}`,
     component: CreateRide,
-    roles: [DRIVER],
+    roles: [USER_TYPES.driver],
     pathDetails: CREATE_RIDE,
   },
 ];
@@ -71,13 +71,13 @@ export const ridesRouteGroup = [
   {
     path: `${ACTIVE_RIDES.path}`,
     component: ActiveRides,
-    roles: [DRIVER, PASSENGER],
+    roles: [USER_TYPES.driver, USER_TYPES.passenger],
     pathDetails: ACTIVE_RIDES,
   },
   {
     path: `${RIDE_DETAILS.path}/:rideId`,
     component: RideDetails,
-    roles: [PASSENGER, DRIVER],
+    roles: [USER_TYPES.passenger, USER_TYPES.driver],
     pathDetails: RIDE_DETAILS,
   },
 ];

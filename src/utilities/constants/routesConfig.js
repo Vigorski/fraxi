@@ -10,7 +10,7 @@ export const REGISTER = {
   description: 'Register page',
 };
 
-export const REGISTEROAUTH = {
+export const REGISTER_OAUTH = {
   title: 'Register via third-party provider',
   path: '/register-via-external-provider',
   description: 'Third-party provider register page',

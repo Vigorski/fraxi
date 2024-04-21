@@ -7,7 +7,7 @@ import {
   userLoginWithGoogleAuth,
 } from 'store/user/userAsyncActions';
 import Layout from 'layout/Layout';
-import { REGISTER, REGISTEROAUTH } from 'utilities/constants/routesConfig';
+import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
@@ -45,7 +45,7 @@ const Login = () => {
     const firstTimeLogin = await dispatch(userLoginWithGoogleAuth()).unwrap();
 
     if (firstTimeLogin) {
-      history.push(REGISTEROAUTH.path);
+      history.push(REGISTER_OAUTH.path);
     }
   };
 

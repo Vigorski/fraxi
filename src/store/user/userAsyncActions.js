@@ -6,7 +6,7 @@ import { ridesActions } from 'store/rides/ridesSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
 import FirebaseAuthService from 'services/FirebaseAuthService';
-import { PASSENGER } from 'utilities/constants/users';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 
 
 const transformUserUpdateValues = values => {
@@ -23,7 +23,7 @@ const transformUserRegisterValues = values => {
     activeRides: [],
   };
 
-  if (values.userType === PASSENGER) {
+  if (values.userType === USER_TYPES.passenger) {
     additionalValues.ridePreferences = {};
   }
 

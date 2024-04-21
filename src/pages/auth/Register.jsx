@@ -1,14 +1,26 @@
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
-import RegisterEditUser from 'pages/user/RegisterEditUser';
+import RegisterEditUser from 'components/auth/RegisterEditUser';
+import { userRegister } from 'store/user/userAsyncActions';
 import { LOGIN } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const registerUserConfig = {
+    registerType: REGISTER_TYPES.registerWithEmail
+  }
+
+  const handleSubmitRegister = async (values) => {
+    await dispatch(userRegister({ values })).unwrap();
+  }
+
   return (
     <Layout>
       <motion.div
@@ -19,7 +31,9 @@ const Register = () => {
         <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
           Create Your Account
         </motion.h1>
-        <RegisterEditUser />
+
+        <RegisterEditUser authConfig={registerUserConfig} handleSubmit={handleSubmitRegister} />
+
         <motion.div className="auth__or" variants={itemVariants}>
           <span>OR</span>
         </motion.div>

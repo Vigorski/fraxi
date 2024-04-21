@@ -5,7 +5,7 @@ import {
   SEARCH_RIDES,
   ACTIVE_RIDES,
 } from 'utilities/constants/routesConfig';
-import { PASSENGER } from 'utilities/constants/users';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 import { IconUser, IconBookmark, IconSearch } from 'components/icons';
 
 const Footer = () => {
@@ -20,7 +20,7 @@ const Footer = () => {
               <IconUser />
             </NavLink>
           </li>
-          {userDetails.userType === PASSENGER && (
+          {userDetails.userType === USER_TYPES.passenger && (
             <li>
               <NavLink to={SEARCH_RIDES.path} activeClassName="active">
                 <IconSearch />

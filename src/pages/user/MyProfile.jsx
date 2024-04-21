@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import { IconUserPlaceholder, IconEdit } from 'components/icons';
 import { userLogout } from 'store/user/userAsyncActions';
-import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
@@ -50,12 +50,12 @@ const MyProfile = () => {
           {userDetails?.name} {userDetails?.surname}
         </motion.h4>
 
-        {userDetails?.userType === PASSENGER && (
+        {userDetails?.userType === USER_TYPES.passenger && (
           <motion.div variants={itemVariants}>
             <PassengerPreferences ridePreferences={ridePreferences} />
           </motion.div>
         )}
-        {userDetails?.userType === DRIVER && (
+        {userDetails?.userType === USER_TYPES.driver && (
           <motion.div variants={itemVariants}>
             <Link
               to={`${MY_PROFILE.path}/create-ride`}
