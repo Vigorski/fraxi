@@ -19,7 +19,8 @@ const ProtectedRoute = ({ children }) => {
         }
       // user is logged out of firebase auth
       } else {
-        // turns isLoggedIn to false to display login page
+        // unfreeze routes after logging out
+        // auth state is determined to be false
         dispatch(userActions.setIsAuthStateDetermined(true));
       }
     };

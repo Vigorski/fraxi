@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import {
   userLogin,
-  userLoginWithGoogleAuth,
+  handleUserLoginWithGoogleAuth,
 } from 'store/user/userAsyncActions';
 import Layout from 'layout/Layout';
 import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
@@ -42,9 +42,9 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const firstTimeLogin = await dispatch(userLoginWithGoogleAuth()).unwrap();
+    const isUserRegistered = await dispatch(handleUserLoginWithGoogleAuth()).unwrap();
 
-    if (firstTimeLogin) {
+    if (!isUserRegistered) {
       history.push(REGISTER_OAUTH.path);
     }
   };

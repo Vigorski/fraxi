@@ -8,15 +8,14 @@ import FirebaseStorageService from 'services/FirebaseStorageService';
 import FirebaseAuthService from 'services/FirebaseAuthService';
 import { USER_TYPES } from 'utilities/constants/userTypes';
 
-
-const transformUserUpdateValues = values => {
+const excludeCorePropsFromUserDetails = values => {
   const { email, userType, password, confirmPassword, ...filteredValues } =
     values;
 
   return filteredValues;
 };
 
-const transformUserRegisterValues = values => {
+const prepareUserRegisterValues = values => {
   const { password, confirmPassword, ...filteredValues } = values;
   const additionalValues = {
     historyRides: [],
@@ -58,19 +57,16 @@ export const userRegister = createAsyncThunk(
         values.password,
       );
 
-      const { profilePicture, ...userData } = transformUserRegisterValues({
-        ...values,
-        userId: authUser.uid,
-      });
-
       const profilePictureUrl = await handleUserPictureUpload(
-        profilePicture,
-        userData.userId,
+        values.profilePicture,
+        authUser.uid,
       );
 
-      if (profilePictureUrl) {
-        userData.profilePicture = profilePictureUrl;
-      }
+      const userData = prepareUserRegisterValues({
+        ...values,
+        userId: authUser.uid,
+        profilePicture: profilePictureUrl,
+      });
 
       await FirebaseFirestoreService.add('/users', userData.userId, userData);
 
@@ -91,9 +87,10 @@ export const userUpdate = createAsyncThunk(
   async ({ userId, values }, { dispatch }) => {
     dispatch(httpActions.requestSend());
 
-    const { profilePicture, ...userData } = transformUserUpdateValues(values);
-
     try {
+      const { profilePicture, ...userData } =
+        excludeCorePropsFromUserDetails(values);
+
       const profilePictureUrl = await handleUserPictureUpload(
         profilePicture,
         userId,
@@ -138,28 +135,30 @@ export const userLogin = createAsyncThunk(
   },
 );
 
-export const userLoginWithGoogleAuth = createAsyncThunk(
-  'user/userLoginWithGoogleAuth',
+// google login has to be a two-part chain when user has not been registered yet
+// first part is login and preparing for optional register
+export const handleUserLoginWithGoogleAuth = createAsyncThunk(
+  'user/handleUserLoginWithGoogleAuth',
   async (_, { dispatch }) => {
     dispatch(userActions.setIsRegistering(true));
     dispatch(httpActions.requestSend());
 
     try {
       const user = await FirebaseAuthService.loginWithGoogle();
-      const isUserRegistered = await FirebaseFirestoreService.get('/users', [
+      const userFound = await FirebaseFirestoreService.get('/users', [
         where('userId', '==', user.uid),
       ]);
+      const isUserRegistered = userFound?.length > 0;
+
+      if (isUserRegistered) {
+        dispatch(userActions.setIsRegistering(false));
+      }
 
       dispatch(httpActions.requestSuccess());
 
-      if (isUserRegistered?.length > 0) {
-        dispatch(userActions.setIsRegistering(false));
-      } else {
-        return true;
-      }
+      return isUserRegistered;
     } catch (err) {
       await FirebaseAuthService.signOut();
-
       console.error(err);
       dispatch(
         httpActions.requestError(
@@ -188,7 +187,7 @@ export const userRegisterWithGoogleAuth = createAsyncThunk(
         profilePicture = user.photoURL;
       }
 
-      const userData = transformUserRegisterValues({
+      const userData = prepareUserRegisterValues({
         ...values,
         userId: user.uid,
         email: user.email,
@@ -196,6 +195,7 @@ export const userRegisterWithGoogleAuth = createAsyncThunk(
       });
 
       await FirebaseFirestoreService.add('/users', userData.userId, userData);
+
       dispatch(
         httpActions.requestSuccess('Succesfully created new user via Google.'),
       );
@@ -227,7 +227,7 @@ export const getAndStoreUserData = createAsyncThunk(
       if (!responseData.length) {
         throw new Error('Unable to retrieve user data!');
       }
-      
+
       dispatch(httpActions.requestSuccess());
 
       return {
@@ -254,6 +254,7 @@ export const updateRidePreferences = createAsyncThunk(
       await FirebaseFirestoreService.update('/users', userId, {
         ridePreferences: values,
       });
+      
       dispatch(httpActions.requestSuccess("Updated user's ride preferences."));
 
       return values;
@@ -284,5 +285,5 @@ export const userLogout = createAsyncThunk(
         httpActions.requestError(err.message || 'Error while signing out.'),
       );
     }
-  }
+  },
 );
