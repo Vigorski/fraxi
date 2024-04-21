@@ -26,10 +26,12 @@ ol {
 }
 
 .list {
+  color: $color-white;
+
   li {
     position: relative;
     margin: calc-rem(8px) 0;
-    color: $color-white;
+    color: inherit;
     font-family: inherit;
     font-size: inherit;
   }

@@ -149,7 +149,7 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             <Field type="password" name="password" placeholder="Password" />
             <ErrorMessage name="password">
               {msg => (
-                <ul className="list">
+                <ul className="list input-message-error">
                   {msg.map((msgItem, index) => (
                     <li key={index + msgItem}>{msgItem}</li>
                   ))}
