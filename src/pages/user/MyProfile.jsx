@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import { IconUserPlaceholder, IconEdit } from 'components/icons';
-import { userLogout } from 'store/user/userActions';
+import { userLogout } from 'store/user/userAsyncActions';
 import { DRIVER, PASSENGER } from 'utilities/constants/users';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import {
@@ -17,8 +17,8 @@ const MyProfile = () => {
   const { userDetails } = useSelector(state => state.user);
   const ridePreferences = userDetails?.ridePreferences;
 
-  const handleLogout = () => {
-    dispatch(userLogout());
+  const handleLogout = async () => {
+    await dispatch(userLogout()).unwrap();
   };
 
   return (

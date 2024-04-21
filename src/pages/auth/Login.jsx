@@ -2,15 +2,20 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-import { userLogin } from 'store/user/userAsyncActions';
+import {
+  userLogin,
+  userLoginWithGoogleAuth,
+} from 'store/user/userAsyncActions';
 import Layout from 'layout/Layout';
-import { REGISTER } from 'utilities/constants/routesConfig';
+import { REGISTER, REGISTEROAUTH } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { globalFormError } = useSelector(state => state.errors);
@@ -34,7 +39,15 @@ const Login = () => {
   const handleLogin = async (values, { setSubmitting }) => {
     await dispatch(userLogin({ values })).unwrap();
     setSubmitting(false);
-  }
+  };
+
+  const handleGoogleLogin = async () => {
+    const firstTimeLogin = await dispatch(userLoginWithGoogleAuth()).unwrap();
+
+    if (firstTimeLogin) {
+      history.push(REGISTEROAUTH.path);
+    }
+  };
 
   return (
     <Layout>
@@ -46,6 +59,21 @@ const Login = () => {
         <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
           Login
         </motion.h1>
+
+        <motion.div className="auth__or" variants={itemVariants}>
+          <span>oAuth</span>
+        </motion.div>
+        <motion.button
+          className="btn-primary btn-block"
+          type="button"
+          variants={itemVariants}
+          onClick={handleGoogleLogin}>
+          Continue with Google
+        </motion.button>
+
+        <motion.div className="auth__or" variants={itemVariants}>
+          <span>Email/Pass</span>
+        </motion.div>
         <Formik
           initialValues={{
             email: '',

@@ -9,35 +9,36 @@
 
 $spinner-size: calc-rem(32px);
 
-.spinner-loading {
-  display: inline-flex;
+.spinner-loader {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-
-  > i {
-    display: inline-flex;
-    width: $spinner-size;
-    height: $spinner-size;
-    animation: spin 1s infinite linear forwards;
-
-    &::after {
-      width: $spinner-size;
-      height: $spinner-size;
-    }
-  }
+  justify-content: center;
 
   p {
-    margin-left: math.div($spinner-size, 2);
+    margin-top: calc-rem(16px);
+    color: $color-white;
+    font-family: $font-lato;
   }
 
-  &.center {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  &__inner {
+    width: $spinner-size;
+    height: $spinner-size;
+    border: $border-radius-md solid $color-white;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+}
 
-    p {
-      margin-top: calc-rem(8px);
-      margin-left: 0;
-    }
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -1,5 +1,6 @@
 import Login from 'pages/auth/Login';
 import Register from 'pages/auth/Register';
+import RegisterOAuth from 'pages/auth/RegisterOAuth';
 import SearchRides from 'pages/rides/SearchRides';
 import RideDetails from 'pages/rides/RideDetails';
 import MyProfile from 'pages/user/MyProfile';
@@ -17,12 +18,14 @@ import {
   EDIT_PREFERENCES,
   CREATE_RIDE,
   ACTIVE_RIDES,
+  REGISTEROAUTH,
 } from './routesConfig';
 import { DRIVER, PASSENGER } from './users';
 
 export const authRouteGroup = [
   { path: LOGIN.path, component: Login },
   { path: REGISTER.path, component: Register },
+  { path: REGISTEROAUTH.path, component: RegisterOAuth },
 ];
 
 export const profileRouteGroup = [

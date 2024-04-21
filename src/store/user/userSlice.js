@@ -5,11 +5,13 @@ import {
   getAndStoreUserData,
   updateRidePreferences,
   userUpdate,
+  // userLoginWithGoogleAuth,
+  // userRegisterWithGoogleAuth
 } from './userAsyncActions';
 
 // isLoggedIn: boolean | null
 // initially null so the router does not jump between login and other pages
-// all other scenarios are boolean
+// otherwise it is boolean
 const initialState = {
   isRegistering: false,
   isLoggedIn: null,
@@ -50,6 +52,10 @@ const userSlice = createSlice({
     builder.addCase(userRegister.fulfilled);
 
     builder.addCase(userLogin.fulfilled);
+
+    // builder.addCase(userLoginWithGoogleAuth.fulfilled);
+    
+    // builder.addCase(userRegisterWithGoogleAuth.fulfilled);
 
     builder.addCase(getAndStoreUserData.fulfilled, (state, action) => {
       state.userDetails = action.payload.user;

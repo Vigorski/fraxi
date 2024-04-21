@@ -10,6 +10,12 @@ export const REGISTER = {
   description: 'Register page',
 };
 
+export const REGISTEROAUTH = {
+  title: 'Register via third-party provider',
+  path: '/register-via-external-provider',
+  description: 'Third-party provider register page',
+};
+
 export const SEARCH_RIDES = {
   title: 'Search rides',
   path: '/search-rides',

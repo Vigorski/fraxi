@@ -10,6 +10,7 @@ import markerIcon from 'assets/icons/marker.svg';
 import markerIconUnique from 'assets/icons/marker-unique.svg';
 import flagIcon from 'assets/icons/flag.svg';
 import { formattedRouteDistanceAndDuration } from 'utilities/map/routeMeasurements';
+import Spinner from 'components/shared/Spinner';
 
 const libraries = ['places'];
 
@@ -94,7 +95,7 @@ const Map = ({
   }
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <Spinner message={'Loading map...'} />;
   }
 
   return (
