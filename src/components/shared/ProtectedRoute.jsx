@@ -6,9 +6,7 @@ import FirebaseAuthService from 'services/FirebaseAuthService';
 
 const ProtectedRoute = ({ children }) => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  const userDetails = useSelector(state => state.user.userDetails);
-  const isRegistering = useSelector(state => state.user.isRegistering);
+  const { isLoggedIn, isAuthStateDetermined, isRegistering } = useSelector(state => state.user);
 
   useEffect(() => {
     const authObserverCallback = user => {
@@ -16,22 +14,22 @@ const ProtectedRoute = ({ children }) => {
       if (user) {
         // fetch user data ONLY if user hasn't been logged in yet (first time login) AND
         // after finished registering process (relevant for oAuth)
-        if (!userDetails && !isRegistering) {
+        if (!isLoggedIn && !isRegistering) {
           dispatch(getAndStoreUserData(user.uid));
         }
       // user is logged out of firebase auth
       } else {
         // turns isLoggedIn to false to display login page
-        dispatch(userActions.removeLoggedUser());
+        dispatch(userActions.setIsAuthStateDetermined(true));
       }
     };
 
     const unsubscribe = FirebaseAuthService.authObserver(authObserverCallback);
 
     return () => unsubscribe();
-  }, [dispatch, userDetails, isRegistering]);
+  }, [dispatch, isLoggedIn, isRegistering]);
 
-  if (isLoggedIn === null) return null;
+  if (!isAuthStateDetermined) return null;
 
   return children;
 };

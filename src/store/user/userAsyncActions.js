@@ -224,7 +224,6 @@ export const getAndStoreUserData = createAsyncThunk(
         where('userId', '==', userId),
       ]);
 
-      
       if (!responseData.length) {
         throw new Error('Unable to retrieve user data!');
       }
@@ -233,6 +232,7 @@ export const getAndStoreUserData = createAsyncThunk(
 
       return {
         isLoggedIn: true,
+        isAuthStateDetermined: true,
         user: responseData[0],
       };
     } catch (err) {
