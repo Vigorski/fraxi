@@ -2,15 +2,21 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-import { userLogin } from 'store/user/userAsyncActions';
+import {
+  userLogin,
+  handleUserLoginWithGoogleAuth,
+} from 'store/user/userAsyncActions';
 import Layout from 'layout/Layout';
-import { REGISTER } from 'utilities/constants/routesConfig';
+import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { useHistory } from 'react-router-dom';
+import { IconGoogle } from 'components/icons';
 
 const Login = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { globalFormError } = useSelector(state => state.errors);
@@ -34,7 +40,15 @@ const Login = () => {
   const handleLogin = async (values, { setSubmitting }) => {
     await dispatch(userLogin({ values })).unwrap();
     setSubmitting(false);
-  }
+  };
+
+  const handleGoogleLogin = async () => {
+    const isUserRegistered = await dispatch(handleUserLoginWithGoogleAuth()).unwrap();
+
+    if (!isUserRegistered) {
+      history.push(REGISTER_OAUTH.path);
+    }
+  };
 
   return (
     <Layout>
@@ -43,15 +57,31 @@ const Login = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
-          Login
+        <motion.h1 className="h1-sm mt-md mb-xxxl" variants={itemVariants}>
+          Welcome to Fraxi
         </motion.h1>
+
+        <motion.button
+          className="btn-light btn-icon-left btn-block text-initial"
+          type="button"
+          variants={itemVariants}
+          onClick={handleGoogleLogin}>
+          <IconGoogle className='text-lg' />
+          <span>Continue with Google</span>
+        </motion.button>
+
+        <motion.div className="divider" variants={itemVariants}>
+          <span>OR</span>
+        </motion.div>
+        
         <Formik
           initialValues={{
             email: '',
             password: '',
           }}
           validate={handleValidation}
+          validateOnChange={false}
+          validateOnBlur={false}
           onSubmit={handleLogin}>
           {({ isSubmitting }) => (
             <Form>
@@ -81,17 +111,15 @@ const Login = () => {
                 type="submit"
                 disabled={isSubmitting}
                 variants={itemVariants}>
-                Sign in
+                Next
               </motion.button>
             </Form>
           )}
         </Formik>
-        <motion.div className="auth__or" variants={itemVariants}>
-          <span>OR</span>
-        </motion.div>
+        
         <motion.div variants={itemVariants}>
-          <Link className="btn-primary-ghost btn-block" to={REGISTER.path}>
-            Register
+          <Link className="link-register" to={REGISTER.path}>
+            Don't have a Fraxi account? <span className='text-primary text-uppercase'>Sign up</span>
           </Link>
         </motion.div>
       </motion.div>

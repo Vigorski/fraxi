@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IconUserPlaceholder } from 'components/icons';
 
 const FormIkUserImage = ({ field, form, profilePicture }) => {
-  const [url, setURL] = useState(!!profilePicture ? profilePicture : '');
+  const [url, setURL] = useState(profilePicture ?? '');
 
   function handleChange(e) {
     if (e.currentTarget.files[0]) {

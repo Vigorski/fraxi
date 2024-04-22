@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { IconUser } from 'components/icons';
-import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 import { getTime, getShortDate } from 'utilities/helpers';
 import { itemVariants } from 'utilities/constants/framerVariants';
 
@@ -12,8 +12,8 @@ const CardRideDetails = ({
   allPassengersDetails,
 }) => {
   const { userType } = useSelector(state => state.user.userDetails);
-  const isPassenger = userType === PASSENGER;
-  const isDriver = userType === DRIVER;
+  const isPassenger = userType === USER_TYPES.passenger;
+  const isDriver = userType === USER_TYPES.driver;
 
   return (
     <motion.div className="card card--dark" variants={itemVariants}>

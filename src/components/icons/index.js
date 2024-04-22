@@ -7,6 +7,7 @@ import { IconUserPlaceholder } from './IconUserPlaceholder';
 import { IconEdit } from './IconEdit';
 import { IconPhone } from './IconPhone';
 import { IconMarker } from './IconMarker';
+import { IconGoogle } from './IconGoogle';
 
 export {
   IconUser,
@@ -18,4 +19,5 @@ export {
   IconEdit,
   IconPhone,
   IconMarker,
+  IconGoogle
 };

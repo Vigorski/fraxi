@@ -14,7 +14,8 @@
 	&__img {
 		position: relative;
 		display: block;
-		margin: 0 auto;
+		margin-left: auto;
+		margin-right: auto;
 		width: calc-rem(130px);
 		height: calc-rem(130px);
 		background-color: $color-gray-2;

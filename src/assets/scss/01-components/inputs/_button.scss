@@ -50,6 +50,7 @@
 
   &-primary,
   &-primary-ghost,
+  &-light,
   &-secondary {
     @extend .btn;
   }
@@ -72,6 +73,10 @@
 
   &-secondary {
     @include base-button($color-secondary, $color-primary);
+  }
+
+  &-light {
+    @include base-button($color-secondary, $color-white);
   }
 
   &-block {
@@ -106,19 +111,26 @@
 
 // button with icon
 .btn-icon {
-  &-left {
-    margin-left: $btn-icon-margin;
+  &-left,
+  &-right {
+    position: relative;
 
-    i {
-      margin-right: $btn-icon-spacing;
+    .svg-inline {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &-left {
+    .svg-inline {
+      left: $btn-icon-margin-20;
     }
   }
 
   &-right {
-    margin-right: $btn-icon-margin;
-
-    i {
-      margin-left: $btn-icon-spacing;
+    .svg-inline {
+      right: $btn-icon-margin-20;
     }
   }
 

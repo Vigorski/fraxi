@@ -33,7 +33,7 @@ function App() {
   ];
 
   useEffect(() => {
-    if (userDetails !== undefined && userDetails !== null) {
+    if (userDetails) {
       dispatch(
         getRidesState({
           userRides: userDetails.activeRides,

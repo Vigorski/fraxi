@@ -1,18 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  userLogin,
-  userRegister,
   getAndStoreUserData,
   updateRidePreferences,
   userUpdate,
 } from './userAsyncActions';
 
-// isLoggedIn: boolean | null
-// initially null so the router does not jump between login and other pages
-// all other scenarios are boolean
 const initialState = {
   isRegistering: false,
-  isLoggedIn: null,
+  isLoggedIn: false,
+  isAuthStateDetermined: false,
   userDetails: null,
 };
 
@@ -23,6 +19,7 @@ const userSlice = createSlice({
     removeLoggedUser(state) {
       state.userDetails = null;
       state.isLoggedIn = false;
+      state.isAuthStateDetermined = false;
     },
     updateUserDetails(state, action) {
       state.userDetails = { ...state.userDetails, ...action.payload };
@@ -38,6 +35,9 @@ const userSlice = createSlice({
         }
       });
     },
+    setIsAuthStateDetermined(state, action) {
+      state.isAuthStateDetermined = action.payload;
+    },
     setIsRegistering(state, action) {
       state.isRegistering = action.payload;
     }
@@ -47,12 +47,9 @@ const userSlice = createSlice({
       state.userDetails = { ...state.userDetails, ...action.payload };
     });
 
-    builder.addCase(userRegister.fulfilled);
-
-    builder.addCase(userLogin.fulfilled);
-
     builder.addCase(getAndStoreUserData.fulfilled, (state, action) => {
       state.userDetails = action.payload.user;
+      state.isAuthStateDetermined = action.payload.isAuthStateDetermined;
       state.isLoggedIn = action.payload.isLoggedIn;
     });
 

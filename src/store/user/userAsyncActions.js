@@ -2,25 +2,27 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
 import { userActions } from 'store/user/userSlice';
+import { ridesActions } from 'store/rides/ridesSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
-import { PASSENGER } from 'utilities/constants/users';
 import FirebaseAuthService from 'services/FirebaseAuthService';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 
-const transformUserUpdateValues = values => {
-  const { email, userType, password, confirmPassword, ...filteredValues } = values;
+const excludeCorePropsFromUserDetails = values => {
+  const { email, userType, password, confirmPassword, ...filteredValues } =
+    values;
 
   return filteredValues;
 };
 
-const transformUserRegisterValues = values => {
+const prepareUserRegisterValues = values => {
   const { password, confirmPassword, ...filteredValues } = values;
   const additionalValues = {
     historyRides: [],
     activeRides: [],
   };
 
-  if (values.userType === PASSENGER) {
+  if (values.userType === USER_TYPES.passenger) {
     additionalValues.ridePreferences = {};
   }
 
@@ -29,7 +31,7 @@ const transformUserRegisterValues = values => {
 
 const handleUserPictureUpload = async (profilePicture, userId) => {
   if (!profilePicture) return null;
-  
+
   const url = `images/users/userAvatar__${userId}`;
 
   try {
@@ -55,25 +57,18 @@ export const userRegister = createAsyncThunk(
         values.password,
       );
 
-      const { profilePicture, ...userData } = transformUserRegisterValues({
+      const profilePictureUrl = await handleUserPictureUpload(
+        values.profilePicture,
+        authUser.uid,
+      );
+
+      const userData = prepareUserRegisterValues({
         ...values,
         userId: authUser.uid,
+        profilePicture: profilePictureUrl,
       });
 
-      const profilePictureUrl = await handleUserPictureUpload(
-        profilePicture,
-        userData.userId,
-      );
-
-      if (profilePictureUrl) {
-        userData.profilePicture = profilePictureUrl;
-      }
-
-      await FirebaseFirestoreService.add(
-        '/users',
-        userData.userId,
-        userData,
-      );
+      await FirebaseFirestoreService.add('/users', userData.userId, userData);
 
       dispatch(httpActions.requestSuccess('Succesfully created new user.'));
     } catch (err) {
@@ -81,9 +76,9 @@ export const userRegister = createAsyncThunk(
       dispatch(
         httpActions.requestError(err.message || 'Unable to create new user.'),
       );
+    } finally {
+      dispatch(userActions.setIsRegistering(false));
     }
-
-    dispatch(userActions.setIsRegistering(false));
   },
 );
 
@@ -92,9 +87,10 @@ export const userUpdate = createAsyncThunk(
   async ({ userId, values }, { dispatch }) => {
     dispatch(httpActions.requestSend());
 
-    const { profilePicture, ...userData } = transformUserUpdateValues(values);
-
     try {
+      const { profilePicture, ...userData } =
+        excludeCorePropsFromUserDetails(values);
+
       const profilePictureUrl = await handleUserPictureUpload(
         profilePicture,
         userId,
@@ -139,6 +135,85 @@ export const userLogin = createAsyncThunk(
   },
 );
 
+// google login has to be a two-part chain when user has not been registered yet
+// first part is login and preparing for optional register
+export const handleUserLoginWithGoogleAuth = createAsyncThunk(
+  'user/handleUserLoginWithGoogleAuth',
+  async (_, { dispatch }) => {
+    dispatch(userActions.setIsRegistering(true));
+    dispatch(httpActions.requestSend());
+
+    try {
+      const user = await FirebaseAuthService.loginWithGoogle();
+      const userFound = await FirebaseFirestoreService.get('/users', [
+        where('userId', '==', user.uid),
+      ]);
+      const isUserRegistered = userFound?.length > 0;
+
+      if (isUserRegistered) {
+        dispatch(userActions.setIsRegistering(false));
+      }
+
+      dispatch(httpActions.requestSuccess());
+
+      return isUserRegistered;
+    } catch (err) {
+      await FirebaseAuthService.signOut();
+      console.error(err);
+      dispatch(
+        httpActions.requestError(
+          err.message || 'Cannot login with google account!',
+        ),
+      );
+    }
+  },
+);
+
+export const userRegisterWithGoogleAuth = createAsyncThunk(
+  'user/userRegisterWithGoogleAuth',
+  async ({ values }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    try {
+      const user = FirebaseAuthService.getCurrentUser();
+      let profilePicture;
+
+      if (values.profilePicture) {
+        profilePicture = await handleUserPictureUpload(
+          values.profilePicture,
+          user.uid,
+        );
+      } else {
+        profilePicture = user.photoURL;
+      }
+
+      const userData = prepareUserRegisterValues({
+        ...values,
+        userId: user.uid,
+        email: user.email,
+        profilePicture,
+      });
+
+      await FirebaseFirestoreService.add('/users', userData.userId, userData);
+
+      dispatch(
+        httpActions.requestSuccess('Succesfully created new user via Google.'),
+      );
+    } catch (err) {
+      await FirebaseAuthService.signOut();
+
+      console.error(err);
+      dispatch(
+        httpActions.requestError(
+          err.message || 'Cannot register with google account!',
+        ),
+      );
+    } finally {
+      dispatch(userActions.setIsRegistering(false));
+    }
+  },
+);
+
 export const getAndStoreUserData = createAsyncThunk(
   'user/getAndStoreUserData',
   async (userId, { dispatch }) => {
@@ -149,13 +224,19 @@ export const getAndStoreUserData = createAsyncThunk(
         where('userId', '==', userId),
       ]);
 
+      if (!responseData.length) {
+        throw new Error('Unable to retrieve user data!');
+      }
+
       dispatch(httpActions.requestSuccess());
 
       return {
         isLoggedIn: true,
+        isAuthStateDetermined: true,
         user: responseData[0],
       };
     } catch (err) {
+      await FirebaseAuthService.signOut();
       console.error(err);
       dispatch(
         httpActions.requestError(err.message || 'Something went wrong!'),
@@ -173,6 +254,7 @@ export const updateRidePreferences = createAsyncThunk(
       await FirebaseFirestoreService.update('/users', userId, {
         ridePreferences: values,
       });
+      
       dispatch(httpActions.requestSuccess("Updated user's ride preferences."));
 
       return values;
@@ -182,6 +264,25 @@ export const updateRidePreferences = createAsyncThunk(
         httpActions.requestError(
           err.message || 'Unable to update ride preferences.',
         ),
+      );
+    }
+  },
+);
+
+export const userLogout = createAsyncThunk(
+  'user/userLogout',
+  async (_, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    try {
+      await FirebaseAuthService.signOut();
+      dispatch(userActions.removeLoggedUser());
+      dispatch(ridesActions.resetRides());
+      dispatch(httpActions.requestSuccess('Signed out successfully'));
+    } catch (err) {
+      console.error(err.message);
+      dispatch(
+        httpActions.requestError(err.message || 'Error while signing out.'),
       );
     }
   },

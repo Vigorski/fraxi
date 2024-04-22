@@ -1,24 +1,20 @@
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import FormIkUserImage from 'components/forms/FormIkUserImage';
-import { userUpdate, userRegister } from 'store/user/userAsyncActions';
-import { httpActions } from 'store/http/httpSlice';
-import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
+import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
 
-const RegisterEditUser = ({ editUserProfile }) => {
-  const history = useHistory();
-  const { userDetails } = useSelector(state => state.user);
-  const dispatch = useDispatch();
+const RegisterEditUser = ({ authConfig, handleSubmit }) => {
+  const { registerType, name, surname, phone, profilePicture } = authConfig;
+  const isEditingUser = registerType === REGISTER_TYPES.edit;
+  const isRegisteringWithEmail = registerType === REGISTER_TYPES.registerWithEmail;
 
   const handleValidation = async values => {
     const errors = {};
 
-    if (values.profilePicture !== undefined && values.profilePicture !== '') {
+    if (!!values.profilePicture) {
       const validFileType =
         values.profilePicture.type === 'image/jpeg' ||
         values.profilePicture.type === 'image/png';
@@ -38,7 +34,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
       errors.surname = 'Required';
     }
 
-    if (!editUserProfile) {
+    if (isRegisteringWithEmail) {
       if (!values.email) {
         errors.email = 'Required';
       } else if (
@@ -46,84 +42,76 @@ const RegisterEditUser = ({ editUserProfile }) => {
       ) {
         errors.email = 'Invalid email address';
       } else {
-        const doesUserExist = await FirebaseFirestoreService.get(
-          '/users',
-          [where('email', '==', values.email)],
-        );
-        if (doesUserExist?.length > 0) {
+        const userExists = await FirebaseFirestoreService.get('/users', [
+          where('email', '==', values.email),
+        ]);
+        if (userExists?.length > 0) {
           const userExists = 'User mail already exists!';
           errors.email = userExists;
-          dispatch(httpActions.requestError(userExists));
         }
       }
     }
 
-    if (!values.password && !editUserProfile) {
+    if (!values.password && isRegisteringWithEmail) {
       errors.password = ['Required'];
     } else if (values.password.length > 0) {
       const passwordErrors = [];
       // if (!/^(?=.*[A-Z])/.test(values.password)) passwordErrors.push('at least one uppercase letter');
       // if (!/^(?=.*[a-z])/.test(values.password)) passwordErrors.push('at least one lowercase letter');
       if (!/^(?=.*\d)/i.test(values.password)) passwordErrors.push('one digit');
-      if (!/^(?=.*(\W|_))/i.test(values.password)) passwordErrors.push('one symbol');
-      if (!/.{6,}$/i.test(values.password)) passwordErrors.push('at least 6 characters long');
+      if (!/^(?=.*(\W|_))/i.test(values.password))
+        passwordErrors.push('one symbol');
+      if (!/.{6,}$/i.test(values.password))
+        passwordErrors.push('at least 6 characters long');
 
       if (passwordErrors.length > 0) {
         errors.password = passwordErrors;
       }
     }
-    
-    if (!values.confirmPassword && !editUserProfile) {
+
+    if (!values.confirmPassword && isRegisteringWithEmail) {
       errors.confirmPassword = 'Required';
     } else if (values.password !== values.confirmPassword) {
       errors.confirmPassword = 'Passwords must match';
     }
 
-    if (!values.userType && !editUserProfile) {
+    if (!values.userType && !isEditingUser) {
       errors.userType = 'Required';
     }
 
     return errors;
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    if (editUserProfile) {
-      await dispatch(
-        userUpdate({ userId: userDetails.userId, values }),
-      ).unwrap();
-      setSubmitting(false);
-      history.push(MY_PROFILE.path);
-    } else {
-      await dispatch(userRegister({ values })).unwrap();
-      setSubmitting(false);
-    }
+  const submitForm = async (values, { setSubmitting }) => {
+    await handleSubmit(values);
+    setSubmitting(false);
   };
 
   return (
     <Formik
       initialValues={{
         profilePicture: '',
-        name: !!userDetails ? userDetails.name : '',
-        surname: !!userDetails ? userDetails.surname : '',
+        name: name ?? '',
+        surname: surname ?? '',
         email: '',
         password: '',
         confirmPassword: '',
-        phone: !!userDetails ? userDetails.phone : '',
+        phone: phone ?? '',
         userType: null,
       }}
       enableReinitialize={true}
       validate={handleValidation}
       validateOnChange={false}
       validateOnBlur={false}
-      onSubmit={handleSubmit}>
+      onSubmit={submitForm}>
       {({ isSubmitting }) => (
         <Form>
-          <motion.div className="form-field" variants={itemVariants}>
+          <motion.div className="form-field profile__img" variants={itemVariants}>
             <Field
               name="profilePicture"
               id="profilePicture"
               component={FormIkUserImage}
-              profilePicture={userDetails?.profilePicture}
+              profilePicture={profilePicture}
             />
             <ErrorMessage
               name="profilePicture"
@@ -147,7 +135,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
               className="input-message-error"
             />
           </motion.div>
-          {!editUserProfile && (
+          {isRegisteringWithEmail && (
             <motion.div className="form-field" variants={itemVariants}>
               <Field type="email" name="email" placeholder="Email" />
               <ErrorMessage
@@ -161,7 +149,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
             <Field type="password" name="password" placeholder="Password" />
             <ErrorMessage name="password">
               {msg => (
-                <ul className="list">
+                <ul className="list input-message-error">
                   {msg.map((msgItem, index) => (
                     <li key={index + msgItem}>{msgItem}</li>
                   ))}
@@ -189,7 +177,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
               className="input-message-error"
             />
           </motion.div>
-          {!editUserProfile && (
+          {!isEditingUser && (
             <motion.div className="form-field" variants={itemVariants}>
               <h4>What do you want to register as?</h4>
               <div className="input-radio">
@@ -222,7 +210,7 @@ const RegisterEditUser = ({ editUserProfile }) => {
             type="submit"
             disabled={isSubmitting}
             variants={itemVariants}>
-            {editUserProfile ? 'Update' : 'Register'}
+            {isEditingUser ? 'Update' : 'Register'}
           </motion.button>
         </Form>
       )}

@@ -3,7 +3,7 @@ import Footer from './Footer';
 import Header from './Header';
 
 const Layout = ({ children }) => {
-  const { isLoggedIn } = useSelector(state => state.user);
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   return (
     <div className="container">

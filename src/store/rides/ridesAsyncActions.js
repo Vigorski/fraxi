@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { arrayUnion, arrayRemove } from 'firebase/firestore';
 import { userActions } from 'store/user/userSlice';
 import { httpActions } from 'store/http/httpSlice';
-import { DRIVER, PASSENGER } from 'utilities/constants/users';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
 
@@ -128,7 +128,7 @@ export const removePassengerRide = createAsyncThunk(
         }),
       ];
 
-      if (userDetails.userType === PASSENGER) {
+      if (userDetails.userType === USER_TYPES.passenger) {
         comboRemoveRideCall.push(
           FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
             passengers: arrayRemove(userDetails.userId),
@@ -137,7 +137,7 @@ export const removePassengerRide = createAsyncThunk(
         );
       }
 
-      if (userDetails.userType === DRIVER) {
+      if (userDetails.userType === USER_TYPES.driver) {
         comboRemoveRideCall.push(
           FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
             status: 'canceled',
