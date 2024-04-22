@@ -43,4 +43,12 @@ a {
   &.link-arrow {
     @include link-arrow(12px, 12px, 90deg);
   }
+
+}
+
+.link-register {
+  font-weight: 400;
+  width: 100%;
+  text-align: center;
+  margin-top: calc-rem(32px);
 }

@@ -13,6 +13,7 @@ import {
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import { useHistory } from 'react-router-dom';
+import { IconGoogle } from 'components/icons';
 
 const Login = () => {
   const history = useHistory();
@@ -56,30 +57,31 @@ const Login = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
-          Login
+        <motion.h1 className="h1-sm mt-md mb-xxxl" variants={itemVariants}>
+          Welcome to Fraxi
         </motion.h1>
 
-        <motion.div className="auth__or" variants={itemVariants}>
-          <span>oAuth</span>
-        </motion.div>
         <motion.button
-          className="btn-primary btn-block"
+          className="btn-light btn-icon-left btn-block text-initial"
           type="button"
           variants={itemVariants}
           onClick={handleGoogleLogin}>
-          Continue with Google
+          <IconGoogle className='text-lg' />
+          <span>Continue with Google</span>
         </motion.button>
 
-        <motion.div className="auth__or" variants={itemVariants}>
-          <span>Email/Pass</span>
+        <motion.div className="divider" variants={itemVariants}>
+          <span>OR</span>
         </motion.div>
+        
         <Formik
           initialValues={{
             email: '',
             password: '',
           }}
           validate={handleValidation}
+          validateOnChange={false}
+          validateOnBlur={false}
           onSubmit={handleLogin}>
           {({ isSubmitting }) => (
             <Form>
@@ -109,17 +111,15 @@ const Login = () => {
                 type="submit"
                 disabled={isSubmitting}
                 variants={itemVariants}>
-                Sign in
+                Next
               </motion.button>
             </Form>
           )}
         </Formik>
-        <motion.div className="auth__or" variants={itemVariants}>
-          <span>OR</span>
-        </motion.div>
+        
         <motion.div variants={itemVariants}>
-          <Link className="btn-primary-ghost btn-block" to={REGISTER.path}>
-            Register
+          <Link className="link-register" to={REGISTER.path}>
+            Don't have a Fraxi account? <span className='text-primary text-uppercase'>Sign up</span>
           </Link>
         </motion.div>
       </motion.div>

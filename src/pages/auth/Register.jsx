@@ -28,13 +28,13 @@ const Register = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
+        <motion.h1 className="h1-sm mt-md mb-xxl" variants={itemVariants}>
           Create Your Account
         </motion.h1>
 
         <RegisterEditUser authConfig={registerUserConfig} handleSubmit={handleSubmitRegister} />
 
-        <motion.div className="auth__or" variants={itemVariants}>
+        <motion.div className="divider" variants={itemVariants}>
           <span>OR</span>
         </motion.div>
         <motion.div variants={itemVariants}>

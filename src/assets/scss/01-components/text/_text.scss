@@ -9,7 +9,6 @@
   }
 }
 
-// MANUAL TEXT COLORS
 p {
   font: 400 1rem $font-montserrat;
   line-height: calc-rem(32px);
@@ -33,6 +32,10 @@ p {
   &-uppercase {
     text-transform: uppercase;
   }
+
+  &-initial {
+    text-transform: initial;
+  }
 }
 
 // TEXT SIZES
@@ -50,5 +53,10 @@ p {
   &-sm {
     font-size: calc-rem(14px);
     line-height: calc-rem(18px);
+  }
+  
+  &-lg {
+    font-size: calc-rem(20px);
+    line-height: calc-rem(24px);
   }
 }
