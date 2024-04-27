@@ -4,8 +4,7 @@ import {
   onAuthStateChanged,
   signOut,
   updatePassword,
-  // signInWithPopup,
-  // signInWithRedirect,
+  signInWithRedirect,
   // getRedirectResult,
   // connectAuthEmulator,
   deleteUser,
@@ -71,17 +70,13 @@ export default class FirebaseAuthService {
 
   static async loginWithGoogle() {
     try {
+      // FirebaseAppInstance.auth.signInSuccessUrl = window.location.href;
+      await signInWithRedirect(FirebaseAppInstance.auth, FirebaseAppInstance.googleAuthProvider);
       // Popup
-      const result = await signInWithPopup(FirebaseAppInstance.auth, FirebaseAppInstance.googleAuthProvider);
-      return result.user;
+      // const result = await signInWithPopup(FirebaseAppInstance.auth, FirebaseAppInstance.googleAuthProvider);
+      // return result.user;
 
       // Redirect
-      // await signInWithRedirect(FirebaseAppInstance.auth, FirebaseAppInstance.googleAuthProvider);
-      // const userCredential = await getRedirectResult(FirebaseAppInstance.auth);
-      // const token = userCredential.accessToken;
-      // console.log(token);
-      // console.log(userCredential)
-      // return { user: userCredential.user, method: 'google' };
     } catch (error) {
       const credential = FirebaseAppInstance.googleAuthProvider.credentialFromError(error);
       console.log(credential)

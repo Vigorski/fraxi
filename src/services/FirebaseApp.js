@@ -21,6 +21,9 @@ class FirebaseApp {
       this.googleAuthProvider = new GoogleAuthProvider();
       this.googleAuthProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
       this.googleAuthProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+      this.googleAuthProvider.setCustomParameters({
+        prompt: 'select_account'
+      })
     } catch (error) {
       console.error(`Firebase initialization error: ${error}`);
     }

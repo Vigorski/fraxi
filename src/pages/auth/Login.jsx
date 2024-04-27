@@ -14,13 +14,17 @@ import {
 } from 'utilities/constants/framerVariants';
 import { useHistory } from 'react-router-dom';
 import { IconGoogle } from 'components/icons';
+import FirebaseAuthService from 'services/FirebaseAuthService';
+import { useEffect } from 'react';
+import FirebaseAppInstance from 'services/FirebaseApp';
+import { getRedirectResult } from 'firebase/auth';
 
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { globalFormError } = useSelector(state => state.errors);
-
+  console.log('Login')
   const handleValidation = values => {
     const errors = {};
 
@@ -50,6 +54,20 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    async function loginRedirectResult () {
+      try {
+        const userCredential = await getRedirectResult(FirebaseAppInstance.auth);
+        console.log('from redirect', userCredential)
+        
+      } catch (error) {
+        console.log('error:', error)
+      }
+    }
+    loginRedirectResult();
+    // return { user: userCredential.user, method: 'google' };
+  }, [])
+
   return (
     <Layout>
       <motion.div
@@ -65,7 +83,7 @@ const Login = () => {
           className="btn-light btn-icon-left btn-block text-initial"
           type="button"
           variants={itemVariants}
-          onClick={handleGoogleLogin}>
+          onClick={FirebaseAuthService.loginWithGoogle}>
           <IconGoogle className='text-lg' />
           <span>Continue with Google</span>
         </motion.button>
