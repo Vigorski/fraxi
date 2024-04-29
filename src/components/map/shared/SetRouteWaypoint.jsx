@@ -54,7 +54,8 @@ const SetRouteWaypoint = ({ setWaypoints, randomProp }) => {
           onLoad={ac => {
             waypointObjRef.current = ac;
           }}
-          onPlaceChanged={handleWaypointChange}>
+          onPlaceChanged={handleWaypointChange}
+          options={{ componentRestrictions: { country: 'mk' } }}>
           <input type="text" id="waypoint" placeholder="Set pick up location" />
         </Autocomplete>
       </div>

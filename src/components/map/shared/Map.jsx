@@ -53,6 +53,15 @@ const Map = ({
   const [directions, setDirections] = useState(null);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
+  const macedoniaBounds = {
+    latLngBounds: {
+      north: 42.41,
+      south: 40.7,
+      east: 23.1,
+      west: 20.4,
+    },
+    strictBounds: true,
+  }
 
   useEffect(() => {
     if (origin && destination && isLoaded) {
@@ -126,6 +135,7 @@ const Map = ({
             fullscreenControl: false,
             mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
             gestureHandling: 'greedy',
+            restriction: macedoniaBounds,
           }}>
           {origin && (
             <Marker position={origin.location} icon={{ url: flagIcon }} />

@@ -32,7 +32,8 @@ const CreateRouteInputs = ({ setOrigin, setDestination }) => {
           onLoad={ac => {
             originObjRef.current = ac;
           }}
-          onPlaceChanged={handleOriginChange}>
+          onPlaceChanged={handleOriginChange}
+          options={{ componentRestrictions: { country: 'mk' } }}>
           <input type="text" id="origin" placeholder="Enter origin" />
         </Autocomplete>
       </div>
@@ -42,7 +43,8 @@ const CreateRouteInputs = ({ setOrigin, setDestination }) => {
           onLoad={ac => {
             destinationObjRef.current = ac;
           }}
-          onPlaceChanged={handleDestinationChange}>
+          onPlaceChanged={handleDestinationChange}
+          options={{ componentRestrictions: { country: 'mk' } }}>
           <input type="text" id="destination" placeholder="Enter destination" />
         </Autocomplete>
       </div>
