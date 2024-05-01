@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import {
+  MAX_PASSENGERS_LABEL,
+  RIDE_TYPE_LABEL,
+  SMOKING_LABEL,
+} from 'utilities/constants/rides';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 
 const PassengerPreferences = ({ ridePreferences }) => {
-  const { origin, destination, numOfStops, rideType, smoking } =
+  const { origin, destination, maxPassengers, rideType, smoking } =
     ridePreferences !== undefined ? ridePreferences : {};
 
   return (
@@ -43,15 +48,15 @@ const PassengerPreferences = ({ ridePreferences }) => {
             <dl className="list-desc__rows">
               <div className="list-desc__row">
                 <dt># of Stops</dt>
-                <dd>{numOfStops ?? 'N/A'}</dd>
+                <dd>{MAX_PASSENGERS_LABEL[maxPassengers]}</dd>
               </div>
               <div className="list-desc__row">
                 <dt>Type of ride</dt>
-                <dd>{rideType ?? 'N/A'}</dd>
+                <dd>{RIDE_TYPE_LABEL[rideType]}</dd>
               </div>
               <div className="list-desc__row">
                 <dt>Smoking</dt>
-                <dd>{smoking ? 'smoking' : 'non-smoking'}</dd>
+                <dd>{SMOKING_LABEL[smoking]}</dd>
               </div>
             </dl>
           </div>

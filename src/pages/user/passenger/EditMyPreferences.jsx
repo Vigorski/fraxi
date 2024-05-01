@@ -11,6 +11,13 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import {
+  MAX_PASSENGERS,
+  MAX_PASSENGERS_LABEL,
+  RIDE_TYPE,
+  SMOKING,
+  SMOKING_LABEL,
+} from 'utilities/constants/rides';
 
 const EditMyPreferences = () => {
   const history = useHistory();
@@ -21,10 +28,12 @@ const EditMyPreferences = () => {
   const handleValidation = values => {
     const errors = {};
 
-    if (!values.numOfStops) {
-      errors.numOfStops = 'Required';
-    } else if (values.numOfStops <= 0) {
-      errors.numOfStops = 'Must be positive integer';
+    if (
+      values.maxPassengers === '' ||
+      values.maxPassengers === undefined ||
+      values.maxPassengers === null
+    ) {
+      errors.maxPassengers = 'Required';
     }
 
     return errors;
@@ -47,15 +56,19 @@ const EditMyPreferences = () => {
         exit="hidden">
         <Formik
           initialValues={{
-            origin: isRidePreferencesValid ? ridePreferences.origin : 'Skopje',
+            origin: isRidePreferencesValid ? ridePreferences.origin : '',
             destination: isRidePreferencesValid
               ? ridePreferences.destination
-              : 'Skopje',
-            numOfStops: isRidePreferencesValid ? ridePreferences.numOfStops : 1,
+              : '',
+            maxPassengers: isRidePreferencesValid
+              ? ridePreferences.maxPassengers
+              : MAX_PASSENGERS.noPreference,
             rideType: isRidePreferencesValid
               ? ridePreferences.rideType
-              : 'regular',
-            smoking: isRidePreferencesValid ? ridePreferences.smoking : false,
+              : RIDE_TYPE.noPreference,
+            smoking: isRidePreferencesValid
+              ? ridePreferences.smoking
+              : SMOKING.noPreference,
           }}
           validate={handleValidation}
           onSubmit={async (values, { setSubmitting }) => {
@@ -97,10 +110,38 @@ const EditMyPreferences = () => {
                 />
               </motion.div>
               <motion.div className="form-field" variants={itemVariants}>
-                <label htmlFor="numOfStops">Number of stops</label>
-                <Field type="number" name="numOfStops" id="numOfStops" />
+                <label htmlFor="maxPassengers">
+                  Maximum number of passengers
+                </label>
+                <Field
+                  name="maxPassengers"
+                  id="maxPassengers"
+                  component={FormIKSelect}
+                  options={[
+                    {
+                      value: MAX_PASSENGERS.noPreference,
+                      label: MAX_PASSENGERS_LABEL[MAX_PASSENGERS.noPreference],
+                    },
+                    {
+                      value: MAX_PASSENGERS.one,
+                      label: MAX_PASSENGERS_LABEL[MAX_PASSENGERS.one],
+                    },
+                    {
+                      value: MAX_PASSENGERS.two,
+                      label: MAX_PASSENGERS_LABEL[MAX_PASSENGERS.two],
+                    },
+                    {
+                      value: MAX_PASSENGERS.three,
+                      label: MAX_PASSENGERS_LABEL[MAX_PASSENGERS.three],
+                    },
+                    {
+                      value: MAX_PASSENGERS.four,
+                      label: MAX_PASSENGERS_LABEL[MAX_PASSENGERS.four],
+                    },
+                  ]}
+                />
                 <ErrorMessage
-                  name="numOfStops"
+                  name="maxPassengers"
                   component="span"
                   className="input-message-error"
                 />
@@ -112,8 +153,18 @@ const EditMyPreferences = () => {
                   id="rideType"
                   component={FormIKSelect}
                   options={[
-                    { value: 'regular', label: 'Regular' },
-                    { value: 'irregular', label: 'Irregular' },
+                    {
+                      value: SMOKING.noPreference,
+                      label: SMOKING_LABEL[SMOKING.noPreference],
+                    },
+                    {
+                      value: SMOKING.noSmoking,
+                      label: SMOKING_LABEL[SMOKING.noSmoking],
+                    },
+                    {
+                      value: SMOKING.smoking,
+                      label: SMOKING_LABEL[SMOKING.smoking],
+                    },
                   ]}
                 />
                 <ErrorMessage
@@ -129,8 +180,18 @@ const EditMyPreferences = () => {
                   id="smoking"
                   component={FormIKSelect}
                   options={[
-                    { value: false, label: 'No smoking' },
-                    { value: true, label: 'Smoking' },
+                    {
+                      value: SMOKING.noPreference,
+                      label: SMOKING_LABEL[SMOKING.noPreference],
+                    },
+                    {
+                      value: SMOKING.noSmoking,
+                      label: SMOKING_LABEL[SMOKING.noSmoking],
+                    },
+                    {
+                      value: SMOKING.smoking,
+                      label: SMOKING_LABEL[SMOKING.smoking],
+                    },
                   ]}
                 />
                 <ErrorMessage

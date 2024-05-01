@@ -2,21 +2,19 @@ import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
+import RideResults from 'components/rides/searchRides/RideResults';
+import RideFilters from 'components/rides/searchRides/RideFilters';
 import FormFilters from 'components/forms/FormFilters';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
-import RideResults from '../../components/rides/searchRides/RideResults';
-import RideFilters from '../../components/rides/searchRides/RideFilters';
+import { mainContainerVariants } from 'utilities/constants/framerVariants';
+import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'utilities/constants/rides';
 
 const SearchRides = () => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { filteredRides } = useSelector(state => state.rides);
   const ridePreferences = userDetails?.ridePreferences;
-  const isRidePreferencesValid =
+  const ridePreferencesExist =
     ridePreferences && Object.keys(ridePreferences).length !== 0;
 
   const handleObserverValues = useCallback(
@@ -27,16 +25,18 @@ const SearchRides = () => {
   );
 
   const formInitialValues = {
-    origin: isRidePreferencesValid ? ridePreferences.origin : '',
-    destination: isRidePreferencesValid
-      ? ridePreferences.destination
-      : '',
-    numOfStops: isRidePreferencesValid ? ridePreferences.numOfStops : 2,
-    rideType: isRidePreferencesValid
+    origin: ridePreferencesExist ? ridePreferences.origin : '',
+    destination: ridePreferencesExist ? ridePreferences.destination : '',
+    maxPassengers: ridePreferencesExist
+      ? ridePreferences.maxPassengers
+      : MAX_PASSENGERS.noPreference,
+    rideType: ridePreferencesExist
       ? ridePreferences.rideType
-      : 'regular',
-    smoking: isRidePreferencesValid ? ridePreferences.smoking : false,
-  }
+      : RIDE_TYPE.noPreference,
+    smoking: ridePreferencesExist
+      ? ridePreferences.smoking
+      : SMOKING.noPreference,
+  };
 
   return (
     <Layout>
@@ -52,15 +52,7 @@ const SearchRides = () => {
           <RideFilters />
         </FormFilters>
 
-        {filteredRides.length > 0 ? (
-          <div className="card__wrapper">
-            <RideResults filteredRides={filteredRides} />
-          </div>
-        ) : (
-          <motion.h2 variants={itemVariants} className="h2-sm">
-            No rides match your preferences
-          </motion.h2>
-        )}
+        <RideResults filteredRides={filteredRides} />
       </motion.section>
     </Layout>
   );
