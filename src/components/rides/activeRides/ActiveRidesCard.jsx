@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { getTime, getDate } from 'utilities/helpers';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import { MAX_PASSENGERS_LABEL } from 'utilities/constants/rides';
 
 const ActiveRidesCard = ({ activeRides }) =>
   activeRides.map(ride => {
@@ -26,7 +27,9 @@ const ActiveRidesCard = ({ activeRides }) =>
               <dl className="list-desc__columns list-desc--sm">
                 <div className="list-desc__col text-center">
                   <dt>Passengers</dt>
-                  <dd>{`${ride.passengers.length} of ${ride.maxPassengers}`}</dd>
+                  <dd>{`${ride.passengers.length} of ${
+                    MAX_PASSENGERS_LABEL[ride.maxPassengers]
+                  }`}</dd>
                 </div>
                 <div className="list-desc__col text-center">
                   <dt>Departure</dt>

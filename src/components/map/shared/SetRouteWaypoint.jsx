@@ -1,14 +1,11 @@
-import { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Autocomplete } from '@react-google-maps/api';
-import { removeAutocompletePacContainer } from 'utilities/map';
+import FormAutocomplete from 'components/forms/FormAutocomplete';
 
 const SetRouteWaypoint = ({ setWaypoints, randomProp }) => {
   const { userId } = useSelector(state => state.user.userDetails);
-  const waypointObjRef = useRef(null);
 
-  const handleWaypointChange = () => {
-    const place = waypointObjRef.current.getPlace();
+  const handleWaypointChange = acRef => {
+    const place = acRef.current.getPlace();
     const geoPoint = place.geometry.location;
     const formatted_address = place.formatted_address;
     const location = {
@@ -40,25 +37,12 @@ const SetRouteWaypoint = ({ setWaypoints, randomProp }) => {
     });
   };
 
-  useEffect(() => {
-    return () => {
-      removeAutocompletePacContainer(waypointObjRef.current);
-    };
-  }, []);
-
   return (
-    <>
-      <div className="form-field">
-        <label htmlFor="waypoint">Pick up location</label>
-        <Autocomplete
-          onLoad={ac => {
-            waypointObjRef.current = ac;
-          }}
-          onPlaceChanged={handleWaypointChange}>
-          <input type="text" id="waypoint" placeholder="Set pick up location" />
-        </Autocomplete>
-      </div>
-    </>
+    <FormAutocomplete
+      name="waypoint"
+      label="Pick up location"
+      handler={handleWaypointChange}
+    />
   );
 };
 

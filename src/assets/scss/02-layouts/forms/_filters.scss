@@ -3,30 +3,30 @@
 	margin: 0 calc-rem(-6px);
 	z-index: 10;
 
-	.form-field {
-    margin-bottom: calc-rem(14px);
-
-		> label {
-			display: none;
-		}
+	form {
+		margin: calc-rem(8px) 0 calc-rem(40px);
 	}
 
-  .react-select {
-    &__control {
-      min-height: calc-rem(38px);
-    }
-  }
+	textarea,
+	input[type="text"],
+	input[type="search"],
+	input[type="email"],
+	input[type="password"],
+	input[type="number"],
+	input[type="tel"] {
+		padding-top: calc-rem(10px);
+		padding-bottom: calc-rem(10px);
+	}
 
-  textarea, 
-  input[type="text"],
-  input[type="search"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="tel"] {
-    padding-top: calc-rem(10px);
-    padding-bottom: calc-rem(10px);
-  }
+	.form-field {
+		margin-bottom: calc-rem(14px);
+	}
+
+	.react-select {
+		&__control {
+			min-height: calc-rem(38px);
+		}
+	}
 
 	&__route {
 		position: relative;
@@ -34,43 +34,63 @@
 		align-items: center;
 		z-index: 10;
 
-		.react-select {
-			&-wrapper {
-				min-width: calc-rem(100px);
-			}
-
-			&__control {
-				box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
-				border-radius: $border-radius-lg;
-				font-size: calc-rem(13px);
-				line-height: calc-rem(16px);
-			}
-
-			&__value-container {
-				padding-left: calc-rem(45px);
-
-				&::before {
-					content: '';
-					position: absolute;
-					top: calc(50% + 1px);
-					left: calc-rem(18px);
-					background: $icon-direction no-repeat center center;
-					background-size: cover;
-					width: calc-rem(16px);
-					height: calc-rem(16px);
-					transform: translateY(-50%);
-				}
-			}
-
-			&__indicators {
-				display: none;
-			}
+		label {
+			display: none;
 		}
 	}
 
-  &__additional {
-    margin-top: calc-rem(16px);
-  }
+	&__autocomplete {
+		position: relative;
+		max-width: calc-rem(124px);
+		box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
+		border-radius: $border-radius-lg;
+		font-size: calc-rem(13px);
+		line-height: calc-rem(16px);
+		background-color: $color-blue-dark-2;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: calc(50% + 1px);
+			left: calc-rem(12px);
+			background: $icon-direction no-repeat center center;
+			background-size: cover;
+			width: calc-rem(16px);
+			height: calc-rem(16px);
+			transform: translateY(-50%);
+			pointer-events: none;
+		}
+
+		input {
+			padding-left: calc-rem(36px);
+			background-color: transparent;
+			border-radius: 0;
+			box-shadow: none;
+		}
+	}
+
+	&__additional {
+		margin: calc-rem(16px) 0 calc-rem(32px);
+
+		label {
+			flex: 1;
+			font-size: calc-rem(14px);
+			line-height: calc-rem(16px);
+			font-weight: 400;
+		}
+
+		.react-select-wrapper {
+			flex: 1;
+			max-width: calc-rem(160px);
+			font-size: calc-rem(14px);
+		}
+	}
+
+	&__field {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 
 	&__dash {
 		flex: 1;
@@ -79,10 +99,29 @@
 		margin: 0 calc-rem(12px) calc-rem(14px);
 	}
 
-  &__more button {
-    font-size: calc-rem(12px);
-    text-decoration: underline;
-    text-align: center;
-    width: 100%;
-  }
+	&__more {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		margin: calc-rem(16px) 0;
+	}
+
+	&__button {
+		@extend .btn-stripped, .btn-icon-left;
+		padding-left: calc-rem(28px);
+
+		.svg-inline {
+			left: 0;
+			fill: $color-primary;
+			font-size: calc-rem(22px);
+		}
+
+		&:hover {
+			color: $color-light-gray;
+
+			.svg-inline {
+				fill: darken($color-primary, 20%);
+			}
+		}
+	}
 }

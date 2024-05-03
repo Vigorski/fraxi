@@ -1,3 +1,8 @@
+// The pac-container element comes from google
+// As of yet, there is an unresolved bug with this element
+// where it is duplocated every time the autocomplete is being used
+// this is a crude way of removing the duplications.
+// TODO: create custom Autocomplete component using Places API instead
 export const getAutocompletePacContainer = autocomplete => {
   const place = autocomplete.gm_accessors_.place;
   const placeKey = Object.keys(place).find(

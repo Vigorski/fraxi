@@ -4,6 +4,11 @@ import { IconUser } from 'components/icons';
 import { USER_TYPES } from 'utilities/constants/userTypes';
 import { getTime, getShortDate } from 'utilities/helpers';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import {
+  MAX_PASSENGERS_LABEL,
+  RIDE_TYPE_LABEL,
+  SMOKING_LABEL,
+} from 'utilities/constants/rides';
 
 const CardRideDetails = ({
   rideDetails,
@@ -56,7 +61,9 @@ const CardRideDetails = ({
               <>
                 <div className="list-desc__row">
                   <dt>Passengers</dt>
-                  <dd className="text-center">{`${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</dd>
+                  <dd className="text-center">{`${
+                    rideDetails.passengers.length
+                  } / ${MAX_PASSENGERS_LABEL[rideDetails.maxPassengers]}`}</dd>
                 </div>
                 <div className="list-desc__row">
                   <dt>Driver</dt>
@@ -65,17 +72,19 @@ const CardRideDetails = ({
               </>
             )}
             <div className="list-desc__row">
-              <dt>Route</dt>
-              <dd className="text-center">{rideDetails.rideType}</dd>
+              <dt>Type of ride</dt>
+              <dd className="text-center">
+                {RIDE_TYPE_LABEL[rideDetails.rideType]}
+              </dd>
             </div>
             <div className="list-desc__row">
               <dt>Smoking</dt>
-              <dd className="text-center">{`${
-                rideDetails.smoking ? 'Yes' : 'No'
-              }`}</dd>
+              <dd className="text-center">
+                {SMOKING_LABEL[rideDetails.smoking]}
+              </dd>
             </div>
             <div className="list-desc__row">
-              <dt># of stops</dt>
+              <dt>Total passengers</dt>
               <dd className="text-center">{rideDetails.passengers.length}</dd>
             </div>
           </dl>
@@ -86,7 +95,9 @@ const CardRideDetails = ({
               <div className="card__stamp-border" />
             </div>
             <div className="card__section card__radius--bottom pt-0">
-              <h5 className="pv-sm">{`Passengers: ${rideDetails.passengers.length} / ${rideDetails.maxPassengers}`}</h5>
+              <h5 className="pv-sm">{`Passengers: ${
+                rideDetails.passengers.length
+              } / ${MAX_PASSENGERS_LABEL[rideDetails.maxPassengers]}`}</h5>
               <ul className="list list__users">
                 {!!allPassengersDetails &&
                   allPassengersDetails.map(passenger => (

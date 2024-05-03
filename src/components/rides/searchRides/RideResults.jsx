@@ -1,68 +1,25 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { IconUserPlaceholder } from 'components/icons';
-import { getTime, getShortDate } from 'utilities/helpers';
-import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
+import RideResultsCard from './RideResultsCard';
 import { itemVariants } from 'utilities/constants/framerVariants';
 
 const RideResults = ({ filteredRides }) => {
-  // TODO: fix error when selecting same city
-  return filteredRides.map((ride, index) => {
-    const driverHasPicture = ride.driverDetails.profilePicture.length > 0;
-
-    return (
-      <motion.div
-        variants={itemVariants}
-        transition={{ delay: 0.1 * index }}
-        key={ride.rideId}>
-        <Link
-          to={{
-            pathname: `${RIDE_DETAILS.path}/${ride.rideId}`,
-            state: { rideDetails: ride },
-          }}
-          className="card card__ride card--gray">
-          <div className="card__body">
-            <div className="card__section card__ride-info card__radius--top pb-0">
-              <div className="row">
-                <div className="col-7">
-                  <h6>
-                    {ride.driverDetails.name + ' ' + ride.driverDetails.surname}
-                  </h6>
-                  <p>{getShortDate(ride.departureDate) ?? 'N/A'}</p>
-                  <p>{getTime(ride.departureDate) ?? 'N/A'}</p>
-                </div>
-                <div className="col-5">
-                  <div className="thumbnail__user">
-                    {driverHasPicture ? (
-                      <img
-                        src={ride.driverDetails.profilePicture}
-                        alt="driver thumbnail"
-                      />
-                    ) : (
-                      <IconUserPlaceholder />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card__stamp">
-              <div className="card__stamp-border" />
-            </div>
-            <div className="card__section card__ride-price card__radius--bottom pt-0">
-              <div className="row">
-                <div className="col-7">
-                  <h6>Price</h6>
-                </div>
-                <div className="col-5">
-                  <h6>${ride.price}</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Link>
-      </motion.div>
-    );
-  });
+  return filteredRides.length > 0 ? (
+    <div className="card__wrapper">
+      {/* // TODO: fix error when selecting same city */}
+      {filteredRides.map((ride, index) => (
+        <motion.div
+          variants={itemVariants}
+          transition={{ delay: 0.1 * index }}
+          key={ride.rideId}>
+          <RideResultsCard ride={ride} />
+        </motion.div>
+      ))}
+    </div>
+  ) : (
+    <motion.h2 variants={itemVariants} className="h2-sm">
+      No rides match your preferences
+    </motion.h2>
+  );
 };
 
 export default RideResults;

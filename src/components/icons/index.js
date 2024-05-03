@@ -8,6 +8,8 @@ import { IconEdit } from './IconEdit';
 import { IconPhone } from './IconPhone';
 import { IconMarker } from './IconMarker';
 import { IconGoogle } from './IconGoogle';
+import { IconFilters } from './IconFilters';
+import { IconClearFilters } from './IconClearFilters';
 
 export {
   IconUser,
@@ -19,5 +21,7 @@ export {
   IconEdit,
   IconPhone,
   IconMarker,
-  IconGoogle
+  IconGoogle,
+  IconFilters,
+  IconClearFilters,
 };

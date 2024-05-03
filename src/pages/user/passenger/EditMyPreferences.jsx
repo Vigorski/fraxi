@@ -1,157 +1,79 @@
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import { motion } from 'framer-motion';
-import FormIKSelect from 'components/forms/FormIKSelect';
+import EditMyPreferencesForm from 'components/user/passenger/EditMyPreferencesForm';
+import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import Layout from 'layout/Layout';
 import { updateRidePreferences } from 'store/user/userAsyncActions';
-import { MKD_CITIES } from 'utilities/constants/cities';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { mainContainerVariants } from 'utilities/constants/framerVariants';
+import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'utilities/constants/rides';
 
 const EditMyPreferences = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const ridePreferences = userDetails?.ridePreferences;
-  const dispatch = useDispatch();
 
   const handleValidation = values => {
     const errors = {};
 
-    if (!values.numOfStops) {
-      errors.numOfStops = 'Required';
-    } else if (values.numOfStops <= 0) {
-      errors.numOfStops = 'Must be positive integer';
+    if (
+      values.maxPassengers === '' ||
+      values.maxPassengers === undefined ||
+      values.maxPassengers === null
+    ) {
+      errors.maxPassengers = 'Required';
     }
 
     return errors;
   };
 
-  const citiesOptions = MKD_CITIES.map(city => {
-    return { value: city, label: city };
-  });
-
   const isRidePreferencesValid =
     ridePreferences && Object.keys(ridePreferences).length !== 0;
 
-  return (
-    <Layout>
-      <motion.section
-        className="profile profile--edit"
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
-        <Formik
-          initialValues={{
-            origin: isRidePreferencesValid ? ridePreferences.origin : 'Skopje',
-            destination: isRidePreferencesValid
-              ? ridePreferences.destination
-              : 'Skopje',
-            numOfStops: isRidePreferencesValid ? ridePreferences.numOfStops : 1,
-            rideType: isRidePreferencesValid
-              ? ridePreferences.rideType
-              : 'regular',
-            smoking: isRidePreferencesValid ? ridePreferences.smoking : false,
-          }}
-          validate={handleValidation}
-          onSubmit={async (values, { setSubmitting }) => {
-            await dispatch(
-              updateRidePreferences({ userId: userDetails.userId, values }),
-            ).then(res => {
-              history.push(MY_PROFILE.path);
-              setSubmitting(false);
-            });
-          }}>
-          {({ isSubmitting }) => (
-            <Form>
-              <motion.div className="form-field" variants={itemVariants}>
-                <label htmlFor="origin">Your usual pick up location</label>
-                <Field
-                  name="origin"
-                  id="origin"
-                  component={FormIKSelect}
-                  options={citiesOptions}
-                />
-                <ErrorMessage
-                  name="origin"
-                  component="span"
-                  className="input-message-error"
-                />
-              </motion.div>
-              <motion.div className="form-field" variants={itemVariants}>
-                <label htmlFor="destination">Your usual destination</label>
-                <Field
-                  name="destination"
-                  id="destination"
-                  component={FormIKSelect}
-                  options={citiesOptions}
-                />
-                <ErrorMessage
-                  name="destination"
-                  component="span"
-                  className="input-message-error"
-                />
-              </motion.div>
-              <motion.div className="form-field" variants={itemVariants}>
-                <label htmlFor="numOfStops">Number of stops</label>
-                <Field type="number" name="numOfStops" id="numOfStops" />
-                <ErrorMessage
-                  name="numOfStops"
-                  component="span"
-                  className="input-message-error"
-                />
-              </motion.div>
-              <motion.div className="form-field" variants={itemVariants}>
-                <label htmlFor="rideType">Type of ride</label>
-                <Field
-                  name="rideType"
-                  id="rideType"
-                  component={FormIKSelect}
-                  options={[
-                    { value: 'regular', label: 'Regular' },
-                    { value: 'irregular', label: 'Irregular' },
-                  ]}
-                />
-                <ErrorMessage
-                  name="rideType"
-                  component="span"
-                  className="input-message-error"
-                />
-              </motion.div>
-              <motion.div className="form-field" variants={itemVariants}>
-                <label htmlFor="smoking">Smoking</label>
-                <Field
-                  name="smoking"
-                  id="smoking"
-                  component={FormIKSelect}
-                  options={[
-                    { value: false, label: 'No smoking' },
-                    { value: true, label: 'Smoking' },
-                  ]}
-                />
-                <ErrorMessage
-                  name="smoking"
-                  component="span"
-                  className="input-message-error"
-                />
-              </motion.div>
+  const initialValues = {
+    origin: isRidePreferencesValid ? ridePreferences.origin : '',
+    destination: isRidePreferencesValid ? ridePreferences.destination : '',
+    maxPassengers: isRidePreferencesValid
+      ? ridePreferences.maxPassengers
+      : MAX_PASSENGERS.noPreference,
+    rideType: isRidePreferencesValid
+      ? ridePreferences.rideType
+      : RIDE_TYPE.noPreference,
+    smoking: isRidePreferencesValid
+      ? ridePreferences.smoking
+      : SMOKING.noPreference,
+  };
 
-              <motion.button
-                className="btn-primary btn-block mt-xl"
-                type="submit"
-                disabled={isSubmitting}
-                variants={itemVariants}>
-                Save
-              </motion.button>
-            </Form>
-          )}
-        </Formik>
-      </motion.section>
-    </Layout>
+  const submitHandler = async (values, { setSubmitting }) => {
+    await dispatch(
+      updateRidePreferences({ userId: userDetails.userId, values }),
+    ).unwrap();
+
+    history.push(MY_PROFILE.path);
+    setSubmitting(false);
+  };
+
+  return (
+    <GoogleMapsLoader>
+      <Layout>
+        <motion.section
+          className="profile profile--edit"
+          variants={mainContainerVariants}
+          initial="initial"
+          animate="visible"
+          exit="hidden">
+          <Formik
+            initialValues={initialValues}
+            validate={handleValidation}
+            onSubmit={submitHandler}>
+            <EditMyPreferencesForm />
+          </Formik>
+        </motion.section>
+      </Layout>
+    </GoogleMapsLoader>
   );
 };
 

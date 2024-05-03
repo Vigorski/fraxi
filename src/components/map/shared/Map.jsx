@@ -1,18 +1,10 @@
 import React, { useState, useEffect, memo } from 'react';
-import {
-  useJsApiLoader,
-  GoogleMap,
-  Marker,
-  DirectionsRenderer,
-} from '@react-google-maps/api';
+import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 import { useSelector } from 'react-redux';
 import markerIcon from 'assets/icons/marker.svg';
 import markerIconUnique from 'assets/icons/marker-unique.svg';
 import flagIcon from 'assets/icons/flag.svg';
 import { formattedRouteDistanceAndDuration } from 'utilities/map/routeMeasurements';
-import Spinner from 'components/shared/Spinner';
-
-const libraries = ['places'];
 
 const WaypointMarkers = ({ waypoints }) => {
   const { userId } = useSelector(state => state.user.userDetails);
@@ -45,17 +37,22 @@ const Map = ({
   waypoints,
   directionsCallback,
 }) => {
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: libraries,
-  });
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [directions, setDirections] = useState(null);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
+  const macedoniaBounds = {
+    latLngBounds: {
+      north: 42.41,
+      south: 40.7,
+      east: 23.1,
+      west: 20.4,
+    },
+    strictBounds: true,
+  };
 
   useEffect(() => {
-    if (origin && destination && isLoaded) {
+    if (origin && destination) {
       const recunstructedWaypoints = waypoints.map(waypoint => ({
         location: waypoint.location,
         stopover: waypoint.stopover,
@@ -88,15 +85,7 @@ const Map = ({
         },
       );
     }
-  }, [origin, destination, waypoints, isLoaded, directionsCallback]);
-
-  if (loadError) {
-    return <div>Error loading Google Maps API: {loadError.message}</div>;
-  }
-
-  if (!isLoaded) {
-    return <Spinner message={'Loading map...'} />;
-  }
+  }, [origin, destination, waypoints, directionsCallback]);
 
   return (
     <>
@@ -126,6 +115,7 @@ const Map = ({
             fullscreenControl: false,
             mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
             gestureHandling: 'greedy',
+            restriction: macedoniaBounds,
           }}>
           {origin && (
             <Marker position={origin.location} icon={{ url: flagIcon }} />

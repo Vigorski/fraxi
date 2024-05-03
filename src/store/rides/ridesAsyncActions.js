@@ -6,6 +6,7 @@ import { httpActions } from 'store/http/httpSlice';
 import { USER_TYPES } from 'utilities/constants/userTypes';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
+import { RIDE_STATUS } from 'utilities/constants/rides';
 
 const transformRideValues = (driverId, route, values) => {
   const newRideId = 'ride_' + uuidv4();
@@ -20,19 +21,37 @@ const transformRideValues = (driverId, route, values) => {
     driverId,
     route,
     passengers: [],
-    numOfStops: 0,
-    status: 'active',
+    status: RIDE_STATUS.active,
   };
 };
 
 const addDriverToRide = (rides, drivers) => {
   const updatedRides = rides.map(ride => {
-    // using the first index of the response since it always returns an array which will only have a single item
+    // always returns an array with a single item
     const driverDetails = drivers.find(
       driver => driver[0].userId === ride.driverId,
     );
     return { ...ride, driverDetails: driverDetails[0] };
   });
+
+  return updatedRides;
+};
+
+const updateRidesWithDriver = async rides => {
+  const uniqueDriverIds = [];
+
+  for (const ride of rides) {
+    if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
+      uniqueDriverIds.push(ride.driverId);
+    }
+  }
+
+  const driversResponse = await Promise.all(
+    uniqueDriverIds.map(driverId =>
+      FirebaseFirestoreService.get('/users', [where('userId', '==', driverId)]),
+    ),
+  );
+  const updatedRides = addDriverToRide(rides, driversResponse);
 
   return updatedRides;
 };
@@ -140,7 +159,7 @@ export const removePassengerRide = createAsyncThunk(
       if (userDetails.userType === USER_TYPES.driver) {
         comboRemoveRideCall.push(
           FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
-            status: 'canceled',
+            status: RIDE_STATUS.canceled,
           }),
         );
 
@@ -162,7 +181,7 @@ export const removePassengerRide = createAsyncThunk(
 
       dispatch(userActions.removeActiveRide(rideDetails.rideId));
       dispatch(userActions.addHistoryRide(rideDetails.rideId));
-      dispatch(httpActions.requestSuccess('Ride successfully canceled.'));
+      dispatch(httpActions.requestSuccess('Ride canceled.'));
 
       return rideDetails;
     } catch (err) {
@@ -185,7 +204,9 @@ export const getRidesState = createAsyncThunk(
     try {
       const ridesResponse = await Promise.all(
         userRides.map(rideId =>
-          FirebaseFirestoreService.get('/rides', [where('rideId', '==', rideId)]),
+          FirebaseFirestoreService.get('/rides', [
+            where('rideId', '==', rideId),
+          ]),
         ),
       );
       const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
@@ -218,9 +239,6 @@ export const getFilteredRides = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
-      // TODO: make additional conditional filters for less important aspects
-      // TODO: if too few results, remove some filters
-      const uniqueDriverIds = [];
       const fullDBPaths = [
         'route.destination.address_components.city',
         'route.origin.address_components.city',
@@ -228,29 +246,29 @@ export const getFilteredRides = createAsyncThunk(
         'smoking',
       ];
       const propertyNames = ['destination', 'origin', 'rideType', 'smoking'];
-      const queryParams = fullDBPaths.map((param, index) => {
-        return where(param, '==', searchPreferences[propertyNames[index]]);
+      const queryParams = [where('status', '==', RIDE_STATUS.active)]; // mandatory query - will search only active rides
+
+      fullDBPaths.forEach((param, index) => {
+        if (searchPreferences[propertyNames[index]]) {
+          queryParams.push(
+            where(param, '==', searchPreferences[propertyNames[index]]),
+          );
+        }
       });
+
       const ridesResponse = await FirebaseFirestoreService.get(
         '/rides',
         queryParams,
       );
 
-      for (const ride of ridesResponse) {
-        if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
-          uniqueDriverIds.push(ride.driverId);
-        }
+      if (ridesResponse) {
+        const updatedRides = await updateRidesWithDriver(ridesResponse);
+        dispatch(httpActions.requestSuccess());
+        return updatedRides;
       }
 
-      const driversResponse = await Promise.all(
-        uniqueDriverIds.map(driverId =>
-          FirebaseFirestoreService.get('/users', [where('userId', '==', driverId)]),
-        ),
-      );
-      const updatedRides = addDriverToRide(ridesResponse, driversResponse);
-
       dispatch(httpActions.requestSuccess());
-      return updatedRides;
+      return null;
     } catch (err) {
       console.error(err);
       dispatch(

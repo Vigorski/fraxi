@@ -1,4 +1,4 @@
-const FormIkImage = ({ field, form }) => {
+const FormikImage = ({ field, form }) => {
   return (
     <input
       id={field.name}
@@ -11,4 +11,4 @@ const FormIkImage = ({ field, form }) => {
   );
 };
 
-export default FormIkImage;
+export default FormikImage;
