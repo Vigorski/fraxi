@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-import FormIKSelect from 'components/forms/FormIKSelect';
+import FormikSelect from 'components/forms/FormikSelect';
 import FormAutocomplete from 'components/forms/FormAutocomplete';
 import { IconFilters, IconClearFilters } from 'components/icons';
 import useFormContextRouteCities from 'hooks/useFormContextRouteCities';
@@ -63,7 +63,7 @@ const RideFilters = () => {
             handler={handleOriginCityChange}
             types={['(cities)']}
             placeholder={formikProps.initialValues.origin ?? ''}
-            className="filters__field"
+            className="filters__autocomplete"
           />
         </motion.div>
         <div className="filters__dash" />
@@ -77,21 +77,21 @@ const RideFilters = () => {
             handler={handleDestinationCityChange}
             types={['(cities)']}
             placeholder={formikProps.initialValues.destination ?? ''}
-            className="filters__field"
+            className="filters__autocomplete"
           />
         </motion.div>
       </motion.div>
       {expandFilters && (
         <div className="filters__additional">
           <motion.div
-            className="form-field"
+            className="form-field filters__field"
             variants={itemVariants}
             transition={{ delay: 0.1 }}>
             <label htmlFor="maxPassengers">Maximum passengers allowed</label>
             <Field
               name="maxPassengers"
               id="maxPassengers"
-              component={FormIKSelect}
+              component={FormikSelect}
               options={[
                 {
                   value: MAX_PASSENGERS.noPreference,
@@ -122,14 +122,14 @@ const RideFilters = () => {
             />
           </motion.div>
           <motion.div
-            className="form-field"
+            className="form-field filters__field"
             variants={itemVariants}
             transition={{ delay: 0.2 }}>
             <label htmlFor="rideType">Type of ride</label>
             <Field
               name="rideType"
               id="rideType"
-              component={FormIKSelect}
+              component={FormikSelect}
               options={[
                 {
                   value: RIDE_TYPE.noPreference,
@@ -152,14 +152,14 @@ const RideFilters = () => {
             />
           </motion.div>
           <motion.div
-            className="form-field"
+            className="form-field filters__field"
             variants={itemVariants}
             transition={{ delay: 0.3 }}>
             <label htmlFor="smoking">Smoking</label>
             <Field
               name="smoking"
               id="smoking"
-              component={FormIKSelect}
+              component={FormikSelect}
               options={[
                 {
                   value: SMOKING.noPreference,

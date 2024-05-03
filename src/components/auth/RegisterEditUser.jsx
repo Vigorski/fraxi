@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-import FormIkUserImage from 'components/forms/FormIkUserImage';
+import FormikUserImage from 'components/forms/FormikUserImage';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
@@ -110,7 +110,7 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             <Field
               name="profilePicture"
               id="profilePicture"
-              component={FormIkUserImage}
+              component={FormikUserImage}
               profilePicture={profilePicture}
             />
             <ErrorMessage

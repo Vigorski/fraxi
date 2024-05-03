@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
-import FormIKSelect from 'components/forms/FormIKSelect';
+import FormikSelect from 'components/forms/FormikSelect';
 import Layout from 'layout/Layout';
 import DriverRouteMap from 'components/map/DriverRouteMap';
 import { addNewRide } from 'store/rides/ridesAsyncActions';
@@ -141,7 +141,7 @@ const CreateRide = () => {
                 <Field
                   name="maxPassengers"
                   id="maxPassengers"
-                  component={FormIKSelect}
+                  component={FormikSelect}
                   options={[
                     {
                       value: MAX_PASSENGERS.one,
@@ -172,7 +172,7 @@ const CreateRide = () => {
                 <Field
                   name="rideType"
                   id="rideType"
-                  component={FormIKSelect}
+                  component={FormikSelect}
                   options={[
                     {
                       value: RIDE_TYPE.regular,
@@ -195,7 +195,7 @@ const CreateRide = () => {
                 <Field
                   name="smoking"
                   id="smoking"
-                  component={FormIKSelect}
+                  component={FormikSelect}
                   options={[
                     {
                       value: SMOKING.noSmoking,

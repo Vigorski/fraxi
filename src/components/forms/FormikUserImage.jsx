@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IconUserPlaceholder } from 'components/icons';
 
-const FormIkUserImage = ({ field, form, profilePicture }) => {
+const FormikUserImage = ({ field, form, profilePicture }) => {
   const [url, setURL] = useState(profilePicture ?? '');
 
   function handleChange(e) {
@@ -35,4 +35,4 @@ const FormIkUserImage = ({ field, form, profilePicture }) => {
   );
 };
 
-export default FormIkUserImage;
+export default FormikUserImage;

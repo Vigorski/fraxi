@@ -1,8 +1,9 @@
 import Select from 'react-select';
 
-const FormIKSelect = ({ options, field, form }) => {
+const FormikSelect = ({ options, field, form }) => {
   return (
     <Select
+      inputId={field.name}
       name={field.name}
       onBlur={field.onBlur}
       onChange={({ value }) => form.setFieldValue(field.name, value)}
@@ -16,4 +17,4 @@ const FormIKSelect = ({ options, field, form }) => {
   );
 };
 
-export default FormIKSelect;
+export default FormikSelect;

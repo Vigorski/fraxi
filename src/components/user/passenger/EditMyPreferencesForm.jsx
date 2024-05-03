@@ -1,6 +1,6 @@
 import { Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
-import FormIKSelect from 'components/forms/FormIKSelect';
+import FormikSelect from 'components/forms/FormikSelect';
 import FormAutocomplete from 'components/forms/FormAutocomplete';
 import useFormContextRouteCities from 'hooks/useFormContextRouteCities';
 import { itemVariants } from 'utilities/constants/framerVariants';
@@ -43,7 +43,7 @@ const EditMyPreferencesForm = () => {
         <Field
           name="maxPassengers"
           id="maxPassengers"
-          component={FormIKSelect}
+          component={FormikSelect}
           options={[
             {
               value: MAX_PASSENGERS.noPreference,
@@ -78,7 +78,7 @@ const EditMyPreferencesForm = () => {
         <Field
           name="rideType"
           id="rideType"
-          component={FormIKSelect}
+          component={FormikSelect}
           options={[
             {
               value: SMOKING.noPreference,
@@ -105,7 +105,7 @@ const EditMyPreferencesForm = () => {
         <Field
           name="smoking"
           id="smoking"
-          component={FormIKSelect}
+          component={FormikSelect}
           options={[
             {
               value: SMOKING.noPreference,
