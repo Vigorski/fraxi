@@ -3,6 +3,7 @@ import SetRouteWaypoint from './shared/SetRouteWaypoint';
 import ReadonlyRouteWaypoint from './shared/ReadonlyRouteWaypoint';
 import Map from './shared/Map';
 import { useSelector } from 'react-redux';
+import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 
 const PassengerRouteMap = ({
   originCity,
@@ -16,17 +17,19 @@ const PassengerRouteMap = ({
   const ownWaypoint = waypoints.find(waypoint => waypoint.userId === userId);
 
   return (
-    <Map
-      origin={originCity}
-      destination={destinationCity}
-      waypoints={newWaypoints}
-      directionsCallback={storeRouteMapDetails}>
-      {ownWaypoint ? (
-        <ReadonlyRouteWaypoint waypoint={ownWaypoint} />
-      ) : (
-        <SetRouteWaypoint setWaypoints={setNewWaypoints} />
-      )}
-    </Map>
+    <GoogleMapsLoader>
+      <Map
+        origin={originCity}
+        destination={destinationCity}
+        waypoints={newWaypoints}
+        directionsCallback={storeRouteMapDetails}>
+        {ownWaypoint ? (
+          <ReadonlyRouteWaypoint waypoint={ownWaypoint} />
+        ) : (
+          <SetRouteWaypoint setWaypoints={setNewWaypoints} />
+        )}
+      </Map>
+    </GoogleMapsLoader>
   );
 };
 

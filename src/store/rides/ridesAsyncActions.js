@@ -27,12 +27,31 @@ const transformRideValues = (driverId, route, values) => {
 
 const addDriverToRide = (rides, drivers) => {
   const updatedRides = rides.map(ride => {
-    // using the first index of the response since it always returns an array which will only have a single item
+    // always returns an array with a single item
     const driverDetails = drivers.find(
       driver => driver[0].userId === ride.driverId,
     );
     return { ...ride, driverDetails: driverDetails[0] };
   });
+
+  return updatedRides;
+};
+
+const updateRidesWithDriver = async rides => {
+  const uniqueDriverIds = [];
+
+  for (const ride of rides) {
+    if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
+      uniqueDriverIds.push(ride.driverId);
+    }
+  }
+
+  const driversResponse = await Promise.all(
+    uniqueDriverIds.map(driverId =>
+      FirebaseFirestoreService.get('/users', [where('userId', '==', driverId)]),
+    ),
+  );
+  const updatedRides = addDriverToRide(rides, driversResponse);
 
   return updatedRides;
 };
@@ -220,8 +239,6 @@ export const getFilteredRides = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
-      // #TODO: make additional conditional filters for less important aspects
-      // #TODO: if too few results, remove some filters
       const fullDBPaths = [
         'route.destination.address_components.city',
         'route.origin.address_components.city',
@@ -229,8 +246,7 @@ export const getFilteredRides = createAsyncThunk(
         'smoking',
       ];
       const propertyNames = ['destination', 'origin', 'rideType', 'smoking'];
-      const queryParams = [where('status', '==', RIDE_STATUS.active)]; // initial query - will search only active rides
-      const uniqueDriverIds = [];
+      const queryParams = [where('status', '==', RIDE_STATUS.active)]; // mandatory query - will search only active rides
 
       fullDBPaths.forEach((param, index) => {
         if (searchPreferences[propertyNames[index]]) {
@@ -245,27 +261,13 @@ export const getFilteredRides = createAsyncThunk(
         queryParams,
       );
 
-      // the rest of this section is VEEERY sus
       if (ridesResponse) {
-        for (const ride of ridesResponse) {
-          if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
-            uniqueDriverIds.push(ride.driverId);
-          }
-        }
-
-        const driversResponse = await Promise.all(
-          uniqueDriverIds.map(driverId =>
-            FirebaseFirestoreService.get('/users', [
-              where('userId', '==', driverId),
-            ]),
-          ),
-        );
-        const updatedRides = addDriverToRide(ridesResponse, driversResponse);
-
+        const updatedRides = await updateRidesWithDriver(ridesResponse);
         dispatch(httpActions.requestSuccess());
         return updatedRides;
       }
 
+      dispatch(httpActions.requestSuccess());
       return null;
     } catch (err) {
       console.error(err);

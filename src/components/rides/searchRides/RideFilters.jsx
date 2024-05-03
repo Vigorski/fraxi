@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import FormIKSelect from 'components/forms/FormIKSelect';
-import { MKD_CITIES_ABBREVIATED } from 'utilities/constants/cities';
+import FormAutocomplete from 'components/forms/FormAutocomplete';
+import { IconFilters, IconClearFilters } from 'components/icons';
+import useFormContextRouteCities from 'hooks/useFormContextRouteCities';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS,
@@ -13,57 +15,69 @@ import {
   SMOKING_LABEL,
 } from 'utilities/constants/rides';
 
-const citiesOptions = Object.entries(MKD_CITIES_ABBREVIATED).map(
-  ([cityKey, cityVal]) => {
-    return { label: cityVal, value: cityKey };
-  },
-);
-
 const RideFilters = () => {
   const [expandFilters, setExpandFilters] = useState(false);
+  const [formikProps, setRouteFieldValue] = useFormContextRouteCities();
+
   const toggleFilters = e => {
     e.preventDefault();
     setExpandFilters(!expandFilters);
+  };
+
+  const handleOriginCityChange = acRef => {
+    setRouteFieldValue(acRef, 'origin');
+  };
+
+  const handleDestinationCityChange = acRef => {
+    setRouteFieldValue(acRef, 'destination');
+  };
+
+  const handleClearForm = () => {
+    formikProps.setFieldValue('origin', '');
+    formikProps.setFieldValue('destination', '');
+    formikProps.setFieldValue('maxPassengers', MAX_PASSENGERS.noPreference);
+    formikProps.setFieldValue('rideType', RIDE_TYPE.noPreference);
+    formikProps.setFieldValue('smoking', SMOKING.noPreference);
+
+    // this part is not good practice
+    // will be removed once custom autocomplete component is finished
+    // TODO: Create custom Autocomplete component
+    const originInput = document.querySelector('input#origin');
+    const destinationInput = document.querySelector('input#destination');
+    originInput.value = '';
+    originInput.placeholder = '';
+    destinationInput.value = '';
+    destinationInput.placeholder = '';
   };
 
   return (
     <>
       <motion.div className="filters__route" variants={itemVariants}>
         <motion.div
-          className="form-field"
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
           transition={{ delay: 0.3 }}>
-          <label htmlFor="origin">origin</label>
-          <Field
+          <FormAutocomplete
             name="origin"
-            id="origin"
-            component={FormIKSelect}
-            options={citiesOptions}
-          />
-          <ErrorMessage
-            name="origin"
-            component="span"
-            className="input-message-error"
+            label="Origin"
+            handler={handleOriginCityChange}
+            types={['(cities)']}
+            placeholder={formikProps.initialValues.origin ?? ''}
+            className="filters__field"
           />
         </motion.div>
         <div className="filters__dash" />
         <motion.div
-          className="form-field"
           initial={{ x: '-100%' }}
           animate={{ x: 0 }}
           transition={{ delay: 0.3 }}>
-          <label htmlFor="destination">destination</label>
-          <Field
+          <FormAutocomplete
             name="destination"
-            id="destination"
-            component={FormIKSelect}
-            options={citiesOptions}
-          />
-          <ErrorMessage
-            name="destination"
-            component="span"
-            className="input-message-error"
+            label="Destination"
+            handler={handleDestinationCityChange}
+            types={['(cities)']}
+            placeholder={formikProps.initialValues.destination ?? ''}
+            className="filters__field"
           />
         </motion.div>
       </motion.div>
@@ -170,8 +184,19 @@ const RideFilters = () => {
         </div>
       )}
       <motion.div className="filters__more" variants={itemVariants}>
-        <button className="btn-link" onClick={toggleFilters}>
-          {expandFilters ? 'Show less' : 'Show more'}
+        <button
+          type="button"
+          className="filters__button"
+          onClick={toggleFilters}>
+          <IconFilters className="text-sm" />
+          <span>{expandFilters ? 'Hide filters' : 'Show filters'}</span>
+        </button>
+        <button
+          type="button"
+          className="filters__button"
+          onClick={handleClearForm}>
+          <IconClearFilters className="text-sm" />
+          <span>Reset search</span>
         </button>
       </motion.div>
     </>

@@ -8,6 +8,7 @@ import FormFilters from 'components/forms/FormFilters';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
 import { mainContainerVariants } from 'utilities/constants/framerVariants';
 import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'utilities/constants/rides';
+import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 
 const SearchRides = () => {
   const dispatch = useDispatch();
@@ -39,22 +40,24 @@ const SearchRides = () => {
   };
 
   return (
-    <Layout>
-      <motion.section
-        className="search-rides"
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
-        <FormFilters
-          initialValues={formInitialValues}
-          handleObserverValues={handleObserverValues}>
-          <RideFilters />
-        </FormFilters>
+    <GoogleMapsLoader>
+      <Layout>
+        <motion.section
+          className="search-rides"
+          variants={mainContainerVariants}
+          initial="initial"
+          animate="visible"
+          exit="hidden">
+          <FormFilters
+            initialValues={formInitialValues}
+            handleObserverValues={handleObserverValues}>
+            <RideFilters />
+          </FormFilters>
 
-        <RideResults filteredRides={filteredRides} />
-      </motion.section>
-    </Layout>
+          <RideResults filteredRides={filteredRides} />
+        </motion.section>
+      </Layout>
+    </GoogleMapsLoader>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CreateRouteInputs from './shared/CreateRouteInputs';
 import ReadonlyRouteInputs from './shared/ReadonlyRouteInputs';
 import Map from './shared/Map';
+import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 
 const DriverRouteMap = ({
   originCity,
@@ -13,23 +14,25 @@ const DriverRouteMap = ({
   const [destination, setDestination] = useState(destinationCity ?? null);
 
   return (
-    <Map
-      origin={origin}
-      destination={destination}
-      waypoints={waypoints}
-      directionsCallback={storeRouteMapDetails}>
-      {originCity && destinationCity ? (
-        <ReadonlyRouteInputs
-          origin={originCity}
-          destination={destinationCity}
-        />
-      ) : (
-        <CreateRouteInputs
-          setOrigin={setOrigin}
-          setDestination={setDestination}
-        />
-      )}
-    </Map>
+    <GoogleMapsLoader>
+      <Map
+        origin={origin}
+        destination={destination}
+        waypoints={waypoints}
+        directionsCallback={storeRouteMapDetails}>
+        {originCity && destinationCity ? (
+          <ReadonlyRouteInputs
+            origin={originCity}
+            destination={destinationCity}
+          />
+        ) : (
+          <CreateRouteInputs
+            setOrigin={setOrigin}
+            setDestination={setDestination}
+          />
+        )}
+      </Map>
+    </GoogleMapsLoader>
   );
 };
 

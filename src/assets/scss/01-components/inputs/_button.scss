@@ -84,10 +84,11 @@
   }
 
   &-stripped {
-    @include base-button($color-secondary, transparent, transparent);
-    display: inline-block;
-    font-size: calc-rem(14px);
-    font-weight: 700;
+    font: 400 $btn-font-md $font-lato;
+    line-height: calc-rem(16px);
+    background: transparent;
+    border: none;
+    color: $color-white;
   }
 
   &-link {
