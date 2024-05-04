@@ -4,7 +4,7 @@ import { getTime, getShortDate } from 'utilities/helpers';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 
 const RideResultsCard = ({ ride }) => {
-  const driverHasPicture = ride.driverDetails.profilePicture.length > 0;
+  const driverHasPicture = ride.driverDetails.profilePicture?.length > 0;
 
   return (
     <Link

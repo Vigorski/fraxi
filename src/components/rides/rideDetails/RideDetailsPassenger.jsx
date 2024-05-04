@@ -5,7 +5,14 @@ import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { bookRide } from 'store/rides/ridesAsyncActions';
-import { IconUserPlaceholder, IconMarker, IconPhone } from 'components/icons';
+import { saveDriver, unsaveDriver } from 'store/user/userAsyncActions';
+import {
+  IconUserPlaceholder,
+  IconMarker,
+  IconPhone,
+  IconHeartOutline,
+  IconHeart,
+} from 'components/icons';
 import PassengerRouteMap from 'components/map/PassengerRouteMap';
 import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
@@ -24,6 +31,9 @@ const RideDetailsPassenger = ({ rideDetails }) => {
     userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
   const isWaypointPicked = routeMapDetails.waypoints.find(
     waypoint => waypoint.userId === userDetails.userId,
+  );
+  const isDriverSaved = userDetails.savedDrivers.find(
+    driver => driver === rideDetails.driverId,
   );
 
   const handleBookRide = () => {
@@ -46,6 +56,18 @@ const RideDetailsPassenger = ({ rideDetails }) => {
       removePassengerRide({ rideDetails, userDetails, waypoints }),
     ).unwrap();
     history.push(ACTIVE_RIDES.path);
+  };
+
+  const handleSaveDriver = async () => {
+    await dispatch(
+      saveDriver({ userDetails, driverId: rideDetails.driverId }),
+    ).unwrap();
+  };
+
+  const handleUnsaveDriver = async () => {
+    await dispatch(
+      unsaveDriver({ userDetails, driverId: rideDetails.driverId }),
+    ).unwrap();
   };
 
   return (
@@ -83,6 +105,21 @@ const RideDetailsPassenger = ({ rideDetails }) => {
               </motion.p>
               <h3>{`${driverDetails.name} ${driverDetails.surname}`}</h3>
             </div>
+            <motion.div
+              className="ride-details__save-driver"
+              variants={itemVariants}>
+              {isDriverSaved ? (
+                <button
+                  className="btn-stripped ride-details__btn-save"
+                  onClick={handleUnsaveDriver}>
+                  <IconHeart className="ride-details__save-icon ride-details__save-icon--active" />
+                </button>
+              ) : (
+                <button className="btn-stripped" onClick={handleSaveDriver}>
+                  <IconHeartOutline className="ride-details__save-icon" />
+                </button>
+              )}
+            </motion.div>
           </div>
         </div>
       </div>

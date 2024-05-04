@@ -10,6 +10,8 @@ import { IconMarker } from './IconMarker';
 import { IconGoogle } from './IconGoogle';
 import { IconFilters } from './IconFilters';
 import { IconClearFilters } from './IconClearFilters';
+import { IconHeart } from './IconHeart';
+import { IconHeartOutline } from './IconHeartOutline';
 
 export {
   IconUser,
@@ -24,4 +26,6 @@ export {
   IconGoogle,
   IconFilters,
   IconClearFilters,
+  IconHeart,
+  IconHeartOutline
 };

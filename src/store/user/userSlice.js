@@ -3,6 +3,8 @@ import {
   getAndStoreUserData,
   updateRidePreferences,
   userUpdate,
+  saveDriver,
+  unsaveDriver,
 } from './userAsyncActions';
 
 const initialState = {
@@ -40,7 +42,7 @@ const userSlice = createSlice({
     },
     setIsRegistering(state, action) {
       state.isRegistering = action.payload;
-    }
+    },
   },
   extraReducers: builder => {
     builder.addCase(userUpdate.fulfilled, (state, action) => {
@@ -55,6 +57,19 @@ const userSlice = createSlice({
 
     builder.addCase(updateRidePreferences.fulfilled, (state, action) => {
       state.userDetails.ridePreferences = action.payload;
+    });
+
+    builder.addCase(saveDriver.fulfilled, (state, action) => {
+      state.userDetails.savedDrivers.push(action.payload);
+    });
+
+    builder.addCase(unsaveDriver.fulfilled, (state, action) => {
+      state.userDetails.savedDrivers.forEach((driverId, i) => {
+        if (driverId === action.payload) {
+          state.userDetails.savedDrivers.splice(i, 1);
+          return;
+        }
+      });
     });
   },
 });
