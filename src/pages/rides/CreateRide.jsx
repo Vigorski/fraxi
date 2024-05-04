@@ -53,7 +53,7 @@ const CreateRide = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    await dispatch(
+    const newRoute = await dispatch(
       addNewRide({
         driver: userDetails,
         route: routeMapDetails,
@@ -61,7 +61,9 @@ const CreateRide = () => {
       }),
     ).unwrap();
     setSubmitting(false);
-    history.push(MY_PROFILE.path);
+    if (newRoute) {
+      history.push(MY_PROFILE.path);
+    }
   };
 
   const storeRouteMapDetails = useCallback(

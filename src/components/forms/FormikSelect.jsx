@@ -13,6 +13,7 @@ const FormikSelect = ({ options, field, form }) => {
       }
       className="react-select-wrapper"
       classNamePrefix="react-select"
+      isSearchable={false}
     />
   );
 };

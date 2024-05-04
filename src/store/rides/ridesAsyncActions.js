@@ -62,11 +62,19 @@ export const addNewRide = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
+      if (
+        !('city' in route.origin.address_components) ||
+        !('city' in route.destination.address_components)
+      ) {
+        throw new Error('Please select a location within city bounds');
+      }
+
       const transformedValues = transformRideValues(
         driver.userId,
         route,
         values,
       );
+
       const transformedDriverActiveRides = {
         activeRides: [...driver.activeRides, transformedValues.rideId],
       };

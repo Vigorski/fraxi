@@ -10,7 +10,7 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import PassengerPreferences from './passenger/PassengerPreferences';
+import PassengerPreferences from 'components/user/passenger/PassengerPreferences';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
