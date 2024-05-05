@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import { IconUserPlaceholder, IconEdit } from 'components/icons';
+import JourneyHub from 'components/user/passenger/JourneyHub';
 import { userLogout } from 'store/user/userAsyncActions';
 import { USER_TYPES } from 'utilities/constants/userTypes';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
@@ -10,12 +11,10 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import PassengerPreferences from 'components/user/passenger/PassengerPreferences';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
-  const ridePreferences = userDetails?.ridePreferences;
 
   const handleLogout = async () => {
     await dispatch(userLogout()).unwrap();
@@ -52,7 +51,7 @@ const MyProfile = () => {
 
         {userDetails?.userType === USER_TYPES.passenger && (
           <motion.div variants={itemVariants}>
-            <PassengerPreferences ridePreferences={ridePreferences} />
+            <JourneyHub />
           </motion.div>
         )}
         {userDetails?.userType === USER_TYPES.driver && (

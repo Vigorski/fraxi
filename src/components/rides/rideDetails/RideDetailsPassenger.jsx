@@ -7,13 +7,13 @@ import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { bookRide } from 'store/rides/ridesAsyncActions';
 import { saveDriver, unsaveDriver } from 'store/user/userAsyncActions';
 import {
-  IconUserPlaceholder,
   IconMarker,
   IconPhone,
   IconHeartOutline,
   IconHeart,
 } from 'components/icons';
 import PassengerRouteMap from 'components/map/PassengerRouteMap';
+import UserPicture from 'components/shared/UserPicture';
 import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
@@ -26,7 +26,6 @@ const RideDetailsPassenger = ({ rideDetails }) => {
   const userDetails = useSelector(state => state.user.userDetails);
   const [routeMapDetails, setRouteMapDetails] = useState(rideDetails.route);
   const driverDetails = rideDetails?.driverDetails;
-  const driverHasPicture = driverDetails?.profilePicture !== '';
   const isRideBooked =
     userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
   const isWaypointPicked = routeMapDetails.waypoints.find(
@@ -58,16 +57,12 @@ const RideDetailsPassenger = ({ rideDetails }) => {
     history.push(ACTIVE_RIDES.path);
   };
 
-  const handleSaveDriver = async () => {
-    await dispatch(
-      saveDriver({ userDetails, driverId: rideDetails.driverId }),
-    ).unwrap();
+  const handleSaveDriver = () => {
+    dispatch(saveDriver({ userDetails, driverId: rideDetails.driverId }));
   };
 
-  const handleUnsaveDriver = async () => {
-    await dispatch(
-      unsaveDriver({ userDetails, driverId: rideDetails.driverId }),
-    ).unwrap();
+  const handleUnsaveDriver = () => {
+    dispatch(unsaveDriver({ userDetails, driverId: rideDetails.driverId }));
   };
 
   return (
@@ -84,14 +79,7 @@ const RideDetailsPassenger = ({ rideDetails }) => {
             <motion.div
               className="ride-details__photo thumbnail__user"
               variants={itemVariants}>
-              {driverHasPicture ? (
-                <img
-                  src={driverDetails.profilePicture}
-                  alt="driver thumbnail"
-                />
-              ) : (
-                <IconUserPlaceholder />
-              )}
+              <UserPicture profilePicture={driverDetails.profilePicture} />
             </motion.div>
           </div>
           <div className="col-6">

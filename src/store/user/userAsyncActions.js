@@ -338,3 +338,34 @@ export const unsaveDriver = createAsyncThunk(
     }
   },
 );
+
+export const fetchMultipleDrivers = createAsyncThunk(
+  'user/fetchMultipleDrivers',
+  async ({ driversIds }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    try {
+      const driversResponse = await Promise.all(
+        driversIds.map(driverId =>
+          FirebaseFirestoreService.get('/users', [
+            where('userId', '==', driverId),
+          ]),
+        ),
+      );
+
+      if (!driversResponse.length) {
+        throw new Error('Unable to retrieve drivers!');
+      }
+
+      const flatenedDriversResponse = driversResponse.map(driver => driver[0]);
+
+      dispatch(httpActions.requestSuccess());
+      return flatenedDriversResponse;
+    } catch (err) {
+      console.error(err.message);
+      dispatch(
+        httpActions.requestError(err.message || 'Error fetching drivers.'),
+      );
+    }
+  },
+);

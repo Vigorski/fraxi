@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
-import { IconUserPlaceholder } from 'components/icons';
+import UserPicture from 'components/shared/UserPicture';
 import { getTime, getShortDate } from 'utilities/helpers';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 
 const RideResultsCard = ({ ride }) => {
-  const driverHasPicture = ride.driverDetails.profilePicture?.length > 0;
-
   return (
     <Link
       to={{
@@ -25,14 +23,9 @@ const RideResultsCard = ({ ride }) => {
             </div>
             <div className="col-5">
               <div className="thumbnail__user">
-                {driverHasPicture ? (
-                  <img
-                    src={ride.driverDetails.profilePicture}
-                    alt="driver thumbnail"
-                  />
-                ) : (
-                  <IconUserPlaceholder />
-                )}
+                <UserPicture
+                  profilePicture={ride.driverDetails.profilePicture}
+                />
               </div>
             </div>
           </div>

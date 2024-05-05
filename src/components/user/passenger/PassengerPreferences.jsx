@@ -1,5 +1,5 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import {
   MAX_PASSENGERS_LABEL,
   RIDE_TYPE_LABEL,
@@ -7,63 +7,51 @@ import {
 } from 'utilities/constants/rides';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 
-const PassengerPreferences = ({ ridePreferences }) => {
+const PassengerPreferences = () => {
+  const { userDetails } = useSelector(state => state.user);
   const { origin, destination, maxPassengers, rideType, smoking } =
-    ridePreferences !== undefined ? ridePreferences : {};
+    userDetails?.ridePreferences ?? {};
 
   return (
-    <div className="card card--stats">
-      <Tabs>
-        <div className="card__tabs card__radius--top--sm">
-          <TabList>
-            <Tab>Preferences</Tab>
-            <Tab>Saved drivers</Tab>
-          </TabList>
-        </div>
-        <TabPanel>
-          <div className="card__section text-center pb-0">
-            <Link to={`${MY_PROFILE.path}/edit-preferences`}>
-              Edit Preferences
-            </Link>
+    <>
+      <div className="card__section text-center pb-0">
+        <Link to={`${MY_PROFILE.path}/edit-preferences`}>Edit Preferences</Link>
+      </div>
+      <div className="card__stamp">
+        <div className="card__stamp-border" />
+      </div>
+      <div className="card__section pv-0">
+        <dl className="list-desc__columns profile__routes">
+          <div className="list-desc__col">
+            <dt>Origin</dt>
+            <dd>{origin ?? 'N/A'}</dd>
           </div>
-          <div className="card__stamp">
-            <div className="card__stamp-border" />
+          <div className="list-desc__col">
+            <dt>Destination</dt>
+            <dd>{destination ?? 'N/A'}</dd>
           </div>
-          <div className="card__section pv-0">
-            <dl className="list-desc__columns profile__routes">
-              <div className="list-desc__col">
-                <dt>Origin</dt>
-                <dd>{origin ?? 'N/A'}</dd>
-              </div>
-              <div className="list-desc__col">
-                <dt>Destination</dt>
-                <dd>{destination ?? 'N/A'}</dd>
-              </div>
-            </dl>
+        </dl>
+      </div>
+      <div className="card__stamp">
+        <div className="card__stamp-border" />
+      </div>
+      <div className="card__section card__radius--bottom pt-0">
+        <dl className="list-desc__rows">
+          <div className="list-desc__row">
+            <dt># of Stops</dt>
+            <dd>{MAX_PASSENGERS_LABEL[maxPassengers]}</dd>
           </div>
-          <div className="card__stamp">
-            <div className="card__stamp-border" />
+          <div className="list-desc__row">
+            <dt>Type of ride</dt>
+            <dd>{RIDE_TYPE_LABEL[rideType]}</dd>
           </div>
-          <div className="card__section card__radius--bottom pt-0">
-            <dl className="list-desc__rows">
-              <div className="list-desc__row">
-                <dt># of Stops</dt>
-                <dd>{MAX_PASSENGERS_LABEL[maxPassengers]}</dd>
-              </div>
-              <div className="list-desc__row">
-                <dt>Type of ride</dt>
-                <dd>{RIDE_TYPE_LABEL[rideType]}</dd>
-              </div>
-              <div className="list-desc__row">
-                <dt>Smoking</dt>
-                <dd>{SMOKING_LABEL[smoking]}</dd>
-              </div>
-            </dl>
+          <div className="list-desc__row">
+            <dt>Smoking</dt>
+            <dd>{SMOKING_LABEL[smoking]}</dd>
           </div>
-        </TabPanel>
-        <TabPanel>saved drivers here</TabPanel>
-      </Tabs>
-    </div>
+        </dl>
+      </div>
+    </>
   );
 };
 
