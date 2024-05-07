@@ -8,7 +8,7 @@ import EditMyProfile from 'pages/user/EditMyProfile';
 import EditMyPreferences from 'pages/user/passenger/EditMyPreferences';
 import CreateRide from 'pages/rides/CreateRide';
 import UsersOwnActiveRides from 'pages/rides/UsersOwnActiveRides';
-import DriverActiveRides from 'pages/rides/DriverActiveRides';
+import SavedDriverActiveRides from 'pages/rides/SavedDriverActiveRides';
 import {
   LOGIN,
   REGISTER,
@@ -72,7 +72,7 @@ export const driverRouteGroup = [
 export const ridesRouteGroup = [
   {
     path: `${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}`,
-    component: DriverActiveRides,
+    component: SavedDriverActiveRides,
     roles: [USER_TYPES.passenger],
     pathDetails: DRIVER_ACTIVE_RIDES,
   },

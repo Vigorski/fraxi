@@ -10,7 +10,7 @@ import {
   mainContainerVariants,
 } from 'utilities/constants/framerVariants';
 
-const DriverActiveRides = () => {
+const SavedDriverActiveRides = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const activeRidesIds = location.state.activeRides;
@@ -55,4 +55,4 @@ const DriverActiveRides = () => {
   );
 };
 
-export default DriverActiveRides;
+export default SavedDriverActiveRides;

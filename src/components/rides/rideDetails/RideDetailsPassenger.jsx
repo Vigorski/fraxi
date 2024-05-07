@@ -112,7 +112,14 @@ const RideDetailsPassenger = ({ rideDetails }) => {
         </div>
       </div>
 
-      <motion.div className="form-field" variants={itemVariants}>
+      <RideDetailsCard
+        userType={userDetails.userType}
+        rideDetails={rideDetails}
+        driverDetails={driverDetails}
+        isRideBooked={isRideBooked}
+      />
+
+      <motion.div className="mt-xxl" variants={itemVariants}>
         <PassengerRouteMap
           originCity={rideDetails.route.origin}
           destinationCity={rideDetails.route.destination}
@@ -120,13 +127,6 @@ const RideDetailsPassenger = ({ rideDetails }) => {
           storeRouteMapDetails={setRouteMapDetails}
         />
       </motion.div>
-
-      <RideDetailsCard
-        userType={userDetails.userType}
-        rideDetails={rideDetails}
-        driverDetails={driverDetails}
-        isRideBooked={isRideBooked}
-      />
 
       {isRideBooked ? (
         <motion.button

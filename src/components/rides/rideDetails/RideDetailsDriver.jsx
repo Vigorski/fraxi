@@ -41,18 +41,18 @@ const RideDetailsDriver = ({ rideDetails }) => {
       animate="visible"
       exit="hidden"
       data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}>
-      <motion.div className="form-field" variants={itemVariants}>
+      <RideDetailsCard
+        rideDetails={rideDetails}
+        allPassengersDetails={allPassengersDetails}
+      />
+
+      <motion.div className="mt-xxl" variants={itemVariants}>
         <DriverRouteMap
           originCity={rideDetails.route.origin}
           destinationCity={rideDetails.route.destination}
           waypoints={rideDetails.route.waypoints}
         />
       </motion.div>
-
-      <RideDetailsCard
-        rideDetails={rideDetails}
-        allPassengersDetails={allPassengersDetails}
-      />
 
       <motion.button
         className="btn-primary-ghost btn-block mt-xxl"
