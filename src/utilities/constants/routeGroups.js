@@ -7,7 +7,8 @@ import MyProfile from 'pages/user/MyProfile';
 import EditMyProfile from 'pages/user/EditMyProfile';
 import EditMyPreferences from 'pages/user/passenger/EditMyPreferences';
 import CreateRide from 'pages/rides/CreateRide';
-import ActiveRides from 'pages/rides/ActiveRides';
+import UsersOwnActiveRides from 'pages/rides/UsersOwnActiveRides';
+import DriverActiveRides from 'pages/rides/DriverActiveRides';
 import {
   LOGIN,
   REGISTER,
@@ -17,7 +18,8 @@ import {
   EDIT_USER,
   EDIT_PREFERENCES,
   CREATE_RIDE,
-  ACTIVE_RIDES,
+  DRIVER_ACTIVE_RIDES,
+  USERS_OWN_ACTIVE_RIDES,
   REGISTER_OAUTH,
 } from './routesConfig';
 import { USER_TYPES } from './userTypes';
@@ -69,10 +71,16 @@ export const driverRouteGroup = [
 
 export const ridesRouteGroup = [
   {
-    path: `${ACTIVE_RIDES.path}`,
-    component: ActiveRides,
+    path: `${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}`,
+    component: DriverActiveRides,
+    roles: [USER_TYPES.passenger],
+    pathDetails: DRIVER_ACTIVE_RIDES,
+  },
+  {
+    path: USERS_OWN_ACTIVE_RIDES.path,
+    component: UsersOwnActiveRides,
     roles: [USER_TYPES.driver, USER_TYPES.passenger],
-    pathDetails: ACTIVE_RIDES,
+    pathDetails: USERS_OWN_ACTIVE_RIDES,
   },
   {
     path: `${RIDE_DETAILS.path}/:rideId`,

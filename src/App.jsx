@@ -28,19 +28,30 @@ function App() {
   const routesCombined = [
     ...passengerRouteGroup,
     ...driverRouteGroup,
-    ...profileRouteGroup,
     ...ridesRouteGroup,
+    ...profileRouteGroup,
   ];
 
   useEffect(() => {
-    if (userDetails) {
-      dispatch(
-        getRidesState({
-          userRides: userDetails.activeRides,
-          ridesMethod: 'activeRides',
-        }),
-      );
-    }
+    const fetchAllRides = async () => {
+      if (userDetails) {
+        await dispatch(
+          getRidesState({
+            rideIds: userDetails.activeRides,
+            userType: 'activeRides',
+          }),
+        ).unwrap();
+
+        await dispatch(
+          getRidesState({
+            rideIds: userDetails.historyRides,
+            userType: 'historyRides',
+          }),
+        ).unwrap();
+      }
+    };
+
+    fetchAllRides();
   }, [dispatch, userDetails]);
 
   useEffect(() => {
@@ -57,32 +68,28 @@ function App() {
     <ProtectedRoute>
       <AnimatePresence mode="wait">
         <Switch key={location.pathname} location={location}>
-            <Route path="/" exact>
-              <Redirect to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
-            </Route>
+          <Route path="/" exact>
+            <Redirect to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
+          </Route>
 
-            {authRouteGroup.map(route => {
-              return (
-                <AuthRoute
-                  key={route.path}
-                  isLoggedIn={isLoggedIn}
-                  {...route}
-                />
-              );
-            })}
+          {authRouteGroup.map(route => {
+            return (
+              <AuthRoute key={route.path} isLoggedIn={isLoggedIn} {...route} />
+            );
+          })}
 
-            {routesCombined.map(route => {
-              return (
-                <PrivateRoute
-                  key={route.path}
-                  user={{
-                    isLoggedIn,
-                    userDetails,
-                  }}
-                  {...route}
-                />
-              );
-            })}
+          {routesCombined.map(route => {
+            return (
+              <PrivateRoute
+                key={route.path}
+                user={{
+                  isLoggedIn,
+                  userDetails,
+                }}
+                {...route}
+              />
+            );
+          })}
           <Route path={'*'}>
             <NotFound />
           </Route>

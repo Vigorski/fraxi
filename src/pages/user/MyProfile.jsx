@@ -6,7 +6,7 @@ import { IconUserPlaceholder, IconEdit } from 'components/icons';
 import JourneyHub from 'components/user/passenger/JourneyHub';
 import { userLogout } from 'store/user/userAsyncActions';
 import { USER_TYPES } from 'utilities/constants/userTypes';
-import { MY_PROFILE } from 'utilities/constants/routesConfig';
+import { EDIT_USER, MY_PROFILE } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
@@ -32,7 +32,7 @@ const MyProfile = () => {
         <motion.div className="profile__edit" variants={itemVariants}>
           <Link
             className="btn-icon-center btn-stripped"
-            to={`${MY_PROFILE.path}/edit-user`}>
+            to={`${MY_PROFILE.path}${EDIT_USER.path}`}>
             <IconEdit />
           </Link>
         </motion.div>

@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
+import DriverRouteMap from 'components/map/DriverRouteMap';
 import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { getUsersList } from 'utilities/shared/getUsersList';
-import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
+import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import DriverRouteMap from 'components/map/DriverRouteMap';
 
 const RideDetailsDriver = ({ rideDetails }) => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const RideDetailsDriver = ({ rideDetails }) => {
 
   const handleCancelRide = async () => {
     await dispatch(removePassengerRide({ rideDetails, userDetails })).unwrap();
-    history.push(ACTIVE_RIDES.path);
+    history.push(USERS_OWN_ACTIVE_RIDES.path);
   };
 
   return (

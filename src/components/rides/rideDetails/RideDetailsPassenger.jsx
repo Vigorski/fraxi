@@ -14,7 +14,7 @@ import {
 } from 'components/icons';
 import PassengerRouteMap from 'components/map/PassengerRouteMap';
 import UserPicture from 'components/shared/UserPicture';
-import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
+import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
@@ -54,7 +54,7 @@ const RideDetailsPassenger = ({ rideDetails }) => {
     await dispatch(
       removePassengerRide({ rideDetails, userDetails, waypoints }),
     ).unwrap();
-    history.push(ACTIVE_RIDES.path);
+    history.push(USERS_OWN_ACTIVE_RIDES.path);
   };
 
   const handleSaveDriver = () => {

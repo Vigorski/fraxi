@@ -1,9 +1,14 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import UserPicture from 'components/shared/UserPicture';
 import { fetchMultipleDrivers } from 'store/user/userAsyncActions';
-import { MY_PROFILE } from 'utilities/constants/routesConfig';
+import {
+  DRIVER_ACTIVE_RIDES,
+  MY_PROFILE,
+} from 'utilities/constants/routesConfig';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 const SavedDrivers = () => {
   const dispatch = useDispatch();
@@ -21,56 +26,67 @@ const SavedDrivers = () => {
     getDrivers();
   }, [userDetails.savedDrivers, dispatch]);
 
-  return savedDrivers?.map((driver, index) => {
-    const lastItem = savedDrivers.length - 1;
-    let cardSectionClassName = 'card__section ';
+  if (savedDrivers) {
+    return savedDrivers.map((driver, index) => {
+      const lastItem = savedDrivers.length - 1;
+      let cardSectionClassName = 'card__section ';
 
-    // if only item
-    if (savedDrivers.length === 1) {
-      cardSectionClassName += 'card__radius--bottom';
-      // if first item
-    } else if (index === 0) {
-      cardSectionClassName += 'pb-0';
-      // if last item
-    } else if (index === lastItem) {
-      cardSectionClassName += 'card__radius--bottom pt-0';
-    } else {
-      cardSectionClassName += 'pv-0';
-    }
+      // if only item
+      if (savedDrivers.length === 1) {
+        cardSectionClassName += 'card__radius--bottom';
+        // if first item
+      } else if (index === 0) {
+        cardSectionClassName += 'pb-0';
+        // if last item
+      } else if (index === lastItem) {
+        cardSectionClassName += 'card__radius--bottom pt-0';
+      } else {
+        cardSectionClassName += 'pv-0';
+      }
 
-    return (
-      <Fragment key={`${driver.name}_${driver.surname}_${index}`}>
-        <div className={cardSectionClassName}>
-          <div className="saved-driver">
-            <div className="row">
-              <div className="col-4">
-                <div className="thumbnail__user saved-driver__wrapper">
-                  <UserPicture profilePicture={driver.profilePicture} />
+      return (
+        <Fragment key={`${driver.userId}_${index}`}>
+          <div className={cardSectionClassName}>
+            <div className="saved-driver">
+              <div className="row">
+                <div className="col-4">
+                  <div className="thumbnail__user saved-driver__wrapper">
+                    <UserPicture profilePicture={driver.profilePicture} />
+                  </div>
                 </div>
-              </div>
-              <div className="col-8">
-                <div className="saved-driver__wrapper">
-                  <h6>{`${driver.name} ${driver.surname}`}</h6>
-                  <p>{`${driver.activeRides.length} active ride${
-                    driver.activeRides.length > 1 ? 's' : ''
-                  }`}</p>
+                <div className="col-8">
+                  <div className="saved-driver__wrapper">
+                    <h6>{`${driver.name} ${driver.surname}`}</h6>
+                    <p>{`${driver.activeRides.length} active ride${
+                      driver.activeRides.length > 1 ? 's' : ''
+                    }`}</p>
+                  </div>
                 </div>
+                <Link
+                  className="saved-driver__link"
+                  to={{
+                    pathname: `${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}`,
+                    state: { activeRides: driver.activeRides },
+                  }}
+                />
               </div>
-              <Link
-                className="saved-driver__link"
-                to={`${MY_PROFILE.path}/saved-driver?data=${driver.userId}`}
-              />
             </div>
           </div>
-        </div>
-        {index < lastItem && (
-          <div className="card__stamp">
-            <div className="card__stamp-border" />
-          </div>
-        )}
-      </Fragment>
-    );
-  });
+          {index < lastItem && (
+            <div className="card__stamp">
+              <div className="card__stamp-border" />
+            </div>
+          )}
+        </Fragment>
+      );
+    });
+  }
+
+  return (
+    <motion.div className="card__section card__radius--bottom">
+      <h5 variants={itemVariants}>You haven't saved anyone yet :(</h5>
+    </motion.div>
+  );
 };
 
 export default SavedDrivers;
