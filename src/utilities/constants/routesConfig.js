@@ -63,3 +63,9 @@ export const USERS_OWN_ACTIVE_RIDES = {
   path: '/active-rides',
   description: 'Booked and active rides',
 };
+
+export const PAGE_NOT_FOUND = {
+  title: 'Page not found',
+  path: '/not-found',
+  description: 'Page not found',
+};

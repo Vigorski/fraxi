@@ -21,8 +21,10 @@ import {
   DRIVER_ACTIVE_RIDES,
   USERS_OWN_ACTIVE_RIDES,
   REGISTER_OAUTH,
+  PAGE_NOT_FOUND,
 } from './routesConfig';
 import { USER_TYPES } from './userTypes';
+import NotFound from 'layout/NotFound';
 
 export const authRouteGroup = [
   { path: LOGIN.path, component: Login },
@@ -83,9 +85,18 @@ export const ridesRouteGroup = [
     pathDetails: USERS_OWN_ACTIVE_RIDES,
   },
   {
-    path: `${RIDE_DETAILS.path}/:rideId`,
+    path: `${RIDE_DETAILS.path}`,
     component: RideDetails,
     roles: [USER_TYPES.passenger, USER_TYPES.driver],
     pathDetails: RIDE_DETAILS,
+  },
+];
+
+export const errorRouteGroup = [
+  {
+    path: PAGE_NOT_FOUND.path,
+    component: NotFound,
+    roles: [USER_TYPES.driver, USER_TYPES.passenger],
+    pathDetails: PAGE_NOT_FOUND,
   },
 ];

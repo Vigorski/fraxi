@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { getTime, getDate } from 'utilities/helpers';
+import { encryptData } from 'utilities/helpers/encription';
+import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import { MAX_PASSENGERS_LABEL } from 'utilities/constants/rides';
 
@@ -11,14 +12,15 @@ const ActiveRideCard = ({ ride }) => {
   const isUserSubscribedToRide = userDetails.activeRides.find(
     rideId => rideId === ride.rideId,
   );
+  const encryptedRideId = encryptData(
+    ride.rideId,
+    process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+  );
 
   return (
     <motion.div variants={itemVariants}>
       <Link
-        to={{
-          pathname: `${RIDE_DETAILS.path}/${ride.rideId}`,
-          state: { rideDetails: ride },
-        }}
+        to={`${RIDE_DETAILS.path}?rideId=${encryptedRideId}`}
         className="card card--dark card--stats">
         <div
           className={`card__header card__decorated ${

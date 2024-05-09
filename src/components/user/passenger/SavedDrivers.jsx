@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import UserPicture from 'components/shared/UserPicture';
-import { fetchMultipleDrivers } from 'store/user/userAsyncActions';
+import { fetchUsers } from 'store/user/userAsyncActions';
 import {
   DRIVER_ACTIVE_RIDES,
   MY_PROFILE,
 } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import { encryptData } from 'utilities/helpers/encription';
 
 const SavedDrivers = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const SavedDrivers = () => {
   useEffect(() => {
     const getDrivers = async () => {
       const response = await dispatch(
-        fetchMultipleDrivers({ driversIds: userDetails.savedDrivers }),
+        fetchUsers({ usersIds: userDetails.savedDrivers }),
       ).unwrap();
       setSavedDrivers(response);
     };
@@ -44,6 +45,11 @@ const SavedDrivers = () => {
         cardSectionClassName += 'pv-0';
       }
 
+      const encryptedDriverId = encryptData(
+        driver.userId,
+        process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+      );
+
       return (
         <Fragment key={`${driver.userId}_${index}`}>
           <div className={cardSectionClassName}>
@@ -64,10 +70,7 @@ const SavedDrivers = () => {
                 </div>
                 <Link
                   className="saved-driver__link"
-                  to={{
-                    pathname: `${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}`,
-                    state: { activeRides: driver.activeRides },
-                  }}
+                  to={`${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}?userId=${encryptedDriverId}`}
                 />
               </div>
             </div>

@@ -15,6 +15,7 @@ import {
   passengerRouteGroup,
   driverRouteGroup,
   ridesRouteGroup,
+  errorRouteGroup,
 } from 'utilities/constants/routeGroups';
 import { LOGIN, MY_PROFILE } from 'utilities/constants/routesConfig';
 import { FULLFILLED, REJECTED } from 'utilities/constants/httpRequestStatus';
@@ -30,6 +31,7 @@ function App() {
     ...driverRouteGroup,
     ...ridesRouteGroup,
     ...profileRouteGroup,
+    ...errorRouteGroup
   ];
 
   useEffect(() => {
