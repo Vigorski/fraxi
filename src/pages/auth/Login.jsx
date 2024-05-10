@@ -13,7 +13,7 @@ import {
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import { useHistory } from 'react-router-dom';
-import { IconGoogle } from 'components/icons';
+import { IconGoogle, IconPassword, IconUser } from 'components/icons';
 
 const Login = () => {
   const history = useHistory();
@@ -43,7 +43,9 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const isUserRegistered = await dispatch(handleUserLoginWithGoogleAuth()).unwrap();
+    const isUserRegistered = await dispatch(
+      handleUserLoginWithGoogleAuth(),
+    ).unwrap();
 
     if (!isUserRegistered) {
       history.push(REGISTER_OAUTH.path);
@@ -66,14 +68,14 @@ const Login = () => {
           type="button"
           variants={itemVariants}
           onClick={handleGoogleLogin}>
-          <IconGoogle className='text-lg' />
+          <IconGoogle className="text-lg" />
           <span>Continue with Google</span>
         </motion.button>
 
         <motion.div className="divider" variants={itemVariants}>
           <span>OR</span>
         </motion.div>
-        
+
         <Formik
           initialValues={{
             email: '',
@@ -91,7 +93,10 @@ const Login = () => {
                 </div>
               )}
               <motion.div className="form-field" variants={itemVariants}>
-                <Field type="email" name="email" placeholder="Email" />
+                <div className="form-field__icon">
+                  <IconUser />
+                  <Field type="email" name="email" placeholder="Email" />
+                </div>
                 <ErrorMessage
                   name="email"
                   component="span"
@@ -99,7 +104,14 @@ const Login = () => {
                 />
               </motion.div>
               <motion.div className="form-field" variants={itemVariants}>
-                <Field type="password" name="password" placeholder="Password" />
+                <div className="form-field__icon">
+                  <IconPassword />
+                  <Field
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                  />
+                </div>
                 <ErrorMessage
                   name="password"
                   component="span"
@@ -116,10 +128,11 @@ const Login = () => {
             </Form>
           )}
         </Formik>
-        
+
         <motion.div variants={itemVariants}>
           <Link className="link-register" to={REGISTER.path}>
-            Don't have a Fraxi account? <span className='text-primary text-uppercase'>Sign up</span>
+            Don't have a Fraxi account?{' '}
+            <span className="text-primary text-uppercase">Sign up</span>
           </Link>
         </motion.div>
       </motion.div>

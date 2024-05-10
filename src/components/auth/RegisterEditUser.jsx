@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import FormikUserImage from 'components/forms/FormikUserImage';
+import { IconEmail, IconPassword, IconPhone, IconUser } from 'components/icons';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
@@ -9,7 +10,8 @@ import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
 const RegisterEditUser = ({ authConfig, handleSubmit }) => {
   const { registerType, name, surname, phone, profilePicture } = authConfig;
   const isEditingUser = registerType === REGISTER_TYPES.edit;
-  const isRegisteringWithEmail = registerType === REGISTER_TYPES.registerWithEmail;
+  const isRegisteringWithEmail =
+    registerType === REGISTER_TYPES.registerWithEmail;
 
   const handleValidation = async values => {
     const errors = {};
@@ -106,7 +108,9 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
       onSubmit={submitForm}>
       {({ isSubmitting }) => (
         <Form>
-          <motion.div className="form-field profile__img" variants={itemVariants}>
+          <motion.div
+            className="form-field profile__img"
+            variants={itemVariants}>
             <Field
               name="profilePicture"
               id="profilePicture"
@@ -120,7 +124,10 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             />
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
-            <Field type="text" name="name" placeholder="Name" />
+            <div className="form-field__icon">
+              <IconUser />
+              <Field type="text" name="name" placeholder="Name" />
+            </div>
             <ErrorMessage
               name="name"
               component="span"
@@ -128,7 +135,10 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             />
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
-            <Field type="text" name="surname" placeholder="Last name" />
+            <div className="form-field__icon">
+              <IconUser />
+              <Field type="text" name="surname" placeholder="Last name" />
+            </div>
             <ErrorMessage
               name="surname"
               component="span"
@@ -137,7 +147,10 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
           </motion.div>
           {isRegisteringWithEmail && (
             <motion.div className="form-field" variants={itemVariants}>
-              <Field type="email" name="email" placeholder="Email" />
+              <div className="form-field__icon">
+                <IconEmail className="text-sm" />
+                <Field type="email" name="email" placeholder="Email" />
+              </div>
               <ErrorMessage
                 name="email"
                 component="span"
@@ -146,7 +159,10 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             </motion.div>
           )}
           <motion.div className="form-field" variants={itemVariants}>
-            <Field type="password" name="password" placeholder="Password" />
+            <div className="form-field__icon">
+              <IconPassword />
+              <Field type="password" name="password" placeholder="Password" />
+            </div>
             <ErrorMessage name="password">
               {msg => (
                 <ul className="list input-message-error">
@@ -158,11 +174,14 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             </ErrorMessage>
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
-            <Field
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm password"
-            />
+            <div className="form-field__icon">
+              <IconPassword />
+              <Field
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm password"
+              />
+            </div>
             <ErrorMessage
               name="confirmPassword"
               component="span"
@@ -170,7 +189,10 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
             />
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
-            <Field type="tel" name="phone" placeholder="Phone" />
+            <div className="form-field__icon">
+              <IconPhone />
+              <Field type="tel" name="phone" placeholder="Phone" />
+            </div>
             <ErrorMessage
               name="phone"
               component="span"

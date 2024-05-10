@@ -12,6 +12,10 @@ import { IconFilters } from './IconFilters';
 import { IconClearFilters } from './IconClearFilters';
 import { IconHeart } from './IconHeart';
 import { IconHeartOutline } from './IconHeartOutline';
+import { IconCalendar } from './IconCalendar';
+import { IconEmail } from './IconEmail';
+import { IconPassword } from './IconPassword';
+import { IconDirection } from './IconDirection';
 
 export {
   IconUser,
@@ -27,5 +31,9 @@ export {
   IconFilters,
   IconClearFilters,
   IconHeart,
-  IconHeartOutline
+  IconHeartOutline,
+  IconCalendar,
+  IconEmail,
+  IconPassword,
+  IconDirection,
 };
