@@ -36,6 +36,10 @@ p {
   &-initial {
     text-transform: initial;
   }
+
+  &-bold {
+    font-weight: 700;
+  }
 }
 
 // TEXT SIZES

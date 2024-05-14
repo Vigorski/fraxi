@@ -63,10 +63,10 @@ const SavedDriverActiveRides = () => {
         {activeRides && (
           <>
             <motion.div variants={itemVariants} className="mb-xl">
-              <p className="text-xs text-primary">Driver</p>
+              <p className="text-xs text-primary text-bold">Driver</p>
               <h4>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</h4>
             </motion.div>
-            <motion.p variants={itemVariants} className="text-xs text-primary">
+            <motion.p variants={itemVariants} className="text-xs text-primary text-bold">
               Active rides
             </motion.p>
           </>

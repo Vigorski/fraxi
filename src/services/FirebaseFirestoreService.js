@@ -11,7 +11,9 @@ import {
   // orderBy,
   // serverTimestamp, //simply invoke this fn and will return a timestamp
 } from 'firebase/firestore';
-import FirebaseAppInstance from './FirebaseApp';
+import FirebaseApp from './FirebaseApp';
+
+const FirebaseAppInstance = FirebaseApp.getInstance();
 
 export default class FirebaseFirestoreService {
   static async get(path, queryParams) {

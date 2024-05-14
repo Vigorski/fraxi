@@ -16,6 +16,9 @@ import { IconCalendar } from './IconCalendar';
 import { IconEmail } from './IconEmail';
 import { IconPassword } from './IconPassword';
 import { IconDirection } from './IconDirection';
+import { IconDeparture } from './IconDeparture';
+import { IconRoute } from './IconRoute';
+import { IconCity } from './IconCity';
 
 export {
   IconUser,
@@ -36,4 +39,7 @@ export {
   IconEmail,
   IconPassword,
   IconDirection,
+  IconDeparture,
+  IconRoute,
+  IconCity
 };
