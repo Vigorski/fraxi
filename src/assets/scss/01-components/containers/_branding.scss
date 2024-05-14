@@ -1,0 +1,29 @@
+.branding {
+  margin-right: calc-rem(18px);
+  padding-right: calc-rem(2px);
+  border-right: 1px solid rgba($color-white, 0.1);
+
+  &__logo {
+    width: calc-rem(48px);
+    height: calc-rem(48px);
+    padding: calc-rem(10px);
+  }
+
+  &-auth {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: calc-rem(16px);
+    margin-bottom: calc-rem(60px);
+
+    &__logo {
+      width: calc-rem(40px);
+    }
+
+    &__moto {
+      margin-top: calc-rem(14px);
+      font-weight: 400;
+    }
+  }
+}

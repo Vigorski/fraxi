@@ -1,19 +1,19 @@
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
+import { IconGoogle, IconPassword, IconUser } from 'components/icons';
+import Layout from 'layout/Layout';
 import {
   userLogin,
   handleUserLoginWithGoogleAuth,
 } from 'store/user/userAsyncActions';
-import Layout from 'layout/Layout';
 import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import { useHistory } from 'react-router-dom';
-import { IconGoogle, IconPassword, IconUser } from 'components/icons';
+import FraxiLogoWhite from '../../assets/logo/fraxi-logo-white.png';
 
 const Login = () => {
   const history = useHistory();
@@ -59,9 +59,14 @@ const Login = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        <motion.h1 className="h1-sm mt-md mb-xxxl" variants={itemVariants}>
-          Welcome to Fraxi
-        </motion.h1>
+        <motion.div className='branding-auth' variants={itemVariants}>
+          <div className='branding-auth__logo'>
+            <img src={FraxiLogoWhite} alt="fraxi logo" />
+          </div>
+          <h1 className="h1-xs branding-auth__moto">
+            Welcome to Fraxi
+          </h1>
+        </motion.div>
 
         <motion.button
           className="btn-light btn-icon-left btn-block text-initial"

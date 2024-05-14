@@ -7,6 +7,11 @@ h1 {
         font-size: calc-rem(22px);
         line-height: calc-rem(26px);
     }
+    
+    &.h1-xs {
+        font-size: calc-rem(16px);
+        line-height: calc-rem(18px);
+    }
 }
 
 h2 {
