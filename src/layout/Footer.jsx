@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { IconUser, IconBookmark, IconSearch } from 'components/icons';
 import {
   MY_PROFILE,
   SEARCH_RIDES,
-  ACTIVE_RIDES,
+  USERS_OWN_ACTIVE_RIDES,
 } from 'utilities/constants/routesConfig';
 import { USER_TYPES } from 'utilities/constants/userTypes';
-import { IconUser, IconBookmark, IconSearch } from 'components/icons';
 
 const Footer = () => {
   const { userDetails } = useSelector(state => state.user);
@@ -28,7 +28,7 @@ const Footer = () => {
             </li>
           )}
           <li>
-            <NavLink to={ACTIVE_RIDES.path} activeClassName="active">
+            <NavLink to={USERS_OWN_ACTIVE_RIDES.path} activeClassName="active">
               <IconBookmark />
             </NavLink>
           </li>

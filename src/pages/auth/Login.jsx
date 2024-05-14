@@ -1,19 +1,19 @@
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
+import { IconGoogle, IconPassword, IconUser } from 'components/icons';
+import Layout from 'layout/Layout';
 import {
   userLogin,
   handleUserLoginWithGoogleAuth,
 } from 'store/user/userAsyncActions';
-import Layout from 'layout/Layout';
 import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import { useHistory } from 'react-router-dom';
-import { IconGoogle } from 'components/icons';
+import FraxiLogoWhite from '../../assets/logo/fraxi-logo-white.png';
 
 const Login = () => {
   const history = useHistory();
@@ -43,7 +43,9 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const isUserRegistered = await dispatch(handleUserLoginWithGoogleAuth()).unwrap();
+    const isUserRegistered = await dispatch(
+      handleUserLoginWithGoogleAuth(),
+    ).unwrap();
 
     if (!isUserRegistered) {
       history.push(REGISTER_OAUTH.path);
@@ -57,23 +59,28 @@ const Login = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        <motion.h1 className="h1-sm mt-md mb-xxxl" variants={itemVariants}>
-          Welcome to Fraxi
-        </motion.h1>
+        <motion.div className='branding-auth' variants={itemVariants}>
+          <div className='branding-auth__logo'>
+            <img src={FraxiLogoWhite} alt="fraxi logo" />
+          </div>
+          <h1 className="h1-xs branding-auth__moto">
+            Welcome to Fraxi
+          </h1>
+        </motion.div>
 
         <motion.button
           className="btn-light btn-icon-left btn-block text-initial"
           type="button"
           variants={itemVariants}
           onClick={handleGoogleLogin}>
-          <IconGoogle className='text-lg' />
+          <IconGoogle className="text-lg" />
           <span>Continue with Google</span>
         </motion.button>
 
         <motion.div className="divider" variants={itemVariants}>
           <span>OR</span>
         </motion.div>
-        
+
         <Formik
           initialValues={{
             email: '',
@@ -91,7 +98,10 @@ const Login = () => {
                 </div>
               )}
               <motion.div className="form-field" variants={itemVariants}>
-                <Field type="email" name="email" placeholder="Email" />
+                <div className="form-field__icon">
+                  <IconUser />
+                  <Field type="email" name="email" placeholder="Email" />
+                </div>
                 <ErrorMessage
                   name="email"
                   component="span"
@@ -99,7 +109,14 @@ const Login = () => {
                 />
               </motion.div>
               <motion.div className="form-field" variants={itemVariants}>
-                <Field type="password" name="password" placeholder="Password" />
+                <div className="form-field__icon">
+                  <IconPassword />
+                  <Field
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                  />
+                </div>
                 <ErrorMessage
                   name="password"
                   component="span"
@@ -116,10 +133,11 @@ const Login = () => {
             </Form>
           )}
         </Formik>
-        
+
         <motion.div variants={itemVariants}>
           <Link className="link-register" to={REGISTER.path}>
-            Don't have a Fraxi account? <span className='text-primary text-uppercase'>Sign up</span>
+            Don't have a Fraxi account?{' '}
+            <span className="text-primary text-uppercase">Sign up</span>
           </Link>
         </motion.div>
       </motion.div>

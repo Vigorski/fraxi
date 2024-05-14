@@ -1,0 +1,33 @@
+.saved-driver {
+  position: relative;
+  margin: 0 calc-rem(-8px);
+
+  &__wrapper {
+    margin-top: calc-rem(6px);
+    margin-bottom: calc-rem(6px);
+  }
+
+  &__link {
+    position: absolute;
+    top: 0;
+    left: calc-rem(-40px);
+    width: calc(100% + calc-rem(80px));
+    height: 100%;
+  }
+
+  .thumbnail__user {
+    background-color: $color-light-gray-2;
+    border-radius: $border-radius;
+    box-shadow: calc-rem(3px) calc-rem(2px) calc-rem(4px) rgba($color-black, 0.25);
+
+    .svg-inline {
+      fill: rgba($color-black, .5);
+    }
+  }
+
+  p {
+    font-family: $font-lato;
+    color: $color-white;
+    margin: calc-rem(6px) 0;
+  }
+}

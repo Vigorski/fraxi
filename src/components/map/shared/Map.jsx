@@ -1,55 +1,59 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useMemo } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
-import { useSelector } from 'react-redux';
-import markerIcon from 'assets/icons/marker.svg';
-import markerIconUnique from 'assets/icons/marker-unique.svg';
 import flagIcon from 'assets/icons/flag.svg';
+import WaypointMarkers from './WaypointMarkers';
+import PlaceInfoWindow from './PlaceInfoWindow';
 import { formattedRouteDistanceAndDuration } from 'utilities/map/routeMeasurements';
+import getDirections from 'utilities/map/getDirections';
 
-const WaypointMarkers = ({ waypoints }) => {
-  const { userId } = useSelector(state => state.user.userDetails);
-
-  return waypoints.map(waypoint => {
-    if (waypoint.userId === userId) {
-      return (
-        <Marker
-          key={waypoint.userId}
-          position={waypoint.location}
-          icon={{ url: markerIconUnique }}
-        />
-      );
-    }
-
-    return (
-      <Marker
-        key={waypoint.userId}
-        position={waypoint.location}
-        icon={{ url: markerIcon }}
-      />
-    );
-  });
-};
-
-const Map = ({
-  children,
-  origin,
-  destination,
-  waypoints,
-  directionsCallback,
-}) => {
+const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+  const [selectedMarker, setSelectedMarker] = useState(null);
   const [directions, setDirections] = useState(null);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
+  const cachedWaypoints = useMemo(() => [], []);
+
   const macedoniaBounds = {
     latLngBounds: {
-      north: 42.41,
-      south: 40.7,
-      east: 23.1,
-      west: 20.4,
+      north: 43,
+      south: 40,
+      east: 23.6,
+      west: 20,
     },
     strictBounds: true,
   };
+
+  const handleMarkerClick = waypoint => {
+    const cachedWaypoint = cachedWaypoints.find(
+      cwp => cwp.formatted_address === waypoint.formatted_address,
+    );
+
+    if (cachedWaypoint) {
+      setSelectedMarker(cachedWaypoint);
+    } else {
+      const waypointDirectionsCallback = result => {
+        const [totalDistanceInKm, totalFormattedDuration] =
+          formattedRouteDistanceAndDuration(result.routes[0].legs);
+        const waypointDirectionsData = {
+          ...waypoint,
+          totalDistanceInKm,
+          totalFormattedDuration,
+        };
+
+        cachedWaypoints.push(waypointDirectionsData);
+        setSelectedMarker(waypointDirectionsData);
+      };
+
+      getDirections({
+        origin,
+        destination: waypoint,
+        callback: waypointDirectionsCallback,
+      });
+    }
+  };
+
+  const closeInfoWindow = () => setSelectedMarker(null);
 
   useEffect(() => {
     if (origin && destination) {
@@ -58,34 +62,24 @@ const Map = ({
         stopover: waypoint.stopover,
       }));
 
-      const directionsService = new window.google.maps.DirectionsService();
-      directionsService.route(
-        {
-          origin: origin.formatted_address,
-          destination: destination.formatted_address,
-          waypoints: recunstructedWaypoints.length
-            ? recunstructedWaypoints
-            : [],
-          optimizeWaypoints: true,
-          travelMode: window.google.maps.TravelMode.DRIVING,
-        },
-        (result, status) => {
-          if (status === window.google.maps.DirectionsStatus.OK) {
-            const [totalDistanceInKm, totalFormattedDuration] =
-              formattedRouteDistanceAndDuration(result.routes[0].legs);
+      const directionsCallback = result => {
+        const [totalDistanceInKm, totalFormattedDuration] =
+          formattedRouteDistanceAndDuration(result.routes[0].legs);
 
-            setDistance(totalDistanceInKm);
-            setDuration(totalFormattedDuration);
-            setDirections(result);
-            directionsCallback &&
-              directionsCallback({ origin, destination, waypoints });
-          } else {
-            console.error(`Error fetching directions ${result}`);
-          }
-        },
-      );
+        setDistance(totalDistanceInKm);
+        setDuration(totalFormattedDuration);
+        setDirections(result);
+        parentsCallback && parentsCallback({ origin, destination, waypoints });
+      };
+
+      getDirections({
+        origin,
+        destination,
+        waypoints: recunstructedWaypoints,
+        callback: directionsCallback,
+      });
     }
-  }, [origin, destination, waypoints, directionsCallback]);
+  }, [origin, destination, waypoints, parentsCallback]);
 
   return (
     <>
@@ -105,6 +99,7 @@ const Map = ({
           </div>
         )}
         <GoogleMap
+          onClick={closeInfoWindow}
           mapContainerStyle={{ width: '100%', height: '500px' }}
           center={{ lat: 41.6, lng: 21.7 }}
           zoom={8}
@@ -123,14 +118,26 @@ const Map = ({
           {destination && (
             <Marker position={destination.location} icon={{ url: flagIcon }} />
           )}
-          {waypoints && <WaypointMarkers waypoints={waypoints} />}
+          {waypoints && (
+            <WaypointMarkers
+              waypoints={waypoints}
+              handleMarkerClick={handleMarkerClick}
+            />
+          )}
+
+          {selectedMarker && (
+            <PlaceInfoWindow
+              selectedMarker={selectedMarker}
+              handleInfoWindowClose={closeInfoWindow}
+            />
+          )}
 
           {directions && (
             <DirectionsRenderer
               directions={directions}
               options={{
                 polylineOptions: {
-                  strokeColor: '#585E76',
+                  strokeColor: '#252525',
                   strokeOpacity: 0.8,
                   strokeWeight: 3,
                 },

@@ -4,13 +4,11 @@ import {
   bookRide,
   removePassengerRide,
   getRidesState,
-  getFilteredRides,
 } from './ridesAsyncActions';
 
 const initialState = {
   activeRides: [],
   historyRides: [],
-  filteredRides: [],
 };
 
 const ridesSlice = createSlice({
@@ -20,7 +18,6 @@ const ridesSlice = createSlice({
     resetRides(state) {
       state.activeRides = [];
       state.historyRides = [];
-      state.filteredRides = [];
     },
   },
   extraReducers: builder => {
@@ -40,10 +37,9 @@ const ridesSlice = createSlice({
       });
     });
     builder.addCase(getRidesState.fulfilled, (state, action) => {
-      state[action.payload.ridesMethod] = action.payload.updatedRides;
-    });
-    builder.addCase(getFilteredRides.fulfilled, (state, action) => {
-      state.filteredRides = action.payload;
+      if (!!action.payload.userType) {
+        state[action.payload.userType] = action.payload.ridesAndDrivers;
+      }
     });
   },
 });

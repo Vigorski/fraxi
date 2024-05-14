@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
+import { IconDirection } from 'components/icons';
 import { removeAutocompletePacContainer } from 'utilities/map';
 
 const FormAutocomplete = ({
@@ -21,15 +22,18 @@ const FormAutocomplete = ({
   return (
     <div className={`form-field ${className ?? ''}`}>
       <label htmlFor={name}>{label}</label>
-      <Autocomplete
-        onLoad={ac => {
-          acRef.current = ac;
-        }}
-        onPlaceChanged={handler.bind(null, acRef)}
-        options={{ componentRestrictions: { country: 'mk' } }}
-        {...rest}>
-        <input type="text" id={name} placeholder={placeholder ?? label} />
-      </Autocomplete>
+      <div className="form-field__icon">
+        <IconDirection />
+        <Autocomplete
+          onLoad={ac => {
+            acRef.current = ac;
+          }}
+          onPlaceChanged={handler.bind(null, acRef)}
+          options={{ componentRestrictions: { country: 'mk' } }}
+          {...rest}>
+          <input type="text" id={name} placeholder={placeholder ?? label} />
+        </Autocomplete>
+      </div>
     </div>
   );
 };

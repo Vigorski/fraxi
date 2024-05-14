@@ -5,9 +5,16 @@ import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import { removePassengerRide } from 'store/rides/ridesAsyncActions';
 import { bookRide } from 'store/rides/ridesAsyncActions';
-import { IconUserPlaceholder, IconMarker, IconPhone } from 'components/icons';
+import { saveDriver, unsaveDriver } from 'store/user/userAsyncActions';
+import {
+  IconMarker,
+  IconPhone,
+  IconHeartOutline,
+  IconHeart,
+} from 'components/icons';
 import PassengerRouteMap from 'components/map/PassengerRouteMap';
-import { ACTIVE_RIDES } from 'utilities/constants/routesConfig';
+import UserPicture from 'components/shared/UserPicture';
+import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
@@ -19,11 +26,13 @@ const RideDetailsPassenger = ({ rideDetails }) => {
   const userDetails = useSelector(state => state.user.userDetails);
   const [routeMapDetails, setRouteMapDetails] = useState(rideDetails.route);
   const driverDetails = rideDetails?.driverDetails;
-  const driverHasPicture = driverDetails?.profilePicture !== '';
   const isRideBooked =
     userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
   const isWaypointPicked = routeMapDetails.waypoints.find(
     waypoint => waypoint.userId === userDetails.userId,
+  );
+  const isDriverSaved = userDetails.savedDrivers.find(
+    driver => driver === rideDetails.driverId,
   );
 
   const handleBookRide = () => {
@@ -45,7 +54,15 @@ const RideDetailsPassenger = ({ rideDetails }) => {
     await dispatch(
       removePassengerRide({ rideDetails, userDetails, waypoints }),
     ).unwrap();
-    history.push(ACTIVE_RIDES.path);
+    history.push(USERS_OWN_ACTIVE_RIDES.path);
+  };
+
+  const handleSaveDriver = () => {
+    dispatch(saveDriver({ userDetails, driverId: rideDetails.driverId }));
+  };
+
+  const handleUnsaveDriver = () => {
+    dispatch(unsaveDriver({ userDetails, driverId: rideDetails.driverId }));
   };
 
   return (
@@ -62,14 +79,7 @@ const RideDetailsPassenger = ({ rideDetails }) => {
             <motion.div
               className="ride-details__photo thumbnail__user"
               variants={itemVariants}>
-              {driverHasPicture ? (
-                <img
-                  src={driverDetails.profilePicture}
-                  alt="driver thumbnail"
-                />
-              ) : (
-                <IconUserPlaceholder />
-              )}
+              <UserPicture profilePicture={driverDetails.profilePicture} />
             </motion.div>
           </div>
           <div className="col-6">
@@ -83,18 +93,24 @@ const RideDetailsPassenger = ({ rideDetails }) => {
               </motion.p>
               <h3>{`${driverDetails.name} ${driverDetails.surname}`}</h3>
             </div>
+            <motion.div
+              className="ride-details__save-driver"
+              variants={itemVariants}>
+              {isDriverSaved ? (
+                <button
+                  className="btn-stripped ride-details__btn-save"
+                  onClick={handleUnsaveDriver}>
+                  <IconHeart className="ride-details__save-icon ride-details__save-icon--active" />
+                </button>
+              ) : (
+                <button className="btn-stripped" onClick={handleSaveDriver}>
+                  <IconHeartOutline className="ride-details__save-icon" />
+                </button>
+              )}
+            </motion.div>
           </div>
         </div>
       </div>
-
-      <motion.div className="form-field" variants={itemVariants}>
-        <PassengerRouteMap
-          originCity={rideDetails.route.origin}
-          destinationCity={rideDetails.route.destination}
-          waypoints={rideDetails.route.waypoints}
-          storeRouteMapDetails={setRouteMapDetails}
-        />
-      </motion.div>
 
       <RideDetailsCard
         userType={userDetails.userType}
@@ -102,6 +118,15 @@ const RideDetailsPassenger = ({ rideDetails }) => {
         driverDetails={driverDetails}
         isRideBooked={isRideBooked}
       />
+
+      <motion.div className="mt-xxl" variants={itemVariants}>
+        <PassengerRouteMap
+          originCity={rideDetails.route.origin}
+          destinationCity={rideDetails.route.destination}
+          waypoints={rideDetails.route.waypoints}
+          storeRouteMapDetails={setRouteMapDetails}
+        />
+      </motion.div>
 
       {isRideBooked ? (
         <motion.button

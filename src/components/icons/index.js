@@ -10,6 +10,15 @@ import { IconMarker } from './IconMarker';
 import { IconGoogle } from './IconGoogle';
 import { IconFilters } from './IconFilters';
 import { IconClearFilters } from './IconClearFilters';
+import { IconHeart } from './IconHeart';
+import { IconHeartOutline } from './IconHeartOutline';
+import { IconCalendar } from './IconCalendar';
+import { IconEmail } from './IconEmail';
+import { IconPassword } from './IconPassword';
+import { IconDirection } from './IconDirection';
+import { IconDeparture } from './IconDeparture';
+import { IconRoute } from './IconRoute';
+import { IconCity } from './IconCity';
 
 export {
   IconUser,
@@ -24,4 +33,13 @@ export {
   IconGoogle,
   IconFilters,
   IconClearFilters,
+  IconHeart,
+  IconHeartOutline,
+  IconCalendar,
+  IconEmail,
+  IconPassword,
+  IconDirection,
+  IconDeparture,
+  IconRoute,
+  IconCity
 };

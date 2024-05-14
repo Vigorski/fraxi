@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
-import { IconUserPlaceholder } from 'components/icons';
+import UserPicture from 'components/shared/UserPicture';
 import { getTime, getShortDate } from 'utilities/helpers';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
+import { encryptData } from 'utilities/helpers/encription';
 
 const RideResultsCard = ({ ride }) => {
-  const driverHasPicture = ride.driverDetails.profilePicture.length > 0;
+  const encryptedRideId = encryptData(
+    ride.rideId,
+    process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+  );
 
   return (
     <Link
-      to={{
-        pathname: `${RIDE_DETAILS.path}/${ride.rideId}`,
-        state: { rideDetails: ride },
-      }}
+      to={`${RIDE_DETAILS.path}?rideId=${encryptedRideId}`}
       className="card card__ride card--gray">
       <div className="card__body">
         <div className="card__section card__ride-info card__radius--top pb-0">
@@ -25,14 +26,9 @@ const RideResultsCard = ({ ride }) => {
             </div>
             <div className="col-5">
               <div className="thumbnail__user">
-                {driverHasPicture ? (
-                  <img
-                    src={ride.driverDetails.profilePicture}
-                    alt="driver thumbnail"
-                  />
-                ) : (
-                  <IconUserPlaceholder />
-                )}
+                <UserPicture
+                  profilePicture={ride.driverDetails.profilePicture}
+                />
               </div>
             </div>
           </div>

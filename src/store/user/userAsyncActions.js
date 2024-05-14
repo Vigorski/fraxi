@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
 import { userActions } from 'store/user/userSlice';
 import { ridesActions } from 'store/rides/ridesSlice';
@@ -20,6 +20,7 @@ const prepareUserRegisterValues = values => {
   const additionalValues = {
     historyRides: [],
     activeRides: [],
+    savedDrivers: [],
   };
 
   if (values.userType === USER_TYPES.passenger) {
@@ -30,7 +31,7 @@ const prepareUserRegisterValues = values => {
 };
 
 const handleUserPictureUpload = async (profilePicture, userId) => {
-  if (!profilePicture) return null;
+  if (!profilePicture) return '';
 
   const url = `images/users/userAvatar__${userId}`;
 
@@ -254,7 +255,7 @@ export const updateRidePreferences = createAsyncThunk(
       await FirebaseFirestoreService.update('/users', userId, {
         ridePreferences: values,
       });
-      
+
       dispatch(httpActions.requestSuccess("Updated user's ride preferences."));
 
       return values;
@@ -283,6 +284,87 @@ export const userLogout = createAsyncThunk(
       console.error(err.message);
       dispatch(
         httpActions.requestError(err.message || 'Error while signing out.'),
+      );
+    }
+  },
+);
+
+export const saveDriver = createAsyncThunk(
+  'user/saveDriver',
+  async ({ userDetails, driverId }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    const isDriverAlreadySaved = userDetails.savedDrivers.find(
+      driver => driver === driverId,
+    );
+
+    try {
+      if (isDriverAlreadySaved) {
+        throw new Error('Driver has already been saved');
+      }
+
+      await FirebaseFirestoreService.update('/users', userDetails.userId, {
+        savedDrivers: arrayUnion(driverId),
+      });
+
+      dispatch(httpActions.requestSuccess('Driver saved.'));
+      return driverId;
+    } catch (err) {
+      console.error(err.message);
+      dispatch(
+        httpActions.requestError(err.message || 'Error when saving driver.'),
+      );
+    }
+  },
+);
+
+export const unsaveDriver = createAsyncThunk(
+  'user/unsaveDriver',
+  async ({ userDetails, driverId }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    try {
+      await FirebaseFirestoreService.update('/users', userDetails.userId, {
+        savedDrivers: arrayRemove(driverId),
+      });
+
+      dispatch(httpActions.requestSuccess('Driver removed.'));
+      return driverId;
+    } catch (err) {
+      console.error(err.message);
+      dispatch(
+        httpActions.requestError(err.message || 'Error when removing driver.'),
+      );
+    }
+  },
+);
+
+export const fetchUsers = createAsyncThunk(
+  'user/fetchUsers',
+  async ({ usersIds }, { dispatch }) => {
+    dispatch(httpActions.requestSend());
+
+    try {
+      const usersResponse = await Promise.all(
+        usersIds.map(driverId =>
+          FirebaseFirestoreService.get('/users', [
+            where('userId', '==', driverId),
+          ]),
+        ),
+      );
+
+      if (!usersResponse.length) {
+        throw new Error('Unable to retrieve drivers!');
+      }
+
+      const flatenedUsersResponse = usersResponse.map(driver => driver[0]);
+
+      dispatch(httpActions.requestSuccess());
+      return flatenedUsersResponse;
+    } catch (err) {
+      console.error(err.message);
+      dispatch(
+        httpActions.requestError(err.message || 'Error fetching users.'),
       );
     }
   },

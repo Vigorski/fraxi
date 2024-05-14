@@ -40,7 +40,6 @@
 	}
 
 	&__autocomplete {
-		position: relative;
 		max-width: calc-rem(124px);
 		box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
 		border-radius: $border-radius-lg;
@@ -48,17 +47,8 @@
 		line-height: calc-rem(16px);
 		background-color: $color-blue-dark-2;
 
-		&::before {
-			content: '';
-			position: absolute;
-			top: calc(50% + 1px);
+		.svg-inline {
 			left: calc-rem(12px);
-			background: $icon-direction no-repeat center center;
-			background-size: cover;
-			width: calc-rem(16px);
-			height: calc-rem(16px);
-			transform: translateY(-50%);
-			pointer-events: none;
 		}
 
 		input {

@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { arrayUnion, arrayRemove } from 'firebase/firestore';
+import { where, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { userActions } from 'store/user/userSlice';
 import { httpActions } from 'store/http/httpSlice';
-import { USER_TYPES } from 'utilities/constants/userTypes';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
-import { where } from 'firebase/firestore';
+import { USER_TYPES } from 'utilities/constants/userTypes';
 import { RIDE_STATUS } from 'utilities/constants/rides';
 
 const transformRideValues = (driverId, route, values) => {
@@ -62,11 +61,19 @@ export const addNewRide = createAsyncThunk(
     dispatch(httpActions.requestSend());
 
     try {
+      if (
+        !('city' in route.origin.address_components) ||
+        !('city' in route.destination.address_components)
+      ) {
+        throw new Error('Please select a location within city bounds');
+      }
+
       const transformedValues = transformRideValues(
         driver.userId,
         route,
         values,
       );
+
       const transformedDriverActiveRides = {
         activeRides: [...driver.activeRides, transformedValues.rideId],
       };
@@ -194,36 +201,38 @@ export const removePassengerRide = createAsyncThunk(
 );
 
 // TODO: perhaps populate history state at the same time?
+// UPDATE: currently only fetching history on first load
 export const getRidesState = createAsyncThunk(
   'rides/getRidesState',
-  async ({ userRides, ridesMethod }, { dispatch }) => {
-    // first arg -> ride data
-    // second arg -> which ride method to be used (active or history)
+  // rideIds: string[]
+  // userType?: 'driver' | 'passenger'
+  async ({ rideIds, userType }, { dispatch }) => {
     dispatch(httpActions.requestSend());
 
     try {
       const ridesResponse = await Promise.all(
-        userRides.map(rideId =>
+        rideIds.map(rideId =>
           FirebaseFirestoreService.get('/rides', [
             where('rideId', '==', rideId),
           ]),
         ),
       );
-      const spreadRidesResponse = ridesResponse.map(ride => ride[0]);
+      const flatenedRidesResponse = ridesResponse.map(ride => ride[0]);
       const activeDriversResponse = await Promise.all(
-        spreadRidesResponse.map(driver =>
+        flatenedRidesResponse.map(driver =>
           FirebaseFirestoreService.get('/users', [
             where('userId', '==', driver.driverId),
           ]),
         ),
       );
-      const updatedRides = addDriverToRide(
-        spreadRidesResponse,
+
+      const ridesAndDrivers = addDriverToRide(
+        flatenedRidesResponse,
         activeDriversResponse,
       );
 
       dispatch(httpActions.requestSuccess());
-      return { ridesMethod, updatedRides };
+      return { ridesAndDrivers, userType };
     } catch (err) {
       console.error(err);
       dispatch(

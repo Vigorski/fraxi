@@ -19,7 +19,7 @@ const DriverRouteMap = ({
         origin={origin}
         destination={destination}
         waypoints={waypoints}
-        directionsCallback={storeRouteMapDetails}>
+        parentsCallback={storeRouteMapDetails}>
         {originCity && destinationCity ? (
           <ReadonlyRouteInputs
             origin={originCity}

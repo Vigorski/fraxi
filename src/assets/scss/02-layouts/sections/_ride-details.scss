@@ -9,7 +9,7 @@
 
 	&__driver {
 		padding: 0 calc-rem(14px);
-		margin-bottom: calc-rem(40px);
+		margin-bottom: calc-rem(48px);
 	}
 
 	&__photo {
@@ -49,5 +49,47 @@
 			line-height: calc-rem(22px);
 			margin-top: calc-rem(6px);
 		}
+	}
+
+	&__save-driver {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	&__btn-save::before {
+		content: '';
+		position: absolute;
+		top: calc-rem(10px);
+		right: calc-rem(10px);
+		width: calc-rem(4px);
+		height: calc-rem(4px);
+		border-radius: 50%;
+		background-color: rgba($color-primary, .5);
+		transform: scale(1);
+		animation: pulse 1.5s 1;
+	}
+
+	&__save-icon {
+		font-size: calc-rem(24px);
+		fill: $color-light-gray-3;
+
+		&--active {
+			fill: $color-primary;
+		}
+	}
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+
+	70% {
+		transform: scale(14);
+	}
+
+	100% {
+		background-color: rgba($color-primary, 0);
 	}
 }

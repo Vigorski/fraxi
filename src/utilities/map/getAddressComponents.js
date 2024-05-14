@@ -1,6 +1,6 @@
-export function getAddressComponents(marker) {
+export function getAddressComponents(place) {
   const addressComponents = {};
-  marker.address_components.forEach(component => {
+  place.address_components.forEach(component => {
     if (component.types.includes('street_number')) {
       addressComponents.street = component.long_name;
     } else if (component.types.includes('route')) {

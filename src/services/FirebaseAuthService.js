@@ -11,7 +11,9 @@ import {
   deleteUser,
   signInWithPopup,
 } from 'firebase/auth';
-import FirebaseAppInstance from './FirebaseApp';
+import FirebaseApp from './FirebaseApp';
+
+const FirebaseAppInstance = FirebaseApp.getInstance();
 
 // connectAuthEmulator(FirebaseAppInstance.auth, 'http://localhost:3000')
 

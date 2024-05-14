@@ -22,7 +22,7 @@ const PassengerRouteMap = ({
         origin={originCity}
         destination={destinationCity}
         waypoints={newWaypoints}
-        directionsCallback={storeRouteMapDetails}>
+        parentsCallback={storeRouteMapDetails}>
         {ownWaypoint ? (
           <ReadonlyRouteWaypoint waypoint={ownWaypoint} />
         ) : (

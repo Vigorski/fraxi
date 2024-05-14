@@ -52,8 +52,20 @@ export const CREATE_RIDE = {
   description: 'Create a new ride',
 };
 
-export const ACTIVE_RIDES = {
+export const DRIVER_ACTIVE_RIDES = {
+  title: 'Saved driver rides',
+  path: '/driver-active-rides',
+  description: "Saved driver's rides",
+};
+
+export const USERS_OWN_ACTIVE_RIDES = {
   title: 'Your bookings',
   path: '/active-rides',
   description: 'Booked and active rides',
+};
+
+export const PAGE_NOT_FOUND = {
+  title: 'Page not found',
+  path: '/not-found',
+  description: 'Page not found',
 };

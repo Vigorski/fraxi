@@ -1,26 +1,29 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import RideResults from 'components/rides/searchRides/RideResults';
 import RideFilters from 'components/rides/searchRides/RideFilters';
 import FormFilters from 'components/forms/FormFilters';
+import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
 import { mainContainerVariants } from 'utilities/constants/framerVariants';
 import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'utilities/constants/rides';
-import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 
 const SearchRides = () => {
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
-  const { filteredRides } = useSelector(state => state.rides);
+  const [filteredRides, setFilteredRides] = useState([]);
   const ridePreferences = userDetails?.ridePreferences;
   const ridePreferencesExist =
     ridePreferences && Object.keys(ridePreferences).length !== 0;
 
   const handleObserverValues = useCallback(
-    values => {
-      dispatch(getFilteredRides({ searchPreferences: values }));
+    async values => {
+      const filteredRidesResponse = await dispatch(
+        getFilteredRides({ searchPreferences: values }),
+      ).unwrap();
+      setFilteredRides(filteredRidesResponse);
     },
     [dispatch],
   );

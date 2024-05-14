@@ -1,3 +1,20 @@
 .not-found {
-    @extend %background-pseudo-text;
+	height: calc(100vH - calc-rem(84px));
+
+	&__main {
+		@extend %background-pseudo-text;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+
+		&::before {
+			top: 32%;
+		}
+	}
+
+	main {
+		height: 100%;
+	}
 }

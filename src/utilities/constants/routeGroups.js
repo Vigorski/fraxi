@@ -7,7 +7,8 @@ import MyProfile from 'pages/user/MyProfile';
 import EditMyProfile from 'pages/user/EditMyProfile';
 import EditMyPreferences from 'pages/user/passenger/EditMyPreferences';
 import CreateRide from 'pages/rides/CreateRide';
-import ActiveRides from 'pages/rides/ActiveRides';
+import UsersOwnActiveRides from 'pages/rides/UsersOwnActiveRides';
+import SavedDriverActiveRides from 'pages/rides/SavedDriverActiveRides';
 import {
   LOGIN,
   REGISTER,
@@ -17,10 +18,13 @@ import {
   EDIT_USER,
   EDIT_PREFERENCES,
   CREATE_RIDE,
-  ACTIVE_RIDES,
+  DRIVER_ACTIVE_RIDES,
+  USERS_OWN_ACTIVE_RIDES,
   REGISTER_OAUTH,
+  PAGE_NOT_FOUND,
 } from './routesConfig';
 import { USER_TYPES } from './userTypes';
+import NotFound from 'layout/NotFound';
 
 export const authRouteGroup = [
   { path: LOGIN.path, component: Login },
@@ -69,15 +73,30 @@ export const driverRouteGroup = [
 
 export const ridesRouteGroup = [
   {
-    path: `${ACTIVE_RIDES.path}`,
-    component: ActiveRides,
-    roles: [USER_TYPES.driver, USER_TYPES.passenger],
-    pathDetails: ACTIVE_RIDES,
+    path: `${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}`,
+    component: SavedDriverActiveRides,
+    roles: [USER_TYPES.passenger],
+    pathDetails: DRIVER_ACTIVE_RIDES,
   },
   {
-    path: `${RIDE_DETAILS.path}/:rideId`,
+    path: USERS_OWN_ACTIVE_RIDES.path,
+    component: UsersOwnActiveRides,
+    roles: [USER_TYPES.driver, USER_TYPES.passenger],
+    pathDetails: USERS_OWN_ACTIVE_RIDES,
+  },
+  {
+    path: `${RIDE_DETAILS.path}`,
     component: RideDetails,
     roles: [USER_TYPES.passenger, USER_TYPES.driver],
     pathDetails: RIDE_DETAILS,
+  },
+];
+
+export const errorRouteGroup = [
+  {
+    path: PAGE_NOT_FOUND.path,
+    component: NotFound,
+    roles: [USER_TYPES.driver, USER_TYPES.passenger],
+    pathDetails: PAGE_NOT_FOUND,
   },
 ];
