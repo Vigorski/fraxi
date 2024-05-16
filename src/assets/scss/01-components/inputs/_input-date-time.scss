@@ -1,0 +1,112 @@
+.react-datepicker {
+  border-color: $color-blue-dark-2;
+  background-color: $color-gray-3;
+  color: $color-white;
+  font-family: $font-lato;
+  box-shadow: 0 4px 4px 0 rgba($color-black, .25);
+
+  &__time-container {
+    border-left-color: $color-blue-dark-2;
+
+    .react-datepicker__time {
+      background-color: $color-gray-3;
+    }
+  }
+
+  &__header {
+    border: none;
+    background-color: $color-gray-2;
+  }
+
+  &__current-month,
+  &__day-name,
+  &__day,
+  &__time-name,
+  &-time__header,
+  &-year-header {
+    color: $color-white;
+  }
+
+  &__month {
+    margin: 0;
+    padding: 0.4rem;
+  }
+
+  &-popper[data-placement^=bottom] &__triangle::before {
+    top: 0;
+  }
+
+  &-popper[data-placement^=bottom] &__triangle::before,
+  &-popper[data-placement^=bottom] &__triangle::after {
+    border-bottom-color: $color-gray-2;
+  }
+
+  &-popper[data-placement^=top] &__triangle::before {
+    bottom: 0;
+  }
+
+  &-popper[data-placement^=top] &__triangle::before,
+  &-popper[data-placement^=top] &__triangle::after {
+    border-top-color: $color-gray-3;
+  }
+
+  &__time-container &__time &__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+    background-color: $color-primary;
+    color: $color-blue-dark-2;
+    font-weight: 700;
+  }
+
+  &__time-container &__time &__time-box &__time-list &__time-list-item:hover {
+    color: $color-blue-dark-2;
+  }
+
+  &__day:hover,
+  &__month-text:hover,
+  &__quarter-text:hover,
+  &__year-text:hover {
+    color: $color-blue-dark-2;
+    border-radius: 50%;
+  }
+
+  &__day--keyboard-selected:hover,
+  &__month-text--keyboard-selected:hover,
+  &__quarter-text--keyboard-selected:hover,
+  &__year-text--keyboard-selected:hover,
+  &__time-container &__time &__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected:hover,
+  &__day--selected:hover,
+  &__day--in-selecting-range:hover,
+  &__day--in-range:hover,
+  &__month-text--selected:hover,
+  &__month-text--in-selecting-range:hover,
+  &__month-text--in-range:hover,
+  &__quarter-text--selected:hover,
+  &__quarter-text--in-selecting-range:hover,
+  &__quarter-text--in-range:hover,
+  &__year-text--selected:hover,
+  &__year-text--in-selecting-range:hover,
+  &__year-text--in-range:hover {
+    background-color: $color-green-2;
+  }
+
+  &__day--selected,
+  &__day--in-selecting-range,
+  &__day--in-range,
+  &__month-text--selected,
+  &__month-text--in-selecting-range,
+  &__month-text--in-range,
+  &__quarter-text--selected,
+  &__quarter-text--in-selecting-range,
+  &__quarter-text--in-range,
+  &__year-text--selected,
+  &__year-text--in-selecting-range,
+  &__year-text--in-range,
+  &__day--keyboard-selected,
+  &__month-text--keyboard-selected,
+  &__quarter-text--keyboard-selected,
+  &__year-text--keyboard-selected {
+    background-color: $color-primary;
+    color: $color-blue-dark-2;
+    font-weight: 700;
+    border-radius: 50%;
+  }
+}
