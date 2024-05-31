@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { motion } from 'framer-motion';
@@ -11,7 +11,7 @@ import { mainContainerVariants } from 'utilities/constants/framerVariants';
 import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'utilities/constants/rides';
 
 const EditMyPreferences = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const ridePreferences = userDetails?.ridePreferences;
@@ -52,7 +52,7 @@ const EditMyPreferences = () => {
       updateRidePreferences({ userId: userDetails.userId, values }),
     ).unwrap();
 
-    history.push(MY_PROFILE.path);
+    navigate(MY_PROFILE.path);
     setSubmitting(false);
   };
 

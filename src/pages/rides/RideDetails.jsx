@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import RideDetailsPassenger from 'components/rides/rideDetails/RideDetailsPassenger';
 import RideDetailsDriver from 'components/rides/rideDetails/RideDetailsDriver';
@@ -14,7 +14,7 @@ const RideDetails = () => {
   // TODO: use the rideId from params to pull ride data from DB
   // TODO: (bug) ride passengers has same number after booking
   const [rideDetails, setRideDetails] = useState();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useSelector(state => state.user.userDetails);
   const isUserPassenger = userDetails.userType === USER_TYPES.passenger;
@@ -40,14 +40,17 @@ const RideDetails = () => {
           setRideDetails(rideResponse.ridesAndDrivers[0]);
         }
       } catch (error) {
-        history.replace(PAGE_NOT_FOUND.path, {
-          errorMessage: `${error.name}: Error when fetching specified driver and their ride`,
+        navigate(PAGE_NOT_FOUND.path, {
+					state: {
+						errorMessage: `${error.name}: Error when fetching specified driver and their ride`,
+					},
+					replace: true
         });
       }
     };
 
     fetchRideAndDriver();
-  }, [rideId, history, dispatch]);
+  }, [rideId, navigate, dispatch]);
 
   if (!rideDetails) return null;
 

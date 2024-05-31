@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Layout from 'layout/Layout';
 import {
   mainContainerVariants,
@@ -13,7 +13,7 @@ import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
 
 const EditMyProfile = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const userDetails = useSelector(state => state.user.userDetails);
   const editUserConfig = {
     registerType: REGISTER_TYPES.edit,
@@ -27,7 +27,7 @@ const EditMyProfile = () => {
     await dispatch(
       userUpdate({ userId: userDetails.userId, values }),
     ).unwrap();
-    history.push(MY_PROFILE.path);
+    navigate(MY_PROFILE.path);
   }
 
   return (

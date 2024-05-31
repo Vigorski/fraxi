@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { routeActions } from 'store/routes/routeSlice';
 import { LOGIN, MY_PROFILE } from 'utilities/constants/routesConfig';
@@ -9,7 +9,6 @@ export const PrivateRoute = ({
   roles,
   user,
   pathDetails,
-  ...rest
 }) => {
   const dispatch = useDispatch();
 
@@ -17,29 +16,19 @@ export const PrivateRoute = ({
     dispatch(routeActions.changeCurrentRoute(pathDetails));
   }, [dispatch, pathDetails]);
 
-  return (
-    <Route
-      {...rest}
-      render={props => {
-        if (!user.isLoggedIn) {
-          // not logged in so redirect to login page with the return url
-          return (
-            <Redirect
-              to={{ pathname: LOGIN.path, state: { from: props.location } }}
-            />
-          );
-        } else {
-          // check if route is restricted by role
-          if (roles && roles.indexOf(user.userDetails.userType) === -1) {
-            // role not authorised so redirect to home page
-            return <Redirect to={{ pathname: MY_PROFILE.path }} />;
-          }
+  const isAuthorized = roles && roles.includes(user?.userDetails?.userType);
 
-          // authorised so return component
-          return <Component {...props} />;
-        }
-      }}
-      exact
-    />
-  );
+  if (!user.isLoggedIn) {
+    // if not logged in - redirect to login page
+    return <Navigate to={LOGIN.path} />;
+  }
+
+  // check if route is restricted by role
+  if (!isAuthorized) {
+    // if role is not authorised - redirect to home page
+    return <Navigate to={MY_PROFILE.path} />;
+  }
+
+  // if authorised - return component
+  return <Component />;
 };

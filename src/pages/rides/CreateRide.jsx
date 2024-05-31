@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from 'react-datepicker';
@@ -27,7 +27,7 @@ import {
 const CreateRide = () => {
   const earliestDepartureDate = new Date(addTime([1]));
   const [departureDate, setDepartureDate] = useState(earliestDepartureDate);
-  const history = useHistory();
+  const navigate = useNavigate();
   const userDetails = useSelector(state => state.user.userDetails);
   const dispatch = useDispatch();
   const [routeMapDetails, setRouteMapDetails] = useState({});
@@ -62,7 +62,7 @@ const CreateRide = () => {
     ).unwrap();
     setSubmitting(false);
     if (newRoute) {
-      history.push(MY_PROFILE.path);
+      navigate(MY_PROFILE.path);
     }
   };
 

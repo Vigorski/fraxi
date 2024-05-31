@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import DriverRouteMap from 'components/map/DriverRouteMap';
@@ -14,7 +14,7 @@ import {
 
 const RideDetailsDriver = ({ rideDetails }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const userDetails = useSelector(state => state.user.userDetails);
   const [allPassengersDetails, setAllPassengersDetails] = useState(null);
 
@@ -30,7 +30,7 @@ const RideDetailsDriver = ({ rideDetails }) => {
 
   const handleCancelRide = async () => {
     await dispatch(removePassengerRide({ rideDetails, userDetails })).unwrap();
-    history.push(USERS_OWN_ACTIVE_RIDES.path);
+    navigate(USERS_OWN_ACTIVE_RIDES.path);
   };
 
   return (

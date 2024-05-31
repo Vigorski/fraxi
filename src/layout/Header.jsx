@@ -1,11 +1,12 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { IconBack } from 'components/icons';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import fraxiLogo from '../assets/logo/fraxi-logo-primary.png';
 
 const Header = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+	const handleGoBack = () => navigate(-1);
   const currentRoute = useSelector(state => state.route.currentRoute);
   const isHomepage = currentRoute?.path === MY_PROFILE.path;
 
@@ -18,7 +19,7 @@ const Header = () => {
           </div>
         </div>
       ) : (
-        <button onClick={history.goBack} className="btn-link header__back">
+        <button onClick={handleGoBack} className="btn-link header__back">
           <IconBack />
         </button>
       )}

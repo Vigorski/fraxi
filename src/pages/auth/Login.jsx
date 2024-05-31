@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import { IconGoogle, IconPassword, IconUser } from 'components/icons';
@@ -16,7 +16,7 @@ import {
 import FraxiLogoWhite from '../../assets/logo/fraxi-logo-white.png';
 
 const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userDetails } = useSelector(state => state.user);
   const { globalFormError } = useSelector(state => state.errors);
@@ -48,7 +48,7 @@ const Login = () => {
     ).unwrap();
 
     if (!isUserRegistered) {
-      history.push(REGISTER_OAUTH.path);
+      navigate(REGISTER_OAUTH.path);
     }
   };
 

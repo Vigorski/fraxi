@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import ActiveRides from 'components/rides/activeRides/ActiveRides';
@@ -17,7 +17,7 @@ import { decryptData } from 'utilities/helpers/encription';
 const SavedDriverActiveRides = () => {
   const [activeRides, setActiveRides] = useState();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [getQuery] = useQueryParameter();
   const driverId = getQuery('userId');
 
@@ -43,14 +43,17 @@ const SavedDriverActiveRides = () => {
           setActiveRides(ridesResponse.ridesAndDrivers);
         }
       } catch (error) {
-        history.replace(PAGE_NOT_FOUND.path, {
-          errorMessage: `${error.name}: Error when fetching specified driver and their active rides`,
+        navigate(PAGE_NOT_FOUND.path, {
+					state: {
+						errorMessage: `${error.name}: Error when fetching specified driver and their active rides`,
+					},
+					replace: true
         });
       }
     };
 
     fetchDriverAndRides();
-  }, [driverId, history, dispatch]);
+  }, [driverId, navigate, dispatch]);
 
   return (
     <Layout>

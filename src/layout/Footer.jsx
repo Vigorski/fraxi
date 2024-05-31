@@ -16,24 +16,24 @@ const Footer = () => {
       <nav className="footer__nav">
         <ul className="inline-list">
           <li>
-            <NavLink to={MY_PROFILE.path} activeClassName="active">
+            <NavLink to={MY_PROFILE.path} className={({ isActive }) => (isActive ? "active" : "")}>
               <IconUser />
             </NavLink>
           </li>
           {userDetails.userType === USER_TYPES.passenger && (
             <li>
-              <NavLink to={SEARCH_RIDES.path} activeClassName="active">
+              <NavLink to={SEARCH_RIDES.path} className={({ isActive }) => (isActive ? "active" : "")}>
                 <IconSearch />
               </NavLink>
             </li>
           )}
           <li>
-            <NavLink to={USERS_OWN_ACTIVE_RIDES.path} activeClassName="active">
+            <NavLink to={USERS_OWN_ACTIVE_RIDES.path} className={({ isActive }) => (isActive ? "active" : "")}>
               <IconBookmark />
             </NavLink>
           </li>
           {/* <li>
-						<NavLink to='/notifications' activeClassName='active'>
+						<NavLink to='/notifications' className={({ isActive }) => (isActive ? "active" : "")}>
 							<IconBell />
 						</NavLink>
 					</li> */}

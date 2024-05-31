@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import {
@@ -18,7 +18,7 @@ const RegisterOAuth = () => {
 
   if (!isRegistering) {
     // page can only be accessed if user is currently in the process of registering
-    return <Redirect to={{ pathname: LOGIN.path }} />;
+    return <Navigate to={{ pathname: LOGIN.path }} />;
   }
 
   const user = FirebaseAuthService.getCurrentUser();

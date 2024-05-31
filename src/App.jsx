@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { AnimatePresence } from 'framer-motion';
@@ -31,7 +31,7 @@ function App() {
     ...driverRouteGroup,
     ...ridesRouteGroup,
     ...profileRouteGroup,
-    ...errorRouteGroup
+    ...errorRouteGroup,
   ];
 
   useEffect(() => {
@@ -69,33 +69,39 @@ function App() {
   return (
     <ProtectedRoute>
       <AnimatePresence mode="wait">
-        <Switch key={location.pathname} location={location}>
-          <Route path="/" exact>
-            <Redirect to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
-          </Route>
+        <Routes key={location.pathname} location={location}>
+          <Route
+            path="/"
+            element={
+              <Navigate to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />
+            }
+          />
 
-          {authRouteGroup.map(route => {
-            return (
-              <AuthRoute key={route.path} isLoggedIn={isLoggedIn} {...route} />
-            );
-          })}
+          {authRouteGroup.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<AuthRoute isLoggedIn={isLoggedIn} {...route} />}
+            />
+          ))}
 
-          {routesCombined.map(route => {
-            return (
-              <PrivateRoute
-                key={route.path}
-                user={{
-                  isLoggedIn,
-                  userDetails,
-                }}
-                {...route}
-              />
-            );
-          })}
-          <Route path={'*'}>
-            <NotFound />
-          </Route>
-        </Switch>
+          {routesCombined.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <PrivateRoute
+                  user={{
+                    isLoggedIn,
+                    userDetails,
+                  }}
+                  {...route}
+                />
+              }
+            />
+          ))}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </AnimatePresence>
       <ToastContainer
         limit={3}
