@@ -3,4 +3,6 @@ export { getAddressComponents } from './getAddressComponents';
 export {
   getAutocompletePacContainer,
   removeAutocompletePacContainer,
-} from './map';
+} from './pacContainer';
+export { formattedRouteDistanceAndDuration } from './routeMeasurements';
+export { getDirections } from './getDirections';

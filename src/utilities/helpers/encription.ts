@@ -6,7 +6,7 @@ export const generateRandomSecureKey = (length = 32) => {
   return CryptoJS.enc.Base64.stringify(randomBytes);
 };
 
-export const encryptData = (data, secretKey) => {
+export const encryptData = (data: string, secretKey: string) => {
   try {
     if (
       !data ||
@@ -19,13 +19,13 @@ export const encryptData = (data, secretKey) => {
 
     const encryptedData = CryptoJS.AES.encrypt(data, secretKey).toString();
     return encodeURIComponent(encryptedData);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Encryption error:', error.message);
     throw error;
   }
 };
 
-export const decryptData = (encodedEncryptedData, secretKey) => {
+export const decryptData = (encodedEncryptedData: string, secretKey: string) => {
   try {
     if (
       !encodedEncryptedData ||
@@ -45,7 +45,7 @@ export const decryptData = (encodedEncryptedData, secretKey) => {
     if (!decryptedData) throw new Error('URI malformed');
 
     return decryptedData;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Decryption error:', error.message);
     throw error;
   }
