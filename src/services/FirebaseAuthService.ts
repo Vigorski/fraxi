@@ -10,6 +10,10 @@ import {
   // connectAuthEmulator,
   deleteUser,
   signInWithPopup,
+	// Auth,
+	User,
+	NextOrObserver,
+	GoogleAuthProvider,
 } from 'firebase/auth';
 import FirebaseApp from './FirebaseApp';
 
@@ -18,7 +22,7 @@ const FirebaseAppInstance = FirebaseApp.getInstance();
 // connectAuthEmulator(FirebaseAppInstance.auth, 'http://localhost:3000')
 
 export default class FirebaseAuthService {
-  static async registerWithEmail(email, password) {
+  static async registerWithEmail(email: string, password: string) {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         FirebaseAppInstance.auth,
@@ -26,12 +30,12 @@ export default class FirebaseAuthService {
         password,
       );
       return userCredential.user;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
 
-  static async loginWithEmail(email, password) {
+  static async loginWithEmail(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(
         FirebaseAppInstance.auth,
@@ -39,7 +43,7 @@ export default class FirebaseAuthService {
         password,
       );
       return userCredential.user;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -48,26 +52,36 @@ export default class FirebaseAuthService {
     await signOut(FirebaseAppInstance.auth);
   }
 
-  static getCurrentUser() {
+  static getCurrentUser(): User | null {
     return FirebaseAppInstance.auth.currentUser;
   }
 
   static async deleteUser() {
-    const currentUser = this.getCurrentUser();
-    await deleteUser(currentUser);
-  }
+		try {
+			const currentUser = this.getCurrentUser();
 
-  static async updatePassword(newPassword) {
-    const user = this.getCurrentUser();
-    
-    try {
-      await updatePassword(user, newPassword);
-    } catch (error) {
-      throw new Error(error.message);
+			if(currentUser) {
+				await deleteUser(currentUser);
+			}
+    } catch {
+      throw new Error('No current user to delete');
     }
   }
 
-  static authObserver(callback) {
+  static async updatePassword(newPassword: string) {
+    const user = this.getCurrentUser();
+    if(user) {
+			try {
+				await updatePassword(user, newPassword);
+			} catch (error: any) {
+				throw new Error(error.message);
+			}
+		} else {
+			throw new Error("No current user to update password");
+		}
+  }
+
+  static authObserver(callback: NextOrObserver<User>) {
     return onAuthStateChanged(FirebaseAppInstance.auth, callback);
   }
 
@@ -84,9 +98,9 @@ export default class FirebaseAuthService {
       // console.log(token);
       // console.log(userCredential)
       // return { user: userCredential.user, method: 'google' };
-    } catch (error) {
-      const credential = FirebaseAppInstance.googleAuthProvider.credentialFromError(error);
-      console.log(credential)
+    } catch (error: any) {
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      console.error(credential);
       throw new Error(error.message);
     }
   }

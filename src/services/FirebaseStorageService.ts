@@ -1,10 +1,10 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, UploadResult } from 'firebase/storage';
 
 const storage = getStorage();
 
 export default class FirebaseStorageService {
-  static async uploadImage(fileName, file) {
-    if (file === '') {
+  static async uploadImage(fileName: string, file: File): Promise<UploadResult> {
+    if (!file) {
       throw new Error(`Not an image, the file is a /${typeof file}/`);
     }
 
@@ -18,7 +18,7 @@ export default class FirebaseStorageService {
     return imageRes;
   }
 
-  static async getFileUrl(fileName) {
+  static async getFileUrl(fileName: string): Promise<string> {
     const fileUrlRes = await getDownloadURL(ref(storage, fileName));
     return fileUrlRes;
   }
