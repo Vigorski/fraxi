@@ -3,8 +3,10 @@ import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 import flagIcon from 'assets/icons/flag.svg';
 import WaypointMarkers from './WaypointMarkers';
 import PlaceInfoWindow from './PlaceInfoWindow';
-import { formattedRouteDistanceAndDuration } from 'utilities/map/routeMeasurements';
-import getDirections from 'utilities/map/getDirections';
+import {
+  getDirections,
+  formattedRouteDistanceAndDuration,
+} from 'utilities/map';
 
 const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
@@ -57,7 +59,7 @@ const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
 
   useEffect(() => {
     if (origin && destination) {
-      const recunstructedWaypoints = waypoints.map(waypoint => ({
+      const strippedWaypointsForDirection = waypoints.map(waypoint => ({
         location: waypoint.location,
         stopover: waypoint.stopover,
       }));
@@ -75,7 +77,7 @@ const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
       getDirections({
         origin,
         destination,
-        waypoints: recunstructedWaypoints,
+        waypoints: strippedWaypointsForDirection,
         callback: directionsCallback,
       });
     }

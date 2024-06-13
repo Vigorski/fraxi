@@ -9,7 +9,7 @@ import {
 import { userRegisterWithGoogleAuth } from 'store/user/userAsyncActions';
 import FirebaseAuthService from 'services/FirebaseAuthService';
 import { LOGIN } from 'utilities/constants/routesConfig';
-import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
+import { REGISTER_TYPES } from 'types/auth';
 import RegisterEditUser from 'components/auth/RegisterEditUser';
 
 const RegisterOAuth = () => {

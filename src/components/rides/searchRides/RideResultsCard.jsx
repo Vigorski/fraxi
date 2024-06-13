@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import UserPicture from 'components/shared/UserPicture';
-import { getTime, getShortDate } from 'utilities/helpers';
+import { getTime, getShortDate } from 'utilities/helpers/date-time';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { encryptData } from 'utilities/helpers/encription';
 

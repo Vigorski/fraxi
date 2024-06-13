@@ -18,7 +18,7 @@ import {
   errorRouteGroup,
 } from 'utilities/constants/routeGroups';
 import { LOGIN, MY_PROFILE } from 'utilities/constants/routesConfig';
-import { FULLFILLED, REJECTED } from 'utilities/constants/httpRequestStatus';
+import { HTTP_REQUEST_STATUS } from 'types/httpRequestStatus';
 
 function App() {
   const dispatch = useDispatch();
@@ -59,9 +59,9 @@ function App() {
   useEffect(() => {
     // TODO: perhaps it would be a better idea to use a toast on each page where its necessary instead of a global toast
     // because currently we get one additional rerender (7 rerenders on first load rather than 3)
-    if (status === FULLFILLED && message !== null) {
+    if (status === HTTP_REQUEST_STATUS.fullfilled && message !== null) {
       toast.success(message);
-    } else if (status === REJECTED && message !== null) {
+    } else if (status === HTTP_REQUEST_STATUS.rejected && message !== null) {
       toast.error(message);
     }
   }, [status, message]);

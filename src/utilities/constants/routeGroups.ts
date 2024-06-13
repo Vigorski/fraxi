@@ -1,3 +1,4 @@
+import { ComponentType } from 'react';
 import Login from 'pages/auth/Login';
 import Register from 'pages/auth/Register';
 import RegisterOAuth from 'pages/auth/RegisterOAuth';
@@ -22,17 +23,27 @@ import {
   USERS_OWN_ACTIVE_RIDES,
   REGISTER_OAUTH,
   PAGE_NOT_FOUND,
+	RouteDetails,
 } from './routesConfig';
-import { USER_TYPES } from './userTypes';
+import { USER_TYPES } from 'types/auth';
 import NotFound from 'layout/NotFound';
 
-export const authRouteGroup = [
+type Route = {
+	path: string,
+	component: ComponentType,
+	roles?: string[],
+	pathDetails?: RouteDetails,
+}
+
+type RouteGroup = Route[];
+
+export const authRouteGroup: RouteGroup = [
   { path: LOGIN.path, component: Login },
   { path: REGISTER.path, component: Register },
   { path: REGISTER_OAUTH.path, component: RegisterOAuth },
 ];
 
-export const profileRouteGroup = [
+export const profileRouteGroup: RouteGroup = [
   {
     path: `${MY_PROFILE.path}${EDIT_USER.path}`,
     component: EditMyProfile,
@@ -47,7 +58,7 @@ export const profileRouteGroup = [
   },
 ];
 
-export const passengerRouteGroup = [
+export const passengerRouteGroup: RouteGroup = [
   {
     path: `${MY_PROFILE.path}${EDIT_PREFERENCES.path}`,
     component: EditMyPreferences,
@@ -62,7 +73,7 @@ export const passengerRouteGroup = [
   },
 ];
 
-export const driverRouteGroup = [
+export const driverRouteGroup: RouteGroup = [
   {
     path: `${MY_PROFILE.path}${CREATE_RIDE.path}`,
     component: CreateRide,
@@ -71,7 +82,7 @@ export const driverRouteGroup = [
   },
 ];
 
-export const ridesRouteGroup = [
+export const ridesRouteGroup: RouteGroup = [
   {
     path: `${MY_PROFILE.path}${DRIVER_ACTIVE_RIDES.path}`,
     component: SavedDriverActiveRides,
@@ -92,7 +103,7 @@ export const ridesRouteGroup = [
   },
 ];
 
-export const errorRouteGroup = [
+export const errorRouteGroup: RouteGroup = [
   {
     path: PAGE_NOT_FOUND.path,
     component: NotFound,

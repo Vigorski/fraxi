@@ -9,7 +9,7 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
+import { REGISTER_TYPES } from 'types/auth';
 
 const Register = () => {
   const dispatch = useDispatch();

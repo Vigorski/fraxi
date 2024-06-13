@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { IconUser } from 'components/icons';
-import { USER_TYPES } from 'utilities/constants/userTypes';
-import { getTime, getShortDate } from 'utilities/helpers';
+import { USER_TYPES } from 'types/auth';
+import { getTime, getShortDate } from 'utilities/helpers/date-time';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS_LABEL,
   RIDE_TYPE_LABEL,
   SMOKING_LABEL,
-} from 'utilities/constants/rides';
+} from 'types/rides';
 
 const CardRideDetails = ({
   rideDetails,

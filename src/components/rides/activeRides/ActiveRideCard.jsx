@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { getTime, getDate } from 'utilities/helpers';
+import { getTime, getDate } from 'utilities/helpers/date-time';
 import { encryptData } from 'utilities/helpers/encription';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
-import { MAX_PASSENGERS_LABEL } from 'utilities/constants/rides';
+import { MAX_PASSENGERS_LABEL } from 'types/rides';
 
 const ActiveRideCard = ({ ride }) => {
   const { userDetails } = useSelector(state => state.user);

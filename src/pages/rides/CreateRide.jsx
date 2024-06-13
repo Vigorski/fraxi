@@ -22,7 +22,7 @@ import {
   RIDE_TYPE_LABEL,
   SMOKING,
   SMOKING_LABEL,
-} from 'utilities/constants/rides';
+} from 'types/rides';
 
 const CreateRide = () => {
   const earliestDepartureDate = new Date(addTime([1]));

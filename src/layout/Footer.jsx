@@ -6,7 +6,7 @@ import {
   SEARCH_RIDES,
   USERS_OWN_ACTIVE_RIDES,
 } from 'utilities/constants/routesConfig';
-import { USER_TYPES } from 'utilities/constants/userTypes';
+import { USER_TYPES } from 'types/auth';
 
 const Footer = () => {
   const { userDetails } = useSelector(state => state.user);

@@ -1,4 +1,10 @@
-export const mainContainerVariants = {
+type VariantProperties = number | string | { [key: string]: number | string };
+
+type CommonVariants = {
+  [key: string]: { [key: string]: VariantProperties };
+};
+
+export const mainContainerVariants: CommonVariants = {
   initial: {
     y: 0,
     opacity: 0,
@@ -20,7 +26,7 @@ export const mainContainerVariants = {
   },
 };
 
-export const itemVariants = {
+export const itemVariants: CommonVariants = {
   initial: { y: 20, opacity: 0 },
   hidden: { y: 0, opacity: 0 },
   visible: {

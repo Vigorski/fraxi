@@ -8,7 +8,7 @@ import Layout from 'layout/Layout';
 import { updateRidePreferences } from 'store/user/userAsyncActions';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import { mainContainerVariants } from 'utilities/constants/framerVariants';
-import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'utilities/constants/rides';
+import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'types/rides';
 
 const EditMyPreferences = () => {
   const navigate = useNavigate();

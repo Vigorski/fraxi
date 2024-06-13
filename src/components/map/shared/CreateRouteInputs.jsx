@@ -1,5 +1,5 @@
-import { aggregateRouteDetails } from 'utilities/map';
 import FormAutocomplete from 'components/forms/FormAutocomplete';
+import { aggregateRouteDetails } from 'utilities/map';
 
 const CreateRouteInputs = ({ setOrigin, setDestination }) => {
   const handleOriginChange = acRef => {

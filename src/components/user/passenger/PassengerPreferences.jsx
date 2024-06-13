@@ -4,7 +4,7 @@ import {
   MAX_PASSENGERS_LABEL,
   RIDE_TYPE_LABEL,
   SMOKING_LABEL,
-} from 'utilities/constants/rides';
+} from 'types/rides';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 
 const PassengerPreferences = () => {

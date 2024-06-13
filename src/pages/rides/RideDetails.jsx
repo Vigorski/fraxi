@@ -6,7 +6,7 @@ import RideDetailsDriver from 'components/rides/rideDetails/RideDetailsDriver';
 import Layout from 'layout/Layout';
 import { getRidesState } from 'store/rides/ridesAsyncActions';
 import useQueryParameter from 'hooks/useQueryParameter';
-import { USER_TYPES } from 'utilities/constants/userTypes';
+import { USER_TYPES } from 'types/auth';
 import { PAGE_NOT_FOUND } from 'utilities/constants/routesConfig';
 import { decryptData } from 'utilities/helpers/encription';
 

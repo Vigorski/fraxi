@@ -9,7 +9,7 @@ import {
 import { userUpdate } from 'store/user/userAsyncActions';
 import RegisterEditUser from '../../components/auth/RegisterEditUser';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
-import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
+import { REGISTER_TYPES } from 'types/auth';
 
 const EditMyProfile = () => {
   const dispatch = useDispatch();

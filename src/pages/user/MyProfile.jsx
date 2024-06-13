@@ -5,7 +5,7 @@ import Layout from 'layout/Layout';
 import { IconUserPlaceholder, IconEdit } from 'components/icons';
 import JourneyHub from 'components/user/passenger/JourneyHub';
 import { userLogout } from 'store/user/userAsyncActions';
-import { USER_TYPES } from 'utilities/constants/userTypes';
+import { USER_TYPES } from 'types/auth';
 import { EDIT_USER, MY_PROFILE } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,

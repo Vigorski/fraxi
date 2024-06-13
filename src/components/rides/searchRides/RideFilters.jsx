@@ -13,7 +13,7 @@ import {
   RIDE_TYPE_LABEL,
   SMOKING,
   SMOKING_LABEL,
-} from 'utilities/constants/rides';
+} from 'types/rides';
 
 const RideFilters = () => {
   const [expandFilters, setExpandFilters] = useState(false);

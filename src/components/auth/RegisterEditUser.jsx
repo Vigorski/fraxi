@@ -5,7 +5,7 @@ import { IconEmail, IconPassword, IconPhone, IconUser } from 'components/icons';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
-import { REGISTER_TYPES } from 'utilities/constants/registerTypes';
+import { REGISTER_TYPES } from 'types/auth';
 
 const RegisterEditUser = ({ authConfig, handleSubmit }) => {
   const { registerType, name, surname, phone, profilePicture } = authConfig;

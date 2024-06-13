@@ -6,7 +6,7 @@ import { ridesActions } from 'store/rides/ridesSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
 import FirebaseAuthService from 'services/FirebaseAuthService';
-import { USER_TYPES } from 'utilities/constants/userTypes';
+import { USER_TYPES } from 'types/auth';
 
 const excludeCorePropsFromUserDetails = values => {
   const { email, userType, password, confirmPassword, ...filteredValues } =

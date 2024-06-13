@@ -9,7 +9,7 @@ import {
   MAX_PASSENGERS_LABEL,
   SMOKING,
   SMOKING_LABEL,
-} from 'utilities/constants/rides';
+} from 'types/rides';
 
 const EditMyPreferencesForm = () => {
   const [formikProps, setRouteFieldValue] = useFormContextRouteCities();

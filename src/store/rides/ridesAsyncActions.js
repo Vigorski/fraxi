@@ -4,8 +4,8 @@ import { where, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { userActions } from 'store/user/userSlice';
 import { httpActions } from 'store/http/httpSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
-import { USER_TYPES } from 'utilities/constants/userTypes';
-import { RIDE_STATUS } from 'utilities/constants/rides';
+import { USER_TYPES } from 'types/auth';
+import { RIDE_STATUS } from 'types/rides';
 
 const transformRideValues = (driverId, route, values) => {
   const newRideId = 'ride_' + uuidv4();
