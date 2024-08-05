@@ -8,7 +8,7 @@ import {
   MAX_PASSENGERS_LABEL,
   RIDE_TYPE_LABEL,
   SMOKING_LABEL,
-} from 'types/rides';
+} from 'types/ride';
 
 const CardRideDetails = ({
   rideDetails,

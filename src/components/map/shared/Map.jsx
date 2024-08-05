@@ -7,6 +7,7 @@ import {
   getDirections,
   formattedRouteDistanceAndDuration,
 } from 'utilities/map';
+import { getUsersList } from 'utilities/shared/getUsersList';
 
 const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
@@ -34,13 +35,16 @@ const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
     if (cachedWaypoint) {
       setSelectedMarker(cachedWaypoint);
     } else {
-      const waypointDirectionsCallback = result => {
+      const waypointDirectionsCallback = async result => {
         const [totalDistanceInKm, totalFormattedDuration] =
           formattedRouteDistanceAndDuration(result.routes[0].legs);
+				const passenger = await getUsersList([waypoint.userId]);
+				const { name, surname }	= passenger[0];
         const waypointDirectionsData = {
           ...waypoint,
           totalDistanceInKm,
           totalFormattedDuration,
+					fullname: name + ' ' + surname
         };
 
         cachedWaypoints.push(waypointDirectionsData);

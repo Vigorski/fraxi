@@ -5,7 +5,7 @@ import { getTime, getDate } from 'utilities/helpers/date-time';
 import { encryptData } from 'utilities/helpers/encription';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
-import { MAX_PASSENGERS_LABEL } from 'types/rides';
+import { MAX_PASSENGERS_LABEL } from 'types/ride';
 
 const ActiveRideCard = ({ ride }) => {
   const { userDetails } = useSelector(state => state.user);
