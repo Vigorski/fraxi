@@ -1,8 +1,11 @@
+import { Place, Route } from './map';
+import { User } from './user';
+
 export enum RIDE_STATUS {
   active = 'active',
   canceled = 'canceled',
   finished = 'finished',
-};
+}
 
 export enum SMOKING {
   noPreference,
@@ -22,7 +25,7 @@ export enum MAX_PASSENGERS {
   two,
   three,
   four,
-};
+}
 
 export const MAX_PASSENGERS_LABEL: { [key in MAX_PASSENGERS]: string } = {
   [MAX_PASSENGERS.noPreference]: 'No preference',
@@ -36,10 +39,40 @@ export enum RIDE_TYPE {
   noPreference,
   regular,
   irregular,
-};
+}
 
-export const RIDE_TYPE_LABEL: {[key in RIDE_TYPE]: string} = {
+export const RIDE_TYPE_LABEL: { [key in RIDE_TYPE]: string } = {
   [RIDE_TYPE.noPreference]: 'No preference',
   [RIDE_TYPE.regular]: 'regular',
   [RIDE_TYPE.irregular]: 'irregular',
 };
+
+export type RideBase = {
+  maxPassengers: MAX_PASSENGERS;
+  rideType: RIDE_TYPE;
+  smoking: SMOKING;
+  price: number;
+};
+
+export interface CreateRideFormValues extends RideBase {
+  departureDate: Date;
+}
+
+export interface SearchRideFormValues extends RideBase {
+  origin: Place;
+  destination: Place;
+}
+
+export interface Ride extends RideBase {
+  creationDate: string;
+  departureDate: string;
+  driverId: string;
+  rideId: string;
+  route: Route;
+  passengers: string[];
+  status: RIDE_STATUS;
+}
+
+export interface RideWithDriver extends Ride {
+  driverDetails: User;
+}

@@ -2,11 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   addNewRide,
   bookRide,
-  removePassengerRide,
+  removePassengerFromRide,
   getRidesState,
 } from './ridesAsyncActions';
+import { Ride } from 'types/ride';
 
-const initialState = {
+type RidesState = {
+  activeRides: Ride[];
+  historyRides: Ride[];
+}
+
+const initialState: RidesState = {
   activeRides: [],
   historyRides: [],
 };
@@ -27,7 +33,7 @@ const ridesSlice = createSlice({
     builder.addCase(bookRide.fulfilled, (state, action) => {
       state.activeRides.push(action.payload);
     });
-    builder.addCase(removePassengerRide.fulfilled, (state, action) => {
+    builder.addCase(removePassengerFromRide.fulfilled, (state, action) => {
       state.historyRides.push(action.payload);
       state.activeRides.forEach((ride, i) => {
         if (ride.rideId === action.payload.rideId) {
@@ -37,8 +43,8 @@ const ridesSlice = createSlice({
       });
     });
     builder.addCase(getRidesState.fulfilled, (state, action) => {
-      if (!!action.payload.userType) {
-        state[action.payload.userType] = action.payload.ridesAndDrivers;
+      if (action.payload.rideStatus) {
+        state[action.payload.rideStatus as keyof RidesState] = action.payload.ridesWithTheirDriver;
       }
     });
   },

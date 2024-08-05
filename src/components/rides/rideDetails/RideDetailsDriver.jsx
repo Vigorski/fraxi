@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
 import DriverRouteMap from 'components/map/DriverRouteMap';
-import { removePassengerRide } from 'store/rides/ridesAsyncActions';
+import { removePassengerFromRide } from 'store/rides/ridesAsyncActions';
 import { getUsersList } from 'utilities/shared/getUsersList';
 import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
@@ -29,7 +29,9 @@ const RideDetailsDriver = ({ rideDetails }) => {
   }, [rideDetails.passengers]);
 
   const handleCancelRide = async () => {
-    await dispatch(removePassengerRide({ rideDetails, userDetails })).unwrap();
+    await dispatch(
+      removePassengerFromRide({ rideDetails, userDetails }),
+    ).unwrap();
     navigate(USERS_OWN_ACTIVE_RIDES.path);
   };
 

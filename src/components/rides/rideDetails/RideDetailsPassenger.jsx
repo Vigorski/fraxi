@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import RideDetailsCard from './RideDetailsCard';
-import { removePassengerRide } from 'store/rides/ridesAsyncActions';
+import { removePassengerFromRide } from 'store/rides/ridesAsyncActions';
 import { bookRide } from 'store/rides/ridesAsyncActions';
 import { saveDriver, unsaveDriver } from 'store/user/userAsyncActions';
 import {
@@ -52,7 +52,7 @@ const RideDetailsPassenger = ({ rideDetails }) => {
       waypoint => waypoint.userId !== userDetails.userId,
     );
     await dispatch(
-      removePassengerRide({ rideDetails, userDetails, waypoints }),
+      removePassengerFromRide({ rideDetails, userDetails, waypoints }),
     ).unwrap();
     navigate(USERS_OWN_ACTIVE_RIDES.path);
   };

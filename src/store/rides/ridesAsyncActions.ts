@@ -5,9 +5,31 @@ import { userActions } from 'store/user/userSlice';
 import { httpActions } from 'store/http/httpSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { USER_TYPES } from 'types/auth';
-import { RIDE_STATUS } from 'types/rides';
+import {
+  Ride,
+  RIDE_STATUS,
+  CreateRideFormValues,
+  RideWithDriver,
+  SearchRideFormValues,
+} from 'types/ride';
+import { Route } from 'types/map';
+import { User } from 'types/user';
+import {
+  ActionError,
+  AddNewRideArgs,
+  BookRideArgs,
+  GetFilteredRidesArgs,
+  GetFilteredRidesReturn,
+  GetRidesStateArgs,
+  GetRidesStateReturn,
+  RemovePassengerFromRideArgs,
+} from 'types/rideActions';
 
-const transformRideValues = (driverId, route, values) => {
+const transformRideValues = (
+  driverId: string,
+  route: Route,
+  values: CreateRideFormValues,
+): Ride => {
   const newRideId = 'ride_' + uuidv4();
   const creationDate = new Date().toUTCString();
   const departureDateParsed = values.departureDate.toUTCString();
@@ -24,20 +46,26 @@ const transformRideValues = (driverId, route, values) => {
   };
 };
 
-const addDriverToRide = (rides, drivers) => {
-  const updatedRides = rides.map(ride => {
+const addDriversToRides = (
+  rides: Ride[],
+  drivers: User[],
+): RideWithDriver[] => {
+  return rides.map(ride => {
     // always returns an array with a single item
     const driverDetails = drivers.find(
-      driver => driver[0].userId === ride.driverId,
+      driver => driver.userId === ride.driverId,
     );
-    return { ...ride, driverDetails: driverDetails[0] };
-  });
 
-  return updatedRides;
+    if (!driverDetails) {
+      throw new Error('Driver information is missing for one or more rides.');
+    }
+
+    return { ...ride, driverDetails: driverDetails };
+  });
 };
 
-const updateRidesWithDriver = async rides => {
-  const uniqueDriverIds = [];
+const updateRidesWithDriver = async (rides: Ride[]) => {
+  const uniqueDriverIds: string[] = [];
 
   for (const ride of rides) {
     if (uniqueDriverIds.indexOf(ride.driverId) === -1) {
@@ -50,14 +78,15 @@ const updateRidesWithDriver = async rides => {
       FirebaseFirestoreService.get('/users', [where('userId', '==', driverId)]),
     ),
   );
-  const updatedRides = addDriverToRide(rides, driversResponse);
+  const flattenedDriversResponse = driversResponse.flat() as User[];
+  const updatedRides = addDriversToRides(rides, flattenedDriversResponse);
 
   return updatedRides;
 };
 
-export const addNewRide = createAsyncThunk(
+export const addNewRide = createAsyncThunk<Ride, AddNewRideArgs, ActionError>(
   'rides/addNewRide',
-  async ({ driver, route, values }, { dispatch }) => {
+  async ({ driver, route, values }, { dispatch, rejectWithValue }) => {
     dispatch(httpActions.requestSend());
 
     try {
@@ -93,92 +122,96 @@ export const addNewRide = createAsyncThunk(
       dispatch(httpActions.requestSuccess('New ride created.'));
 
       return transformedValues;
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      dispatch(
-        httpActions.requestError(err.message || 'Something went wrong!'),
-      );
+      const errorMessage = err.message || 'Something went wrong!';
+      dispatch(httpActions.requestError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   },
 );
 
-export const bookRide = createAsyncThunk(
+export const bookRide = createAsyncThunk<Ride, BookRideArgs, ActionError>(
   'rides/bookRide',
-  async ({ passenger, rideDetails, waypoints }, { dispatch }) => {
+  async ({ passenger, ride, waypoints }, { dispatch, rejectWithValue }) => {
     dispatch(httpActions.requestSend());
 
     try {
-      if (rideDetails.passengers.length === rideDetails.maxPassengers) {
+      if (ride.passengers.length === ride.maxPassengers) {
         throw new Error('Reached max passengers per ride!');
       }
 
       const transformedPassengerActiveRides = {
-        activeRides: [...passenger.activeRides, rideDetails.rideId],
+        activeRides: [...passenger.activeRides, ride.rideId],
       };
 
       await Promise.all([
-        FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
+        FirebaseFirestoreService.update('/rides', ride.rideId, {
           passengers: arrayUnion(passenger.userId),
           'route.waypoints': waypoints,
         }),
         FirebaseFirestoreService.update('/users', passenger.userId, {
-          activeRides: arrayUnion(rideDetails.rideId),
+          activeRides: arrayUnion(ride.rideId),
         }),
       ]);
 
       dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
       dispatch(httpActions.requestSuccess('Ride booked.'));
 
-      return rideDetails;
-    } catch (err) {
+      return ride;
+    } catch (err: any) {
       console.error(err);
-      dispatch(
-        httpActions.requestError(err.message || 'Something went wrong!'),
-      );
+      const errorMessage = err.message || 'Something went wrong!';
+      dispatch(httpActions.requestError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   },
 );
 
-export const removePassengerRide = createAsyncThunk(
-  'rides/removePassengerRide',
-  async ({ rideDetails, userDetails, waypoints }, { dispatch }) => {
+export const removePassengerFromRide = createAsyncThunk<
+  Ride,
+  RemovePassengerFromRideArgs,
+  ActionError
+>(
+  'rides/removePassengerFromRide',
+  async ({ passenger, ride, waypoints }, { dispatch, rejectWithValue }) => {
     dispatch(httpActions.requestSend());
 
     try {
       const comboRemoveRideCall = [
-        FirebaseFirestoreService.update('/users', userDetails.userId, {
-          activeRides: arrayRemove(rideDetails.rideId),
+        FirebaseFirestoreService.update('/users', passenger.userId, {
+          activeRides: arrayRemove(ride.rideId),
         }),
-        FirebaseFirestoreService.update('/users', userDetails.userId, {
-          historyRides: arrayUnion(rideDetails.rideId),
+        FirebaseFirestoreService.update('/users', passenger.userId, {
+          historyRides: arrayUnion(ride.rideId),
         }),
       ];
 
-      if (userDetails.userType === USER_TYPES.passenger) {
+      if (passenger.userType === USER_TYPES.passenger) {
         comboRemoveRideCall.push(
-          FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
-            passengers: arrayRemove(userDetails.userId),
+          FirebaseFirestoreService.update('/rides', ride.rideId, {
+            passengers: arrayRemove(passenger.userId),
             'route.waypoints': waypoints,
           }),
         );
       }
 
-      if (userDetails.userType === USER_TYPES.driver) {
+      if (passenger.userType === USER_TYPES.driver) {
         comboRemoveRideCall.push(
-          FirebaseFirestoreService.update('/rides', rideDetails.rideId, {
+          FirebaseFirestoreService.update('/rides', ride.rideId, {
             status: RIDE_STATUS.canceled,
           }),
         );
 
-        rideDetails.passengers.forEach(passengerId => {
+        ride.passengers.forEach(passengerId => {
           comboRemoveRideCall.push(
             FirebaseFirestoreService.update('/users', passengerId, {
-              activeRides: arrayRemove(rideDetails.rideId),
+              activeRides: arrayRemove(ride.rideId),
             }),
           );
           comboRemoveRideCall.push(
             FirebaseFirestoreService.update('/users', passengerId, {
-              historyRides: arrayUnion(rideDetails.rideId),
+              historyRides: arrayUnion(ride.rideId),
             }),
           );
         });
@@ -186,27 +219,29 @@ export const removePassengerRide = createAsyncThunk(
 
       await Promise.all(comboRemoveRideCall);
 
-      dispatch(userActions.removeActiveRide(rideDetails.rideId));
-      dispatch(userActions.addHistoryRide(rideDetails.rideId));
+      dispatch(userActions.removeActiveRide(ride.rideId));
+      dispatch(userActions.addHistoryRide(ride.rideId));
       dispatch(httpActions.requestSuccess('Ride canceled.'));
 
-      return rideDetails;
-    } catch (err) {
+      return ride;
+    } catch (err: any) {
       console.error(err);
-      dispatch(
-        httpActions.requestError(err.message || 'Something went wrong!'),
-      );
+      const errorMessage = err.message || 'Something went wrong!';
+      dispatch(httpActions.requestError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   },
 );
 
 // TODO: perhaps populate history state at the same time?
 // UPDATE: currently only fetching history on first load
-export const getRidesState = createAsyncThunk(
+export const getRidesState = createAsyncThunk<
+  GetRidesStateReturn,
+  GetRidesStateArgs,
+  ActionError
+>(
   'rides/getRidesState',
-  // rideIds: string[]
-  // userType?: 'driver' | 'passenger'
-  async ({ rideIds, userType }, { dispatch }) => {
+  async ({ rideIds, rideStatus }, { dispatch, rejectWithValue }) => {
     dispatch(httpActions.requestSend());
 
     try {
@@ -217,7 +252,9 @@ export const getRidesState = createAsyncThunk(
           ]),
         ),
       );
-      const flatenedRidesResponse = ridesResponse.map(ride => ride[0]);
+      const flatenedRidesResponse = ridesResponse.map(
+        ride => ride[0],
+      ) as Ride[];
       const activeDriversResponse = await Promise.all(
         flatenedRidesResponse.map(driver =>
           FirebaseFirestoreService.get('/users', [
@@ -225,26 +262,32 @@ export const getRidesState = createAsyncThunk(
           ]),
         ),
       );
-
-      const ridesAndDrivers = addDriverToRide(
+      const flatenedActiveDriversResponse = activeDriversResponse.map(
+        driver => driver[0],
+      ) as User[];
+      const ridesWithTheirDriver = addDriversToRides(
         flatenedRidesResponse,
-        activeDriversResponse,
+        flatenedActiveDriversResponse,
       );
 
-      dispatch(httpActions.requestSuccess());
-      return { ridesAndDrivers, userType };
-    } catch (err) {
+      dispatch(httpActions.requestSuccess(''));
+      return { ridesWithTheirDriver, rideStatus };
+    } catch (err: any) {
       console.error(err);
-      dispatch(
-        httpActions.requestError(err.message || 'Something went wrong!'),
-      );
+      const errorMessage = err.message || 'Something went wrong!';
+      dispatch(httpActions.requestError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   },
 );
 
-export const getFilteredRides = createAsyncThunk(
+export const getFilteredRides = createAsyncThunk<
+  GetFilteredRidesReturn,
+  GetFilteredRidesArgs,
+  ActionError
+>(
   'rides/getFilteredRides',
-  async ({ searchPreferences }, { dispatch }) => {
+  async ({ searchPreferences }, { dispatch, rejectWithValue }) => {
     dispatch(httpActions.requestSend());
 
     try {
@@ -258,31 +301,31 @@ export const getFilteredRides = createAsyncThunk(
       const queryParams = [where('status', '==', RIDE_STATUS.active)]; // mandatory query - will search only active rides
 
       fullDBPaths.forEach((param, index) => {
-        if (searchPreferences[propertyNames[index]]) {
-          queryParams.push(
-            where(param, '==', searchPreferences[propertyNames[index]]),
-          );
+        const propertyName = propertyNames[index] as keyof SearchRideFormValues;
+
+        if (searchPreferences[propertyName]) {
+          queryParams.push(where(param, '==', searchPreferences[propertyName]));
         }
       });
 
-      const ridesResponse = await FirebaseFirestoreService.get(
+      const ridesResponse = (await FirebaseFirestoreService.get(
         '/rides',
         queryParams,
-      );
+      )) as Ride[];
 
       if (ridesResponse) {
         const updatedRides = await updateRidesWithDriver(ridesResponse);
-        dispatch(httpActions.requestSuccess());
+        dispatch(httpActions.requestSuccess(''));
         return updatedRides;
       }
 
-      dispatch(httpActions.requestSuccess());
+      dispatch(httpActions.requestSuccess(''));
       return null;
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      dispatch(
-        httpActions.requestError(err.message || 'Something went wrong!'),
-      );
+      const errorMessage = err.message || 'Something went wrong!';
+      dispatch(httpActions.requestError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   },
 );
