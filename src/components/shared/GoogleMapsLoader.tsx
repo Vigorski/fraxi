@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import { useJsApiLoader } from '@react-google-maps/api';
 import Spinner from './Spinner';
+import { Library } from 'types/map';
 
-const libraries = ['places'];
+const libraries: Library[] = ['places'];
 
-const GoogleMapsLoader = ({ children }) => {
+type GoogleMapsOwnProps = {
+	children: ReactElement
+}
+
+const GoogleMapsLoader: FC<GoogleMapsOwnProps> = ({ children }) => {
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
     libraries,
   });
 

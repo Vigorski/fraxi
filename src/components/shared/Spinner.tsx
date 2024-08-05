@@ -1,4 +1,10 @@
-const Spinner = ({ message }) => {
+import { FC } from "react";
+
+type SpinnerOwnProps = {
+	message: string
+}
+
+const Spinner: FC<SpinnerOwnProps> = ({ message }) => {
   return (
     <div className="spinner-loader">
       <div className="spinner-loader__overlay" />
