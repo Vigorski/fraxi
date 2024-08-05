@@ -8,7 +8,7 @@ import FormFilters from 'components/forms/FormFilters';
 import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
 import { mainContainerVariants } from 'utilities/constants/framerVariants';
-import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'types/rides';
+import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'types/ride';
 
 const SearchRides = () => {
   const dispatch = useDispatch();
