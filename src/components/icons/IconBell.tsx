@@ -1,4 +1,6 @@
-export const IconBell = ({ className }) => {
+import { IconType } from 'types/icons';
+
+export const IconBell: IconType = ({ className }) => {
   return (
     <svg
       className={`${className || ''} svg-inline`}

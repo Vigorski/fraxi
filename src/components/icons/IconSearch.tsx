@@ -1,4 +1,6 @@
-export const IconSearch = ({ className }) => {
+import { IconType } from 'types/icons';
+
+export const IconSearch: IconType = ({ className }) => {
   return (
     <svg
       className={`${className || ''} svg-inline`}

@@ -41,5 +41,5 @@ export {
   IconDirection,
   IconDeparture,
   IconRoute,
-  IconCity
+  IconCity,
 };

@@ -1,4 +1,6 @@
-export const IconCalendar = ({ className }) => {
+import { IconType } from 'types/icons';
+
+export const IconCalendar: IconType = ({ className }) => {
   return (
     <svg
       className={`${className || ''} svg-inline`}
