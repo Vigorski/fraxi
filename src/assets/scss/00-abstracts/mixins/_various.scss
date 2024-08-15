@@ -52,14 +52,16 @@
   $easing: ease-in-out,
   $delay: 0s
 ) {
-  transition-property: $property;
-  transition-duration: $duration;
-  transition-timing-function: $easing;
-  transition-delay: $delay;
+	& {
+		transition-property: $property;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+		transition-delay: $delay;
+	}
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 }
 
 // INPUT PLACEHOLDER

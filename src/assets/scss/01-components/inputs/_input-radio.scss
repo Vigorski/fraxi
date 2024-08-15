@@ -1,7 +1,10 @@
 // Checkbox
 .input-radio {
   @include radio-checkbox($radiobox-width, $border-radius-circle);
-  margin: calc-rem(10px) 0;
+  
+	&{
+		margin: calc-rem(10px) 0;
+	}
 
   input[type="radio"] + label {
     z-index: 0;
