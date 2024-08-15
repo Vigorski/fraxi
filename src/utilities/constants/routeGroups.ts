@@ -22,10 +22,10 @@ import {
   DRIVER_ACTIVE_RIDES,
   USERS_OWN_ACTIVE_RIDES,
   REGISTER_OAUTH,
-  PAGE_NOT_FOUND,
-	RouteDetails,
+  PAGE_NOT_FOUND
 } from './routesConfig';
 import { USER_TYPES } from 'types/auth';
+import { RouteDetails } from 'types/route';
 import NotFound from 'layout/NotFound';
 
 type Route = {

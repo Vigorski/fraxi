@@ -1,8 +1,4 @@
-export type RouteDetails = {
-	title: string,
-	path: string,
-	description: string
-}
+import { RouteDetails } from "types/route";
 
 export const LOGIN: RouteDetails = {
   title: 'Login',
