@@ -10,10 +10,10 @@ import {
   // connectAuthEmulator,
   deleteUser,
   signInWithPopup,
-	// Auth,
-	User,
-	NextOrObserver,
-	GoogleAuthProvider,
+  // Auth,
+  User as FirebaseUser,
+  NextOrObserver,
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import FirebaseApp from './FirebaseApp';
 
@@ -52,17 +52,17 @@ export default class FirebaseAuthService {
     await signOut(FirebaseAppInstance.auth);
   }
 
-  static getCurrentUser(): User | null {
+  static getCurrentUser(): FirebaseUser | null {
     return FirebaseAppInstance.auth.currentUser;
   }
 
   static async deleteUser() {
-		try {
-			const currentUser = this.getCurrentUser();
+    try {
+      const currentUser = this.getCurrentUser();
 
-			if(currentUser) {
-				await deleteUser(currentUser);
-			}
+      if (currentUser) {
+        await deleteUser(currentUser);
+      }
     } catch {
       throw new Error('No current user to delete');
     }
@@ -70,25 +70,28 @@ export default class FirebaseAuthService {
 
   static async updatePassword(newPassword: string) {
     const user = this.getCurrentUser();
-    if(user) {
-			try {
-				await updatePassword(user, newPassword);
-			} catch (error: any) {
-				throw new Error(error.message);
-			}
-		} else {
-			throw new Error("No current user to update password");
-		}
+    if (user) {
+      try {
+        await updatePassword(user, newPassword);
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
+    } else {
+      throw new Error('No current user to update password');
+    }
   }
 
-  static authObserver(callback: NextOrObserver<User>) {
+  static authObserver(callback: NextOrObserver<FirebaseUser>) {
     return onAuthStateChanged(FirebaseAppInstance.auth, callback);
   }
 
   static async loginWithGoogle() {
     try {
       // Popup
-      const result = await signInWithPopup(FirebaseAppInstance.auth, FirebaseAppInstance.googleAuthProvider);
+      const result = await signInWithPopup(
+        FirebaseAppInstance.auth,
+        FirebaseAppInstance.googleAuthProvider,
+      );
       return result.user;
 
       // Redirect

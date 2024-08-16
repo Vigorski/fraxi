@@ -15,7 +15,6 @@ import {
 import { Route } from 'types/map';
 import { User } from 'types/user';
 import {
-  ActionError,
   AddNewRideArgs,
   BookRideArgs,
   GetFilteredRidesArgs,
@@ -24,6 +23,7 @@ import {
   GetRidesStateReturn,
   RemovePassengerFromRideArgs,
 } from 'types/rideActions';
+import { ActionError } from 'types/generalActions';
 
 const transformRideValues = (
   driverId: string,
@@ -118,7 +118,7 @@ export const addNewRide = createAsyncThunk<Ride, AddNewRideArgs, ActionError>(
         }),
       ]);
 
-      dispatch(userActions.updateUserDetails(transformedDriverActiveRides));
+      dispatch(userActions.updateUserActiveRides(transformedDriverActiveRides));
       dispatch(httpActions.requestSuccess('New ride created.'));
 
       return transformedValues;
@@ -155,7 +155,9 @@ export const bookRide = createAsyncThunk<Ride, BookRideArgs, ActionError>(
         }),
       ]);
 
-      dispatch(userActions.updateUserDetails(transformedPassengerActiveRides));
+      dispatch(
+        userActions.updateUserActiveRides(transformedPassengerActiveRides),
+      );
       dispatch(httpActions.requestSuccess('Ride booked.'));
 
       return ride;
@@ -270,7 +272,7 @@ export const getRidesState = createAsyncThunk<
         flatenedActiveDriversResponse,
       );
 
-      dispatch(httpActions.requestSuccess(''));
+      dispatch(httpActions.requestSuccess());
       return { ridesWithTheirDriver, rideStatus };
     } catch (err: any) {
       console.error(err);
@@ -315,11 +317,11 @@ export const getFilteredRides = createAsyncThunk<
 
       if (ridesResponse) {
         const updatedRides = await updateRidesWithDriver(ridesResponse);
-        dispatch(httpActions.requestSuccess(''));
+        dispatch(httpActions.requestSuccess());
         return updatedRides;
       }
 
-      dispatch(httpActions.requestSuccess(''));
+      dispatch(httpActions.requestSuccess());
       return null;
     } catch (err: any) {
       console.error(err);

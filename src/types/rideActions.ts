@@ -21,10 +21,6 @@ export type BookRideArgs = {
 
 export type RemovePassengerFromRideArgs = BookRideArgs;
 
-export type ActionError = {
-  rejectValue: string;
-};
-
 type RideStatus = 'driver' | 'passenger';
 
 export type GetRidesStateArgs = {
