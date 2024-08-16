@@ -40,14 +40,14 @@ function App() {
         await dispatch(
           getRidesState({
             rideIds: userDetails.activeRides,
-            userType: 'activeRides',
+            rideStatus: 'activeRides',
           }),
         ).unwrap();
 
         await dispatch(
           getRidesState({
             rideIds: userDetails.historyRides,
-            userType: 'historyRides',
+            rideStatus: 'historyRides',
           }),
         ).unwrap();
       }

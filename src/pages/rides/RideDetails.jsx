@@ -37,7 +37,7 @@ const RideDetails = () => {
 
           // there will always be only one ride retrieved here,
           // so we can access the first item in the returned array
-          setRideDetails(rideResponse.ridesAndDrivers[0]);
+          setRideDetails(rideResponse.ridesWithTheirDriver[0]);
         }
       } catch (error) {
         navigate(PAGE_NOT_FOUND.path, {

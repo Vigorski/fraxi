@@ -40,7 +40,7 @@ const SavedDriverActiveRides = () => {
             getRidesState({ rideIds: driverResponse.activeRides }),
           ).unwrap();
 
-          setActiveRides(ridesResponse.ridesAndDrivers);
+          setActiveRides(ridesResponse.ridesWithTheirDriver);
         }
       } catch (error) {
         navigate(PAGE_NOT_FOUND.path, {
