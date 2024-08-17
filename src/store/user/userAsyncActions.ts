@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { arrayRemove, arrayUnion, where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
-import { userActions } from 'store/user/userSlice';
+import { userActions, UserState } from 'store/user/userSlice';
 import { ridesActions } from 'store/rides/ridesSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
@@ -258,13 +258,6 @@ export const userRegisterWithGoogleAuth = createAsyncThunk<
     }
   },
 );
-
-type UserState = {
-  isRegistering?: boolean;
-  isLoggedIn?: boolean;
-  isAuthStateDetermined?: boolean;
-  userDetails: User | null;
-};
 
 export const getAndStoreUserData = createAsyncThunk<
   UserState,
