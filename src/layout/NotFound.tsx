@@ -1,13 +1,16 @@
+import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { LocationState } from 'types/router';
 
-const NotFound = () => {
+const NotFound: FC = () => {
   const location = useLocation();
-  const errorMessage = location.state && location.state.errorMessage;
+  const locationState = location.state as LocationState;
+  const errorMessage = locationState.errorMessage;
 
   return (
     <div className="container not-found">
