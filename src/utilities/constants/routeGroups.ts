@@ -1,4 +1,3 @@
-import { ComponentType } from 'react';
 import Login from 'pages/auth/Login';
 import Register from 'pages/auth/Register';
 import RegisterOAuth from 'pages/auth/RegisterOAuth';
@@ -22,20 +21,11 @@ import {
   DRIVER_ACTIVE_RIDES,
   USERS_OWN_ACTIVE_RIDES,
   REGISTER_OAUTH,
-  PAGE_NOT_FOUND
+  PAGE_NOT_FOUND,
 } from './routesConfig';
-import { USER_TYPES } from 'types/auth';
-import { RouteDetails } from 'types/route';
 import NotFound from 'layout/NotFound';
-
-type Route = {
-	path: string,
-	component: ComponentType,
-	roles?: string[],
-	pathDetails?: RouteDetails,
-}
-
-type RouteGroup = Route[];
+import { USER_TYPES } from 'types/auth';
+import { RouteGroup } from 'types/route';
 
 export const authRouteGroup: RouteGroup = [
   { path: LOGIN.path, component: Login },

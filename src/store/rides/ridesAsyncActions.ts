@@ -24,6 +24,7 @@ import {
   RemovePassengerFromRideArgs,
 } from 'types/rideActions';
 import { ActionError } from 'types/generalActions';
+import { handleThunkError } from 'utilities/shared/handleThunkError';
 
 const transformRideValues = (
   driverId: string,
@@ -123,10 +124,11 @@ export const addNewRide = createAsyncThunk<Ride, AddNewRideArgs, ActionError>(
 
       return transformedValues;
     } catch (err: any) {
-      console.error(err);
-      const errorMessage = err.message || 'Something went wrong!';
-      dispatch(httpActions.requestError(errorMessage));
-      return rejectWithValue(errorMessage);
+			return handleThunkError({
+				err,
+				dispatch,
+				rejectWithValue,
+			});
     }
   },
 );
@@ -162,10 +164,12 @@ export const bookRide = createAsyncThunk<Ride, BookRideArgs, ActionError>(
 
       return ride;
     } catch (err: any) {
-      console.error(err);
-      const errorMessage = err.message || 'Something went wrong!';
-      dispatch(httpActions.requestError(errorMessage));
-      return rejectWithValue(errorMessage);
+      return handleThunkError({
+				err,
+				defaultMessage: 'Unable to create new user.',
+				dispatch,
+				rejectWithValue,
+			});
     }
   },
 );
@@ -227,10 +231,12 @@ export const removePassengerFromRide = createAsyncThunk<
 
       return ride;
     } catch (err: any) {
-      console.error(err);
-      const errorMessage = err.message || 'Something went wrong!';
-      dispatch(httpActions.requestError(errorMessage));
-      return rejectWithValue(errorMessage);
+      return handleThunkError({
+				err,
+				defaultMessage: 'Unable to create new user.',
+				dispatch,
+				rejectWithValue,
+			});
     }
   },
 );
@@ -275,10 +281,12 @@ export const getRidesState = createAsyncThunk<
       dispatch(httpActions.requestSuccess());
       return { ridesWithTheirDriver, rideStatus };
     } catch (err: any) {
-      console.error(err);
-      const errorMessage = err.message || 'Something went wrong!';
-      dispatch(httpActions.requestError(errorMessage));
-      return rejectWithValue(errorMessage);
+      return handleThunkError({
+				err,
+				defaultMessage: 'Unable to create new user.',
+				dispatch,
+				rejectWithValue,
+			});
     }
   },
 );
@@ -324,10 +332,12 @@ export const getFilteredRides = createAsyncThunk<
       dispatch(httpActions.requestSuccess());
       return null;
     } catch (err: any) {
-      console.error(err);
-      const errorMessage = err.message || 'Something went wrong!';
-      dispatch(httpActions.requestError(errorMessage));
-      return rejectWithValue(errorMessage);
+      return handleThunkError({
+				err,
+				defaultMessage: 'Unable to create new user.',
+				dispatch,
+				rejectWithValue,
+			});
     }
   },
 );

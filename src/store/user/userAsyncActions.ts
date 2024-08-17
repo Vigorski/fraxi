@@ -1,4 +1,4 @@
-import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { arrayRemove, arrayUnion, where } from 'firebase/firestore';
 import { httpActions } from 'store/http/httpSlice';
 import { userActions } from 'store/user/userSlice';
@@ -24,26 +24,7 @@ import {
   UserUpdateArgs,
   UserUpdateReturn,
 } from 'types/userActions';
-import { Dispatch } from 'react';
-
-type HandleThunkErrorParams<RejectValueType> = {
-  err: any;
-  defaultMessage?: string;
-  dispatch: Dispatch<AnyAction>;
-  rejectWithValue: (value: string) => RejectValueType;
-};
-
-const handleThunkError = <RejectValueType>({
-  err,
-  defaultMessage,
-  dispatch,
-  rejectWithValue,
-}: HandleThunkErrorParams<RejectValueType>): RejectValueType => {
-  console.error(err);
-  const errorMessage = err.message || defaultMessage || 'Something went wrong!';
-  dispatch(httpActions.requestError(errorMessage));
-  return rejectWithValue(errorMessage);
-};
+import { handleThunkError } from 'utilities/shared/handleThunkError';
 
 const excludeCorePropsFromUserDetails = (values: UserForm) => {
   const { email, userType, password, confirmPassword, ...filteredValues } =
