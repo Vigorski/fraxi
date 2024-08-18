@@ -2,13 +2,13 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconBack } from 'components/icons';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
-import { useTypedSelector } from 'hooks/useTypedSelector';
+import { useAppSelector } from 'hooks/useAppSelector';
 import fraxiLogo from '../assets/logo/fraxi-logo-primary.png';
 
 const Header: FC = () => {
   const navigate = useNavigate();
   const handleGoBack = () => navigate(-1);
-  const currentRoute = useTypedSelector(state => state.route.currentRoute);
+  const currentRoute = useAppSelector(state => state.route.currentRoute);
   const isHomepage = currentRoute?.path === MY_PROFILE.path;
 
   return (

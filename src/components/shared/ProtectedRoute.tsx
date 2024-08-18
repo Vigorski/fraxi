@@ -1,15 +1,23 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { FC, ReactElement, useEffect } from 'react';
 import { getAndStoreUserData } from 'store/user/userAsyncActions';
 import { userActions } from 'store/user/userSlice';
 import FirebaseAuthService from 'services/FirebaseAuthService';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { User as FirebaseUser } from 'firebase/auth';
 
-const ProtectedRoute = ({ children }) => {
-  const dispatch = useDispatch();
-  const { isLoggedIn, isAuthStateDetermined, isRegistering } = useSelector(state => state.user);
+type ProtectedRouteOwnProps = {
+  children: ReactElement;
+};
+
+const ProtectedRoute: FC<ProtectedRouteOwnProps> = ({ children }) => {
+  const dispatch = useAppDispatch();
+  const { isLoggedIn, isAuthStateDetermined, isRegistering } = useAppSelector(
+    state => state.user,
+  );
 
   useEffect(() => {
-    const authObserverCallback = user => {
+    const authObserverCallback = (user: FirebaseUser | null) => {
       // user is logged in firebase auth
       if (user) {
         // fetch user data ONLY if user hasn't been logged in yet (first time login) AND
@@ -17,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
         if (!isLoggedIn && !isRegistering) {
           dispatch(getAndStoreUserData(user.uid));
         }
-      // user is logged out of firebase auth
+        // user is logged out of firebase auth
       } else {
         // unfreeze routes after logging out
         // auth state is determined to be false

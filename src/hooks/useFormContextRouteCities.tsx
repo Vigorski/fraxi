@@ -7,7 +7,7 @@ import { AutocompleteType } from 'types/map';
 type AcRefType = MutableRefObject<AutocompleteType>;
 type FormType = Omit<SearchRideFormValues, 'price'>;
 type LocationType = 'origin' | 'destination';
-type UseFormContextRouteCitiesReturn<T> = [
+type UseFormContextRouteCitiesReturn<T = FormType> = [
   FormikContextType<T>,
   (acRef: AcRefType, location: LocationType) => void,
 ];

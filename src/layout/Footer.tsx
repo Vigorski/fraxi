@@ -7,10 +7,10 @@ import {
 } from 'utilities/constants/routesConfig';
 import { USER_TYPES } from 'types/auth';
 import { FC } from 'react';
-import { useTypedSelector } from 'hooks/useTypedSelector';
+import { useAppSelector } from 'hooks/useAppSelector';
 
 const Footer: FC = () => {
-  const { userDetails } = useTypedSelector(state => state.user);
+  const { userDetails } = useAppSelector(state => state.user);
 
   return (
     <footer className="footer">

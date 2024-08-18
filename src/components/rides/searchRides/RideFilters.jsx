@@ -17,7 +17,7 @@ import {
 
 const RideFilters = () => {
   const [expandFilters, setExpandFilters] = useState(false);
-  const [formikProps, setRouteFieldValue] = useFormContextRouteCities(); // add <FormType> when converting to ts
+  const [formikProps, setRouteFieldValue] = useFormContextRouteCities();
 
   const toggleFilters = e => {
     e.preventDefault();

@@ -12,7 +12,7 @@ import {
 } from 'types/ride';
 
 const EditMyPreferencesForm = () => {
-  const [formikProps, setRouteFieldValue] = useFormContextRouteCities(); // add <FormType> when converting to ts
+  const [formikProps, setRouteFieldValue] = useFormContextRouteCities();
 
   const handleOriginCityChange = acRef => {
     setRouteFieldValue(acRef, 'origin');

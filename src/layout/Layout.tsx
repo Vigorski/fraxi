@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { useTypedSelector } from 'hooks/useTypedSelector';
+import { useAppSelector } from 'hooks/useAppSelector';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -8,7 +8,7 @@ type LayoutOwnProps = {
 };
 
 const Layout: FC<LayoutOwnProps> = ({ children }) => {
-  const isLoggedIn = useTypedSelector(state => state.user.isLoggedIn);
+  const isLoggedIn = useAppSelector(state => state.user.isLoggedIn);
 
   return (
     <div className="container">
