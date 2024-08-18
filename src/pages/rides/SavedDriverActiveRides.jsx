@@ -18,7 +18,7 @@ const SavedDriverActiveRides = () => {
   const [activeRides, setActiveRides] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [getQuery] = useQueryParameter();
+  const getQuery = useQueryParameter();
   const driverId = getQuery('userId');
 
   useEffect(() => {

@@ -19,7 +19,7 @@ const RideDetails = () => {
   const userDetails = useSelector(state => state.user.userDetails);
   const isUserPassenger = userDetails.userType === USER_TYPES.passenger;
   const isUserDriver = userDetails.userType === USER_TYPES.driver;
-  const [getQuery] = useQueryParameter();
+  const getQuery = useQueryParameter();
   const rideId = getQuery('rideId');
 
   useEffect(() => {
