@@ -1,9 +1,19 @@
-import { useEffect, useRef } from 'react';
-import { Autocomplete } from '@react-google-maps/api';
+import { FC, MutableRefObject, useEffect, useRef } from 'react';
 import { IconDirection } from 'components/icons';
 import { removeAutocompletePacContainer } from 'utilities/map';
+import { AutocompleteType, ExtendedAutocompleteType } from 'types/map';
+import { Autocomplete } from '@react-google-maps/api';
 
-const FormAutocomplete = ({
+type FormAutocompleteOwnProps = {
+  name: string;
+  label: string;
+  handler: (acRef: MutableRefObject<AutocompleteType | null>) => void;
+  placeholder: string;
+  className: string;
+  types?: string[];
+}
+
+const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
   name,
   label,
   handler,
@@ -11,11 +21,11 @@ const FormAutocomplete = ({
   className,
   ...rest
 }) => {
-  const acRef = useRef(null);
+  const acRef = useRef<AutocompleteType | null>(null);
 
   useEffect(() => {
     return () => {
-      removeAutocompletePacContainer(acRef.current);
+      removeAutocompletePacContainer(acRef.current as ExtendedAutocompleteType);
     };
   }, []);
 

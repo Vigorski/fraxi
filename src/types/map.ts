@@ -38,3 +38,21 @@ export type Library =
   | 'journeySharing'
   | 'drawing'
   | 'visualization';
+
+export type AutocompleteType = InstanceType<typeof google.maps.places.Autocomplete>;
+
+export interface ExtendedAutocompleteType extends AutocompleteType {
+  componentRestrictions: {
+    country: string
+  }
+  gm_accessors_: {
+    [key: string]: any
+  };
+  gm_bindings_: {
+    [key: string]: any,
+  }
+  types: string[];
+  __e3_: {
+    [key: string]: any
+  }
+}

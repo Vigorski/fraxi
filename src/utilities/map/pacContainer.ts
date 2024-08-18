@@ -1,10 +1,13 @@
+import { ExtendedAutocompleteType } from "types/map";
+
 // The pac-container element comes from google
 // As of yet, there is an unresolved bug with this element
 // where it is duplocated every time the autocomplete is being used
 // this is a crude way of removing the duplications.
 // TODO: create custom Autocomplete component using Places API instead
-export const getAutocompletePacContainer = (autocomplete: HTMLElement) => {
-  const place = (autocomplete as any).gm_accessors_.place;
+
+export const getAutocompletePacContainer = (autocomplete: ExtendedAutocompleteType) => {
+  const place = autocomplete.gm_accessors_.place;
   const placeKey = Object.keys(place).find(
     value =>
       typeof place[value] === 'object' &&
@@ -26,6 +29,6 @@ export const getAutocompletePacContainer = (autocomplete: HTMLElement) => {
   return input[inputKey];
 };
 
-export const removeAutocompletePacContainer = (autocomplete: HTMLElement) => {
+export const removeAutocompletePacContainer = (autocomplete: ExtendedAutocompleteType) => {
   getAutocompletePacContainer(autocomplete).remove();
 };

@@ -1,10 +1,10 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactElement } from 'react';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import Footer from './Footer';
 import Header from './Header';
 
 type LayoutOwnProps = {
-  children: ReactNode;
+  children: ReactElement;
 };
 
 const Layout: FC<LayoutOwnProps> = ({ children }) => {

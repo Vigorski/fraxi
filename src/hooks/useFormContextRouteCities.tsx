@@ -2,11 +2,12 @@ import { MutableRefObject } from 'react';
 import { FormikContextType, useFormikContext } from 'formik';
 import { getAddressComponents } from 'utilities/map';
 import { SearchRideFormValues } from 'types/ride';
+import { AutocompleteType } from 'types/map';
 
-type AcRefType = MutableRefObject<google.maps.places.Autocomplete>;
+type AcRefType = MutableRefObject<AutocompleteType>;
 type FormType = Omit<SearchRideFormValues, 'price'>;
 type LocationType = 'origin' | 'destination';
-type UseFormContextRouteCitiesReturn<T = FormType> = [
+type UseFormContextRouteCitiesReturn<T> = [
   FormikContextType<T>,
   (acRef: AcRefType, location: LocationType) => void,
 ];
