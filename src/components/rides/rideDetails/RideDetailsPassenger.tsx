@@ -1,11 +1,6 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import RideDetailsCard from './RideDetailsCard';
-import { removePassengerFromRide } from 'store/rides/ridesAsyncActions';
-import { bookRide } from 'store/rides/ridesAsyncActions';
-import { saveDriver, unsaveDriver } from 'store/user/userAsyncActions';
 import {
   IconMarker,
   IconPhone,
@@ -14,33 +9,49 @@ import {
 } from 'components/icons';
 import PassengerRouteMap from 'components/map/PassengerRouteMap';
 import UserPicture from 'components/shared/UserPicture';
+import { removePassengerFromRide } from 'store/rides/ridesAsyncActions';
+import { bookRide } from 'store/rides/ridesAsyncActions';
+import { saveDriver, unsaveDriver } from 'store/user/userAsyncActions';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { RideWithDriver } from 'types/ride';
+import { Route, Waypoint } from 'types/map';
+import RideDetailsCard from './RideDetailsCard';
 
-const RideDetailsPassenger = ({ rideDetails }) => {
-  const dispatch = useDispatch();
+type RideDetailsPassengerOwnProps = {
+  rideDetails: RideWithDriver;
+};
+
+const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
+  rideDetails,
+}) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.user.userDetails);
-  const [routeMapDetails, setRouteMapDetails] = useState(rideDetails.route);
-  const driverDetails = rideDetails?.driverDetails;
-  const isRideBooked =
-    userDetails.activeRides.indexOf(rideDetails?.rideId) >= 0;
-  const isWaypointPicked = routeMapDetails.waypoints.find(
-    waypoint => waypoint.userId === userDetails.userId,
+  const userDetails = useAppSelector(state => state.user.userDetails);
+  const [routeMapDetails, setRouteMapDetails] = useState<Route>(
+    rideDetails.route,
   );
-  const isDriverSaved = userDetails.savedDrivers.find(
+  const driverDetails = rideDetails.driverDetails;
+  const isRideBooked =
+    !!userDetails?.activeRides.indexOf(rideDetails.rideId) ?? -1 >= 0;
+  const isWaypointPicked = !!routeMapDetails.waypoints.find(
+    (waypoint: Waypoint) => waypoint.userId === userDetails?.userId,
+  );
+  const isDriverSaved = !!userDetails?.savedDrivers.find(
     driver => driver === rideDetails.driverId,
   );
 
   const handleBookRide = () => {
-    if (!isRideBooked && isWaypointPicked) {
+    if (userDetails && !isRideBooked && isWaypointPicked) {
       dispatch(
         bookRide({
           passenger: userDetails,
-          rideDetails,
+          ride: rideDetails,
           waypoints: routeMapDetails.waypoints,
         }),
       );
@@ -48,21 +59,31 @@ const RideDetailsPassenger = ({ rideDetails }) => {
   };
 
   const handleCancelRide = async () => {
-    const waypoints = routeMapDetails.waypoints.filter(
-      waypoint => waypoint.userId !== userDetails.userId,
-    );
-    await dispatch(
-      removePassengerFromRide({ rideDetails, userDetails, waypoints }),
-    ).unwrap();
-    navigate(USERS_OWN_ACTIVE_RIDES.path);
+    if (userDetails) {
+      const waypoints = routeMapDetails.waypoints.filter(
+        waypoint => waypoint.userId !== userDetails?.userId,
+      );
+      await dispatch(
+        removePassengerFromRide({
+          ride: rideDetails,
+          passenger: userDetails,
+          waypoints,
+        }),
+      ).unwrap();
+      navigate(USERS_OWN_ACTIVE_RIDES.path);
+    }
   };
 
   const handleSaveDriver = () => {
-    dispatch(saveDriver({ userDetails, driverId: rideDetails.driverId }));
+    if (userDetails) {
+      dispatch(saveDriver({ userDetails, driverId: rideDetails.driverId }));
+    }
   };
 
   const handleUnsaveDriver = () => {
-    dispatch(unsaveDriver({ userDetails, driverId: rideDetails.driverId }));
+    if (userDetails) {
+      dispatch(unsaveDriver({ userDetails, driverId: rideDetails.driverId }));
+    }
   };
 
   return (
@@ -113,7 +134,6 @@ const RideDetailsPassenger = ({ rideDetails }) => {
       </div>
 
       <RideDetailsCard
-        userType={userDetails.userType}
         rideDetails={rideDetails}
         driverDetails={driverDetails}
         isRideBooked={isRideBooked}

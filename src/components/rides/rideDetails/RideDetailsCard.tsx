@@ -1,22 +1,32 @@
-import { useSelector } from 'react-redux';
+import { FC } from 'react';
 import { motion } from 'framer-motion';
 import { IconUser } from 'components/icons';
-import { USER_TYPES } from 'types/auth';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { getTime, getShortDate } from 'utilities/helpers/date-time';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import { USER_TYPES } from 'types/auth';
+import { User } from 'types/user';
 import {
   MAX_PASSENGERS_LABEL,
+  Ride,
   RIDE_TYPE_LABEL,
   SMOKING_LABEL,
 } from 'types/ride';
 
-const CardRideDetails = ({
+type CardRideDetailsOwnProps = {
+  rideDetails: Ride;
+  driverDetails?: User;
+  isRideBooked?: boolean;
+  allPassengersDetails?: User[];
+};
+
+const CardRideDetails: FC<CardRideDetailsOwnProps> = ({
   rideDetails,
   driverDetails,
   isRideBooked,
   allPassengersDetails,
 }) => {
-  const { userType } = useSelector(state => state.user.userDetails);
+  const userType = useAppSelector(state => state.user.userDetails?.userType);
   const isPassenger = userType === USER_TYPES.passenger;
   const isDriver = userType === USER_TYPES.driver;
 
@@ -67,7 +77,7 @@ const CardRideDetails = ({
                 </div>
                 <div className="list-desc__row">
                   <dt>Driver</dt>
-                  <dd className="text-center">{driverDetails.name}</dd>
+                  <dd className="text-center">{driverDetails?.name}</dd>
                 </div>
               </>
             )}
@@ -99,7 +109,7 @@ const CardRideDetails = ({
                 rideDetails.passengers.length
               } / ${MAX_PASSENGERS_LABEL[rideDetails.maxPassengers]}`}</h5>
               <ul className="list list__users">
-                {!!allPassengersDetails &&
+                {allPassengersDetails &&
                   allPassengersDetails.map(passenger => (
                     <li key={passenger.userId}>
                       <IconUser />

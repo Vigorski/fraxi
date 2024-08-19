@@ -124,11 +124,11 @@ export const addNewRide = createAsyncThunk<Ride, AddNewRideArgs, ActionError>(
 
       return transformedValues;
     } catch (err: any) {
-			return handleThunkError({
-				err,
-				dispatch,
-				rejectWithValue,
-			});
+      return handleThunkError({
+        err,
+        dispatch,
+        rejectWithValue,
+      });
     }
   },
 );
@@ -165,11 +165,11 @@ export const bookRide = createAsyncThunk<Ride, BookRideArgs, ActionError>(
       return ride;
     } catch (err: any) {
       return handleThunkError({
-				err,
-				defaultMessage: 'Unable to create new user.',
-				dispatch,
-				rejectWithValue,
-			});
+        err,
+        defaultMessage: 'Unable to create new user.',
+        dispatch,
+        rejectWithValue,
+      });
     }
   },
 );
@@ -232,11 +232,11 @@ export const removePassengerFromRide = createAsyncThunk<
       return ride;
     } catch (err: any) {
       return handleThunkError({
-				err,
-				defaultMessage: 'Unable to create new user.',
-				dispatch,
-				rejectWithValue,
-			});
+        err,
+        defaultMessage: 'Unable to create new user.',
+        dispatch,
+        rejectWithValue,
+      });
     }
   },
 );
@@ -282,11 +282,11 @@ export const getRidesState = createAsyncThunk<
       return { ridesWithTheirDriver, rideStatus };
     } catch (err: any) {
       return handleThunkError({
-				err,
-				defaultMessage: 'Unable to create new user.',
-				dispatch,
-				rejectWithValue,
-			});
+        err,
+        defaultMessage: 'Unable to create new user.',
+        dispatch,
+        rejectWithValue,
+      });
     }
   },
 );
@@ -333,11 +333,11 @@ export const getFilteredRides = createAsyncThunk<
       return null;
     } catch (err: any) {
       return handleThunkError({
-				err,
-				defaultMessage: 'Unable to create new user.',
-				dispatch,
-				rejectWithValue,
-			});
+        err,
+        defaultMessage: 'Unable to create new user.',
+        dispatch,
+        rejectWithValue,
+      });
     }
   },
 );

@@ -1,20 +1,25 @@
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getTime, getDate } from 'utilities/helpers/date-time';
 import { encryptData } from 'utilities/helpers/encription';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
-import { MAX_PASSENGERS_LABEL } from 'types/ride';
+import { MAX_PASSENGERS_LABEL, Ride } from 'types/ride';
+import { FC } from 'react';
+import { useAppSelector } from 'hooks/useAppSelector';
 
-const ActiveRideCard = ({ ride }) => {
-  const { userDetails } = useSelector(state => state.user);
-  const isUserSubscribedToRide = userDetails.activeRides.find(
+type ActiveRideCardOwnProps = {
+  ride: Ride;
+};
+
+const ActiveRideCard: FC<ActiveRideCardOwnProps> = ({ ride }) => {
+  const { userDetails } = useAppSelector(state => state.user);
+  const isUserSubscribedToRide = userDetails?.activeRides.find(
     rideId => rideId === ride.rideId,
   );
   const encryptedRideId = encryptData(
     ride.rideId,
-    process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+    process.env.REACT_APP_QUERY_PARAM_SECRET_KEY as string,
   );
 
   return (

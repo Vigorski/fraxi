@@ -16,7 +16,7 @@ export type AddNewRideArgs = {
 export type BookRideArgs = {
   passenger: User;
   ride: Ride;
-  waypoints: Waypoint[];
+  waypoints?: Waypoint[];
 };
 
 export type RemovePassengerFromRideArgs = BookRideArgs;

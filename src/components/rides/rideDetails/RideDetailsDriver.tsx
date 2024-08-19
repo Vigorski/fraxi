@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import RideDetailsCard from './RideDetailsCard';
 import DriverRouteMap from 'components/map/DriverRouteMap';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { removePassengerFromRide } from 'store/rides/ridesAsyncActions';
 import { getUsersList } from 'utilities/shared/getUsersList';
 import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
@@ -11,12 +11,19 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { Ride } from 'types/ride';
+import { User } from 'types/user';
+import RideDetailsCard from './RideDetailsCard';
 
-const RideDetailsDriver = ({ rideDetails }) => {
-  const dispatch = useDispatch();
+type RideDetailsDriverOwnProps = {
+  rideDetails: Ride;
+};
+
+const RideDetailsDriver: FC<RideDetailsDriverOwnProps> = ({ rideDetails }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.user.userDetails);
-  const [allPassengersDetails, setAllPassengersDetails] = useState(null);
+  const userDetails = useAppSelector(state => state.user.userDetails);
+  const [allPassengersDetails, setAllPassengersDetails] = useState<User[]>();
 
   useEffect(() => {
     async function fetchPassengers() {
@@ -29,10 +36,12 @@ const RideDetailsDriver = ({ rideDetails }) => {
   }, [rideDetails.passengers]);
 
   const handleCancelRide = async () => {
-    await dispatch(
-      removePassengerFromRide({ rideDetails, userDetails }),
-    ).unwrap();
-    navigate(USERS_OWN_ACTIVE_RIDES.path);
+    if (userDetails) {
+      await dispatch(
+        removePassengerFromRide({ ride: rideDetails, passenger: userDetails }),
+      ).unwrap();
+      navigate(USERS_OWN_ACTIVE_RIDES.path);
+    }
   };
 
   return (
@@ -53,6 +62,7 @@ const RideDetailsDriver = ({ rideDetails }) => {
           originCity={rideDetails.route.origin}
           destinationCity={rideDetails.route.destination}
           waypoints={rideDetails.route.waypoints}
+          storeRouteMapDetails={undefined} // #TODO: remove this once DriverRouteMap has been typed
         />
       </motion.div>
 

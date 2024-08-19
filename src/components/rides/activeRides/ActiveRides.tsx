@@ -1,11 +1,17 @@
+import { FC } from 'react';
 import { motion } from 'framer-motion';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import { Ride } from 'types/ride';
 import ActiveRideCard from './ActiveRideCard';
 
-const ActiveRides = ({ activeRides }) => {
+type ActiveRidesOwnProps = {
+  activeRides: Ride[];
+};
+
+const ActiveRides: FC<ActiveRidesOwnProps> = ({ activeRides }) => {
   if (activeRides?.length > 0) {
     return activeRides.map(ride => (
-      <ActiveRideCard ride={ride} key={ride.id} />
+      <ActiveRideCard ride={ride} key={ride.rideId} />
     ));
   }
 
