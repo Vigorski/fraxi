@@ -1,4 +1,4 @@
-import { FC, MutableRefObject, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { IconDirection } from 'components/icons';
 import { removeAutocompletePacContainer } from 'utilities/map';
 import { AutocompleteType, ExtendedAutocompleteType } from 'types/map';

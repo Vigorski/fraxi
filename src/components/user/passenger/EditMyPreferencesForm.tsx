@@ -10,7 +10,7 @@ import {
   SMOKING,
   SMOKING_LABEL,
 } from 'types/ride';
-import { AcRefType } from 'types/form'; 
+import { AcRefType } from 'types/form';
 
 const EditMyPreferencesForm = () => {
   const [formikProps, setLocation] = useFormContextRidePreferences();

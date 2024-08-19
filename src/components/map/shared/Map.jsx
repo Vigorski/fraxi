@@ -9,7 +9,7 @@ import {
 } from 'utilities/map';
 import { getUsersList } from 'utilities/shared/getUsersList';
 
-const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
+const Map = ({ children, origin, destination, waypoints = [], parentsCallback }) => {
   // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [directions, setDirections] = useState(null);
@@ -157,7 +157,4 @@ const Map = ({ children, origin, destination, waypoints, parentsCallback }) => {
   );
 };
 
-Map.defaultProps = {
-  waypoints: [],
-};
 export default memo(Map);

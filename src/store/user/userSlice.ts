@@ -77,13 +77,13 @@ const userSlice = createSlice({
     });
 
     builder.addCase(saveDriver.fulfilled, (state, action) => {
-      state.userDetails?.savedDrivers?.push(action.payload);
+      state.userDetails?.savedDrivers.push(action.payload);
     });
 
     builder.addCase(unsaveDriver.fulfilled, (state, action) => {
-      state.userDetails?.savedDrivers?.forEach((driverId, i) => {
+      state.userDetails?.savedDrivers.forEach((driverId, i) => {
         if (driverId === action.payload) {
-          state.userDetails?.savedDrivers?.splice(i, 1);
+          state.userDetails?.savedDrivers.splice(i, 1);
           return;
         }
       });

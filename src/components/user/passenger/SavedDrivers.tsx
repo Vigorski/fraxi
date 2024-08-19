@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import UserPicture from 'components/shared/UserPicture';
@@ -10,22 +9,27 @@ import {
 } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import { encryptData } from 'utilities/helpers/encription';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { User } from 'types/user';
 
 const SavedDrivers = () => {
-  const dispatch = useDispatch();
-  const { userDetails } = useSelector(state => state.user);
-  const [savedDrivers, setSavedDrivers] = useState();
+  const dispatch = useAppDispatch();
+  const { userDetails } = useAppSelector(state => state.user);
+  const [savedDrivers, setSavedDrivers] = useState<User[]>();
 
   useEffect(() => {
-    const getDrivers = async () => {
-      const response = await dispatch(
-        fetchUsers({ usersIds: userDetails.savedDrivers }),
-      ).unwrap();
-      setSavedDrivers(response);
-    };
+    if (userDetails?.savedDrivers) {
+      const getDrivers = async () => {
+        const response = await dispatch(
+          fetchUsers({ usersIds: userDetails.savedDrivers }),
+        ).unwrap();
+        setSavedDrivers(response);
+      };
 
-    getDrivers();
-  }, [userDetails.savedDrivers, dispatch]);
+      getDrivers();
+    }
+  }, [userDetails?.savedDrivers, dispatch]);
 
   if (savedDrivers) {
     return savedDrivers.map((driver, index) => {
@@ -47,7 +51,7 @@ const SavedDrivers = () => {
 
       const encryptedDriverId = encryptData(
         driver.userId,
-        process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+        process.env.REACT_APP_QUERY_PARAM_SECRET_KEY as string,
       );
 
       return (
@@ -86,8 +90,10 @@ const SavedDrivers = () => {
   }
 
   return (
-    <motion.div className="card__section card__radius--bottom">
-      <h5 variants={itemVariants}>You haven't saved anyone yet :(</h5>
+    <motion.div
+      variants={itemVariants}
+      className="card__section card__radius--bottom">
+      <h5>You haven't saved anyone yet :/</h5>
     </motion.div>
   );
 };

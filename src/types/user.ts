@@ -16,7 +16,7 @@ export type UserBase<T> = {
 
 export type UserExtras = {
   ridePreferences?: RidePreferences | {};
-  savedDrivers?: string[];
+  savedDrivers: string[];
   historyRides: string[];
   activeRides: string[];
 };
