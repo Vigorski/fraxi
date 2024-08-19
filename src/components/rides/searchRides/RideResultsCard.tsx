@@ -1,13 +1,19 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import UserPicture from 'components/shared/UserPicture';
 import { getTime, getShortDate } from 'utilities/helpers/date-time';
 import { RIDE_DETAILS } from 'utilities/constants/routesConfig';
 import { encryptData } from 'utilities/helpers/encription';
+import { RideWithDriver } from 'types/ride';
 
-const RideResultsCard = ({ ride }) => {
+type RideResultsCardOwnProps = {
+  ride: RideWithDriver;
+};
+
+const RideResultsCard: FC<RideResultsCardOwnProps> = ({ ride }) => {
   const encryptedRideId = encryptData(
     ride.rideId,
-    process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+    process.env.REACT_APP_QUERY_PARAM_SECRET_KEY as string,
   );
 
   return (

@@ -14,21 +14,22 @@ import {
   SMOKING,
   SMOKING_LABEL,
 } from 'types/ride';
+import { AcRefType } from 'types/form';
 
 const RideFilters = () => {
   const [expandFilters, setExpandFilters] = useState(false);
   const [formikProps, setLocation] = useFormContextRidePreferences();
 
-  const toggleFilters = e => {
+  const toggleFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setExpandFilters(!expandFilters);
   };
 
-  const handleOriginCityChange = acRef => {
+  const handleOriginCityChange = (acRef: AcRefType) => {
     setLocation(acRef, 'origin');
   };
 
-  const handleDestinationCityChange = acRef => {
+  const handleDestinationCityChange = (acRef: AcRefType) => {
     setLocation(acRef, 'destination');
   };
 
@@ -42,8 +43,12 @@ const RideFilters = () => {
     // this part is not good practice
     // will be removed once custom autocomplete component is finished
     // TODO: Create custom Autocomplete component
-    const originInput = document.querySelector('input#origin');
-    const destinationInput = document.querySelector('input#destination');
+    const originInput = document.querySelector(
+      'input#origin',
+    ) as HTMLInputElement;
+    const destinationInput = document.querySelector(
+      'input#destination',
+    ) as HTMLInputElement;
     originInput.value = '';
     originInput.placeholder = '';
     destinationInput.value = '';

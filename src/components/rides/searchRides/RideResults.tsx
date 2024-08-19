@@ -1,8 +1,14 @@
+import { FC } from 'react';
 import { motion } from 'framer-motion';
-import RideResultsCard from './RideResultsCard';
 import { itemVariants } from 'utilities/constants/framerVariants';
+import { RideWithDriver } from 'types/ride';
+import RideResultsCard from './RideResultsCard';
 
-const RideResults = ({ filteredRides }) => {
+type RideResultsOwnProps = {
+  filteredRides: RideWithDriver[];
+};
+
+const RideResults: FC<RideResultsOwnProps> = ({ filteredRides }) => {
   return filteredRides.length > 0 ? (
     <div className="card__wrapper">
       {/* // TODO: fix error when selecting same city */}
