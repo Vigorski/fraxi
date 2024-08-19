@@ -1,22 +1,33 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { motion } from 'framer-motion';
 import FormikUserImage from 'components/forms/FormikUserImage';
 import { IconEmail, IconPassword, IconPhone, IconUser } from 'components/icons';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import { where } from 'firebase/firestore';
-import { REGISTER_TYPES } from 'types/auth';
+import { AuthConfig, REGISTER_TYPES } from 'types/auth';
+import { FC } from 'react';
+import { UserForm } from 'types/user';
+import { FormErrors } from 'types/form';
 
-const RegisterEditUser = ({ authConfig, handleSubmit }) => {
+type RegisterEditUserOwnProps = {
+  authConfig: AuthConfig;
+  handleSubmit: (values: UserForm) => Promise<void>;
+};
+
+const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
+  authConfig,
+  handleSubmit,
+}) => {
   const { registerType, name, surname, phone, profilePicture } = authConfig;
   const isEditingUser = registerType === REGISTER_TYPES.edit;
   const isRegisteringWithEmail =
     registerType === REGISTER_TYPES.registerWithEmail;
 
-  const handleValidation = async values => {
-    const errors = {};
+  const handleValidation = async (values: UserForm) => {
+    const errors: FormErrors<UserForm> = {};
 
-    if (!!values.profilePicture) {
+    if (values.profilePicture) {
       const validFileType =
         values.profilePicture.type === 'image/jpeg' ||
         values.profilePicture.type === 'image/png';
@@ -48,8 +59,7 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
           where('email', '==', values.email),
         ]);
         if (userExists?.length > 0) {
-          const userExists = 'User mail already exists!';
-          errors.email = userExists;
+          errors.email = 'User mail already exists!';
         }
       }
     }
@@ -57,14 +67,20 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
     if (!values.password && isRegisteringWithEmail) {
       errors.password = ['Required'];
     } else if (values.password.length > 0) {
-      const passwordErrors = [];
+      const passwordErrors: string[] = [];
       // if (!/^(?=.*[A-Z])/.test(values.password)) passwordErrors.push('at least one uppercase letter');
       // if (!/^(?=.*[a-z])/.test(values.password)) passwordErrors.push('at least one lowercase letter');
-      if (!/^(?=.*\d)/i.test(values.password)) passwordErrors.push('one digit');
-      if (!/^(?=.*(\W|_))/i.test(values.password))
+      if (!/^(?=.*\d)/i.test(values.password)) {
+        passwordErrors.push('one digit');
+      }
+
+      if (!/^(?=.*(\W|_))/i.test(values.password)) {
         passwordErrors.push('one symbol');
-      if (!/.{6,}$/i.test(values.password))
+      }
+
+      if (!/.{6,}$/i.test(values.password)) {
         passwordErrors.push('at least 6 characters long');
+      }
 
       if (passwordErrors.length > 0) {
         errors.password = passwordErrors;
@@ -84,23 +100,28 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
     return errors;
   };
 
-  const submitForm = async (values, { setSubmitting }) => {
+  const submitForm = async (
+    values: UserForm,
+    { setSubmitting }: FormikHelpers<UserForm>,
+  ) => {
     await handleSubmit(values);
     setSubmitting(false);
   };
 
+  const initialValues: UserForm = {
+    profilePicture: undefined,
+    name: name ?? '',
+    surname: surname ?? '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phone: phone ?? '',
+    userType: undefined,
+  };
+
   return (
     <Formik
-      initialValues={{
-        profilePicture: '',
-        name: name ?? '',
-        surname: surname ?? '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        phone: phone ?? '',
-        userType: null,
-      }}
+      initialValues={initialValues}
       enableReinitialize={true}
       validate={handleValidation}
       validateOnChange={false}
@@ -164,13 +185,16 @@ const RegisterEditUser = ({ authConfig, handleSubmit }) => {
               <Field type="password" name="password" placeholder="Password" />
             </div>
             <ErrorMessage name="password">
-              {msg => (
-                <ul className="list input-message-error">
-                  {msg.map((msgItem, index) => (
-                    <li key={index + msgItem}>{msgItem}</li>
-                  ))}
-                </ul>
-              )}
+              {msg => {
+                const messages: string[] = Array.isArray(msg) ? msg : [msg];
+                return (
+                  <ul className="list input-message-error">
+                    {messages.map((msgItem, index) => (
+                      <li key={index + msgItem}>{msgItem}</li>
+                    ))}
+                  </ul>
+                );
+              }}
             </ErrorMessage>
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>

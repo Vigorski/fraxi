@@ -9,7 +9,7 @@ export type UserBase<T> = {
   name: string;
   surname: string;
   email: string;
-  userType: USER_TYPES;
+  userType?: USER_TYPES;
   phone?: string;
   profilePicture?: T;
 };

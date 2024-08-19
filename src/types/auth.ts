@@ -9,3 +9,11 @@ export enum REGISTER_TYPES {
   registerWithOAuth,
   edit,
 }
+
+export type AuthConfig = {
+  registerType: REGISTER_TYPES,
+  name?: string,
+  surname?: string,
+  phone?: string,
+  profilePicture?: string
+}
