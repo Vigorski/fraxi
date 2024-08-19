@@ -7,13 +7,8 @@ import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
 import FirebaseAuthService from 'services/FirebaseAuthService';
 import { USER_TYPES } from 'types/auth';
-import {
-  RidePreferences,
-  User,
-  UserExtras,
-  UserForm,
-  UserId,
-} from 'types/user';
+import { User, UserExtras, UserForm, UserId } from 'types/user';
+import { RidePreferences } from 'types/ride';
 import { ActionError } from 'types/generalActions';
 import {
   FetchUsersArgs,

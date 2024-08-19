@@ -1,12 +1,5 @@
 import { USER_TYPES } from './auth';
-
-export type RidePreferences = {
-  origin: string;
-  destination: string;
-  maxPassengers: number;
-  smoking: number;
-  rideType: number;
-};
+import { RidePreferences } from './ride';
 
 export type UserId = {
   userId: string;

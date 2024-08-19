@@ -3,13 +3,14 @@ import { IconDirection } from 'components/icons';
 import { removeAutocompletePacContainer } from 'utilities/map';
 import { AutocompleteType, ExtendedAutocompleteType } from 'types/map';
 import { Autocomplete } from '@react-google-maps/api';
+import { AcRefType } from 'types/form';
 
 type FormAutocompleteOwnProps = {
   name: string;
   label: string;
-  handler: (acRef: MutableRefObject<AutocompleteType | null>) => void;
-  placeholder: string;
-  className: string;
+  handler: (acRef: AcRefType) => void;
+  placeholder?: string;
+  className?: string;
   types?: string[];
 }
 

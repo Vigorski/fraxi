@@ -2,7 +2,7 @@ import { Form, Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import FormikSelect from 'components/forms/FormikSelect';
 import FormAutocomplete from 'components/forms/FormAutocomplete';
-import useFormContextRouteCities from 'hooks/useFormContextRouteCities';
+import useFormContextRidePreferences from 'hooks/useFormContextRidePreferences';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS,
@@ -10,16 +10,17 @@ import {
   SMOKING,
   SMOKING_LABEL,
 } from 'types/ride';
+import { AcRefType } from 'types/form'; 
 
 const EditMyPreferencesForm = () => {
-  const [formikProps, setRouteFieldValue] = useFormContextRouteCities();
+  const [formikProps, setLocation] = useFormContextRidePreferences();
 
-  const handleOriginCityChange = acRef => {
-    setRouteFieldValue(acRef, 'origin');
+  const handleOriginCityChange = (acRef: AcRefType) => {
+    setLocation(acRef, 'origin');
   };
 
-  const handleDestinationCityChange = acRef => {
-    setRouteFieldValue(acRef, 'destination');
+  const handleDestinationCityChange = (acRef: AcRefType) => {
+    setLocation(acRef, 'destination');
   };
 
   return (

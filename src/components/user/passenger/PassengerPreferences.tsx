@@ -1,16 +1,20 @@
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from 'hooks/useAppSelector';
 import {
+  MAX_PASSENGERS,
   MAX_PASSENGERS_LABEL,
+  RIDE_TYPE,
   RIDE_TYPE_LABEL,
+  SMOKING,
   SMOKING_LABEL,
 } from 'types/ride';
+import { RidePreferences } from 'types/ride';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 
 const PassengerPreferences = () => {
-  const { userDetails } = useSelector(state => state.user);
+  const userDetails = useAppSelector(state => state.user.userDetails);
   const { origin, destination, maxPassengers, rideType, smoking } =
-    userDetails?.ridePreferences ?? {};
+    (userDetails?.ridePreferences as RidePreferences) ?? {};
 
   return (
     <>
@@ -39,15 +43,15 @@ const PassengerPreferences = () => {
         <dl className="list-desc__rows">
           <div className="list-desc__row">
             <dt># of Stops</dt>
-            <dd>{MAX_PASSENGERS_LABEL[maxPassengers]}</dd>
+            <dd>{MAX_PASSENGERS_LABEL[maxPassengers as MAX_PASSENGERS]}</dd>
           </div>
           <div className="list-desc__row">
             <dt>Type of ride</dt>
-            <dd>{RIDE_TYPE_LABEL[rideType]}</dd>
+            <dd>{RIDE_TYPE_LABEL[rideType as RIDE_TYPE]}</dd>
           </div>
           <div className="list-desc__row">
             <dt>Smoking</dt>
-            <dd>{SMOKING_LABEL[smoking]}</dd>
+            <dd>{SMOKING_LABEL[smoking as SMOKING]}</dd>
           </div>
         </dl>
       </div>

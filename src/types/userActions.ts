@@ -1,4 +1,5 @@
-import { RidePreferences, User, UserForm } from './user';
+import { User, UserForm } from './user';
+import { RidePreferences } from './ride';
 
 export type UserRegisterArgs = {
   values: UserForm;

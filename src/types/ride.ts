@@ -47,6 +47,14 @@ export const RIDE_TYPE_LABEL: { [key in RIDE_TYPE]: string } = {
   [RIDE_TYPE.irregular]: 'irregular',
 };
 
+export type RidePreferences = {
+  origin: string;
+  destination: string;
+  maxPassengers: number;
+  smoking: number;
+  rideType: number;
+};
+
 export type RideBase = {
   maxPassengers: MAX_PASSENGERS;
   rideType: RIDE_TYPE;

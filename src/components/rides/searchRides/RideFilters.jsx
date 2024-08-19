@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import FormikSelect from 'components/forms/FormikSelect';
 import FormAutocomplete from 'components/forms/FormAutocomplete';
 import { IconFilters, IconClearFilters } from 'components/icons';
-import useFormContextRouteCities from 'hooks/useFormContextRouteCities';
+import useFormContextRidePreferences from 'hooks/useFormContextRidePreferences';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS,
@@ -17,7 +17,7 @@ import {
 
 const RideFilters = () => {
   const [expandFilters, setExpandFilters] = useState(false);
-  const [formikProps, setRouteFieldValue] = useFormContextRouteCities();
+  const [formikProps, setLocation] = useFormContextRidePreferences();
 
   const toggleFilters = e => {
     e.preventDefault();
@@ -25,11 +25,11 @@ const RideFilters = () => {
   };
 
   const handleOriginCityChange = acRef => {
-    setRouteFieldValue(acRef, 'origin');
+    setLocation(acRef, 'origin');
   };
 
   const handleDestinationCityChange = acRef => {
-    setRouteFieldValue(acRef, 'destination');
+    setLocation(acRef, 'destination');
   };
 
   const handleClearForm = () => {
