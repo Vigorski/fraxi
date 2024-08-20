@@ -8,21 +8,19 @@ import { USER_TYPES } from 'types/auth';
 import { User } from 'types/user';
 import {
   MAX_PASSENGERS_LABEL,
-  Ride,
   RIDE_TYPE_LABEL,
+  RideWithDriver,
   SMOKING_LABEL,
 } from 'types/ride';
 
 type CardRideDetailsOwnProps = {
-  rideDetails: Ride;
-  driverDetails?: User;
+  rideDetails: RideWithDriver;
   isRideBooked?: boolean;
   allPassengersDetails?: User[];
 };
 
 const CardRideDetails: FC<CardRideDetailsOwnProps> = ({
   rideDetails,
-  driverDetails,
   isRideBooked,
   allPassengersDetails,
 }) => {
@@ -77,7 +75,7 @@ const CardRideDetails: FC<CardRideDetailsOwnProps> = ({
                 </div>
                 <div className="list-desc__row">
                   <dt>Driver</dt>
-                  <dd className="text-center">{driverDetails?.name}</dd>
+                  <dd className="text-center">{rideDetails.driverDetails.name}</dd>
                 </div>
               </>
             )}

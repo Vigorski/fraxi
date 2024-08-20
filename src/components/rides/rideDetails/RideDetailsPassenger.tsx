@@ -135,7 +135,6 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
 
       <RideDetailsCard
         rideDetails={rideDetails}
-        driverDetails={driverDetails}
         isRideBooked={isRideBooked}
       />
 

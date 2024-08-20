@@ -11,12 +11,12 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import { Ride } from 'types/ride';
+import { RideWithDriver } from 'types/ride';
 import { User } from 'types/user';
 import RideDetailsCard from './RideDetailsCard';
 
 type RideDetailsDriverOwnProps = {
-  rideDetails: Ride;
+  rideDetails: RideWithDriver;
 };
 
 const RideDetailsDriver: FC<RideDetailsDriverOwnProps> = ({ rideDetails }) => {
