@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { IconUserPlaceholder } from 'components/icons';
+import { FieldInputProps, FieldProps, FormikProps } from 'formik';
+import { UserForm } from 'types/user';
 
-const FormikUserImage = ({ field, form, profilePicture }) => {
+interface FormikUserImageOwnProps extends FieldProps {
+  form: FormikProps<UserForm>;
+  field: FieldInputProps<File>;
+  profilePicture: string;
+}
+
+const FormikUserImage: FC<FormikUserImageOwnProps> = ({
+  field,
+  form,
+  profilePicture,
+}) => {
   const [url, setURL] = useState(profilePicture ?? '');
 
-  function handleChange(e) {
-    if (e.currentTarget.files[0]) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    if (e.currentTarget.files?.length) {
       form.setFieldValue(field.name, e.currentTarget.files[0]);
       setURL(URL.createObjectURL(e.currentTarget.files[0]));
     }

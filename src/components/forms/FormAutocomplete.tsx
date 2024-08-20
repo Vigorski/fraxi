@@ -12,7 +12,7 @@ type FormAutocompleteOwnProps = {
   placeholder?: string;
   className?: string;
   types?: string[];
-}
+};
 
 const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
   name,
