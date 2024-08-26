@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
@@ -16,6 +15,7 @@ import {
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import {
+  CreateRideFormValues,
   MAX_PASSENGERS,
   MAX_PASSENGERS_LABEL,
   RIDE_TYPE,
@@ -23,17 +23,23 @@ import {
   SMOKING,
   SMOKING_LABEL,
 } from 'types/ride';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { FormErrors } from 'types/form';
+import { Route } from 'types/map';
 
 const CreateRide = () => {
   const earliestDepartureDate = new Date(addTime([1]));
-  const [departureDate, setDepartureDate] = useState(earliestDepartureDate);
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.user.userDetails);
-  const dispatch = useDispatch();
-  const [routeMapDetails, setRouteMapDetails] = useState({});
+  const userDetails = useAppSelector(state => state.user.userDetails);
+  const dispatch = useAppDispatch();
+  const [departureDate, setDepartureDate] = useState<Date | null>(
+    earliestDepartureDate,
+  );
+  const [routeMapDetails, setRouteMapDetails] = useState<Route>();
 
-  const handleValidation = values => {
-    const errors = {};
+  const handleValidation = (values: CreateRideFormValues) => {
+    const errors: FormErrors<CreateRideFormValues> = {};
 
     if (!values.price) {
       errors.price = 'Required';
@@ -41,34 +47,37 @@ const CreateRide = () => {
       errors.price = 'Must be positive integer';
     }
 
-    if (
-      values.maxPassengers === '' ||
-      values.maxPassengers === undefined ||
-      values.maxPassengers === null
-    ) {
+    if (values.maxPassengers === undefined || values.maxPassengers === null) {
       errors.maxPassengers = 'Required';
     }
 
     return errors;
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    const newRoute = await dispatch(
-      addNewRide({
-        driver: userDetails,
-        route: routeMapDetails,
-        values,
-      }),
-    ).unwrap();
-    setSubmitting(false);
-    if (newRoute) {
-      navigate(MY_PROFILE.path);
+  const handleSubmit = async (
+    values: CreateRideFormValues,
+    { setSubmitting }: FormikHelpers<CreateRideFormValues>,
+  ) => {
+    if (userDetails && routeMapDetails) {
+      const newRoute = await dispatch(
+        addNewRide({
+          driver: userDetails,
+          route: routeMapDetails,
+          values,
+        }),
+      ).unwrap();
+
+      setSubmitting(false);
+
+      if (newRoute) {
+        navigate(MY_PROFILE.path);
+      }
     }
   };
 
   const storeRouteMapDetails = useCallback(
-    ({ origin, destination, waypoints }) => {
-      const directionsAugmentedData = {
+    ({ origin, destination, waypoints }: Route) => {
+      const directionsAugmentedData: Route = {
         origin,
         destination,
         waypoints,
@@ -103,11 +112,7 @@ const CreateRide = () => {
           {({ isSubmitting }) => (
             <Form>
               <motion.div className="form-field" variants={itemVariants}>
-                <DriverRouteMap
-                  // originCity={'Skopje, North Macedonia'}
-                  // destinationCity={'Prilep, North Macedonia'}
-                  storeRouteMapDetails={storeRouteMapDetails}
-                />
+                <DriverRouteMap storeRouteMapDetails={storeRouteMapDetails} />
               </motion.div>
               <motion.div className="form-field" variants={itemVariants}>
                 <label htmlFor="departureDate">Departure date</label>
@@ -115,7 +120,7 @@ const CreateRide = () => {
                   name="departureDate"
                   id="departureDate"
                   selected={departureDate}
-                  onChange={date => setDepartureDate(date)}
+                  onChange={setDepartureDate}
                   showTimeSelect
                   dateFormat="d MMMM, yyyy h:mm aa"
                   timeFormat="HH:mm"

@@ -34,11 +34,11 @@ const CardRideDetails: FC<CardRideDetailsOwnProps> = ({
         className={`card__header card__decorated card__radius--top--sm ${
           isRideBooked || isDriver ? 'card__decorated--active' : ''
         }`}>
-        <p>{rideDetails.route.origin.address_components.city ?? 'N/A'}</p>
+        <p>{rideDetails.route.origin?.address_components.city ?? 'N/A'}</p>
         <div className="card__decorated-dash" />
         <i className="icon-car-ride icon-md" />
         <div className="card__decorated-dash" />
-        <p>{rideDetails.route.destination.address_components.city ?? 'N/A'}</p>
+        <p>{rideDetails.route.destination?.address_components.city ?? 'N/A'}</p>
       </div>
       <div className="card__body">
         <div className="card__section pb-0">

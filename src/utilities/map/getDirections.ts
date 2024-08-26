@@ -7,8 +7,8 @@ import {
 } from 'types/map';
 
 type GetDirectionsArguments = {
-  origin: Place;
-  destination: Place;
+  origin?: Place;
+  destination?: Place;
   waypoints?: DirectionsWaypoint[];
   callback: (result: DirectionsResult) => void;
 };

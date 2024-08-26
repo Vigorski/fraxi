@@ -92,7 +92,9 @@ export const addNewRide = createAsyncThunk<Ride, AddNewRideArgs, ActionError>(
 
     try {
       if (
+        !route?.origin?.address_components ||
         !('city' in route.origin.address_components) ||
+        !route?.destination?.address_components ||
         !('city' in route.destination.address_components)
       ) {
         throw new Error('Please select a location within city bounds');

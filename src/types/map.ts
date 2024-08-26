@@ -24,9 +24,9 @@ export type Place = {
 };
 
 export type Route = {
-  origin: Place;
-  destination: Place;
-  waypoints: Waypoint[];
+  origin?: Place;
+  destination?: Place;
+  waypoints?: Waypoint[];
   travelMode?: google.maps.TravelMode;
 };
 

@@ -7,10 +7,10 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { Place, Route, Waypoint } from 'types/map';
 
 type PassengerRouteMapOwnProps = {
-  originCity: Place;
-  destinationCity: Place;
-  waypoints: Waypoint[];
-  storeRouteMapDetails?: (route: Route) => void;
+  originCity?: Place;
+  destinationCity?: Place;
+  waypoints?: Waypoint[];
+  storeRouteMapDetails: (route: Route) => void;
 };
 
 const PassengerRouteMap: FC<PassengerRouteMapOwnProps> = ({
@@ -20,9 +20,9 @@ const PassengerRouteMap: FC<PassengerRouteMapOwnProps> = ({
   storeRouteMapDetails,
 }) => {
   // state only for waypoints. storeRouteMapDetails contains the entire route
-  const [newWaypoints, setNewWaypoints] = useState<Waypoint[]>(waypoints);
+  const [newWaypoints, setNewWaypoints] = useState<Waypoint[]>(waypoints || []);
   const userId = useAppSelector(state => state.user.userDetails?.userId);
-  const ownWaypoint = waypoints.find(waypoint => waypoint.userId === userId);
+  const ownWaypoint = waypoints?.find(waypoint => waypoint.userId === userId);
 
   return (
     <GoogleMapsLoader>

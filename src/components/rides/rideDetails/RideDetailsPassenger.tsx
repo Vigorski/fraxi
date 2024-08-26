@@ -40,7 +40,7 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
   const userExistsInRide =
     userDetails?.activeRides.indexOf(rideDetails?.rideId) ?? -1;
   const isRideBooked = userExistsInRide >= 0;
-  const isWaypointPicked = !!routeMapDetails.waypoints.find(
+  const isWaypointPicked = !!routeMapDetails.waypoints?.find(
     (waypoint: Waypoint) => waypoint.userId === userDetails?.userId,
   );
   const isDriverSaved = !!userDetails?.savedDrivers.find(
@@ -61,7 +61,7 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
 
   const handleCancelRide = async () => {
     if (userDetails) {
-      const waypoints = routeMapDetails.waypoints.filter(
+      const waypoints = routeMapDetails.waypoints?.filter(
         waypoint => waypoint.userId !== userDetails?.userId,
       );
       await dispatch(
@@ -108,7 +108,7 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
             <div className="ride-details__info">
               <motion.p variants={itemVariants}>
                 <IconMarker />{' '}
-                <span>{rideDetails.route.origin.address_components.city}</span>
+                <span>{rideDetails.route.origin?.address_components.city}</span>
               </motion.p>
               <motion.p variants={itemVariants}>
                 <IconPhone /> <span>{driverDetails.phone}</span>

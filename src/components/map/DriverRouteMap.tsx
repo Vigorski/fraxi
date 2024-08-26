@@ -6,9 +6,9 @@ import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import { Place, Route, Waypoint } from 'types/map';
 
 type DriverRouteMapOwnProps = {
-  originCity: Place;
-  destinationCity: Place;
-  waypoints: Waypoint[];
+  originCity?: Place;
+  destinationCity?: Place;
+  waypoints?: Waypoint[];
   storeRouteMapDetails?: (args: Route) => void;
 };
 
@@ -18,8 +18,8 @@ const DriverRouteMap: FC<DriverRouteMapOwnProps> = ({
   waypoints,
   storeRouteMapDetails,
 }) => {
-  const [origin, setOrigin] = useState<Place>(originCity);
-  const [destination, setDestination] = useState<Place>(destinationCity);
+  const [origin, setOrigin] = useState<Place | undefined>(originCity);
+  const [destination, setDestination] = useState<Place | undefined>(destinationCity);
 
   return (
     <GoogleMapsLoader>
