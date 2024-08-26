@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Layout from 'layout/Layout';
 import {
@@ -9,26 +8,31 @@ import {
 import { userUpdate } from 'store/user/userAsyncActions';
 import RegisterEditUser from '../../components/auth/RegisterEditUser';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
-import { REGISTER_TYPES } from 'types/auth';
+import { AuthConfig, REGISTER_TYPES } from 'types/auth';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { UserForm } from 'types/user';
 
 const EditMyProfile = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userDetails = useSelector(state => state.user.userDetails);
-  const editUserConfig = {
+  const userDetails = useAppSelector(state => state.user.userDetails);
+  const editUserConfig: AuthConfig = {
     registerType: REGISTER_TYPES.edit,
-    name: userDetails.name,
-    surname: userDetails.surname,
-    phone: userDetails.phone,
-    profilePicture: userDetails.profilePicture
-  }
+    name: userDetails?.name,
+    surname: userDetails?.surname,
+    phone: userDetails?.phone,
+    profilePicture: userDetails?.profilePicture,
+  };
 
-  const handleSubmitEdit = async (values) => {
-    await dispatch(
-      userUpdate({ userId: userDetails.userId, values }),
-    ).unwrap();
-    navigate(MY_PROFILE.path);
-  }
+  const handleSubmitEdit = async (values: UserForm) => {
+    if (userDetails) {
+      await dispatch(
+        userUpdate({ userId: userDetails.userId, values }),
+      ).unwrap();
+      navigate(MY_PROFILE.path);
+    }
+  };
 
   return (
     <Layout>
@@ -39,7 +43,10 @@ const EditMyProfile = () => {
         animate="visible"
         exit="hidden">
         <motion.h3 variants={itemVariants}>Edit profile</motion.h3>
-        <RegisterEditUser authConfig={editUserConfig} handleSubmit={handleSubmitEdit} />
+        <RegisterEditUser
+          authConfig={editUserConfig}
+          handleSubmit={handleSubmitEdit}
+        />
       </motion.section>
     </Layout>
   );

@@ -89,7 +89,7 @@ const CreateRide = () => {
     [],
   );
 
-  const formInitialValues = {
+  const formInitialValues: CreateRideFormValues = {
     price: 0,
     maxPassengers: MAX_PASSENGERS.four,
     departureDate: earliestDepartureDate,

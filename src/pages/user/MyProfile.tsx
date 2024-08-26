@@ -1,4 +1,3 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
@@ -11,10 +10,12 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 
 const MyProfile = () => {
-  const dispatch = useDispatch();
-  const { userDetails } = useSelector(state => state.user);
+  const dispatch = useAppDispatch();
+  const { userDetails } = useAppSelector(state => state.user);
 
   const handleLogout = async () => {
     await dispatch(userLogout()).unwrap();
