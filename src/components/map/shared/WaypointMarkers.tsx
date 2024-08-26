@@ -1,10 +1,20 @@
+import { FC } from 'react';
 import { Marker } from '@react-google-maps/api';
-import { useSelector } from 'react-redux';
 import markerIcon from 'assets/icons/marker.svg';
 import markerIconUnique from 'assets/icons/marker-unique.svg';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { Waypoint } from 'types/map';
 
-const WaypointMarkers = ({ waypoints, handleMarkerClick }) => {
-  const { userId } = useSelector(state => state.user.userDetails);
+type WaypointMarkersOwnProps = {
+  waypoints: Waypoint[];
+  handleMarkerClick: (waypoint: Waypoint) => void;
+};
+
+const WaypointMarkers: FC<WaypointMarkersOwnProps> = ({
+  waypoints,
+  handleMarkerClick,
+}) => {
+  const userId = useAppSelector(state => state.user.userDetails?.userId);
 
   return waypoints.map(waypoint => {
     if (waypoint.userId === userId) {

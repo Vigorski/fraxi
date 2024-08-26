@@ -37,8 +37,9 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
     rideDetails.route,
   );
   const driverDetails = rideDetails.driverDetails;
-  const isRideBooked =
-    !!userDetails?.activeRides.indexOf(rideDetails.rideId) ?? -1 >= 0;
+  const userExistsInRide =
+    userDetails?.activeRides.indexOf(rideDetails?.rideId) ?? -1;
+  const isRideBooked = userExistsInRide >= 0;
   const isWaypointPicked = !!routeMapDetails.waypoints.find(
     (waypoint: Waypoint) => waypoint.userId === userDetails?.userId,
   );
@@ -133,10 +134,7 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
         </div>
       </div>
 
-      <RideDetailsCard
-        rideDetails={rideDetails}
-        isRideBooked={isRideBooked}
-      />
+      <RideDetailsCard rideDetails={rideDetails} isRideBooked={isRideBooked} />
 
       <motion.div className="mt-xxl" variants={itemVariants}>
         <PassengerRouteMap

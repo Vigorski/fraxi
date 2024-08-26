@@ -1,11 +1,11 @@
-import { AddressComponentsRefined } from "types/map";
+import { AddressComponents, PlaceResult } from 'types/map';
 
-export function getAddressComponents(place: google.maps.places.PlaceResult) {
-  const addressComponents: AddressComponentsRefined = {};
+export function getAddressComponents(place: PlaceResult) {
+  const addressComponents: AddressComponents = {};
 
-	if (!place.address_components) {
-		throw new Error("");
-	}
+  if (!place.address_components) {
+    throw new Error('');
+  }
 
   place.address_components.forEach(component => {
     if (component.types.includes('street_number')) {

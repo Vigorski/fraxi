@@ -1,11 +1,16 @@
 import GoogleMaps from 'services/GoogleMaps';
-import { Waypoint } from 'types/map';
+import {
+  DirectionsResult,
+  DirectionsStatus,
+  DirectionsWaypoint,
+  Place,
+} from 'types/map';
 
 type GetDirectionsArguments = {
-  origin: google.maps.places.PlaceResult;
-  destination: google.maps.places.PlaceResult;
-  waypoints?: Waypoint[];
-  callback: (result: google.maps.DirectionsResult) => void;
+  origin: Place;
+  destination: Place;
+  waypoints?: DirectionsWaypoint[];
+  callback: (result: DirectionsResult) => void;
 };
 
 export const getDirections = ({
@@ -32,10 +37,7 @@ export const getDirections = ({
       optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING,
     },
-    (
-      result: google.maps.DirectionsResult | null,
-      status: google.maps.DirectionsStatus,
-    ) => {
+    (result: DirectionsResult | null, status: DirectionsStatus) => {
       if (result && status === google.maps.DirectionsStatus.OK) {
         callback(result);
       } else {

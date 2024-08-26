@@ -1,7 +1,17 @@
 import { InfoWindow } from '@react-google-maps/api';
 import { IconCity, IconDeparture, IconRoute } from 'components/icons';
+import { FC } from 'react';
+import { CachedWaypoint } from 'types/map';
 
-const PlaceInfoWindow = ({ selectedMarker, handleInfoWindowClose }) => (
+type PlaceInfoWindowOwnProps = {
+  selectedMarker: CachedWaypoint;
+  handleInfoWindowClose: () => void;
+};
+
+const PlaceInfoWindow: FC<PlaceInfoWindowOwnProps> = ({
+  selectedMarker,
+  handleInfoWindowClose,
+}) => (
   <InfoWindow
     position={selectedMarker.location}
     onCloseClick={handleInfoWindowClose}

@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import SetRouteWaypoint from './shared/SetRouteWaypoint';
 import ReadonlyRouteWaypoint from './shared/ReadonlyRouteWaypoint';
 import Map from './shared/Map';
-import { useSelector } from 'react-redux';
 import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { Place, Route, Waypoint } from 'types/map';
 
-const PassengerRouteMap = ({
+type PassengerRouteMapOwnProps = {
+  originCity: Place;
+  destinationCity: Place;
+  waypoints: Waypoint[];
+  storeRouteMapDetails?: (route: Route) => void;
+};
+
+const PassengerRouteMap: FC<PassengerRouteMapOwnProps> = ({
   originCity,
   destinationCity,
   waypoints,
   storeRouteMapDetails,
 }) => {
   // state only for waypoints. storeRouteMapDetails contains the entire route
-  const [newWaypoints, setNewWaypoints] = useState(waypoints);
-  const { userId } = useSelector(state => state.user.userDetails);
+  const [newWaypoints, setNewWaypoints] = useState<Waypoint[]>(waypoints);
+  const userId = useAppSelector(state => state.user.userDetails?.userId);
   const ownWaypoint = waypoints.find(waypoint => waypoint.userId === userId);
 
   return (

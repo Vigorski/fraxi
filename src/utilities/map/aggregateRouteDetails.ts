@@ -1,23 +1,18 @@
-import { AddressComponentsRefined } from 'types/map';
+import { Place, PlaceResult } from 'types/map';
 import { getAddressComponents } from './getAddressComponents';
 
-type AggregateRouteDetails = {
-  formatted_address?: string;
-  place_id?: string;
-  location: {
-    lat?: number;
-    lng?: number;
-  };
-  address_components: AddressComponentsRefined;
-}
+export function aggregateRouteDetails(place: PlaceResult): Place {
+  const lat = place.geometry?.location?.lat();
+  const lng = place.geometry?.location?.lng();
 
-export function aggregateRouteDetails(place: google.maps.places.PlaceResult): AggregateRouteDetails {
+  if (!lat || !lng) throw new Error('Error with getting coordinates.');
+
   return {
     formatted_address: place.formatted_address,
     place_id: place.place_id,
     location: {
-      lat: place.geometry?.location?.lat(),
-      lng: place.geometry?.location?.lng(),
+      lat,
+      lng,
     },
     address_components: getAddressComponents(place),
   };

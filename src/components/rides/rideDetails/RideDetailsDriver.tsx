@@ -62,7 +62,6 @@ const RideDetailsDriver: FC<RideDetailsDriverOwnProps> = ({ rideDetails }) => {
           originCity={rideDetails.route.origin}
           destinationCity={rideDetails.route.destination}
           waypoints={rideDetails.route.waypoints}
-          storeRouteMapDetails={undefined} // #TODO: remove this once DriverRouteMap has been typed
         />
       </motion.div>
 

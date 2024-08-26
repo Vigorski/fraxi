@@ -1,29 +1,40 @@
-export type AddressComponentsRefined = {
+export type AddressComponents = {
   street?: string;
   city?: string;
   postalCode?: string;
 };
 
+type Location = {
+  lat: number;
+  lng: number;
+};
+
 export type Waypoint = {
-  location: google.maps.LatLng;
+  location: Location;
   stopover: boolean;
-  userId?: string;
+  userId: string;
   formatted_address?: string;
 };
 
 export type Place = {
-  address_components: AddressComponentsRefined;
-  formatted_address: string;
-  location: google.maps.LatLng;
-  placeId: string;
+  address_components: AddressComponents;
+  location: Location;
+  formatted_address?: string;
+  place_id?: string;
 };
 
 export type Route = {
   origin: Place;
   destination: Place;
   waypoints: Waypoint[];
-  travelMode: google.maps.TravelMode;
+  travelMode?: google.maps.TravelMode;
 };
+
+export interface CachedWaypoint extends Waypoint {
+  totalDistanceInKm: string;
+  totalFormattedDuration: string;
+  fullname: string;
+}
 
 export type Library =
   | 'core'
@@ -39,20 +50,25 @@ export type Library =
   | 'drawing'
   | 'visualization';
 
-export type AutocompleteType = InstanceType<typeof google.maps.places.Autocomplete>;
-
+export type DirectionsWaypoint = google.maps.DirectionsWaypoint;
+export type DirectionsResult = google.maps.DirectionsResult;
+export type DirectionsStatus = google.maps.DirectionsStatus;
+export type PlaceResult = google.maps.places.PlaceResult;
+export type AutocompleteType = InstanceType<
+  typeof google.maps.places.Autocomplete
+>;
 export interface ExtendedAutocompleteType extends AutocompleteType {
   componentRestrictions: {
-    country: string
-  }
+    country: string;
+  };
   gm_accessors_: {
-    [key: string]: any
+    [key: string]: any;
   };
   gm_bindings_: {
-    [key: string]: any,
-  }
+    [key: string]: any;
+  };
   types: string[];
   __e3_: {
-    [key: string]: any
-  }
+    [key: string]: any;
+  };
 }

@@ -1,4 +1,15 @@
-const ReadonlyRouteInputs = ({ origin, destination }) => {
+import { FC } from 'react';
+import { Place } from 'types/map';
+
+type ReadonlyRouteInputsOwnProps = {
+  origin: Place;
+  destination: Place;
+};
+
+const ReadonlyRouteInputs: FC<ReadonlyRouteInputsOwnProps> = ({
+  origin,
+  destination,
+}) => {
   return (
     <>
       <div className="form-field form-field--disabled">

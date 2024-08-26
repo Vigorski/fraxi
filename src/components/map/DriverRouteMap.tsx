@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import CreateRouteInputs from './shared/CreateRouteInputs';
 import ReadonlyRouteInputs from './shared/ReadonlyRouteInputs';
 import Map from './shared/Map';
 import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
+import { Place, Route, Waypoint } from 'types/map';
 
-const DriverRouteMap = ({
+type DriverRouteMapOwnProps = {
+  originCity: Place;
+  destinationCity: Place;
+  waypoints: Waypoint[];
+  storeRouteMapDetails?: (args: Route) => void;
+};
+
+const DriverRouteMap: FC<DriverRouteMapOwnProps> = ({
   originCity,
   destinationCity,
   waypoints,
   storeRouteMapDetails,
 }) => {
-  const [origin, setOrigin] = useState(originCity ?? null);
-  const [destination, setDestination] = useState(destinationCity ?? null);
+  const [origin, setOrigin] = useState<Place>(originCity);
+  const [destination, setDestination] = useState<Place>(destinationCity);
 
   return (
     <GoogleMapsLoader>

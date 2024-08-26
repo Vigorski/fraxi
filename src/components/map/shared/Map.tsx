@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useMemo } from 'react';
+import React, { useEffect, memo, ReactElement, FC, useReducer } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 import flagIcon from 'assets/icons/flag.svg';
 import WaypointMarkers from './WaypointMarkers';
@@ -8,14 +8,35 @@ import {
   formattedRouteDistanceAndDuration,
 } from 'utilities/map';
 import { getUsersList } from 'utilities/shared/getUsersList';
+import {
+  initialMapState,
+  MapActionTypes,
+  mapReducer,
+} from 'utilities/map/mapReducer';
+import {
+  CachedWaypoint,
+  DirectionsResult,
+  DirectionsWaypoint,
+  Place,
+  Route,
+  Waypoint,
+} from 'types/map';
 
-const Map = ({ children, origin, destination, waypoints = [], parentsCallback }) => {
-  // const [map, setMap] = useState(/** @type google.maps.Map */ (null));
-  const [selectedMarker, setSelectedMarker] = useState(null);
-  const [directions, setDirections] = useState(null);
-  const [distance, setDistance] = useState(null);
-  const [duration, setDuration] = useState(null);
-  const cachedWaypoints = useMemo(() => [], []);
+interface MapOwnProps extends Route {
+  children: ReactElement;
+  parentsCallback?: (args: Route) => void;
+}
+
+const Map: FC<MapOwnProps> = ({
+  children,
+  origin,
+  destination,
+  waypoints = [],
+  parentsCallback,
+}) => {
+  const [state, dispatch] = useReducer(mapReducer, initialMapState);
+  const { selectedMarker, directions, distance, duration, cachedWaypoints } =
+    state;
 
   const macedoniaBounds = {
     latLngBounds: {
@@ -27,61 +48,79 @@ const Map = ({ children, origin, destination, waypoints = [], parentsCallback })
     strictBounds: true,
   };
 
-  const handleMarkerClick = waypoint => {
+  const handleMarkerClick = (waypoint: Waypoint) => {
     const cachedWaypoint = cachedWaypoints.find(
       cwp => cwp.formatted_address === waypoint.formatted_address,
     );
 
     if (cachedWaypoint) {
-      setSelectedMarker(cachedWaypoint);
+      dispatch({
+        type: MapActionTypes.SET_SELECTED_MARKER,
+        payload: cachedWaypoint,
+      });
     } else {
-      const waypointDirectionsCallback = async result => {
+      const waypointDirectionsCallback = async (result: DirectionsResult) => {
         const [totalDistanceInKm, totalFormattedDuration] =
           formattedRouteDistanceAndDuration(result.routes[0].legs);
-				const passenger = await getUsersList([waypoint.userId]);
-				const { name, surname }	= passenger[0];
-        const waypointDirectionsData = {
+        const passenger = await getUsersList([waypoint.userId]);
+        const { name, surname } = passenger[0];
+        const waypointDirectionsData: CachedWaypoint = {
           ...waypoint,
           totalDistanceInKm,
           totalFormattedDuration,
-					fullname: name + ' ' + surname
+          fullname: name + ' ' + surname,
         };
 
-        cachedWaypoints.push(waypointDirectionsData);
-        setSelectedMarker(waypointDirectionsData);
+        dispatch({
+          type: MapActionTypes.ADD_CACHED_WAYPOINT,
+          payload: waypointDirectionsData,
+        });
+        dispatch({
+          type: MapActionTypes.SET_SELECTED_MARKER,
+          payload: waypointDirectionsData,
+        });
       };
 
       getDirections({
         origin,
-        destination: waypoint,
+        destination: waypoint as unknown as Place,
         callback: waypointDirectionsCallback,
       });
     }
   };
 
-  const closeInfoWindow = () => setSelectedMarker(null);
+  const closeInfoWindow = () =>
+    dispatch({ type: MapActionTypes.SET_SELECTED_MARKER, payload: undefined });
 
   useEffect(() => {
     if (origin && destination) {
-      const strippedWaypointsForDirection = waypoints.map(waypoint => ({
-        location: waypoint.location,
-        stopover: waypoint.stopover,
-      }));
+      const directionsWaypoints: DirectionsWaypoint[] = waypoints.map(
+        waypoint => ({
+          location: waypoint.location,
+          stopover: waypoint.stopover,
+        }),
+      );
 
-      const directionsCallback = result => {
+      const directionsCallback = (result: DirectionsResult) => {
         const [totalDistanceInKm, totalFormattedDuration] =
           formattedRouteDistanceAndDuration(result.routes[0].legs);
 
-        setDistance(totalDistanceInKm);
-        setDuration(totalFormattedDuration);
-        setDirections(result);
+        dispatch({
+          type: MapActionTypes.SET_DISTANCE,
+          payload: totalDistanceInKm,
+        });
+        dispatch({
+          type: MapActionTypes.SET_DURATION,
+          payload: totalFormattedDuration,
+        });
+        dispatch({ type: MapActionTypes.SET_DIRECTIONS, payload: result });
         parentsCallback && parentsCallback({ origin, destination, waypoints });
       };
 
       getDirections({
         origin,
         destination,
-        waypoints: strippedWaypointsForDirection,
+        waypoints: directionsWaypoints,
         callback: directionsCallback,
       });
     }
@@ -90,7 +129,7 @@ const Map = ({ children, origin, destination, waypoints = [], parentsCallback })
   return (
     <>
       {/*
-				children is currently used for inserting input fields to handle directions and waypoints.
+				The purpose of children is to insert input fields and handle directions and waypoints.
 				It gives the advantage of passing props directly from the Map to children,
 				but it is not being used at the moment.
 				This can be removed from Map and placed as a sibling to it for greater flexibility 
@@ -114,7 +153,7 @@ const Map = ({ children, origin, destination, waypoints = [], parentsCallback })
             streetViewControl: false,
             mapTypeControl: false,
             fullscreenControl: false,
-            mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
+            mapId: process.env.REACT_APP_GOOGLE_MAP_ID as string,
             gestureHandling: 'greedy',
             restriction: macedoniaBounds,
           }}>

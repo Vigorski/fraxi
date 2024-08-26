@@ -5,7 +5,7 @@ import { User } from 'types/user';
 export const getUsersList = async (users: string[]) => {
   try {
     const comboUsersCall = users.map(userId =>
-      FirebaseFirestoreService.get('/users', [where('userId', '==', userId)])
+      FirebaseFirestoreService.get('/users', [where('userId', '==', userId)]),
     );
 
     const usersFull = await Promise.all(comboUsersCall);
@@ -13,6 +13,6 @@ export const getUsersList = async (users: string[]) => {
 
     return usersSpread;
   } catch (err: any) {
-    console.error(err);
+    throw new Error(err);
   }
 };
