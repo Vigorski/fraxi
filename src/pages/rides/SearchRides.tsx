@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import RideResults from 'components/rides/searchRides/RideResults';
@@ -8,18 +7,27 @@ import FormFilters from 'components/forms/FormFilters';
 import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
 import { mainContainerVariants } from 'utilities/constants/framerVariants';
-import { MAX_PASSENGERS, RIDE_TYPE, SMOKING } from 'types/ride';
+import {
+  MAX_PASSENGERS,
+  RIDE_TYPE,
+  RidePreferences,
+  RideWithDriver,
+  SearchRideFormValues,
+  SMOKING,
+} from 'types/ride';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 
 const SearchRides = () => {
-  const dispatch = useDispatch();
-  const { userDetails } = useSelector(state => state.user);
-  const [filteredRides, setFilteredRides] = useState([]);
+  const dispatch = useAppDispatch();
+  const { userDetails } = useAppSelector(state => state.user);
+  const [filteredRides, setFilteredRides] = useState<RideWithDriver[] | null>();
   const ridePreferences = userDetails?.ridePreferences;
   const ridePreferencesExist =
     ridePreferences && Object.keys(ridePreferences).length !== 0;
 
   const handleObserverValues = useCallback(
-    async values => {
+    async (values: SearchRideFormValues): Promise<void> => {
       const filteredRidesResponse = await dispatch(
         getFilteredRides({ searchPreferences: values }),
       ).unwrap();
@@ -28,7 +36,7 @@ const SearchRides = () => {
     [dispatch],
   );
 
-  const formInitialValues = {
+  const formInitialValues: RidePreferences = {
     origin: ridePreferencesExist ? ridePreferences.origin : '',
     destination: ridePreferencesExist ? ridePreferences.destination : '',
     maxPassengers: ridePreferencesExist
@@ -57,7 +65,7 @@ const SearchRides = () => {
             <RideFilters />
           </FormFilters>
 
-          <RideResults filteredRides={filteredRides} />
+          {filteredRides && <RideResults filteredRides={filteredRides} />}
         </motion.section>
       </Layout>
     </GoogleMapsLoader>

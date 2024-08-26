@@ -39,7 +39,7 @@ const prepareUserRegisterValues = (
   };
 
   if (values.userType === USER_TYPES.passenger) {
-    additionalValues.ridePreferences = {}; // #TODO: check if this empty object can be substituted by undefined
+    additionalValues.ridePreferences = undefined;
   }
 
   return { ...filteredValues, ...additionalValues };

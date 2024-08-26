@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
@@ -13,10 +12,12 @@ import {
 } from 'utilities/constants/framerVariants';
 import { PAGE_NOT_FOUND } from 'utilities/constants/routesConfig';
 import { decryptData } from 'utilities/helpers/encription';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { RideWithDriver } from 'types/ride';
 
 const SavedDriverActiveRides = () => {
-  const [activeRides, setActiveRides] = useState();
-  const dispatch = useDispatch();
+  const [activeRides, setActiveRides] = useState<RideWithDriver[]>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const getQuery = useQueryParameter();
   const driverId = getQuery('userId');
@@ -24,9 +25,15 @@ const SavedDriverActiveRides = () => {
   useEffect(() => {
     const fetchDriverAndRides = async () => {
       try {
+        if (!driverId) {
+          throw new Error(
+            'Invalid or malformed URL parameters: Unable to retrieve the ride information. Please check the URL and try again.',
+          );
+        }
+
         const decryptedDriverId = decryptData(
           driverId,
-          process.env.REACT_APP_QUERY_PARAM_SECRET_KEY,
+          process.env.REACT_APP_QUERY_PARAM_SECRET_KEY as string,
         );
 
         if (decryptedDriverId) {
@@ -42,18 +49,20 @@ const SavedDriverActiveRides = () => {
 
           setActiveRides(ridesResponse.ridesWithTheirDriver);
         }
-      } catch (error) {
+      } catch (error: any) {
         navigate(PAGE_NOT_FOUND.path, {
-					state: {
-						errorMessage: `${error.name}: Error when fetching specified driver and their active rides`,
-					},
-					replace: true
+          state: {
+            errorMessage: `${error.name}: Error when fetching specified driver and their active rides`,
+          },
+          replace: true,
         });
       }
     };
 
     fetchDriverAndRides();
   }, [driverId, navigate, dispatch]);
+
+  if (!activeRides) return null;
 
   return (
     <Layout>
@@ -63,17 +72,15 @@ const SavedDriverActiveRides = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        {activeRides && (
-          <>
-            <motion.div variants={itemVariants} className="mb-xl">
-              <p className="text-xs text-primary text-bold">Driver</p>
-              <h4>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</h4>
-            </motion.div>
-            <motion.p variants={itemVariants} className="text-xs text-primary text-bold">
-              Active rides
-            </motion.p>
-          </>
-        )}
+        <motion.div variants={itemVariants} className="mb-xl">
+          <p className="text-xs text-primary text-bold">Driver</p>
+          <h4>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</h4>
+        </motion.div>
+        <motion.p
+          variants={itemVariants}
+          className="text-xs text-primary text-bold">
+          Active rides
+        </motion.p>
         <div className="card__wrapper">
           <ActiveRides activeRides={activeRides} />
         </div>
