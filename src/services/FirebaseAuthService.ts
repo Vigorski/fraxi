@@ -52,7 +52,7 @@ export default class FirebaseAuthService {
     await signOut(FirebaseAppInstance.auth);
   }
 
-  static getCurrentUser(): FirebaseUser | null {
+  static getCurrentUser() {
     return FirebaseAppInstance.auth.currentUser;
   }
 

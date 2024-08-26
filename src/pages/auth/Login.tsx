@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { motion } from 'framer-motion';
 import { IconGoogle, IconPassword, IconUser } from 'components/icons';
 import Layout from 'layout/Layout';
@@ -14,15 +13,19 @@ import {
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import FraxiLogoWhite from '../../assets/logo/fraxi-logo-white.png';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { AuthLogin } from 'types/auth';
+import { FormErrors } from 'types/form';
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { userDetails } = useSelector(state => state.user);
-  const { globalFormError } = useSelector(state => state.errors);
+  const dispatch = useAppDispatch();
+  const { userDetails } = useAppSelector(state => state.user);
+  const { globalFormError } = useAppSelector(state => state.errors);
 
-  const handleValidation = values => {
-    const errors = {};
+  const handleValidation = (values: AuthLogin) => {
+    const errors: FormErrors<AuthLogin> = {};
 
     if (!values.email) {
       errors.email = 'Required';
@@ -37,7 +40,10 @@ const Login = () => {
 
   const authError = userDetails === null && globalFormError.trim().length !== 0;
 
-  const handleLogin = async (values, { setSubmitting }) => {
+  const handleLogin = async (
+    values: AuthLogin,
+    { setSubmitting }: FormikHelpers<AuthLogin>,
+  ) => {
     await dispatch(userLogin({ values })).unwrap();
     setSubmitting(false);
   };
@@ -59,13 +65,11 @@ const Login = () => {
         initial="initial"
         animate="visible"
         exit="hidden">
-        <motion.div className='branding-auth' variants={itemVariants}>
-          <div className='branding-auth__logo'>
+        <motion.div className="branding-auth" variants={itemVariants}>
+          <div className="branding-auth__logo">
             <img src={FraxiLogoWhite} alt="fraxi logo" />
           </div>
-          <h1 className="h1-xs branding-auth__moto">
-            Welcome to Fraxi
-          </h1>
+          <h1 className="h1-xs branding-auth__moto">Welcome to Fraxi</h1>
         </motion.div>
 
         <motion.button

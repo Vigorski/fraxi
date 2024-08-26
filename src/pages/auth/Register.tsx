@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import Layout from 'layout/Layout';
 import RegisterEditUser from 'components/auth/RegisterEditUser';
@@ -9,17 +8,19 @@ import {
   mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
-import { REGISTER_TYPES } from 'types/auth';
+import { AuthConfig, REGISTER_TYPES } from 'types/auth';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { UserForm } from 'types/user';
 
 const Register = () => {
-  const dispatch = useDispatch();
-  const registerUserConfig = {
-    registerType: REGISTER_TYPES.registerWithEmail
-  }
+  const dispatch = useAppDispatch();
+  const registerUserConfig: AuthConfig = {
+    registerType: REGISTER_TYPES.registerWithEmail,
+  };
 
-  const handleSubmitRegister = async (values) => {
+  const handleSubmitRegister = async (values: UserForm) => {
     await dispatch(userRegister({ values })).unwrap();
-  }
+  };
 
   return (
     <Layout>
@@ -32,7 +33,10 @@ const Register = () => {
           Create Your Account
         </motion.h1>
 
-        <RegisterEditUser authConfig={registerUserConfig} handleSubmit={handleSubmitRegister} />
+        <RegisterEditUser
+          authConfig={registerUserConfig}
+          handleSubmit={handleSubmitRegister}
+        />
 
         <motion.div className="divider" variants={itemVariants}>
           <span>OR</span>
