@@ -11,7 +11,6 @@ type RideResultsOwnProps = {
 const RideResults: FC<RideResultsOwnProps> = ({ filteredRides }) => {
   return filteredRides.length > 0 ? (
     <div className="card__wrapper">
-      {/* // TODO: fix error when selecting same city */}
       {filteredRides.map((ride, index) => (
         <motion.div
           variants={itemVariants}

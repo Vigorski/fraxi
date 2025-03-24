@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, MouseEvent, useCallback } from 'react';
 import { Field, ErrorMessage } from 'formik';
 import { motion } from 'framer-motion';
 import FormikSelect from 'components/forms/FormikSelect';
@@ -20,9 +20,9 @@ const RideFilters = () => {
   const [expandFilters, setExpandFilters] = useState(false);
   const [formikProps, setLocation] = useFormContextRidePreferences();
 
-  const toggleFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleFilters = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setExpandFilters(!expandFilters);
+    setExpandFilters(prev => !prev);
   };
 
   const handleOriginCityChange = (acRef: AcRefType) => {
@@ -33,15 +33,13 @@ const RideFilters = () => {
     setLocation(acRef, 'destination');
   };
 
-  const handleClearForm = () => {
+  const handleClearForm = useCallback(() => {
+    formikProps.resetForm();
     formikProps.setFieldValue('origin', '');
     formikProps.setFieldValue('destination', '');
-    formikProps.setFieldValue('maxPassengers', MAX_PASSENGERS.noPreference);
-    formikProps.setFieldValue('rideType', RIDE_TYPE.noPreference);
-    formikProps.setFieldValue('smoking', SMOKING.noPreference);
 
     // this part is not good practice
-    // will be removed once custom autocomplete component is finished
+    // will be removed once a custom autocomplete component is created
     // TODO: Create custom Autocomplete component
     const originInput = document.querySelector(
       'input#origin',
@@ -53,7 +51,7 @@ const RideFilters = () => {
     originInput.placeholder = '';
     destinationInput.value = '';
     destinationInput.placeholder = '';
-  };
+  }, [formikProps]);
 
   return (
     <>
