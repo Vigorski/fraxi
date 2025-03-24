@@ -40,7 +40,7 @@ const RideFilters = () => {
 
     // this part is not good practice
     // will be removed once a custom autocomplete component is created
-    // TODO: Create custom Autocomplete component
+    // TODO: Create custom Autocomplete component using Places API instead
     const originInput = document.querySelector(
       'input#origin',
     ) as HTMLInputElement;

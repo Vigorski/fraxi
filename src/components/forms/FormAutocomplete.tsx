@@ -4,6 +4,7 @@ import { removeAutocompletePacContainer } from 'utilities/map';
 import { AutocompleteType, ExtendedAutocompleteType } from 'types/map';
 import { Autocomplete } from '@react-google-maps/api';
 import { AcRefType } from 'types/form';
+import { removeAutocompletePacContainersDevMode } from 'utilities/map/pacContainer';
 
 type FormAutocompleteOwnProps = {
   name: string;
@@ -26,8 +27,12 @@ const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
 
   useEffect(() => {
     return () => {
-      removeAutocompletePacContainer(acRef.current as ExtendedAutocompleteType);
-    };
+      if (process.env.NODE_ENV === 'development') {
+        removeAutocompletePacContainersDevMode();
+      } else {
+        removeAutocompletePacContainer(acRef.current as ExtendedAutocompleteType);
+      }
+    }
   }, []);
 
   return (
