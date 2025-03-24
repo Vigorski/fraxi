@@ -14,7 +14,7 @@ import {
   mapReducer,
 } from 'utilities/map/mapReducer';
 import {
-  CachedWaypoint,
+  CachedWaypointInfo,
   DirectionsResult,
   DirectionsWaypoint,
   Place,
@@ -31,11 +31,11 @@ const Map: FC<MapOwnProps> = ({
   children,
   origin,
   destination,
-  waypoints = [],
+  waypoints,
   parentsCallback,
 }) => {
   const [state, dispatch] = useReducer(mapReducer, initialMapState);
-  const { selectedMarker, directions, distance, duration, cachedWaypoints } =
+  const { selectedMarker, directions, distance, duration, cachedWaypointsInfo } =
     state;
 
   const macedoniaBounds = {
@@ -49,14 +49,14 @@ const Map: FC<MapOwnProps> = ({
   };
 
   const handleMarkerClick = (waypoint: Waypoint) => {
-    const cachedWaypoint = cachedWaypoints.find(
+    const cachedWaypointInfo = cachedWaypointsInfo.find(
       cwp => cwp.formatted_address === waypoint.formatted_address,
     );
 
-    if (cachedWaypoint) {
+    if (cachedWaypointInfo) {
       dispatch({
         type: MapActionTypes.SET_SELECTED_MARKER,
-        payload: cachedWaypoint,
+        payload: cachedWaypointInfo,
       });
     } else {
       const waypointDirectionsCallback = async (result: DirectionsResult) => {
@@ -64,7 +64,7 @@ const Map: FC<MapOwnProps> = ({
           formattedRouteDistanceAndDuration(result.routes[0].legs);
         const passenger = await getUsersList([waypoint.userId]);
         const { name, surname } = passenger[0];
-        const waypointDirectionsData: CachedWaypoint = {
+        const waypointDirectionsData: CachedWaypointInfo = {
           ...waypoint,
           totalDistanceInKm,
           totalFormattedDuration,
@@ -83,24 +83,21 @@ const Map: FC<MapOwnProps> = ({
 
       getDirections({
         origin,
-        destination: waypoint as unknown as Place,
+        destination: { formatted_address: waypoint.formatted_address } as Place,
         callback: waypointDirectionsCallback,
       });
     }
   };
 
-  const closeInfoWindow = () =>
-    dispatch({ type: MapActionTypes.SET_SELECTED_MARKER, payload: undefined });
+  const closeInfoWindow = () => {
+    return dispatch({
+      type: MapActionTypes.SET_SELECTED_MARKER,
+      payload: undefined,
+    });
+  };
 
   useEffect(() => {
     if (origin && destination) {
-      const directionsWaypoints: DirectionsWaypoint[] = waypoints.map(
-        waypoint => ({
-          location: waypoint.location,
-          stopover: waypoint.stopover,
-        }),
-      );
-
       const directionsCallback = (result: DirectionsResult) => {
         const [totalDistanceInKm, totalFormattedDuration] =
           formattedRouteDistanceAndDuration(result.routes[0].legs);
@@ -117,6 +114,12 @@ const Map: FC<MapOwnProps> = ({
         parentsCallback && parentsCallback({ origin, destination, waypoints });
       };
 
+      const directionsWaypoints: DirectionsWaypoint[] =
+        waypoints?.map(waypoint => ({
+          location: waypoint.location,
+          stopover: waypoint.stopover,
+        })) || [];
+
       getDirections({
         origin,
         destination,
@@ -124,7 +127,7 @@ const Map: FC<MapOwnProps> = ({
         callback: directionsCallback,
       });
     }
-  }, [origin, destination, waypoints, parentsCallback]);
+  }, [origin, destination, waypoints]);
 
   return (
     <>
@@ -146,7 +149,7 @@ const Map: FC<MapOwnProps> = ({
         <GoogleMap
           onClick={closeInfoWindow}
           mapContainerStyle={{ width: '100%', height: '500px' }}
-          center={{ lat: 41.6, lng: 21.7 }}
+          center={ origin?.location ?? { lat: 41.6, lng: 21.7 }}
           zoom={8}
           options={{
             zoomControl: false,

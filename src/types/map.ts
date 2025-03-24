@@ -30,7 +30,7 @@ export type Route = {
   travelMode?: google.maps.TravelMode;
 };
 
-export interface CachedWaypoint extends Waypoint {
+export interface CachedWaypointInfo extends Waypoint {
   totalDistanceInKm: string;
   totalFormattedDuration: string;
   fullname: string;
