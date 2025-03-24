@@ -21,7 +21,7 @@ export type BookRideArgs = {
 
 export type RemovePassengerFromRideArgs = BookRideArgs;
 
-type RideStatus = 'driver' | 'passenger';
+type RideStatus = 'activeRides' | 'historyRides';
 
 export type GetRidesStateArgs = {
   rideIds: string[];
