@@ -19,6 +19,7 @@ import {
   UserUpdateReturn,
 } from 'types/userActions';
 import { handleThunkError } from 'utilities/shared/handleThunkError';
+import { errorActions } from 'store/errors/errorSlice';
 
 const excludeCorePropsFromUserDetails = (values: UserForm) => {
   const { email, userType, password, confirmPassword, ...filteredValues } =
@@ -150,6 +151,7 @@ export const userLogin = createAsyncThunk<
     await FirebaseAuthService.loginWithEmail(values.email, values.password);
     dispatch(httpActions.requestSuccess());
   } catch (err: any) {
+    dispatch(errorActions.setGlobalFormError({errorMessage: err.message}));
     return handleThunkError({
       err,
       defaultMessage: 'Unable to login user.',
@@ -187,6 +189,7 @@ export const handleUserLoginWithGoogleAuth = createAsyncThunk<
       return isUserRegistered;
     } catch (err: any) {
       await FirebaseAuthService.signOut();
+      dispatch(errorActions.setGlobalFormError({errorMessage: err.message}));
       return handleThunkError({
         err,
         defaultMessage: 'Cannot login with google account!',
