@@ -80,9 +80,12 @@ const CreateRide = () => {
       const directionsAugmentedData: Route = {
         origin,
         destination,
-        waypoints,
         travelMode: window.google?.maps?.TravelMode?.DRIVING ?? 'DRIVING',
       };
+
+      if (waypoints) {
+        directionsAugmentedData.waypoints = waypoints;
+      }
 
       setRouteMapDetails(directionsAugmentedData);
     },
