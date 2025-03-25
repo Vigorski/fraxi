@@ -114,7 +114,7 @@ const CreateRide = () => {
               <motion.div className="form-field" variants={itemVariants}>
                 <DriverRouteMap storeRouteMapDetails={storeRouteMapDetails} />
               </motion.div>
-              <motion.div className="form-field" variants={itemVariants}>
+              <motion.div className="form-field form-field__datepicker" variants={itemVariants}>
                 <label htmlFor="departureDate">Departure date</label>
                 <DatePicker
                   name="departureDate"
