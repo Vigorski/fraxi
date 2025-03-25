@@ -6,7 +6,6 @@ import { ridesActions } from 'store/rides/ridesSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
 import FirebaseAuthService from 'services/FirebaseAuthService';
-import { USER_TYPES } from 'types/auth';
 import { User, UserExtras, UserForm, UserId } from 'types/user';
 import { RidePreferences } from 'types/ride';
 import { ActionError } from 'types/generalActions';
@@ -37,10 +36,6 @@ const prepareUserRegisterValues = (
     historyRides: [],
     activeRides: [],
   };
-
-  if (values.userType === USER_TYPES.passenger) {
-    additionalValues.ridePreferences = undefined;
-  }
 
   return { ...filteredValues, ...additionalValues };
 };
