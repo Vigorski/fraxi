@@ -127,7 +127,7 @@ const Map: FC<MapOwnProps> = ({
         callback: directionsCallback,
       });
     }
-  }, [origin, destination, waypoints]);
+  }, [origin, destination, waypoints, parentsCallback]);
 
   return (
     <>
