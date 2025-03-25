@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// #TODO: this global error might be obsolete. Check after implementing auth
-
 type ErrorState = {
   globalFormError: string;
 };
