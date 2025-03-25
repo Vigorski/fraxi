@@ -1,3 +1,16 @@
+.form-field__datepicker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+
+  .react-datepicker-wrapper {
+    flex: 1;
+    margin-left: calc-rem(28px);
+  }
+}
+
 .react-datepicker {
   border-color: $color-blue-dark-2;
   background-color: $color-gray-3;
@@ -32,6 +45,15 @@
     padding: 0.4rem;
   }
 
+  &-popper &__triangle {
+    stroke: $color-gray-3;
+  }
+
+  &-popper[data-placement^=bottom] &__triangle {
+    fill: $color-blue-dark-2;
+    color: $color-blue-dark-2;
+  }
+
   &-popper[data-placement^=bottom] &__triangle::before {
     top: 0;
   }
@@ -39,6 +61,11 @@
   &-popper[data-placement^=bottom] &__triangle::before,
   &-popper[data-placement^=bottom] &__triangle::after {
     border-bottom-color: $color-gray-2;
+  }
+  
+  &-popper[data-placement^=top] &__triangle {
+    fill: $color-gray-3;
+    color: $color-gray-3;
   }
 
   &-popper[data-placement^=top] &__triangle::before {

@@ -7,6 +7,8 @@ import { itemVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS,
   MAX_PASSENGERS_LABEL,
+  RIDE_TYPE,
+  RIDE_TYPE_LABEL,
   SMOKING,
   SMOKING_LABEL,
 } from 'types/ride';
@@ -82,16 +84,16 @@ const EditMyPreferencesForm = () => {
           component={FormikSelect}
           options={[
             {
-              value: SMOKING.noPreference,
-              label: SMOKING_LABEL[SMOKING.noPreference],
+              value: RIDE_TYPE.noPreference,
+              label: RIDE_TYPE_LABEL[RIDE_TYPE.noPreference],
             },
             {
-              value: SMOKING.noSmoking,
-              label: SMOKING_LABEL[SMOKING.noSmoking],
+              value: RIDE_TYPE.regular,
+              label: RIDE_TYPE_LABEL[RIDE_TYPE.regular],
             },
             {
-              value: SMOKING.smoking,
-              label: SMOKING_LABEL[SMOKING.smoking],
+              value: RIDE_TYPE.irregular,
+              label: RIDE_TYPE_LABEL[RIDE_TYPE.irregular],
             },
           ]}
         />

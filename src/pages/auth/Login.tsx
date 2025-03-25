@@ -38,7 +38,7 @@ const Login = () => {
     return errors;
   };
 
-  const authError = userDetails === null && globalFormError.trim().length !== 0;
+  const authError = userDetails === null && !!globalFormError?.trim();
 
   const handleLogin = async (
     values: AuthLogin,

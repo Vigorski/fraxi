@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RideDetailsPassenger from 'components/rides/rideDetails/RideDetailsPassenger';
 import RideDetailsDriver from 'components/rides/rideDetails/RideDetailsDriver';
@@ -13,8 +13,6 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { RideWithDriver } from 'types/ride';
 
 const RideDetails = () => {
-  // TODO: use the rideId from params to pull ride data from DB
-  // TODO: (bug) ride passengers has same number after booking
   const [rideDetails, setRideDetails] = useState<RideWithDriver>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -24,48 +22,53 @@ const RideDetails = () => {
   const getQuery = useQueryParameter();
   const rideId = getQuery('rideId');
 
-  useEffect(() => {
-    const fetchRideAndDriver = async () => {
-      try {
-        if (!rideId) {
-          throw new Error(
-            'Invalid or malformed URL parameters: Unable to retrieve the ride information. Please check the URL and try again.',
-          );
-        }
-
-        const decryptedRideId = decryptData(
-          rideId,
-          process.env.REACT_APP_QUERY_PARAM_SECRET_KEY as string,
+  const fetchRideAndDriver = useCallback(async () => {
+    try {
+      if (!rideId) {
+        throw new Error(
+          'Invalid or malformed URL parameters: Unable to retrieve the ride information. Please check the URL and try again.',
         );
-
-        if (decryptedRideId) {
-          const rideResponse = await dispatch(
-            getRidesState({ rideIds: [decryptedRideId] }),
-          ).unwrap();
-
-          // there will always be only one ride retrieved here,
-          // so we can access the first item in the returned array
-          setRideDetails(rideResponse.ridesWithTheirDriver[0]);
-        }
-      } catch (error: any) {
-        navigate(PAGE_NOT_FOUND.path, {
-          state: {
-            errorMessage: `${error.name}: Error when fetching specified driver and their ride`,
-          },
-          replace: true,
-        });
       }
-    };
 
+      const decryptedRideId = decryptData(
+        rideId,
+        process.env.REACT_APP_QUERY_PARAM_SECRET_KEY as string,
+      );
+
+      if (decryptedRideId) {
+        const rideResponse = await dispatch(
+          getRidesState({ rideIds: [decryptedRideId] }),
+        ).unwrap();
+
+        // there will always be only one ride retrieved here,
+        // so we can access the first item in the returned array
+        setRideDetails(rideResponse.ridesWithTheirDriver[0]);
+      }
+    } catch (error: any) {
+      navigate(PAGE_NOT_FOUND.path, {
+        state: {
+          errorMessage: `${error.name}: Error when fetching specified driver and their ride`,
+        },
+        replace: true,
+      });
+    }
+  }, [rideId, dispatch, navigate]);
+
+  useEffect(() => {
     fetchRideAndDriver();
-  }, [rideId, navigate, dispatch]);
+  }, [fetchRideAndDriver]);
 
   if (!rideDetails) return null;
 
   return (
     <Layout>
       <>
-        {isUserPassenger && <RideDetailsPassenger rideDetails={rideDetails} />}
+        {isUserPassenger && (
+          <RideDetailsPassenger
+            rideDetails={rideDetails}
+            bookRideCallback={fetchRideAndDriver}
+          />
+        )}
         {isUserDriver && <RideDetailsDriver rideDetails={rideDetails} />}
       </>
     </Layout>

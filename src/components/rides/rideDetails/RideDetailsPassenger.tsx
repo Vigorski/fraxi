@@ -25,10 +25,12 @@ import RideDetailsCard from './RideDetailsCard';
 
 type RideDetailsPassengerOwnProps = {
   rideDetails: RideWithDriver;
+  bookRideCallback: () => void;
 };
 
 const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
   rideDetails,
+  bookRideCallback,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -47,15 +49,17 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
     driver => driver === rideDetails.driverId,
   );
 
-  const handleBookRide = () => {
+  const handleBookRide = async () => {
     if (userDetails && !isRideBooked && isWaypointPicked) {
-      dispatch(
+      await dispatch(
         bookRide({
           passenger: userDetails,
           ride: rideDetails,
           waypoints: routeMapDetails.waypoints,
         }),
-      );
+      ).unwrap();
+
+      bookRideCallback();
     }
   };
 

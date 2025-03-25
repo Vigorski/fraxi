@@ -6,7 +6,6 @@ import { ridesActions } from 'store/rides/ridesSlice';
 import FirebaseFirestoreService from 'services/FirebaseFirestoreService';
 import FirebaseStorageService from 'services/FirebaseStorageService';
 import FirebaseAuthService from 'services/FirebaseAuthService';
-import { USER_TYPES } from 'types/auth';
 import { User, UserExtras, UserForm, UserId } from 'types/user';
 import { RidePreferences } from 'types/ride';
 import { ActionError } from 'types/generalActions';
@@ -20,6 +19,7 @@ import {
   UserUpdateReturn,
 } from 'types/userActions';
 import { handleThunkError } from 'utilities/shared/handleThunkError';
+import { errorActions } from 'store/errors/errorSlice';
 
 const excludeCorePropsFromUserDetails = (values: UserForm) => {
   const { email, userType, password, confirmPassword, ...filteredValues } =
@@ -37,10 +37,6 @@ const prepareUserRegisterValues = (
     historyRides: [],
     activeRides: [],
   };
-
-  if (values.userType === USER_TYPES.passenger) {
-    additionalValues.ridePreferences = undefined;
-  }
 
   return { ...filteredValues, ...additionalValues };
 };
@@ -155,6 +151,7 @@ export const userLogin = createAsyncThunk<
     await FirebaseAuthService.loginWithEmail(values.email, values.password);
     dispatch(httpActions.requestSuccess());
   } catch (err: any) {
+    dispatch(errorActions.setGlobalFormError({errorMessage: err.message}));
     return handleThunkError({
       err,
       defaultMessage: 'Unable to login user.',
@@ -192,6 +189,7 @@ export const handleUserLoginWithGoogleAuth = createAsyncThunk<
       return isUserRegistered;
     } catch (err: any) {
       await FirebaseAuthService.signOut();
+      dispatch(errorActions.setGlobalFormError({errorMessage: err.message}));
       return handleThunkError({
         err,
         defaultMessage: 'Cannot login with google account!',
