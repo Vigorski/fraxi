@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Formik, FormikHelpers } from 'formik';
-import { motion } from 'framer-motion';
 import EditMyPreferencesForm from 'components/user/passenger/EditMyPreferencesForm';
 import { updateRidePreferences } from 'store/user/userAsyncActions';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
-import { mainContainerVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS,
   RIDE_TYPE,
@@ -14,6 +12,7 @@ import {
 import { FormErrors } from 'types/form';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const EditMyPreferences = () => {
   const navigate = useNavigate();
@@ -63,19 +62,14 @@ const EditMyPreferences = () => {
   };
 
   return (
-    <motion.section
-      className="profile profile--edit"
-      variants={mainContainerVariants}
-      initial="initial"
-      animate="visible"
-      exit="hidden">
+    <MotionWrapper className="profile profile--edit">
       <Formik
         initialValues={initialValues}
         validate={handleValidation}
         onSubmit={handleSubmit}>
         <EditMyPreferencesForm />
       </Formik>
-    </motion.section>
+    </MotionWrapper>
   );
 };
 

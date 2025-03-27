@@ -3,13 +3,11 @@ import { motion } from 'framer-motion';
 import RegisterEditUser from 'components/auth/RegisterEditUser';
 import { userRegister } from 'store/user/userAsyncActions';
 import { LOGIN } from 'utilities/constants/routesConfig';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { itemVariants } from 'utilities/constants/framerVariants';
 import { AuthConfig, REGISTER_TYPES } from 'types/auth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { UserForm } from 'types/user';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -22,29 +20,27 @@ const Register = () => {
   };
 
   return (
-    <motion.div
-      variants={mainContainerVariants}
-      initial="initial"
-      animate="visible"
-      exit="hidden">
-      <motion.h1 className="h1-sm mt-md mb-xxl" variants={itemVariants}>
-        Create Your Account
-      </motion.h1>
+    <MotionWrapper as="div">
+      <>
+        <motion.h1 className="h1-sm mt-md mb-xxl" variants={itemVariants}>
+          Create Your Account
+        </motion.h1>
 
-      <RegisterEditUser
-        authConfig={registerUserConfig}
-        handleSubmit={handleSubmitRegister}
-      />
+        <RegisterEditUser
+          authConfig={registerUserConfig}
+          handleSubmit={handleSubmitRegister}
+        />
 
-      <motion.div className="divider" variants={itemVariants}>
-        <span>OR</span>
-      </motion.div>
-      <motion.div variants={itemVariants}>
-        <Link className="btn-primary-ghost btn-block" to={LOGIN.path}>
-          Sign in
-        </Link>
-      </motion.div>
-    </motion.div>
+        <motion.div className="divider" variants={itemVariants}>
+          <span>OR</span>
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <Link className="btn-primary-ghost btn-block" to={LOGIN.path}>
+            Sign in
+          </Link>
+        </motion.div>
+      </>
+    </MotionWrapper>
   );
 };
 

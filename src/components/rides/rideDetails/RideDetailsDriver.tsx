@@ -8,12 +8,12 @@ import { removePassengerFromRide } from 'store/rides/ridesAsyncActions';
 import { getUsersList } from 'utilities/shared/getUsersList';
 import { USERS_OWN_ACTIVE_RIDES } from 'utilities/constants/routesConfig';
 import {
-  mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import { RideWithDriver } from 'types/ride';
 import { User } from 'types/user';
 import RideDetailsCard from './RideDetailsCard';
+import MotionWrapper from 'layout/MotionWrapper';
 
 type RideDetailsDriverOwnProps = {
   rideDetails: RideWithDriver;
@@ -45,33 +45,31 @@ const RideDetailsDriver: FC<RideDetailsDriverOwnProps> = ({ rideDetails }) => {
   };
 
   return (
-    <motion.section
+    <MotionWrapper
       className="ride-details"
-      variants={mainContainerVariants}
-      initial="initial"
-      animate="visible"
-      exit="hidden"
       data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}>
-      <RideDetailsCard
-        rideDetails={rideDetails}
-        allPassengersDetails={allPassengersDetails}
-      />
-
-      <motion.div className="mt-xxl" variants={itemVariants}>
-        <DriverRouteMap
-          originCity={rideDetails.route.origin}
-          destinationCity={rideDetails.route.destination}
-          waypoints={rideDetails.route.waypoints}
+      <>
+        <RideDetailsCard
+          rideDetails={rideDetails}
+          allPassengersDetails={allPassengersDetails}
         />
-      </motion.div>
 
-      <motion.button
-        className="btn-primary-ghost btn-block mt-xxl"
-        onClick={handleCancelRide}
-        variants={itemVariants}>
-        Cancel ride
-      </motion.button>
-    </motion.section>
+        <motion.div className="mt-xxl" variants={itemVariants}>
+          <DriverRouteMap
+            originCity={rideDetails.route.origin}
+            destinationCity={rideDetails.route.destination}
+            waypoints={rideDetails.route.waypoints}
+          />
+        </motion.div>
+
+        <motion.button
+          className="btn-primary-ghost btn-block mt-xxl"
+          onClick={handleCancelRide}
+          variants={itemVariants}>
+          Cancel ride
+        </motion.button>
+      </>
+    </MotionWrapper>
   );
 };
 

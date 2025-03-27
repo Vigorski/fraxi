@@ -9,10 +9,7 @@ import DriverRouteMap from 'components/map/DriverRouteMap';
 import { addNewRide } from 'store/rides/ridesAsyncActions';
 import { addTime } from 'utilities/helpers/date-time';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { itemVariants } from 'utilities/constants/framerVariants';
 import {
   CreateRideFormValues,
   MAX_PASSENGERS,
@@ -26,6 +23,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { FormErrors } from 'types/form';
 import { Route } from 'types/map';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const CreateRide = () => {
   const earliestDepartureDate = new Date(addTime([1]));
@@ -100,12 +98,7 @@ const CreateRide = () => {
   };
 
   return (
-    <motion.section
-      className="profile profile--edit"
-      variants={mainContainerVariants}
-      initial="initial"
-      animate="visible"
-      exit="hidden">
+    <MotionWrapper className="profile profile--edit">
       <Formik
         initialValues={formInitialValues}
         validate={handleValidation}
@@ -115,7 +108,9 @@ const CreateRide = () => {
             <motion.div className="form-field" variants={itemVariants}>
               <DriverRouteMap storeRouteMapDetails={storeRouteMapDetails} />
             </motion.div>
-            <motion.div className="form-field form-field__datepicker" variants={itemVariants}>
+            <motion.div
+              className="form-field form-field__datepicker"
+              variants={itemVariants}>
               <label htmlFor="departureDate">Departure date</label>
               <DatePicker
                 name="departureDate"
@@ -143,9 +138,7 @@ const CreateRide = () => {
               />
             </motion.div>
             <motion.div className="form-field" variants={itemVariants}>
-              <label htmlFor="maxPassengers">
-                Maximum passengers allowed
-              </label>
+              <label htmlFor="maxPassengers">Maximum passengers allowed</label>
               <Field
                 name="maxPassengers"
                 id="maxPassengers"
@@ -231,7 +224,7 @@ const CreateRide = () => {
           </Form>
         )}
       </Formik>
-    </motion.section>
+    </MotionWrapper>
   );
 };
 
