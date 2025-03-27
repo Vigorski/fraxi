@@ -2,8 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, FormikHelpers } from 'formik';
 import { motion } from 'framer-motion';
 import EditMyPreferencesForm from 'components/user/passenger/EditMyPreferencesForm';
-import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
-import Layout from 'layout/Layout';
 import { updateRidePreferences } from 'store/user/userAsyncActions';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import { mainContainerVariants } from 'utilities/constants/framerVariants';
@@ -65,23 +63,19 @@ const EditMyPreferences = () => {
   };
 
   return (
-    <GoogleMapsLoader>
-      <Layout>
-        <motion.section
-          className="profile profile--edit"
-          variants={mainContainerVariants}
-          initial="initial"
-          animate="visible"
-          exit="hidden">
-          <Formik
-            initialValues={initialValues}
-            validate={handleValidation}
-            onSubmit={handleSubmit}>
-            <EditMyPreferencesForm />
-          </Formik>
-        </motion.section>
-      </Layout>
-    </GoogleMapsLoader>
+    <motion.section
+      className="profile profile--edit"
+      variants={mainContainerVariants}
+      initial="initial"
+      animate="visible"
+      exit="hidden">
+      <Formik
+        initialValues={initialValues}
+        validate={handleValidation}
+        onSubmit={handleSubmit}>
+        <EditMyPreferencesForm />
+      </Formik>
+    </motion.section>
   );
 };
 

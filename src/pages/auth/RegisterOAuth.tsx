@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Layout from 'layout/Layout';
 import {
   mainContainerVariants,
   itemVariants,
@@ -38,21 +37,19 @@ const RegisterOAuth = () => {
   };
 
   return (
-    <Layout>
-      <motion.div
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
-        <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
-          Complete your profile
-        </motion.h1>
-        <RegisterEditUser
-          authConfig={oAuthUserConfig}
-          handleSubmit={handleSubmitOAuthRegister}
-        />
-      </motion.div>
-    </Layout>
+    <motion.div
+      variants={mainContainerVariants}
+      initial="initial"
+      animate="visible"
+      exit="hidden">
+      <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
+        Complete your profile
+      </motion.h1>
+      <RegisterEditUser
+        authConfig={oAuthUserConfig}
+        handleSubmit={handleSubmitOAuthRegister}
+      />
+    </motion.div>
   );
 };
 

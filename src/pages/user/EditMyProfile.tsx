@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import Layout from 'layout/Layout';
 import {
   mainContainerVariants,
   itemVariants,
@@ -35,20 +34,18 @@ const EditMyProfile = () => {
   };
 
   return (
-    <Layout>
-      <motion.section
-        className="profile profile--edit"
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
-        <motion.h3 variants={itemVariants}>Edit profile</motion.h3>
-        <RegisterEditUser
-          authConfig={editUserConfig}
-          handleSubmit={handleSubmitEdit}
-        />
-      </motion.section>
-    </Layout>
+    <motion.section
+      className="profile profile--edit"
+      variants={mainContainerVariants}
+      initial="initial"
+      animate="visible"
+      exit="hidden">
+      <motion.h3 variants={itemVariants}>Edit profile</motion.h3>
+      <RegisterEditUser
+        authConfig={editUserConfig}
+        handleSubmit={handleSubmitEdit}
+      />
+    </motion.section>
   );
 };
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Layout from 'layout/Layout';
 import ActiveRides from 'components/rides/activeRides/ActiveRides';
 import { getRidesState } from 'store/rides/ridesAsyncActions';
 import { fetchUsers } from 'store/user/userAsyncActions';
@@ -65,27 +64,25 @@ const SavedDriverActiveRides = () => {
   if (!activeRides) return null;
 
   return (
-    <Layout>
-      <motion.section
-        className="active-rides"
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
-        <motion.div variants={itemVariants} className="mb-xl">
-          <p className="text-xs text-primary text-bold">Driver</p>
-          <h4>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</h4>
-        </motion.div>
-        <motion.p
-          variants={itemVariants}
-          className="text-xs text-primary text-bold">
-          Active rides
-        </motion.p>
-        <div className="card__wrapper">
-          <ActiveRides activeRides={activeRides} />
-        </div>
-      </motion.section>
-    </Layout>
+    <motion.section
+      className="active-rides"
+      variants={mainContainerVariants}
+      initial="initial"
+      animate="visible"
+      exit="hidden">
+      <motion.div variants={itemVariants} className="mb-xl">
+        <p className="text-xs text-primary text-bold">Driver</p>
+        <h4>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</h4>
+      </motion.div>
+      <motion.p
+        variants={itemVariants}
+        className="text-xs text-primary text-bold">
+        Active rides
+      </motion.p>
+      <div className="card__wrapper">
+        <ActiveRides activeRides={activeRides} />
+      </div>
+    </motion.section>
   );
 };
 

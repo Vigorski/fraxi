@@ -20,6 +20,7 @@ import { LOGIN, MY_PROFILE } from 'utilities/constants/routesConfig';
 import { HTTP_REQUEST_STATUS } from 'types/httpRequestStatus';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import Layout from 'layout/Layout';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -68,38 +69,40 @@ function App() {
 
   return (
     <ProtectedRoute>
-      <>
-        <AnimatePresence mode="wait">
-          <Routes key={location.pathname} location={location}>
-            <Route
-              path="/"
-              element={<Navigate to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />}
-            />
-            {authRouteGroup.map((route) => (
+      <Layout>
+        <>
+          <AnimatePresence mode="wait">
+            <Routes key={location.pathname} location={location}>
               <Route
-                key={route.path}
-                path={route.path}
-                element={<AuthRoute isLoggedIn={!!isLoggedIn} {...route} />}
+                path="/"
+                element={<Navigate to={isLoggedIn ? MY_PROFILE.path : LOGIN.path} />}
               />
-            ))}
-            {routesCombined.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<PrivateRoute user={{ isLoggedIn, userDetails }} {...route} />}
-              />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AnimatePresence>
-        <ToastContainer
-          limit={3}
-          autoClose={2000}
-          transition={Slide}
-          draggablePercent={50}
-          hideProgressBar
-        />
-      </>
+              {authRouteGroup.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<AuthRoute isLoggedIn={!!isLoggedIn} {...route} />}
+                />
+              ))}
+              {routesCombined.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<PrivateRoute user={{ isLoggedIn, userDetails }} {...route} />}
+                />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AnimatePresence>
+          <ToastContainer
+            limit={3}
+            autoClose={2000}
+            transition={Slide}
+            draggablePercent={50}
+            hideProgressBar
+          />
+        </>
+      </Layout>
     </ProtectedRoute>
   );
 }
