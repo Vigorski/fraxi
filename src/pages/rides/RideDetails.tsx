@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RideDetailsPassenger from 'components/rides/rideDetails/RideDetailsPassenger';
 import RideDetailsDriver from 'components/rides/rideDetails/RideDetailsDriver';
-import Layout from 'layout/Layout';
 import { getRidesState } from 'store/rides/ridesAsyncActions';
 import useQueryParameter from 'hooks/useQueryParameter';
 import { USER_TYPES } from 'types/auth';
@@ -61,17 +60,15 @@ const RideDetails = () => {
   if (!rideDetails) return null;
 
   return (
-    <Layout>
-      <>
-        {isUserPassenger && (
-          <RideDetailsPassenger
-            rideDetails={rideDetails}
-            bookRideCallback={fetchRideAndDriver}
-          />
-        )}
-        {isUserDriver && <RideDetailsDriver rideDetails={rideDetails} />}
-      </>
-    </Layout>
+    <>
+      {isUserPassenger && (
+        <RideDetailsPassenger
+          rideDetails={rideDetails}
+          bookRideCallback={fetchRideAndDriver}
+        />
+      )}
+      {isUserDriver && <RideDetailsDriver rideDetails={rideDetails} />}
+    </>
   );
 };
 

@@ -1,12 +1,8 @@
 import { useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
-import Layout from 'layout/Layout';
 import RideResults from 'components/rides/searchRides/RideResults';
 import RideFilters from 'components/rides/searchRides/RideFilters';
 import FormFilters from 'components/forms/FormFilters';
-import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import { getFilteredRides } from 'store/rides/ridesAsyncActions';
-import { mainContainerVariants } from 'utilities/constants/framerVariants';
 import {
   MAX_PASSENGERS,
   RIDE_TYPE,
@@ -17,6 +13,7 @@ import {
 } from 'types/ride';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const SearchRides = () => {
   const dispatch = useAppDispatch();
@@ -51,24 +48,17 @@ const SearchRides = () => {
   };
 
   return (
-    <GoogleMapsLoader>
-      <Layout>
-        <motion.section
-          className="search-rides"
-          variants={mainContainerVariants}
-          initial="initial"
-          animate="visible"
-          exit="hidden">
-          <FormFilters
-            initialValues={formInitialValues}
-            handleObserverValues={handleObserverValues}>
-            <RideFilters />
-          </FormFilters>
+    <MotionWrapper className="search-rides">
+      <>
+        <FormFilters
+          initialValues={formInitialValues}
+          handleObserverValues={handleObserverValues}>
+          <RideFilters />
+        </FormFilters>
 
-          {filteredRides && <RideResults filteredRides={filteredRides} />}
-        </motion.section>
-      </Layout>
-    </GoogleMapsLoader>
+        {filteredRides && <RideResults filteredRides={filteredRides} />}
+      </>
+    </MotionWrapper>
   );
 };
 

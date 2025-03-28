@@ -1,17 +1,14 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Layout from 'layout/Layout';
 import { IconUserPlaceholder, IconEdit } from 'components/icons';
 import JourneyHub from 'components/user/passenger/JourneyHub';
 import { userLogout } from 'store/user/userAsyncActions';
 import { USER_TYPES } from 'types/auth';
 import { EDIT_USER, MY_PROFILE } from 'utilities/constants/routesConfig';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { itemVariants } from 'utilities/constants/framerVariants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const MyProfile = () => {
   const dispatch = useAppDispatch();
@@ -22,14 +19,10 @@ const MyProfile = () => {
   };
 
   return (
-    <Layout>
-      <motion.section
-        className="profile"
-        data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
+    <MotionWrapper
+      className="profile"
+      data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}>
+      <>
         <motion.div className="profile__edit" variants={itemVariants}>
           <Link
             className="btn-icon-center btn-stripped"
@@ -76,8 +69,8 @@ const MyProfile = () => {
           variants={itemVariants}>
           Logout
         </motion.button>
-      </motion.section>
-    </Layout>
+      </>
+    </MotionWrapper>
   );
 };
 

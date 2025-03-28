@@ -1,16 +1,13 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Layout from 'layout/Layout';
 import RegisterEditUser from 'components/auth/RegisterEditUser';
 import { userRegister } from 'store/user/userAsyncActions';
 import { LOGIN } from 'utilities/constants/routesConfig';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { itemVariants } from 'utilities/constants/framerVariants';
 import { AuthConfig, REGISTER_TYPES } from 'types/auth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { UserForm } from 'types/user';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -23,12 +20,8 @@ const Register = () => {
   };
 
   return (
-    <Layout>
-      <motion.div
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
+    <MotionWrapper as="div">
+      <>
         <motion.h1 className="h1-sm mt-md mb-xxl" variants={itemVariants}>
           Create Your Account
         </motion.h1>
@@ -46,8 +39,8 @@ const Register = () => {
             Sign in
           </Link>
         </motion.div>
-      </motion.div>
-    </Layout>
+      </>
+    </MotionWrapper>
   );
 };
 

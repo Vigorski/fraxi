@@ -1,10 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Layout from 'layout/Layout';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { itemVariants } from 'utilities/constants/framerVariants';
 import { userRegisterWithGoogleAuth } from 'store/user/userAsyncActions';
 import FirebaseAuthService from 'services/FirebaseAuthService';
 import { LOGIN } from 'utilities/constants/routesConfig';
@@ -13,6 +9,7 @@ import RegisterEditUser from 'components/auth/RegisterEditUser';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { UserForm } from 'types/user';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const RegisterOAuth = () => {
   const dispatch = useAppDispatch();
@@ -38,12 +35,8 @@ const RegisterOAuth = () => {
   };
 
   return (
-    <Layout>
-      <motion.div
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
+    <MotionWrapper as="div">
+      <>
         <motion.h1 className="h1-sm mb-xxl" variants={itemVariants}>
           Complete your profile
         </motion.h1>
@@ -51,8 +44,8 @@ const RegisterOAuth = () => {
           authConfig={oAuthUserConfig}
           handleSubmit={handleSubmitOAuthRegister}
         />
-      </motion.div>
-    </Layout>
+      </>
+    </MotionWrapper>
   );
 };
 

@@ -49,11 +49,6 @@
     stroke: $color-gray-3;
   }
 
-  &-popper[data-placement^=bottom] &__triangle {
-    fill: $color-blue-dark-2;
-    color: $color-blue-dark-2;
-  }
-
   &-popper[data-placement^=bottom] &__triangle::before {
     top: 0;
   }
@@ -63,7 +58,8 @@
     border-bottom-color: $color-gray-2;
   }
   
-  &-popper[data-placement^=top] &__triangle {
+  &-popper[data-placement^=top] &__triangle,
+	&-popper[data-placement^=bottom] &__triangle {
     fill: $color-gray-3;
     color: $color-gray-3;
   }

@@ -2,26 +2,20 @@ import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  mainContainerVariants,
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import { LocationState } from 'types/router';
+import MotionWrapper from './MotionWrapper';
 
 const NotFound: FC = () => {
   const location = useLocation();
   const locationState = location.state as LocationState;
-  const errorMessage = locationState.errorMessage;
+  const errorMessage = locationState?.errorMessage;
 
   return (
-    <div className="container not-found">
-      <main>
-        <motion.section
-          className="not-found__main"
-          data-bg-text="Wrong way!"
-          variants={mainContainerVariants}
-          initial="initial"
-          animate="visible"
-          exit="hidden">
+    <div className="not-found">
+      <MotionWrapper className="not-found__main" data-bg-text="Wrong way!">
+        <>
           <motion.div className="text-center" variants={itemVariants}>
             <h2 className="text-primary">Page not found!</h2>
           </motion.div>
@@ -30,8 +24,8 @@ const NotFound: FC = () => {
               <span className="text-white">{errorMessage}</span>
             </motion.div>
           )}
-        </motion.section>
-      </main>
+        </>
+      </MotionWrapper>
     </div>
   );
 };

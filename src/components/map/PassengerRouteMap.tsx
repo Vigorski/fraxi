@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import SetRouteWaypoint from './shared/SetRouteWaypoint';
 import ReadonlyRouteWaypoint from './shared/ReadonlyRouteWaypoint';
 import Map from './shared/Map';
-import GoogleMapsLoader from 'components/shared/GoogleMapsLoader';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Place, Route, Waypoint } from 'types/map';
 
@@ -25,19 +24,17 @@ const PassengerRouteMap: FC<PassengerRouteMapOwnProps> = ({
   const ownWaypoint = waypoints?.find(waypoint => waypoint.userId === userId);
 
   return (
-    <GoogleMapsLoader>
-      <Map
-        origin={originCity}
-        destination={destinationCity}
-        waypoints={newWaypoints}
-        parentsCallback={storeRouteMapDetails}>
-        {ownWaypoint ? (
-          <ReadonlyRouteWaypoint waypoint={ownWaypoint} />
-        ) : (
-          <SetRouteWaypoint setWaypoints={setNewWaypoints} />
-        )}
-      </Map>
-    </GoogleMapsLoader>
+    <Map
+      origin={originCity}
+      destination={destinationCity}
+      waypoints={newWaypoints}
+      parentsCallback={storeRouteMapDetails}>
+      {ownWaypoint ? (
+        <ReadonlyRouteWaypoint waypoint={ownWaypoint} />
+      ) : (
+        <SetRouteWaypoint setWaypoints={setNewWaypoints} />
+      )}
+    </Map>
   );
 };
 

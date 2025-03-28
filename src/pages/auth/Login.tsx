@@ -2,21 +2,18 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { motion } from 'framer-motion';
 import { IconGoogle, IconPassword, IconUser } from 'components/icons';
-import Layout from 'layout/Layout';
 import {
   userLogin,
   handleUserLoginWithGoogleAuth,
 } from 'store/user/userAsyncActions';
 import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
-import {
-  mainContainerVariants,
-  itemVariants,
-} from 'utilities/constants/framerVariants';
+import { itemVariants } from 'utilities/constants/framerVariants';
 import FraxiLogoWhite from '../../assets/logo/fraxi-logo-white.png';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { AuthLogin } from 'types/auth';
 import { FormErrors } from 'types/form';
+import MotionWrapper from 'layout/MotionWrapper';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -59,12 +56,8 @@ const Login = () => {
   };
 
   return (
-    <Layout>
-      <motion.div
-        variants={mainContainerVariants}
-        initial="initial"
-        animate="visible"
-        exit="hidden">
+    <MotionWrapper as="div">
+      <>
         <motion.div className="branding-auth" variants={itemVariants}>
           <div className="branding-auth__logo">
             <img src={FraxiLogoWhite} alt="fraxi logo" />
@@ -144,8 +137,8 @@ const Login = () => {
             <span className="text-primary text-uppercase">Sign up</span>
           </Link>
         </motion.div>
-      </motion.div>
-    </Layout>
+      </>
+    </MotionWrapper>
   );
 };
 
