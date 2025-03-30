@@ -5,16 +5,7 @@ type CommonVariants = {
 };
 
 export const mainContainerVariants: CommonVariants = {
-  initial: {
-    y: '-15vh',
-    opacity: 0,
-  },
-  hidden: {
-    y: '30vh',
-    opacity: 0,
-  },
   visible: {
-    y: 0,
     opacity: 1,
     transition: {
       type: "spring",

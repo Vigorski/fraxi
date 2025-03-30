@@ -59,11 +59,6 @@ const MyProfile = () => {
         )}
 
         <motion.button
-          className="btn-primary btn-block btn-sm mt-xxl"
-          variants={itemVariants}>
-          Load Rides History
-        </motion.button>
-        <motion.button
           className="btn-primary-ghost btn-block btn-sm mt-xxl"
           onClick={handleLogout}
           variants={itemVariants}>

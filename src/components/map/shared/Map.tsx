@@ -21,6 +21,7 @@ import {
   Route,
   Waypoint,
 } from 'types/map';
+import { mapDarkTheme } from 'utilities/map/mapDarkTheme';
 
 interface MapOwnProps extends Route {
   children: ReactElement;
@@ -141,59 +142,61 @@ const Map: FC<MapOwnProps> = ({
       {children && React.cloneElement(children, { testProp: 'test-prop' })}
 
       <div className="map__wrapper">
-        {directions && (
-          <div className="map__distance">
-            {distance} / {duration}
-          </div>
-        )}
-        <GoogleMap
-          onClick={closeInfoWindow}
-          mapContainerStyle={{ width: '100%', height: '500px' }}
-          center={ origin?.location ?? { lat: 41.6, lng: 21.7 }}
-          zoom={8}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-            mapId: process.env.REACT_APP_GOOGLE_MAP_ID as string,
-            gestureHandling: 'greedy',
-            restriction: macedoniaBounds,
-          }}>
-          {origin && (
-            <Marker position={origin.location} icon={{ url: flagIcon }} />
-          )}
-          {destination && (
-            <Marker position={destination.location} icon={{ url: flagIcon }} />
-          )}
-          {waypoints && (
-            <WaypointMarkers
-              waypoints={waypoints}
-              handleMarkerClick={handleMarkerClick}
-            />
-          )}
+				<div className="map__inner">
+					<GoogleMap
+						onClick={closeInfoWindow}
+						mapContainerStyle={{ width: '100%', height: '500px' }}
+						center={ origin?.location ?? { lat: 41.6, lng: 21.7 }}
+						zoom={8}
+						options={{
+							zoomControl: false,
+							streetViewControl: false,
+							mapTypeControl: false,
+							fullscreenControl: false,
+							gestureHandling: 'cooperative',
+							restriction: macedoniaBounds,
+							styles: mapDarkTheme,
+						}}>
+						{origin && (
+							<Marker position={origin.location} icon={{ url: flagIcon }} />
+						)}
+						{destination && (
+							<Marker position={destination.location} icon={{ url: flagIcon }} />
+						)}
+						{waypoints && (
+							<WaypointMarkers
+								waypoints={waypoints}
+								handleMarkerClick={handleMarkerClick}
+							/>
+						)}
 
-          {selectedMarker && (
-            <PlaceInfoWindow
-              selectedMarker={selectedMarker}
-              handleInfoWindowClose={closeInfoWindow}
-            />
-          )}
+						{selectedMarker && (
+							<PlaceInfoWindow
+								selectedMarker={selectedMarker}
+								handleInfoWindowClose={closeInfoWindow}
+							/>
+						)}
 
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                polylineOptions: {
-                  strokeColor: '#252525',
-                  strokeOpacity: 0.8,
-                  strokeWeight: 3,
-                },
-                suppressMarkers: true,
-              }}
-            />
-          )}
-        </GoogleMap>
+						{directions && (
+							<DirectionsRenderer
+								directions={directions}
+								options={{
+									polylineOptions: {
+										strokeColor: '#fff',
+										strokeOpacity: 0.8,
+										strokeWeight: 3,
+									},
+									suppressMarkers: true,
+								}}
+							/>
+						)}
+					</GoogleMap>
+					{directions && (
+						<div className="map__distance">
+							{distance} / {duration}
+						</div>
+					)}
+				</div>
       </div>
     </>
   );

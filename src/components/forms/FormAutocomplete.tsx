@@ -5,6 +5,8 @@ import { AutocompleteType, ExtendedAutocompleteType } from 'types/map';
 import { Autocomplete } from '@react-google-maps/api';
 import { AcRefType } from 'types/form';
 import { removeAutocompletePacContainersDevMode } from 'utilities/map/pacContainer';
+import { motion } from 'framer-motion';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 type FormAutocompleteOwnProps = {
   name: string;
@@ -36,7 +38,7 @@ const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
   }, []);
 
   return (
-    <div className={`form-field ${className ?? ''}`}>
+    <motion.div variants={itemVariants} className={`form-field ${className ?? ''}`}>
       <label htmlFor={name}>{label}</label>
       <div className="form-field__icon">
         <IconDirection />
@@ -50,7 +52,7 @@ const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
           <input type="text" id={name} placeholder={placeholder ?? label} />
         </Autocomplete>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

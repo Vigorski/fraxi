@@ -113,10 +113,12 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
                     {rideDetails.route.origin?.address_components.city}
                   </span>
                 </motion.p>
-                <motion.p variants={itemVariants}>
-                  <IconPhone /> <span>{driverDetails.phone}</span>
-                </motion.p>
-                <h3>{`${driverDetails.name} ${driverDetails.surname}`}</h3>
+								{driverDetails.phone && 
+									<motion.p variants={itemVariants}>
+										<IconPhone /> <span>{driverDetails.phone}</span>
+									</motion.p>
+								}
+                <motion.h3 variants={itemVariants}>{`${driverDetails.name} ${driverDetails.surname}`}</motion.h3>
               </div>
               <motion.div
                 className="ride-details__save-driver"

@@ -1,18 +1,22 @@
 .map {
   &__wrapper {
     position: relative;
+		padding: calc-rem(6px);
   }
 
+	&__inner {
+		border-radius: calc-rem(12px);
+		overflow: hidden;
+    box-shadow: 0px 0px 0.5px 6px rgba($color-black, 0.25);
+	}
+
   &__distance {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;
+    position: relative;
     padding: calc-rem(12px) calc-rem(6px);
     color: $color-white;
     background: linear-gradient(169.12deg, $color-green-2 -80%, $color-green-3 100%);
     text-align: center;
-    z-index: 1;
+    margin-top: calc-rem(-20px);
   }
   
   &__route {
