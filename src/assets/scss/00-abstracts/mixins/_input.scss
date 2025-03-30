@@ -2,10 +2,11 @@
 %global-field-style {
     width: 100%;
     color: rgba($color-white, .85);
-    background-color: $color-blue-dark-2;
+    background-color: $color-blue-dark-3;
     border: 1px solid transparent;
     border-radius: $border-radius-xxl;
     padding: calc-rem(16px);
+		margin: calc-rem(4px) 0;
     font-family: inherit;
     font-size: calc-rem(14px);
     outline: none;
