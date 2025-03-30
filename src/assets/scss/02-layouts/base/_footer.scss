@@ -8,11 +8,11 @@
   border-top-left-radius: $border-radius-footer;
   border-top-right-radius: $border-radius-footer;
   background-color: $color-gray-2;
-  box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
+  box-shadow: 0 calc-rem(-4px) calc-rem(4px) rgba($color-black, 0.25);
   z-index: 900;
   
   &__nav {
-    padding: calc-rem(18px) calc-rem(35px);
+    padding: calc-rem(12px) calc-rem(35px);
 
     ul {
       justify-content: space-between;
@@ -20,8 +20,8 @@
 
     a {
       @extend .btn-icon-center;
-      height: calc-rem(48px);
-      width: calc-rem(48px);
+      height: calc-rem(44px);
+      width: calc-rem(44px);
       background: $color-blue-dark;
       border-radius: $border-radius-circle;
       cursor: pointer;
