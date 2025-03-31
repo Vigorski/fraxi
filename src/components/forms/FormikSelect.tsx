@@ -30,8 +30,8 @@ const FormikSelect = <T extends object>({
       className="react-select-wrapper"
       classNamePrefix="react-select"
       isSearchable={false}
-      menuPortalTarget={document.body}
-      menuPosition='fixed'
+			// use this as a tool for inspecting the select dropdown in DOM
+			// menuIsOpen={true} 
     />
   );
 };

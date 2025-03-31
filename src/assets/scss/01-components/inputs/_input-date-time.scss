@@ -1,14 +1,12 @@
 .form-field__datepicker {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 99;
 
-  .react-datepicker-wrapper {
-    flex: 1;
-    margin-left: calc-rem(28px);
-  }
+	> div {
+		flex: 1;
+		margin-left: calc-rem(28px);
+	}
 }
 
 .react-datepicker {
@@ -45,43 +43,37 @@
     padding: 0.4rem;
   }
 
-  &-popper &__triangle {
-    stroke: $color-gray-3;
-  }
+	&__input-time-container {
+		display: flex;
+		align-items: center;
+		margin: 0;
+		padding: calc-rem(15px) calc-rem(18px);
+		border-top: 1px solid rgba($color-white, .25);
+	}
+	
+	&-time {
+		&__caption {
+			font-size: calc-rem(14px);
+		}
 
-  &-popper[data-placement^=bottom] &__triangle::before {
-    top: 0;
-  }
+		&__input {
+			width: 100%;
 
-  &-popper[data-placement^=bottom] &__triangle::before,
-  &-popper[data-placement^=bottom] &__triangle::after {
-    border-bottom-color: $color-gray-2;
-  }
-  
-  &-popper[data-placement^=top] &__triangle,
-	&-popper[data-placement^=bottom] &__triangle {
-    fill: $color-gray-3;
-    color: $color-gray-3;
-  }
+			&-container {
+				flex: 1;
+				padding: 0;
+				margin: 0;
+			}
+		}
+	}
 
-  &-popper[data-placement^=top] &__triangle::before {
-    bottom: 0;
-  }
-
-  &-popper[data-placement^=top] &__triangle::before,
-  &-popper[data-placement^=top] &__triangle::after {
-    border-top-color: $color-gray-3;
-  }
-
-  &__time-container &__time &__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
-    background-color: $color-primary;
-    color: $color-blue-dark-2;
-    font-weight: 700;
-  }
-
-  &__time-container &__time &__time-box &__time-list &__time-list-item:hover {
-    color: $color-blue-dark-2;
-  }
+	&__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input input {
+		width: calc(100% - 20px);
+		padding: calc-rem(6px) calc-rem(10px);
+		border-radius: calc-rem(50px);
+		border: none;
+		font-family: $font-lato;
+	}
 
   &__day:hover,
   &__month-text:hover,

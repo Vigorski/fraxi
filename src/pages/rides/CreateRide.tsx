@@ -30,9 +30,6 @@ const CreateRide = () => {
   const navigate = useNavigate();
   const userDetails = useAppSelector(state => state.user.userDetails);
   const dispatch = useAppDispatch();
-  const [departureDate, setDepartureDate] = useState<Date | null>(
-    earliestDepartureDate,
-  );
   const [routeMapDetails, setRouteMapDetails] = useState<Route>();
 
   const handleValidation = (values: CreateRideFormValues) => {
@@ -103,7 +100,7 @@ const CreateRide = () => {
         initialValues={formInitialValues}
         validate={handleValidation}
         onSubmit={handleSubmit}>
-        {({ isSubmitting }) => (
+        {({ setFieldValue, values, isSubmitting }) => (
           <Form>
             <motion.div className="form-field" variants={itemVariants}>
               <DriverRouteMap storeRouteMapDetails={storeRouteMapDetails} />
@@ -115,12 +112,14 @@ const CreateRide = () => {
               <DatePicker
                 name="departureDate"
                 id="departureDate"
-                selected={departureDate}
-                onChange={setDepartureDate}
-                showTimeSelect
+                selected={values.departureDate}
+                onChange={(date: Date | null) => {
+                  setFieldValue('departureDate', date);
+                }}
+                showTimeInput
+                timeInputLabel="Time:"
                 dateFormat="d MMMM, yyyy h:mm aa"
-                timeFormat="HH:mm"
-                timeIntervals={15}
+                withPortal
               />
               <ErrorMessage
                 name="departureDate"

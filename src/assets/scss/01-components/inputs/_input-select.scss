@@ -20,5 +20,9 @@
         &__input-container {
             color: $color-white;
         }
+
+				&__option--is-selected {
+					background-color: $color-green-2;
+				}
     }
 }
