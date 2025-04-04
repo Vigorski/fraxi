@@ -7,12 +7,8 @@
     "variables/borders",
     "variables/icon",
     "variables/grid",
-    "variables/table",
     "variables/toast",
-    "variables/tooltip",
     "variables/spacing",
-    "variables/avatar",
-    "variables/progressbar",
     "variables/button";
 
 @import
@@ -21,7 +17,6 @@
     "mixins/grid",
     "mixins/text",
     "mixins/icons",
-    "mixins/table",
     "mixins/input";
 
 @import "resets/reboot";

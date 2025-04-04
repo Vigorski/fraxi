@@ -1,0 +1,31 @@
+.btn-icon {
+  &-left,
+  &-right {
+    position: relative;
+
+    .svg-inline {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &-left {
+    .svg-inline {
+      left: $btn-icon-margin-20;
+    }
+  }
+
+  &-right {
+    .svg-inline {
+      right: $btn-icon-margin-20;
+    }
+  }
+
+  &-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc-rem(10px);
+  }
+}

@@ -17,11 +17,11 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-  // <StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
-  // </StrictMode>
+  </StrictMode>
 );
