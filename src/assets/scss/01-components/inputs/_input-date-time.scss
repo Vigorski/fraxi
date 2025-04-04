@@ -14,14 +14,6 @@
   background-color: $color-light-gray-4;
 	font-family: $font-montserrat;
 
-  &__time-container {
-    border-left-color: $color-blue-dark-2;
-
-    .react-datepicker__time {
-      background-color: $color-gray-3;
-    }
-  }
-
   &__header {
     border: none;
     background-color: $color-light-gray-3;
@@ -46,7 +38,6 @@
 		align-items: center;
 		margin: 0;
 		padding: calc-rem(15px) calc-rem(18px);
-		border-top: 1px solid rgba($color-white, .25);
 	}
 	
 	&-time {

@@ -1,10 +1,17 @@
 $color-black: #000;
 $color-white: #fff;
 
-
-///////////////////////////
-$color-primary: #8200ff;
+// Base colors
+$color-purple: #8200ff;
 $color-light-purple: #e6ceff;
+
+$color-red: #e32c62;
+$color-orange: #f56d20;
+$color-yellow: #ffcd01;
+$color-green: #7ada47;
+$color-blue: #2d9fe0;
+
+// Grays
 $color-dark-gray: #101010;
 $color-dark-gray-2: #464646;
 $color-light-gray: #848386;
@@ -12,32 +19,8 @@ $color-light-gray-2: #ababad;
 $color-light-gray-3: #dedede;
 $color-light-gray-4: #f7f7f7;
 
-$yellow: #ffcd01;
-$yellow2: #ffe688;
-$yellow3: #fef6d4;
-
-$color-blue: #2d9fe0;
-$color-red: #e32c62;
-$color-orange: #f56d20;
-$color-green: #7ada47;
-
-///////////////////////////
-
-
-$color-secondary: #003F6F;
-$color-blue-dark: #353744;
-$color-blue-dark-2: #3A3A46;
-$color-blue-dark-3: #2a2d39;
-$color-blue-light-1: #69ABDC;
-$color-blue-light-2: #C7D7E3;
-
-$color-green-1: #004B4F;
-$color-green-2: #2ECACE;
-$color-green-3: #016a70;
-
-$color-gray: #3F3F3F;
-$color-gray-2: #43485B;
-$color-gray-3: #585E76;
+// Primary color
+$color-primary: $color-purple;
 
 // Information
 $color-error: $color-red;
@@ -47,11 +30,14 @@ $color-info: $color-blue;
 
 $colors: (
 	'primary': $color-primary,
-	'secondary': $color-secondary,
 	'black': $color-black,
 	'white': $color-white,
-	'blue': $color-blue-light-1,
-	'gray': $color-gray,
+	'red': $color-red,
+	'orange': $color-orange,
+	'yellow': $color-yellow,
+	'green': $color-green,
+	'blue': $color-blue,
+	'gray': $color-dark-gray-2,
 	'gray-light': $color-light-gray,
 	'error': $color-error,
 	'warning': $color-warning,
@@ -60,8 +46,8 @@ $colors: (
 );
 
 $colors-message: (
-    error: $color-error,
-    warning: $color-warning,
-    success: $color-success,
-    info: $color-info,
+	error: $color-error,
+	warning: $color-warning,
+	success: $color-success,
+	info: $color-info,
 );

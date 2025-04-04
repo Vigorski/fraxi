@@ -36,7 +36,7 @@ a {
 	display: inline-block;
 	font-size: calc-rem(16px);
 	position: relative;
-  @include create-link-color($color-gray, $color-primary);
+  @include create-link-color($color-dark-gray-2, $color-primary);
   @include transition(color, 0.3s);
 
   &.link-arrow {
