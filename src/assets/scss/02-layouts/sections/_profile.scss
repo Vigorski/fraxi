@@ -18,9 +18,9 @@
 		margin-right: auto;
 		width: calc-rem(130px);
 		height: calc-rem(130px);
-		background-color: $color-gray-2;
+		background-color: $color-light-gray-3;
 		border-radius: $border-radius-md;
-		box-shadow: calc-rem(-9px) calc-rem(9px) calc-rem(14px) rgb(36, 40, 55);
+		box-shadow: 0 calc-rem(4px) calc-rem(1px) rgba($color-black, 0.25);
 		overflow: hidden;
 		cursor: pointer;
 
@@ -55,21 +55,18 @@
 		.svg-inline {
 			height: 100%;
 			width: 100%;
-			fill: rgba($color-black, .4);
+			fill: $color-light-gray-2;
 		}
 	}
 
   &__name {
-    color: $color-white;
     margin: calc-rem(16px) 0;
     text-align: center;
   }
 
 	&__routes {
 		dt {
-			font-size: calc-rem(12px);
 			font-weight: 400;
-			margin-bottom: 0;
 		}
 
 		dd {

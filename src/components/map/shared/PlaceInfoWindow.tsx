@@ -1,5 +1,5 @@
 import { InfoWindow } from '@react-google-maps/api';
-import { IconCity, IconDeparture, IconRoute } from 'components/icons';
+import { IconCar, IconDeparture, IconRoute } from 'components/icons';
 import { FC } from 'react';
 import { CachedWaypointInfo } from 'types/map';
 
@@ -19,7 +19,7 @@ const PlaceInfoWindow: FC<PlaceInfoWindowOwnProps> = ({
     <div className="info-window__content">
       <div className="info-window__main">
         <div className="info-window__title">
-          <IconCity />
+          <IconCar />
           <h6>Location</h6>
         </div>
         <p className="info-window__body">{selectedMarker.formatted_address}</p>

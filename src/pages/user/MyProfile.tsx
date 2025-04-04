@@ -4,7 +4,11 @@ import { IconUserPlaceholder, IconEdit } from 'components/icons';
 import JourneyHub from 'components/user/passenger/JourneyHub';
 import { userLogout } from 'store/user/userAsyncActions';
 import { USER_TYPES } from 'types/auth';
-import { EDIT_USER, MY_PROFILE } from 'utilities/constants/routesConfig';
+import {
+  CREATE_RIDE,
+  EDIT_USER,
+  MY_PROFILE,
+} from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -50,9 +54,7 @@ const MyProfile = () => {
         )}
         {userDetails?.userType === USER_TYPES.driver && (
           <motion.div variants={itemVariants}>
-            <Link
-              to={`${MY_PROFILE.path}/create-ride`}
-              className="btn-primary btn-block">
+            <Link to={CREATE_RIDE.path} className="btn-primary btn-block">
               Create a new ride
             </Link>
           </motion.div>

@@ -1,17 +1,17 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import SavedDrivers from './SavedDrivers';
 import PassengerPreferences from './PassengerPreferences';
+import { motion } from 'framer-motion';
+import { itemVariants } from 'utilities/constants/framerVariants';
 
 const JourneyHub = () => {
   return (
-    <div className="card card--stats">
+    <motion.div variants={itemVariants}>
       <Tabs>
-        <div className="card__tabs card__radius--top--sm">
-          <TabList>
-            <Tab>Preferences</Tab>
-            <Tab>Saved drivers</Tab>
-          </TabList>
-        </div>
+				<TabList>
+					<Tab>Preferences</Tab>
+					<Tab>Saved drivers</Tab>
+				</TabList>
         <TabPanel>
           <PassengerPreferences />
         </TabPanel>
@@ -19,7 +19,7 @@ const JourneyHub = () => {
           <SavedDrivers />
         </TabPanel>
       </Tabs>
-    </div>
+    </motion.div>
   );
 };
 

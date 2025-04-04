@@ -93,8 +93,8 @@
     position: absolute;
     top: calc-rem(42px);
     font-size: 16vW;
-    color: rgba($color-white, .03);
-    font-family: $font-lato;
+    color: rgba($color-dark-gray, .05);
+    font-family: $font-montserrat;
     font-weight: 700;
     max-width: calc(100% - calc-rem(50px));
     overflow: hidden;

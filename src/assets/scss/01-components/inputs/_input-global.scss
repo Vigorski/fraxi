@@ -7,7 +7,7 @@ select {
     &:hover,
     &:focus {
       -webkit-text-fill-color: $color-white;
-      box-shadow: 0 0 0px 1000px rgba($color-primary, .5) inset;
+      box-shadow: 0 0 0px 1000px rgba($color-primary, .25) inset;
       @include transition(background-color, 5000s);
     }
   }

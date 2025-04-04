@@ -1,5 +1,4 @@
 import { FC, useEffect, useRef } from 'react';
-import { IconDirection } from 'components/icons';
 import { removeAutocompletePacContainer } from 'utilities/map';
 import { AutocompleteType, ExtendedAutocompleteType } from 'types/map';
 import { Autocomplete } from '@react-google-maps/api';
@@ -10,7 +9,8 @@ import { itemVariants } from 'utilities/constants/framerVariants';
 
 type FormAutocompleteOwnProps = {
   name: string;
-  label: string;
+  label?: string;
+	labelClassName?: string;
   handler: (acRef: AcRefType) => void;
   placeholder?: string;
   className?: string;
@@ -20,6 +20,7 @@ type FormAutocompleteOwnProps = {
 const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
   name,
   label,
+	labelClassName,
   handler,
   placeholder,
   className,
@@ -39,19 +40,17 @@ const FormAutocomplete: FC<FormAutocompleteOwnProps> = ({
 
   return (
     <motion.div variants={itemVariants} className={`form-field ${className ?? ''}`}>
-      <label htmlFor={name}>{label}</label>
-      <div className="form-field__icon">
-        <IconDirection />
-        <Autocomplete
-          onLoad={ac => {
-            acRef.current = ac;
-          }}
-          onPlaceChanged={handler.bind(null, acRef)}
-          options={{ componentRestrictions: { country: 'mk' } }}
-          {...rest}>
-          <input type="text" id={name} placeholder={placeholder ?? label} />
-        </Autocomplete>
-      </div>
+      <label className={labelClassName ?? ''} htmlFor={name}>{label ?? ''}</label>
+			<Autocomplete
+				className='form-field__autocomplete'
+				onLoad={ac => {
+					acRef.current = ac;
+				}}
+				onPlaceChanged={handler.bind(null, acRef)}
+				options={{ componentRestrictions: { country: 'mk' } }}
+				{...rest}>
+				<input type="text" id={name} placeholder={placeholder ?? label} />
+			</Autocomplete>
     </motion.div>
   );
 };

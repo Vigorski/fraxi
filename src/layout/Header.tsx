@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconBack } from 'components/icons';
+import { IconChevronBack } from 'components/icons';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
 import { useAppSelector } from 'hooks/useAppSelector';
-import fraxiLogo from '../assets/logo/fraxi-logo-primary.png';
+import fraxiLogo from '../assets/logo/fraxi-logo-primary.svg';
 
 const Header: FC = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Header: FC = () => {
         </div>
       ) : (
         <button onClick={handleGoBack} className="btn-link header__back">
-          <IconBack />
+          <IconChevronBack />
         </button>
       )}
       <h4 className="header__current-page">{currentRoute?.title}</h4>

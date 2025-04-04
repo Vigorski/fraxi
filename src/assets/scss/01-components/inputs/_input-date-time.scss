@@ -10,11 +10,9 @@
 }
 
 .react-datepicker {
-  border-color: $color-blue-dark-2;
-  background-color: $color-gray-3;
-  color: $color-white;
-  font-family: $font-lato;
-  box-shadow: 0 4px 4px 0 rgba($color-black, .25);
+  border-color: $color-light-gray-4;
+  background-color: $color-light-gray-4;
+	font-family: $font-montserrat;
 
   &__time-container {
     border-left-color: $color-blue-dark-2;
@@ -26,7 +24,7 @@
 
   &__header {
     border: none;
-    background-color: $color-gray-2;
+    background-color: $color-light-gray-3;
   }
 
   &__current-month,
@@ -35,7 +33,7 @@
   &__time-name,
   &-time__header,
   &-year-header {
-    color: $color-white;
+    color: $color-dark-gray;
   }
 
   &__month {
@@ -72,14 +70,15 @@
 		padding: calc-rem(6px) calc-rem(10px);
 		border-radius: calc-rem(50px);
 		border: none;
-		font-family: $font-lato;
+		font-family: $font-montserrat;
 	}
 
   &__day:hover,
   &__month-text:hover,
   &__quarter-text:hover,
   &__year-text:hover {
-    color: $color-blue-dark-2;
+		background-color: $color-light-gray;
+    color: $color-white;
     border-radius: 50%;
   }
 
@@ -100,7 +99,8 @@
   &__year-text--selected:hover,
   &__year-text--in-selecting-range:hover,
   &__year-text--in-range:hover {
-    background-color: $color-green-2;
+    background-color: $color-light-purple;
+		color: $color-white;
   }
 
   &__day--selected,
@@ -120,8 +120,15 @@
   &__quarter-text--keyboard-selected,
   &__year-text--keyboard-selected {
     background-color: $color-primary;
-    color: $color-blue-dark-2;
+    color: $color-white;
     font-weight: 700;
     border-radius: 50%;
   }
+
+	.react-datepicker__year-read-view--down-arrow,
+	.react-datepicker__month-read-view--down-arrow,
+	.react-datepicker__month-year-read-view--down-arrow,
+	.react-datepicker__navigation-icon::before {
+		border-color: $color-dark-gray;
+	}
 }

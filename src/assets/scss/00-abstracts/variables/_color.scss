@@ -1,9 +1,24 @@
 $color-black: #000;
 $color-white: #fff;
 
-$color-primary: #73e5aa;
-$color-secondary: #003F6F;
 
+///////////////////////////
+$color-primary: #8200ff;
+$color-light-purple: #e6ceff;
+$color-dark-gray: #101010;
+$color-dark-gray-2: #464646;
+$color-light-gray: #848386;
+$color-light-gray-2: #ababad;
+$color-light-gray-3: #dedede;
+$color-light-gray-4: #f7f7f7;
+
+$yellow: #ffcd01;
+$yellow2: #ffe688;
+$yellow3: #fef6d4;
+///////////////////////////
+
+
+$color-secondary: #003F6F;
 $color-blue-dark: #353744;
 $color-blue-dark-2: #3A3A46;
 $color-blue-dark-3: #2a2d39;
@@ -20,10 +35,6 @@ $color-brown: #3B1A00;
 $color-gray: #3F3F3F;
 $color-gray-2: #43485B;
 $color-gray-3: #585E76;
-$color-dark-gray: #252525;
-$color-light-gray: #8a8989;
-$color-light-gray-2: #c9c9c9;
-$color-light-gray-3: #eeeef0;
 
 $color-tags: lighten($color-blue-light-1, 27%);
 

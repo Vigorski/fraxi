@@ -1,6 +1,6 @@
 body {
-  font: 400 $font-size-base $font-lato;
-  background-color: $color-blue-dark;
+  font: 500 $font-size-base $font-montserrat;
+  background-color: $color-white;
   margin-bottom: calc-rem(84px);
   overflow-x: hidden;
 
@@ -8,7 +8,3 @@ body {
     box-sizing: border-box;
   }
 }
-
-// html, body {
-//   height: 100%;
-// }

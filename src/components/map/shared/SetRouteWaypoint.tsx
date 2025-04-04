@@ -50,7 +50,9 @@ const SetRouteWaypoint: FC<SetRouteWaypointOwnProps> = ({ setWaypoints }) => {
   return (
     <FormAutocomplete
       name="waypoint"
-      label="Pick up location"
+			className='form-field__map-input'
+			labelClassName="form-field__waypoint-label"
+			placeholder='Pick up location'
       handler={handleWaypointChange}
     />
   );

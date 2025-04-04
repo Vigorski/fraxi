@@ -25,6 +25,22 @@
   }
 }
 
+@mixin variable-font-face(
+	$font-name,
+  $file-name,
+  $weight: 100 900, // Supports full weight range
+  $style: normal,
+  $font-display: swap
+) {
+  @font-face {
+    font-family: quote($font-name);
+    src: url($file-name + ".ttf") format("truetype");
+    font-weight: $weight;
+    font-style: $style;
+    font-display: $font-display;
+  }
+}
+
 // TRUNCATE TEXT (ELLIPSIS)
 @mixin truncate-text($overflow: ellipsis) {
   overflow: hidden;

@@ -1,21 +1,25 @@
 .react-tabs__tab {
-    flex: 1;
-    padding: calc-rem(20px);
-    color: $color-white;
-    background-color: $color-blue-dark-2;
-    font-family: $font-montserrat;
-    font-size: calc-rem(14px);
-    font-weight: 700;
-    text-align: center;
-    border-radius: $border-radius-md;
-    cursor: pointer;
+	padding: calc-rem(8px) calc-rem(16px);
+	color: $color-light-gray;
+	background-color: transparent;
+	font-family: $font-montserrat;
+	font-size: calc-rem(14px);
+	font-weight: 700;
+	text-align: center;
+	border-radius: $border-radius-pill;
+	border: 2px solid $color-light-gray;
+	cursor: pointer;
 
-    &--selected {
-        background: transparent;
-    }
+	&--selected {
+		border-color: $color-primary;
+		color: $color-primary;
+		outline: none;
+	}
 
-    &-list {
-        display: flex;
-        align-items: center;
-    }
+	&-list {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		margin-bottom: calc-rem(20px);
+	}
 }

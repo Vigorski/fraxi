@@ -92,9 +92,7 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
   };
 
   return (
-    <MotionWrapper
-      className="ride-details"
-      data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}>
+    <MotionWrapper className="ride-details">
       <>
         <div className="ride-details__driver">
           <div className="row">
@@ -118,7 +116,7 @@ const RideDetailsPassenger: FC<RideDetailsPassengerOwnProps> = ({
 										<IconPhone /> <span>{driverDetails.phone}</span>
 									</motion.p>
 								}
-                <motion.h3 variants={itemVariants}>{`${driverDetails.name} ${driverDetails.surname}`}</motion.h3>
+                <motion.h5 variants={itemVariants}>{`${driverDetails.name} ${driverDetails.surname}`}</motion.h5>
               </div>
               <motion.div
                 className="ride-details__save-driver"

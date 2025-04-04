@@ -12,8 +12,8 @@ const ReadonlyRouteInputs: FC<ReadonlyRouteInputsOwnProps> = ({
 }) => {
   return (
     <>
-      <div className="form-field form-field--disabled">
-        <label htmlFor="origin">Origin</label>
+      <div className="form-field form-field--disabled form-field__map-input">
+        <label htmlFor="origin" className='form-field__origin-label' />
         <input
           type="text"
           id="origin"
@@ -21,8 +21,8 @@ const ReadonlyRouteInputs: FC<ReadonlyRouteInputsOwnProps> = ({
           disabled
         />
       </div>
-      <div className="form-field form-field--disabled">
-        <label htmlFor="destination">Destination</label>
+      <div className="form-field form-field--disabled form-field__map-input">
+        <label htmlFor="destination" className='form-field__destination-label' />
         <input
           type="text"
           id="destination"

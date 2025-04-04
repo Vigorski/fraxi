@@ -1,7 +1,7 @@
 .thumbnail__user {
     background-color: $color-gray-3;
     border-radius: $border-radius-xxl;
-    box-shadow: calc-rem(3px) calc-rem(5px) calc-rem(9px) rgba($color-black, 0.25);
+    box-shadow: 0 calc-rem(3px) calc-rem(0.5px) rgba($color-black, 0.25);
     padding-bottom: 85%;
     position: relative;
     overflow: hidden;

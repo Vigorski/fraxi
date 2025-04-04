@@ -1,8 +1,8 @@
 import { IconUser } from './IconUser';
-import { IconSearch } from './IconSearch';
 import { IconBell } from './IconBell';
-import { IconBookmark } from './IconBookmark';
+import { IconBriefcase } from './IconBriefcase';
 import { IconBack } from './IconBack';
+import { IconChevronBack } from './IconChevronBack';
 import { IconUserPlaceholder } from './IconUserPlaceholder';
 import { IconEdit } from './IconEdit';
 import { IconPhone } from './IconPhone';
@@ -18,14 +18,16 @@ import { IconPassword } from './IconPassword';
 import { IconDirection } from './IconDirection';
 import { IconDeparture } from './IconDeparture';
 import { IconRoute } from './IconRoute';
-import { IconCity } from './IconCity';
+import { IconCar } from './IconCar';
+import { IconEarth } from './IconEarth';
+import { IconMenu } from './IconMenu';
 
 export {
   IconUser,
-  IconSearch,
   IconBell,
-  IconBookmark,
+  IconBriefcase,
   IconBack,
+	IconChevronBack,
   IconUserPlaceholder,
   IconEdit,
   IconPhone,
@@ -41,5 +43,7 @@ export {
   IconDirection,
   IconDeparture,
   IconRoute,
-  IconCity,
+  IconCar,
+	IconEarth,
+	IconMenu,
 };

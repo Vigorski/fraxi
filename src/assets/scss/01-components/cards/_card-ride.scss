@@ -1,16 +1,18 @@
 .card__ride {
-  p {
-    font: 700 calc-rem(10px) $font-lato;
-    line-height: calc-rem(12px);
-    color: $color-white;
-    margin-top: calc-rem(14px);
+  &-title {
+		color: $color-dark-gray-2;
+    font-weight: 600;
   }
 
-  &-info h6 {
-    margin-top: calc-rem(6px);
-  }
+	.card__price {
+		margin-top: calc-rem(16px);
+	}
+}
 
-  &-price h6 {
-    text-transform: uppercase;
-  }
+.card__ride-description {
+	.card {
+		&__header {
+			justify-content: space-between;
+		}
+	}
 }

@@ -40,13 +40,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font: 700 $btn-font-md $font-lato;
+  font: 500 calc-rem(16px) $font-montserrat;
   line-height: calc-rem(16px);
   text-align: center;
   padding: $btn-padding-md;
   min-height: $btn-height-md;
   border-radius: $border-radius-pill;
-  text-transform: uppercase;
 
   &-primary,
   &-primary-ghost,
@@ -56,27 +55,24 @@
   }
 
   &-primary {
-    @include base-button($color-dark-gray, $color-primary);
+    @include base-button($color-white, $color-primary);
+		box-shadow: 0 calc-rem(2px) calc-rem(1px) rgba($color-black, 0.25);
 
     &:hover {
-      color: $color-dark-gray;
+      color: $color-white;
     }
 
     &-ghost {
       @include base-button(
-        $color-white,
+        $color-primary,
         transparent,
         $color-primary
       );
     }
   }
 
-  &-secondary {
-    @include base-button($color-secondary, $color-primary);
-  }
-
   &-light {
-    @include base-button($color-secondary, $color-white);
+    @include base-button($color-dark-gray-2, $color-white, $color-light-gray-3);
   }
 
   &-block {
@@ -84,7 +80,7 @@
   }
 
   &-stripped {
-    font: 400 $btn-font-md $font-lato;
+    font: 400 calc-rem(14px) $font-montserrat;
     line-height: calc-rem(16px);
     background: transparent;
     border: none;
@@ -99,7 +95,7 @@
 // based on size
 .btn {
   &-sm {
-    font-size: $btn-font-sm;
+    font-size: calc-rem(14px);
     min-height: $btn-height-sm;
     padding: $btn-padding-sm;
   }

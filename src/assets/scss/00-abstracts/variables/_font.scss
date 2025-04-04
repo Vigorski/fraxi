@@ -1,30 +1,9 @@
 @import "../mixins/text";
 
 // Montserrat
-$montserrat-path: '../../../fonts/montserrat/Montserrat-';
-$montserrat-variations: (
-    Regular: 400,
-    Bold: 700,
-);
-
-// lato
-$lato-path: '../../../fonts/lato/Lato-';
-$lato-variations: (
-    Regular: 400,
-    Bold: 700,
-);
-
-@each $variation,
-$weight in ($montserrat-variations) {
-    @include font-face('Montserrat', $montserrat-path + $variation, $weight);
-}
-
-@each $variation,
-$weight in ($lato-variations) {
-    @include font-face('Lato', $lato-path + $variation, $weight);
-}
+$montserrat-path: '../../../fonts/montserrat/Montserrat-VariableFont_wght';
+@include variable-font-face("Montserrat", $montserrat-path, 100 900);
 
 // Global variables
 $font-size-base: 16px;
 $font-montserrat: 'Montserrat', sans-serif;
-$font-lato: 'Lato', sans-serif;

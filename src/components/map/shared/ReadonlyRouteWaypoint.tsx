@@ -9,8 +9,8 @@ const ReadonlyRouteWaypoint: FC<ReadonlyRouteWaypointOwnProps> = ({
   waypoint,
 }) => {
   return waypoint.formatted_address ? (
-    <div className="form-field form-field--disabled">
-      <label htmlFor="origin">Pick up location</label>
+    <div className="form-field form-field--disabled form-field__map-input">
+      <label htmlFor="origin" className='form-field__waypoint-label' />
       <input
         type="text"
         id="origin"
