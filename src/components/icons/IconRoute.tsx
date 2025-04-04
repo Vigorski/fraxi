@@ -3,10 +3,13 @@ import { IconType } from 'types/icons';
 export const IconRoute: IconType = ({ className }) => {
   return (
     <svg
-      className={`${className || ''} svg-inline`}
+      className={`${className || ''} svg-inline svg-outlined`}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24">
-      <path d="M19,15.18V7c0-2.21-1.79-4-4-4s-4,1.79-4,4v10c0,1.1-0.9,2-2,2s-2-0.9-2-2V8.82C8.16,8.4,9,7.3,9,6c0-1.66-1.34-3-3-3 S3,4.34,3,6c0,1.3,0.84,2.4,2,2.82V17c0,2.21,1.79,4,4,4s4-1.79,4-4V7c0-1.1,0.9-2,2-2s2,0.9,2,2v8.18c-1.16,0.41-2,1.51-2,2.82 c0,1.66,1.34,3,3,3s3-1.34,3-3C21,16.7,20.16,15.6,19,15.18z" />
+      viewBox="0 0 512 512"
+      strokeWidth="32">
+      <polyline points="400 304 448 352 400 400" /><polyline points="400 112 448 160 400 208" /><path d="M64,352h85.19a80,80,0,0,0,66.56-35.62L256,256" /><path d="M64,160h85.19a80,80,0,0,1,66.56,35.62l80.5,120.76A80,80,0,0,0,362.81,352H416" /><path d="M416,160H362.81a80,80,0,0,0-66.56,35.62L288,208" />
     </svg>
   );
 };
+
+

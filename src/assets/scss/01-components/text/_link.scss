@@ -34,10 +34,9 @@ $arrow-base: 16px;
 
 a {
 	display: inline-block;
-	font-size: calc-rem(14px);
-	font-weight: 600;
+	font-size: calc-rem(16px);
 	position: relative;
-  @include create-link-color($color-white, $color-primary);
+  @include create-link-color($color-dark-gray-2, $color-primary);
   @include transition(color, 0.3s);
 
   &.link-arrow {

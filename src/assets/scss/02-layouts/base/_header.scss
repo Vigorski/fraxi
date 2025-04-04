@@ -1,25 +1,27 @@
 .header {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba($color-white, 0.1);
+	justify-content: space-between;
   
   &__back {
+		position: relative;
     height: calc-rem(48px);
     width: calc-rem(48px);
     border: none;
-    border-right: 1px solid rgba($color-white, 0.1);
-    margin-right: calc-rem(18px);
+		z-index: 1;
 
     .svg-inline {
-      fill: rgba($color-white, .5);
+      stroke: $color-dark-gray;
+			font-size: calc-rem(20px);
     }
   }
 
   &__current-page {
-    font-family: $font-montserrat;
-    font-style: normal;
-    font-weight: 700;
+		position: absolute;
+    left: 0;
+    width: calc(100% - 6rem);
+    text-align: center;
+    margin: 0 calc-rem(48px);
     font-size: calc-rem(16px);
-    color: $color-white;
   }
 }

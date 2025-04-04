@@ -26,8 +26,6 @@ ol {
 }
 
 .list {
-  color: $color-white;
-
   li {
     position: relative;
     margin: calc-rem(8px) 0;
@@ -44,35 +42,31 @@ ol {
 .list-desc {
   &__columns,
   &__rows {
-    margin: 0 calc-rem(-20px);
-
     dt, dd {
-      color: $color-white;
-      font-size: calc-rem(14px);
-      margin: calc-rem(14px) calc-rem(16px);
+			font-size: calc-rem(14px);
+      margin: calc-rem(8px) calc-rem(16px);
     }
   
     dt {
-      font-weight: 700;
+			color: $color-light-gray
     }
-  
-    dd {
-      font-weight: 400;
-    }
-
   }
 
   &__columns {
     display: flex;
     flex-wrap: wrap;
+		margin: 0 calc-rem(-20px);
   }
 
   &__row {
     display: flex;
     align-items: center;
+		margin: 0 calc-rem(-16px);
 
     dt, dd {
       flex: 1;
+			margin-top: calc-rem(6px);
+			margin-bottom: calc-rem(6px);
     }
   }
 
@@ -93,16 +87,29 @@ ol {
 }
 
 .list__users {
+	&-description {
+		margin-left: calc-rem(16px);
+
+		h5 {
+			font-size: calc-rem(16px);
+			line-height: 1.2;
+		}
+
+		p {
+			font-size: calc-rem(14px);
+			color: $color-light-gray;
+			line-height: 1.2;
+		}
+	}
+
   li {
     display: flex;
     align-items: center;
     margin: calc-rem(12px) 0;
     font-size: calc-rem(14px);
-  }
 
-  .svg-inline {
-    font-size: calc-rem(14px);
-    margin-right: calc-rem(20px);
-    fill: $color-primary;
+		span {
+			margin-left: calc-rem(12px);
+		}
   }
 }

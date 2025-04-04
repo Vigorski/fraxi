@@ -145,9 +145,10 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             />
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
+						<label htmlFor="name">Name</label>
             <div className="form-field__icon">
               <IconUser />
-              <Field type="text" name="name" placeholder="Name" />
+              <Field type="text" name="name" placeholder="Name" id="name" />
             </div>
             <ErrorMessage
               name="name"
@@ -156,9 +157,10 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             />
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
+						<label htmlFor="last-name">Last name</label>
             <div className="form-field__icon">
               <IconUser />
-              <Field type="text" name="surname" placeholder="Last name" />
+              <Field type="text" name="surname" placeholder="Last name" id="last-name" />
             </div>
             <ErrorMessage
               name="surname"
@@ -168,9 +170,10 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
           </motion.div>
           {isRegisteringWithEmail && (
             <motion.div className="form-field" variants={itemVariants}>
+							<label htmlFor="email">Email</label>
               <div className="form-field__icon">
                 <IconEmail className="text-sm" />
-                <Field type="email" name="email" placeholder="Email" />
+                <Field type="email" name="email" placeholder="Email" id="email" />
               </div>
               <ErrorMessage
                 name="email"
@@ -180,9 +183,10 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             </motion.div>
           )}
           <motion.div className="form-field" variants={itemVariants}>
+						<label htmlFor="password">Password</label>
             <div className="form-field__icon">
               <IconPassword />
-              <Field type="password" name="password" placeholder="Password" />
+              <Field type="password" name="password" placeholder="Password" id="password" />
             </div>
             <ErrorMessage name="password">
               {msg => {
@@ -198,12 +202,14 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             </ErrorMessage>
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
+						<label htmlFor="confirm-password">Confirm password</label>
             <div className="form-field__icon">
               <IconPassword />
               <Field
                 type="password"
                 name="confirmPassword"
                 placeholder="Confirm password"
+                id="confirm-password"
               />
             </div>
             <ErrorMessage
@@ -213,9 +219,10 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             />
           </motion.div>
           <motion.div className="form-field" variants={itemVariants}>
+						<label htmlFor="phone">Phone</label>
             <div className="form-field__icon">
               <IconPhone />
-              <Field type="tel" name="phone" placeholder="Phone" />
+              <Field type="tel" name="phone" placeholder="Phone" id="phone" />
             </div>
             <ErrorMessage
               name="phone"
@@ -224,8 +231,8 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             />
           </motion.div>
           {!isEditingUser && (
-            <motion.div className="form-field" variants={itemVariants}>
-              <h4>What do you want to register as?</h4>
+            <motion.div className="form-field mt-xxl" variants={itemVariants}>
+              <h5>What do you want to register as?</h5>
               <div className="input-radio">
                 <Field
                   id="userPassenger"
@@ -252,7 +259,7 @@ const RegisterEditUser: FC<RegisterEditUserOwnProps> = ({
             </motion.div>
           )}
           <motion.button
-            className="btn-primary btn-block"
+            className="btn-primary btn-block mt-xxl"
             type="submit"
             disabled={isSubmitting}
             variants={itemVariants}>

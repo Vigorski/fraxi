@@ -1,6 +1,6 @@
 .saved-driver {
   position: relative;
-  margin: 0 calc-rem(-8px);
+  margin: 0 calc-rem(4px);
 
   &__wrapper {
     margin-top: calc-rem(6px);
@@ -17,8 +17,7 @@
 
   .thumbnail__user {
     background-color: $color-light-gray-2;
-    border-radius: $border-radius;
-    box-shadow: calc-rem(3px) calc-rem(2px) calc-rem(4px) rgba($color-black, 0.25);
+    border-radius: $border-radius-xl;
 
     .svg-inline {
       fill: rgba($color-black, .5);
@@ -26,8 +25,6 @@
   }
 
   p {
-    font-family: $font-lato;
-    color: $color-white;
-    margin: calc-rem(6px) 0;
+    color: $color-light-gray;
   }
 }

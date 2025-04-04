@@ -4,5 +4,11 @@
   height: 1em;
   vertical-align: middle;
   @include transition(fill, .25s);
-  // vertical-align: calc-rem(-2px);
+}
+
+.svg-outlined {
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }

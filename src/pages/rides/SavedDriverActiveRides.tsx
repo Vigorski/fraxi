@@ -65,14 +65,13 @@ const SavedDriverActiveRides = () => {
     <MotionWrapper className="active-rides">
       <>
         <motion.div variants={itemVariants} className="mb-xl">
-          <p className="text-xs text-primary text-bold">Driver</p>
-          <h4>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</h4>
+          <h5>Driver: </h5>
+					<span>{`${activeRides[0].driverDetails.name} ${activeRides[0].driverDetails.surname}`}</span>
         </motion.div>
-        <motion.p
-          variants={itemVariants}
-          className="text-xs text-primary text-bold">
+        <motion.h5
+          variants={itemVariants}>
           Active rides
-        </motion.p>
+        </motion.h5>
         <div className="card__wrapper">
           <ActiveRides activeRides={activeRides} />
         </div>

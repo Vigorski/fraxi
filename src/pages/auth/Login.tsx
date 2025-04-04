@@ -8,7 +8,7 @@ import {
 } from 'store/user/userAsyncActions';
 import { REGISTER, REGISTER_OAUTH } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
-import FraxiLogoWhite from '../../assets/logo/fraxi-logo-white.png';
+import FraxiLogoPrimary from '../../assets/logo/fraxi-logo-purple.png';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { AuthLogin } from 'types/auth';
@@ -60,7 +60,7 @@ const Login = () => {
       <>
         <motion.div className="branding-auth" variants={itemVariants}>
           <div className="branding-auth__logo">
-            <img src={FraxiLogoWhite} alt="fraxi logo" />
+            <img src={FraxiLogoPrimary} alt="fraxi logo" />
           </div>
           <h1 className="h1-xs branding-auth__moto">Welcome to Fraxi</h1>
         </motion.div>

@@ -12,7 +12,7 @@
 p {
   font: 400 1rem $font-montserrat;
   line-height: calc-rem(32px);
-  color: $color-black;
+  color: $color-dark-gray;
 
   @include media-breakpoint-down(md) {
     font-size: calc-rem(14px);

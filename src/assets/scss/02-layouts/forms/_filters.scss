@@ -7,17 +7,6 @@
 		margin: calc-rem(8px) 0 calc-rem(40px);
 	}
 
-	textarea,
-	input[type="text"],
-	input[type="search"],
-	input[type="email"],
-	input[type="password"],
-	input[type="number"],
-	input[type="tel"] {
-		padding-top: calc-rem(10px);
-		padding-bottom: calc-rem(10px);
-	}
-
 	.form-field {
 		margin-bottom: calc-rem(14px);
 	}
@@ -33,34 +22,14 @@
 		display: flex;
 		align-items: center;
 		z-index: 10;
-
-		label {
-			display: none;
-		}
-	}
-
-	&__autocomplete {
-		max-width: calc-rem(124px);
-		box-shadow: 0 calc-rem(4px) calc-rem(4px) rgba($color-black, 0.25);
-		border-radius: $border-radius-lg;
-		font-size: calc-rem(13px);
-		line-height: calc-rem(16px);
-		background-color: $color-blue-dark-3;
-
-		.svg-inline {
-			left: calc-rem(12px);
-		}
-
-		input {
-			padding-left: calc-rem(36px);
-			background-color: transparent;
-			border-radius: 0;
-			box-shadow: none;
-		}
 	}
 
 	&__additional {
 		margin: calc-rem(16px) 0 calc-rem(32px);
+
+		.filters__field {
+			margin-bottom: calc-rem(2px);
+		}
 
 		label {
 			flex: 1;
@@ -85,7 +54,7 @@
 	&__dash {
 		flex: 1;
 		height: 1px;
-		border-bottom: 1px dashed rgba($color-white, 0.6);
+		border-bottom: 1px dashed $color-light-gray-3;
 		margin: 0 calc-rem(12px) calc-rem(14px);
 	}
 
@@ -98,19 +67,21 @@
 
 	&__button {
 		@extend .btn-stripped, .btn-icon-left;
+		color: $color-light-gray;
 		padding-left: calc-rem(28px);
 
 		.svg-inline {
 			left: 0;
-			fill: $color-primary;
+			stroke: $color-light-gray-2;
 			font-size: calc-rem(22px);
+			@include transition(stroke, 0.3s);;
 		}
 
 		&:hover {
-			color: $color-light-gray;
+			color: darken($color-light-gray, 40%);
 
 			.svg-inline {
-				fill: darken($color-primary, 20%);
+				stroke: darken($color-light-gray-2, 20%);
 			}
 		}
 	}

@@ -59,29 +59,29 @@ const RideFilters = () => {
         <motion.div
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
-          transition={{ delay: 0.3 }}>
-          <FormAutocomplete
-            name="origin"
-            label="Origin"
-            handler={handleOriginCityChange}
-            types={['(cities)']}
-            placeholder={formikProps.initialValues.origin ?? ''}
-            className="filters__autocomplete"
-          />
+          transition={{ delay: 0.3 }}>	
+					<FormAutocomplete
+						name="origin"
+						className='form-field__map-input form-field__map-filters'
+						labelClassName="form-field__origin-label"
+						placeholder={formikProps.initialValues.origin ?? ''}
+						handler={handleOriginCityChange}
+						types={['(cities)']}
+					/>
         </motion.div>
         <div className="filters__dash" />
         <motion.div
           initial={{ x: '-100%' }}
           animate={{ x: 0 }}
           transition={{ delay: 0.3 }}>
-          <FormAutocomplete
-            name="destination"
-            label="Destination"
-            handler={handleDestinationCityChange}
-            types={['(cities)']}
-            placeholder={formikProps.initialValues.destination ?? ''}
-            className="filters__autocomplete"
-          />
+					<FormAutocomplete
+						name="destination"
+						className='form-field__map-input form-field__map-filters'
+						labelClassName="form-field__destination-label"
+						placeholder={formikProps.initialValues.destination ?? ''}
+						handler={handleDestinationCityChange}
+						types={['(cities)']}
+					/>
         </motion.div>
       </motion.div>
       {expandFilters && (
@@ -90,7 +90,7 @@ const RideFilters = () => {
             className="form-field filters__field"
             variants={itemVariants}
             transition={{ delay: 0.1 }}>
-            <label htmlFor="maxPassengers">Maximum passengers allowed</label>
+            <label htmlFor="maxPassengers">Max passengers allowed</label>
             <Field
               name="maxPassengers"
               id="maxPassengers"

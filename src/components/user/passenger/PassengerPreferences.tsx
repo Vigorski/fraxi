@@ -17,14 +17,11 @@ const PassengerPreferences = () => {
     (userDetails?.ridePreferences as RidePreferences) ?? {};
 
   return (
-    <>
-      <div className="card__section text-center pb-0">
-        <Link to={`${MY_PROFILE.path}/edit-preferences`}>Edit Preferences</Link>
+    <div className="card card--stats">
+			<div className="card__section text-center mt-0">
+        <Link className='btn-primary btn-sm' to={`${MY_PROFILE.path}/edit-preferences`}>Edit Preferences</Link>
       </div>
-      <div className="card__stamp">
-        <div className="card__stamp-border" />
-      </div>
-      <div className="card__section pv-0">
+      <div className="card__section">
         <dl className="list-desc__columns profile__routes">
           <div className="list-desc__col">
             <dt>Origin</dt>
@@ -36,10 +33,7 @@ const PassengerPreferences = () => {
           </div>
         </dl>
       </div>
-      <div className="card__stamp">
-        <div className="card__stamp-border" />
-      </div>
-      <div className="card__section card__radius--bottom pt-0">
+      <div className="card__section mb-0">
         <dl className="list-desc__rows">
           <div className="list-desc__row">
             <dt># of Stops</dt>
@@ -55,7 +49,7 @@ const PassengerPreferences = () => {
           </div>
         </dl>
       </div>
-    </>
+    </div>
   );
 };
 

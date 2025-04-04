@@ -29,6 +29,11 @@ h3 {
     font: 700 calc-rem(26px) $font-montserrat;
     letter-spacing: -0.38px;
     line-height: calc-rem(32px);
+
+		&.h3-sm {
+			font-size: calc-rem(16px);
+			line-height: 1;
+		}
 }
 
 h4 {
@@ -49,5 +54,5 @@ h6 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: $color-white;
+    color: $color-dark-gray;
 }

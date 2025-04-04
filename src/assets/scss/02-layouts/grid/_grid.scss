@@ -19,3 +19,11 @@
 
 //Called mixin to create row
 @include make-grid-columns();
+
+.flex {
+	display: flex;
+}
+
+.align-center {
+	align-items: center;
+}

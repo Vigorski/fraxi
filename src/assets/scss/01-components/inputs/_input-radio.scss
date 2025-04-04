@@ -32,7 +32,7 @@
     }
 
     &:disabled + label::after {
-      background-color: lighten($color-gray, 26%);
+      background-color: lighten($color-dark-gray-2, 26%);
     }
   }
 }

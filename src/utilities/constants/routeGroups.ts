@@ -65,7 +65,7 @@ export const passengerRouteGroup: RouteGroup = [
 
 export const driverRouteGroup: RouteGroup = [
   {
-    path: `${MY_PROFILE.path}${CREATE_RIDE.path}`,
+    path: CREATE_RIDE.path,
     component: CreateRide,
     roles: [USER_TYPES.driver],
     pathDetails: CREATE_RIDE,

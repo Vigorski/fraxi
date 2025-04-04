@@ -1,6 +1,4 @@
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { itemVariants } from 'utilities/constants/framerVariants';
 import { userUpdate } from 'store/user/userAsyncActions';
 import RegisterEditUser from '../../components/auth/RegisterEditUser';
 import { MY_PROFILE } from 'utilities/constants/routesConfig';
@@ -33,13 +31,10 @@ const EditMyProfile = () => {
 
   return (
     <MotionWrapper className="profile profile--edit">
-      <>
-        <motion.h3 variants={itemVariants}>Edit profile</motion.h3>
-        <RegisterEditUser
-          authConfig={editUserConfig}
-          handleSubmit={handleSubmitEdit}
-        />
-      </>
+			<RegisterEditUser
+				authConfig={editUserConfig}
+				handleSubmit={handleSubmitEdit}
+			/>
     </MotionWrapper>
   );
 };

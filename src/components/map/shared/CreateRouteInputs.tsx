@@ -31,12 +31,16 @@ const CreateRouteInputs: FC<CreateRouteInputsOwnProps> = ({
     <>
       <FormAutocomplete
         name="origin"
-        label="Origin"
+				className='form-field__map-input'
+        labelClassName="form-field__origin-label"
+				placeholder='Origin'
         handler={handleOriginChange}
-      />
+				/>
       <FormAutocomplete
         name="destination"
-        label="Destination"
+				className='form-field__map-input'
+        labelClassName="form-field__destination-label"
+				placeholder='Destination'
         handler={handleDestinationChange}
       />
     </>

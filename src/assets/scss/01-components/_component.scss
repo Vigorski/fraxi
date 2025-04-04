@@ -6,14 +6,10 @@
 
 @import
     "containers/branding",
-    "containers/cookies",
-    "containers/list",
-    "containers/table",
-    "containers/tags";
+    "containers/list";
 
 @import
     "content/icon",
-    "content/loader",
     "content/divider",
     "content/svg";
 
@@ -23,31 +19,19 @@
 @import 
     "inputs/input-global",
     "inputs/button",
+    "inputs/button-icon",
     "inputs/button-menu",
     "inputs/input-checkbox",
     "inputs/input-date-time",
     "inputs/input-radio",
-    "inputs/input-search",
     "inputs/input-select",
     "inputs/input-text",
-    "inputs/input-textarea",
-    "inputs/input-upload",
-    "inputs/input-file";
+    "inputs/input-textarea";
 
 @import 
-    "interactive/accordion",
-    "interactive/breadcrumb",
-    "interactive/modal",
     "interactive/pagination",
-    "interactive/progressbar",
-    "interactive/slider",
-    "interactive/tab",
-    "interactive/toast-message",
-    "interactive/video",
-    "interactive/wysiwyg",
-    "interactive/popover",
-    'interactive/tooltip',
-    "interactive/step-progressbar",
+		"interactive/tab",
+		"interactive/toast-message",
     "interactive/loader",
     "interactive/map";
 
@@ -59,6 +43,5 @@
     "text/message";
 
 @import 
-    "images/avatar",
     "images/thumbnail",
     "images/image";

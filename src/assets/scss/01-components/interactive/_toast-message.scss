@@ -2,8 +2,8 @@
   &__toast-theme--colored,
   &__toast--default,
   &__toast-theme--light {
-    --toastify-icon-color-success: #{$color-green-2};
-    --toastify-text-color-light: #{$color-gray};
+    --toastify-icon-color-success: #{$color-green};
+    --toastify-text-color-light: #{$color-dark-gray-2};
   }
 
   &__close-button {
