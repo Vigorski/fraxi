@@ -22,7 +22,7 @@ export const mapLightTheme = [
   {
     featureType: 'road',
     elementType: 'all',
-    stylers: [{ color: '#ababad' }, { visibility: 'simplified' }],
+    stylers: [{ color: '#cccccc' }, { visibility: 'simplified' }],
   },
   {
     featureType: 'road',
@@ -32,7 +32,7 @@ export const mapLightTheme = [
 	{
     featureType: 'road.highway',
     elementType: 'all',
-    stylers: [{ color: '#ababad' }, { visibility: 'simplified' }],
+    stylers: [{ color: '#cccccc' }, { visibility: 'simplified' }],
   },
 	{
     featureType: 'road.highway',

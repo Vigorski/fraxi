@@ -21,6 +21,7 @@ import { IconRoute } from './IconRoute';
 import { IconCar } from './IconCar';
 import { IconEarth } from './IconEarth';
 import { IconMenu } from './IconMenu';
+import { IconClock } from './IconClock';
 
 export {
   IconUser,
@@ -46,4 +47,5 @@ export {
   IconCar,
 	IconEarth,
 	IconMenu,
+	IconClock
 };

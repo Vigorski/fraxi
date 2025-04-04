@@ -1,6 +1,7 @@
 import React, { useEffect, memo, ReactElement, FC, useReducer } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
-import flagIcon from 'assets/icons/flag.svg';
+import originIcon from 'assets/icons/pin-origin.svg';
+import destinationIcon from 'assets/icons/pin-destination.svg';
 import WaypointMarkers from './WaypointMarkers';
 import PlaceInfoWindow from './PlaceInfoWindow';
 import {
@@ -157,10 +158,10 @@ const Map: FC<MapOwnProps> = ({
 						styles: mapLightTheme,
 					}}>
 					{origin && (
-						<Marker position={origin.location} icon={{ url: flagIcon }} />
+						<Marker position={origin.location} icon={{ url: originIcon }} />
 					)}
 					{destination && (
-						<Marker position={destination.location} icon={{ url: flagIcon }} />
+						<Marker position={destination.location} icon={{ url: destinationIcon }} />
 					)}
 					{waypoints && (
 						<WaypointMarkers

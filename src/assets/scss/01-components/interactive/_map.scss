@@ -37,6 +37,18 @@
   &-d {
     overflow: initial !important;
   }
+
+	&-ch {
+		font-family: $font-montserrat;
+		font-weight: 600;
+		font-size: calc-rem(16px);
+		color: $color-dark-gray-2;
+		padding-top: calc-rem(4px);
+		
+		&r {
+			margin-bottom: calc-rem(16px);
+		}
+	}
 }
 
 .gm-ui-hover-effect {
@@ -59,57 +71,48 @@
     p {
       line-height: calc-rem(22px);
     }
+
+		.svg-inline {
+      font-size: calc-rem(44px);
+    	stroke: $color-primary;
+    }
+  }
+
+	&__main,
+  &__estimations {
+    display: flex;
+    align-items: center;
   }
 
   &__main {
-    border-bottom: 2px solid $color-light-gray-2;
-    margin-bottom: calc-rem(18px);
-    padding-bottom: calc-rem(16px);
+    margin-bottom: calc-rem(22px);
   }
+	
+	&__estimations {
+		max-width: calc-rem(110px);
+	}
 
   &__footer {
     display: flex;
     justify-content: space-between;
     gap: calc-rem(20px);
-  }
 
-  &__estimations {
-    flex: 1;
-    max-width: calc-rem(110px);
-  }
-
-  &__title {
-    display: flex;
-    align-items: center;
-
-    .svg-inline {
-      margin-right: calc-rem(8px);
-      font-size: calc-rem(22px);
-      fill: $color-green-2;
+		.svg-inline {
+      font-size: calc-rem(28px);
     }
+  }
+
+  &__info {
+		margin-left: calc-rem(16px);
 
     h6 {
-      color: $color-blue-dark-2;
+      color: $color-dark-gray-2;
     }
-  }
 
-  &__body {
-    margin-left: calc-rem(30px);
-    color: $color-gray-3;
+		p {
+			color: $color-light-gray;
+		}
   }
-}
-
-.gm-style-iw-ch {
-	font-family: $font-montserrat;
-	font-weight: 700;
-	font-size: calc-rem(14px);
-	color: $color-green-2;
-	padding-top: calc-rem(4px);
-	
-	&r {
-		border-bottom: 2px solid $color-light-gray-2;
-		margin-bottom: calc-rem(16px);
-	}
 }
 
 .gm-ui-hover-effect > span {

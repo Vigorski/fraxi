@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <rect
+    x="11"
+    y="14"
+    width="2"
+    height="12"
+    fill="#595959" />
+
+  <rect
+    x="6"
+    y="3"
+    width="10"
+    height="10"
+    fill="#f56d20"
+    transform="rotate(45 12 9)" />
+</svg>
