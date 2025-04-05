@@ -29,7 +29,7 @@ const ActiveRideCard: FC<ActiveRideCardOwnProps> = ({ ride }) => {
         to={`${RIDE_DETAILS.path}?rideId=${encryptedRideId}`}
         className={`card card--light card--stats ${isUserSubscribedToRide ? 'card--ribbon-right' : ''}`}>
         <div className="card__header">
-          <div className="card__icon">
+          <div className="icon__stamp">
 						<IconCar />
 					</div>
           <div className="ml-md">

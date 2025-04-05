@@ -1,39 +1,21 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { IconUserPlaceholder, IconEdit } from 'components/icons';
+import { IconUserPlaceholder } from 'components/icons';
 import JourneyHub from 'components/user/passenger/JourneyHub';
-import { userLogout } from 'store/user/userAsyncActions';
 import { USER_TYPES } from 'types/auth';
-import {
-  CREATE_RIDE,
-  EDIT_USER,
-  MY_PROFILE,
-} from 'utilities/constants/routesConfig';
+import { CREATE_RIDE } from 'utilities/constants/routesConfig';
 import { itemVariants } from 'utilities/constants/framerVariants';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const MyProfile = () => {
-  const dispatch = useAppDispatch();
   const { userDetails } = useAppSelector(state => state.user);
-
-  const handleLogout = async () => {
-    await dispatch(userLogout()).unwrap();
-  };
 
   return (
     <MotionWrapper
       className="profile"
       data-bg-text={`${userDetails?.name} ${userDetails?.surname}`}>
       <>
-        <motion.div className="profile__edit" variants={itemVariants}>
-          <Link
-            className="btn-icon-center btn-stripped"
-            to={`${MY_PROFILE.path}${EDIT_USER.path}`}>
-            <IconEdit />
-          </Link>
-        </motion.div>
         <motion.div className="profile__img" variants={itemVariants}>
           {!!userDetails?.profilePicture ? (
             <img src={userDetails.profilePicture} alt="user avatar" />
@@ -59,13 +41,6 @@ const MyProfile = () => {
             </Link>
           </motion.div>
         )}
-
-        <motion.button
-          className="btn-primary-ghost btn-block btn-sm mt-xxl"
-          onClick={handleLogout}
-          variants={itemVariants}>
-          Logout
-        </motion.button>
       </>
     </MotionWrapper>
   );

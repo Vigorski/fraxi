@@ -26,17 +26,17 @@ const PlaceInfoWindow: FC<PlaceInfoWindowOwnProps> = ({
       </div>
       <div className="info-window__footer">
         <div className="info-window__estimations">
-					<IconClock />
-          <div className="info-window__info">
-            <h6>ETA</h6>
-						<p>{selectedMarker.totalFormattedDuration}</p>
-          </div>
-        </div>
-        <div className="info-window__estimations">
 					<IconRoute />
           <div className="info-window__info">
             <h6>Distance</h6>
 						<p>{selectedMarker.totalDistanceInKm}</p>
+          </div>
+        </div>
+				<div className="info-window__estimations">
+					<IconClock />
+          <div className="info-window__info">
+            <h6>ETA</h6>
+						<p>{selectedMarker.totalFormattedDuration}</p>
           </div>
         </div>
       </div>

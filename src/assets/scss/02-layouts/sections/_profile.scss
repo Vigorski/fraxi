@@ -1,16 +1,6 @@
 .profile {
 	@extend %background-pseudo-text;
 
-	&__edit {
-		position: absolute;
-		right: calc-rem(10px);
-		top: calc-rem(8px);
-
-		.svg-inline {
-			fill: $color-primary;
-		}
-	}
-
 	&__img {
 		position: relative;
 		display: block;

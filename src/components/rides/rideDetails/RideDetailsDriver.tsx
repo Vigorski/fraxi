@@ -11,7 +11,7 @@ import { itemVariants } from 'utilities/constants/framerVariants';
 import { RideWithDriver } from 'types/ride';
 import { User } from 'types/user';
 import RideDetailsCard from './RideDetailsCard';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 import RideWaypoints from './RideWaypoints';
 
 type RideDetailsDriverOwnProps = {

@@ -21,7 +21,7 @@ import {
 import { RideWithDriver } from 'types/ride';
 import { Route, Waypoint } from 'types/map';
 import RideDetailsCard from './RideDetailsCard';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 type RideDetailsPassengerOwnProps = {
   rideDetails: RideWithDriver;

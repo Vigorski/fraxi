@@ -13,7 +13,7 @@ import {
 } from 'types/ride';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const SearchRides = () => {
   const dispatch = useAppDispatch();

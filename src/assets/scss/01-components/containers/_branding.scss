@@ -3,6 +3,12 @@
     width: calc-rem(48px);
     height: calc-rem(48px);
     padding: calc-rem(10px);
+		color: $color-primary;
+
+		.svg-inline {
+			width: 100%;
+			height: 100%;
+		}
   }
 
   &-auth {

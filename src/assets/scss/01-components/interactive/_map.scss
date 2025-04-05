@@ -73,7 +73,7 @@
     }
 
 		.svg-inline {
-      font-size: calc-rem(44px);
+      font-size: calc-rem(28px);
     	stroke: $color-primary;
     }
   }
@@ -96,10 +96,6 @@
     display: flex;
     justify-content: space-between;
     gap: calc-rem(20px);
-
-		.svg-inline {
-      font-size: calc-rem(28px);
-    }
   }
 
   &__info {

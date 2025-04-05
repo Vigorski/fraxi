@@ -16,7 +16,12 @@ import { IconRoute } from './IconRoute';
 import { IconCar } from './IconCar';
 import { IconEarth } from './IconEarth';
 import { IconMenu } from './IconMenu';
+import { IconClose } from './IconClose';
 import { IconClock } from './IconClock';
+import { IconLogo } from './IconLogo';
+import { IconInstagram } from './IconInstagram';
+import { IconLinkedIn } from './IconLinkedIn';
+import { IconGitHub } from './IconGitHub';
 
 export {
   IconUser,
@@ -37,5 +42,10 @@ export {
   IconCar,
 	IconEarth,
 	IconMenu,
-	IconClock
+	IconClose,
+	IconClock,
+	IconLogo,
+	IconInstagram,
+	IconLinkedIn,
+	IconGitHub,
 };

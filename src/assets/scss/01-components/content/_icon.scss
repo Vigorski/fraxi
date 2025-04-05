@@ -1,4 +1,3 @@
-// include the size (ex: .icon-sm) along with the specific icon class ex: .icon-arrow-white
 .icon {
   &-blank {
     position: relative;
@@ -16,32 +15,44 @@
     }
   }
 
-	@each $name, $size in $icon-size {
-		&-#{$name} {
-			@extend .icon-blank;
-			width: $size;
-			height: $size;
+	&__stamp {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: calc-rem(48px);
+		height: calc-rem(48px);
+		padding: calc-rem(10px);
+		border-radius: $border-radius-circle;
+		background-color: $color-light-purple;
+		color: $color-primary;
+
+		.svg-inline {
+			font-size: calc-rem(24px);
+		}
+
+		&--linkedin {
+			background-color: $color-blue;
+			color: $color-white;
+		}
+		&--github {
+			background-color: $color-yellow;
+			color: $color-white;
+		}
+		&--instagram {
+			background-color: $color-orange;
+			color: $color-white;
+		}
+
+		&--md {
+			width: calc-rem(40px);
+			height: calc-rem(40px);
+			padding: calc-rem(12px);
+		}
+
+		&--sm {
+			width: calc-rem(36px);
+			height: calc-rem(36px);
+			padding: calc-rem(12px);
 		}
 	}
-
-  @each $key, $rotation in $icon-rotate {
-    &-#{$key} {
-      transform: rotate(#{$rotation});
-    }
-  }
-}
-
-// ICON SOCIAL MEDIA
-.icon-social {
-  &-yt-white::after {
-    background-image: get-icon("youtube", $color-white);
-  }
-
-  &-li-white::after {
-    background-image: get-icon("linkedin", $color-white);
-  }
-
-  &-tw-white::after {
-    background-image: get-icon("twitter", $color-white);
-  }
 }

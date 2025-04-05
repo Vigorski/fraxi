@@ -33,7 +33,7 @@ const CardRideDetails: FC<CardRideDetailsOwnProps> = ({
       <div
         className="card__header">
 				<h5>{rideDetails.route.origin?.address_components.city ?? 'N/A'}</h5>
-        <div className="card__icon">
+        <div className="icon__stamp">
 					<IconCar />
 				</div>
 				<h5>{rideDetails.route.destination?.address_components.city ?? 'N/A'}</h5>
