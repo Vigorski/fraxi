@@ -49,8 +49,7 @@
 
   &-primary,
   &-primary-ghost,
-  &-light,
-  &-secondary {
+  &-light {
     @extend .btn;
   }
 
@@ -84,11 +83,11 @@
     line-height: calc-rem(16px);
     background: transparent;
     border: none;
-    color: $color-white;
+    color: $color-dark-gray-2;
   }
 
   &-link {
-    @include base-button($color-white, transparent, transparent);
+    @include base-button($color-dark-gray-2, transparent, transparent);
   }
 }
 

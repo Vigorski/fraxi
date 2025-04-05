@@ -60,34 +60,6 @@
 		}
 	}
 
-	&__icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: calc-rem(48px);
-		height: calc-rem(48px);
-		padding: calc-rem(10px);
-		border-radius: $border-radius-circle;
-		background: $color-light-purple;
-
-		.svg-inline {
-			stroke: $color-primary;
-			font-size: calc-rem(24px);
-		}
-
-		&--md {
-			width: calc-rem(40px);
-			height: calc-rem(40px);
-			padding: calc-rem(12px);
-		}
-
-		&--sm {
-			width: calc-rem(36px);
-			height: calc-rem(36px);
-			padding: calc-rem(12px);
-		}
-	}
-
 	&__price {
 		color: $color-dark-gray-2;
 		font-weight: 600;

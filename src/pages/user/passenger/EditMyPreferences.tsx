@@ -12,7 +12,7 @@ import {
 import { FormErrors } from 'types/form';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const EditMyPreferences = () => {
   const navigate = useNavigate();

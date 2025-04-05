@@ -1,24 +1,5 @@
 ul {
   list-style: none;
-
-  &.list-bullets {
-    li {
-      padding-left: calc-rem(32px);
-
-      &::before {
-        content: "";
-        position: absolute;
-        display: inline-block;
-        width: calc-rem(8px);
-        height: calc-rem(8px);
-        left: calc-rem(10px);
-        top: calc-rem(13px);
-        margin-right: calc-rem(15px);
-        background-color: $color-primary;
-        border-radius: 50%;
-      }
-    }
-  }
 }
 
 ol {
@@ -37,6 +18,27 @@ ol {
 
 .inline-list {
   display: flex;
+}
+
+.list-menu {
+	@extend .list;
+	margin: calc-rem(32px) calc-rem(-20px);
+
+	li {
+		margin: calc-rem(6px) 0;
+		padding: calc-rem(10px) calc-rem(20px);
+		background-color: $color-light-gray-4;
+	}
+
+	&__item {
+		display: flex;
+		align-items: center;
+		color: $color-dark-gray-2;
+	}
+
+	span {
+		margin-left: calc-rem(24px);
+	}
 }
 
 .list-desc {

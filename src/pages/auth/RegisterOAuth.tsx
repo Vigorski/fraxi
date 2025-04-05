@@ -9,7 +9,7 @@ import RegisterEditUser from 'components/auth/RegisterEditUser';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { UserForm } from 'types/user';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const RegisterOAuth = () => {
   const dispatch = useAppDispatch();

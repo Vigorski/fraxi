@@ -6,7 +6,7 @@ import { AuthConfig, REGISTER_TYPES } from 'types/auth';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { UserForm } from 'types/user';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const EditMyProfile = () => {
   const dispatch = useAppDispatch();

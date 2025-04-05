@@ -26,7 +26,7 @@ const RideWaypoints: FC<RideWaypointsOwnProps> = ({
 
             return (
               <li key={passenger.userId}>
-                <div className="card__icon card__icon--sm">
+                <div className="icon__stamp icon__stamp--sm">
                   <IconMarker />
                 </div>
 								<div className='list__users-description'>

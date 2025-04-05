@@ -1,6 +1,6 @@
 import ActiveRides from 'components/rides/activeRides/ActiveRides';
 import { useAppSelector } from 'hooks/useAppSelector';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const UsersOwnActiveRides = () => {
   const { activeRides } = useAppSelector(state => state.rides);

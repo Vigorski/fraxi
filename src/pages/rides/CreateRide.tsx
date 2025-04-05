@@ -23,7 +23,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { FormErrors } from 'types/form';
 import { Route } from 'types/map';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const CreateRide = () => {
   const earliestDepartureDate = new Date(addTime([1]));

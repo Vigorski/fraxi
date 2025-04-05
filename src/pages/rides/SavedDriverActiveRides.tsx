@@ -10,7 +10,7 @@ import { PAGE_NOT_FOUND } from 'utilities/constants/routesConfig';
 import { decryptData } from 'utilities/helpers/encription';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { RideWithDriver } from 'types/ride';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const SavedDriverActiveRides = () => {
   const [activeRides, setActiveRides] = useState<RideWithDriver[]>();

@@ -13,7 +13,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { AuthLogin } from 'types/auth';
 import { FormErrors } from 'types/form';
-import MotionWrapper from 'layout/MotionWrapper';
+import MotionWrapper from 'components/shared/MotionWrapper';
 
 const Login = () => {
   const navigate = useNavigate();

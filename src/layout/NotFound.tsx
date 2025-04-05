@@ -5,7 +5,7 @@ import {
   itemVariants,
 } from 'utilities/constants/framerVariants';
 import { LocationState } from 'types/router';
-import MotionWrapper from './MotionWrapper';
+import MotionWrapper from '../components/shared/MotionWrapper';
 
 const NotFound: FC = () => {
   const location = useLocation();
