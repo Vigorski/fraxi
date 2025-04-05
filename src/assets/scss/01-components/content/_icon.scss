@@ -15,20 +15,6 @@
     }
   }
 
-	@each $name, $size in $icon-size {
-		&-#{$name} {
-			@extend .icon-blank;
-			width: $size;
-			height: $size;
-		}
-	}
-
-  @each $key, $rotation in $icon-rotate {
-    &-#{$key} {
-      transform: rotate(#{$rotation});
-    }
-  }
-
 	&__stamp {
 		display: flex;
 		align-items: center;
@@ -56,19 +42,4 @@
 			padding: calc-rem(12px);
 		}
 	}
-}
-
-// ICON SOCIAL MEDIA
-.icon-social {
-  &-yt-white::after {
-    background-image: get-icon("youtube", $color-white);
-  }
-
-  &-li-white::after {
-    background-image: get-icon("linkedin", $color-white);
-  }
-
-  &-tw-white::after {
-    background-image: get-icon("twitter", $color-white);
-  }
 }

@@ -11,37 +11,12 @@
 
 $arrow-base: 16px;
 
-@mixin link-arrow(
-  $width: $arrow-base,
-  $height: $arrow-base,
-  $rotate: 0,
-  $color: $color-primary,
-  $icon: "chevron"
-) {
-  padding-left: calc-rem(20px);
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: $width;
-    height: $height;
-    margin: calc-rem(-4px) calc-rem(10px) 0 calc-rem(-20px);
-    vertical-align: middle;
-    background: get-icon($icon, $color) no-repeat center;
-    transform: rotate($rotate);
-  }
-}
-
 a {
 	display: inline-block;
 	font-size: calc-rem(16px);
 	position: relative;
   @include create-link-color($color-dark-gray-2, $color-primary);
   @include transition(color, 0.3s);
-
-  &.link-arrow {
-    @include link-arrow(12px, 12px, 90deg);
-  }
 }
 
 .link-register {

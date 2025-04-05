@@ -1,4 +1,4 @@
-import { IconClose, IconEdit } from 'components/icons';
+import { IconClose, IconEdit, IconGitHub, IconInstagram, IconLinkedIn } from 'components/icons';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { FC, useEffect } from 'react';
@@ -106,7 +106,20 @@ const SideMenu: FC<SideMenuOwnProps> = ({ isMenuOpen, handleMenuToggle }) => {
                 Logout
               </motion.button>
             </div>
-            <div className="sidemenu__footer"></div>
+            <div className="sidemenu__footer">
+							<small>Check out my profiles on:</small>
+							<ul className='list inline-list mt-md'>
+								<a href="https://www.linkedin.com/in/igor-veleski-19814759" className='btn-icon-center'>
+									<IconLinkedIn />
+								</a>
+								<a href="https://github.com/Vigorski" className='btn-icon-center'>
+									<IconGitHub />
+								</a>
+								<a href="https://www.instagram.com/vele_igor" className='btn-icon-center'>
+									<IconInstagram />
+								</a>
+							</ul>
+						</div>
           </motion.div>
         </div>
       )}

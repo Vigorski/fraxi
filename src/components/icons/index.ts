@@ -19,6 +19,9 @@ import { IconMenu } from './IconMenu';
 import { IconClose } from './IconClose';
 import { IconClock } from './IconClock';
 import { IconLogo } from './IconLogo';
+import { IconInstagram } from './IconInstagram';
+import { IconLinkedIn } from './IconLinkedIn';
+import { IconGitHub } from './IconGitHub';
 
 export {
   IconUser,
@@ -41,5 +44,8 @@ export {
 	IconMenu,
 	IconClose,
 	IconClock,
-	IconLogo
+	IconLogo,
+	IconInstagram,
+	IconLinkedIn,
+	IconGitHub,
 };

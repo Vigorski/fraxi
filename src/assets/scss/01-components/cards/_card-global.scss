@@ -1,4 +1,3 @@
-
 .card {
   position: relative;
 	display: flex;
@@ -40,10 +39,6 @@
 		&--stats {
 			padding-right: calc-rem(32px);
 		}
-
-		// &--active {
-    //   background: $color-primary;
-		// }
 	}
 
 	&__body {
@@ -100,42 +95,6 @@
 			}
 		}
 	}
-  
-  &__stamp {
-    position: relative;
-    width: calc(100% - calc-rem(24px));
-    margin: 0 auto;
-    padding: calc-rem(12px) 0;
-    
-    &-border {
-      position: absolute;
-      width: 100%;
-      top: calc(50% - 0.5px);
-      left: 0;
-      border-top: 1px dashed rgba($color-white, 0.18);
-    }
-
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      width: calc-rem(12px);
-      height: calc-rem(24px);
-      background-color: var(--card-bg);
-      clip-path: $half-circle-stamp;
-    }
-
-    &::before {
-      left: calc-rem(-12px);
-      transform: rotate(360deg);
-    }
-
-    &::after {
-      right: calc-rem(-12px);
-      transform: rotate(180deg);
-    }
-  }
 
   &--light {
     --card-bg: #{$color-light-gray-4};
