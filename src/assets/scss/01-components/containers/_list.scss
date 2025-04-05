@@ -18,6 +18,11 @@ ol {
 
 .inline-list {
   display: flex;
+
+	li {
+		margin-left: calc-rem(16px);
+		margin-right: calc-rem(16px);
+	}
 }
 
 .list-menu {
@@ -34,7 +39,6 @@ ol {
 		display: flex;
 		align-items: center;
 		color: $color-dark-gray-2;
-		font-weight: 500;
 	}
 
 	span {

@@ -24,9 +24,25 @@
 
 	&__content {
 		width: calc(100% - 60px);
-    height: 100%;
-    margin-left: auto;
-    background: $color-white;
-    padding: calc-rem(20px);
+		height: 100%;
+		margin-left: auto;
+		background: $color-white;
+		padding: calc-rem(20px);
+	}
+
+	&__footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: calc-rem(20px);
+
+		.inline-list {
+			justify-content: center;
+		}
+
+		a:hover {
+			color: $color-dark-gray
+		}
 	}
 }

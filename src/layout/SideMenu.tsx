@@ -20,6 +20,7 @@ type SideMenuOwnProps = {
 const SideMenu: FC<SideMenuOwnProps> = ({ isMenuOpen, handleMenuToggle }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
 
   // Close on Escape key
   useEffect(() => {
@@ -107,18 +108,24 @@ const SideMenu: FC<SideMenuOwnProps> = ({ isMenuOpen, handleMenuToggle }) => {
               </motion.button>
             </div>
             <div className="sidemenu__footer">
-							<small>Check out my profiles on:</small>
 							<ul className='list inline-list mt-md'>
-								<a href="https://www.linkedin.com/in/igor-veleski-19814759" className='btn-icon-center'>
-									<IconLinkedIn />
-								</a>
-								<a href="https://github.com/Vigorski" className='btn-icon-center'>
-									<IconGitHub />
-								</a>
-								<a href="https://www.instagram.com/vele_igor" className='btn-icon-center'>
-									<IconInstagram />
-								</a>
+                <li>
+                  <a href="https://www.linkedin.com/in/igor-veleski-19814759" className="icon__stamp icon__stamp--md icon__stamp--linkedin">
+                    <IconLinkedIn />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/Vigorski" className="icon__stamp icon__stamp--md icon__stamp--github">
+                    <IconGitHub />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.instagram.com/vele_igor" className="icon__stamp icon__stamp--md icon__stamp--instagram">
+                    <IconInstagram />
+                  </a>
+                </li>
 							</ul>
+              <p className='text-center mt-md'>&copy; {currentYear} | Igor Veleski </p>
 						</div>
           </motion.div>
         </div>

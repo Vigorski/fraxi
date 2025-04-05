@@ -23,11 +23,24 @@
 		height: calc-rem(48px);
 		padding: calc-rem(10px);
 		border-radius: $border-radius-circle;
-		background: $color-light-purple;
+		background-color: $color-light-purple;
+		color: $color-primary;
 
 		.svg-inline {
-			stroke: $color-primary;
 			font-size: calc-rem(24px);
+		}
+
+		&--linkedin {
+			background-color: $color-blue;
+			color: $color-white;
+		}
+		&--github {
+			background-color: $color-yellow;
+			color: $color-white;
+		}
+		&--instagram {
+			background-color: $color-orange;
+			color: $color-white;
 		}
 
 		&--md {
