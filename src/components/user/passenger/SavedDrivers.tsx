@@ -16,21 +16,30 @@ import { User } from 'types/user';
 const SavedDrivers = () => {
   const dispatch = useAppDispatch();
   const { userDetails } = useAppSelector(state => state.user);
-  const [savedDrivers, setSavedDrivers] = useState<User[]>();
+  const [savedDrivers, setSavedDrivers] = useState<User[]>([]);
 	const [ isLoading, setIsLoading ] = useState(true);
 
-  useEffect(() => {
-    if (userDetails?.savedDrivers) {
-      const getDrivers = async () => {
-        const response = await dispatch(
-          fetchUsers({ usersIds: userDetails.savedDrivers }),
-        ).unwrap();
-        setSavedDrivers(response);
-				setIsLoading(false);
-      };
+	useEffect(() => {
+		const getDrivers = async () => {
+			setIsLoading(true);
+			
+      if (userDetails?.savedDrivers.length) {
+        try {
+          const response = await dispatch(
+            fetchUsers({ usersIds: userDetails.savedDrivers }),
+          ).unwrap();
+          setSavedDrivers(response);
+        } catch (error) {
+          console.error('Error fetching saved drivers:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
 
-      getDrivers();
-    }
+    getDrivers();
   }, [userDetails?.savedDrivers, dispatch]);
 
 	const renderDrivers = () => {
@@ -42,7 +51,7 @@ const SavedDrivers = () => {
 			)
 		}
 
-		if (savedDrivers) {
+		if (!!savedDrivers.length) {
 			return (
 				savedDrivers.map((driver, index) => {
 					const encryptedDriverId = encryptData(
