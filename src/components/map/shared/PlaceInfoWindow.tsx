@@ -1,4 +1,4 @@
-import { InfoWindow } from '@react-google-maps/api';
+import { InfoWindowF } from '@react-google-maps/api';
 import { IconCar, IconClock, IconRoute } from 'components/icons';
 import { FC } from 'react';
 import { CachedWaypointInfo } from 'types/map';
@@ -12,7 +12,7 @@ const PlaceInfoWindow: FC<PlaceInfoWindowOwnProps> = ({
   selectedMarker,
   handleInfoWindowClose,
 }) => (
-  <InfoWindow
+  <InfoWindowF
     position={selectedMarker.location}
     onCloseClick={handleInfoWindowClose}
     options={{ headerContent: selectedMarker.fullname }}>
@@ -41,7 +41,7 @@ const PlaceInfoWindow: FC<PlaceInfoWindowOwnProps> = ({
         </div>
       </div>
     </div>
-  </InfoWindow>
+  </InfoWindowF>
 );
 
 export default PlaceInfoWindow;

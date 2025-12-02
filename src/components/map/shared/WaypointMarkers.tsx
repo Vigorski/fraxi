@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Marker } from '@react-google-maps/api';
+import { MarkerF } from '@react-google-maps/api';
 import markerIcon from 'assets/icons/marker.svg';
 import markerIconUnique from 'assets/icons/marker-unique.svg';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -19,7 +19,7 @@ const WaypointMarkers: FC<WaypointMarkersOwnProps> = ({
   return waypoints.map(waypoint => {
     if (waypoint.userId === userId) {
       return (
-        <Marker
+        <MarkerF
           key={waypoint.userId}
           position={waypoint.location}
           icon={{ url: markerIconUnique }}
@@ -29,7 +29,7 @@ const WaypointMarkers: FC<WaypointMarkersOwnProps> = ({
     }
 
     return (
-      <Marker
+      <MarkerF
         key={waypoint.userId}
         position={waypoint.location}
         icon={{ url: markerIcon }}
